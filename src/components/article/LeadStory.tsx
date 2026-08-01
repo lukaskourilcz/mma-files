@@ -160,7 +160,19 @@ export function LeadStory({
               className="absolute left-0 top-0 z-10 h-1 w-full origin-left animate-wipe"
             />
 
-            <span className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 bg-gradient-to-t from-ink/90 to-transparent p-5">
+            {/*
+              The plate has to carry white and lime text over whatever is
+              behind it — a dark walkout photograph or the pale placeholder —
+              so the scrim reaches full ink before the type starts rather than
+              fading out under it.
+            */}
+            <span
+              className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 p-5 pt-16"
+              style={{
+                background:
+                  "linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--color-ink) 60%, transparent) 40%, var(--color-ink) 100%)",
+              }}
+            >
               <span className="block min-w-0">
                 <span className="label-mono-sm block tracking-[0.18em] text-signal">
                   {article.fileNumber
