@@ -56,7 +56,7 @@ export const en = {
     sourceChecked: "Source checked",
     correction: "Correction",
     update: "Update",
-    live: "Live",
+    titleFight: "Title fight",
     format: "Format",
     promotion: "Promotion",
     event: "Event",

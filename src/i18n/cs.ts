@@ -59,7 +59,7 @@ export const cs: Dictionary = {
     sourceChecked: "Zdroje ověřeny",
     correction: "Oprava",
     update: "Doplnění",
-    live: "Živě",
+    titleFight: "Titulový zápas",
     format: "Formát",
     promotion: "Organizace",
     event: "Turnaj",
