@@ -11,7 +11,7 @@ account or editorial decisions that cannot be made inside the repository.
   `DELIVERY_APP_PRIVATE_KEY`; do not add those secrets to this repository.
 - [ ] Confirm Vercel Production is connected to `lukaskourilcz/mma-files`, branch
   `main`, with automatic Git deployments enabled.
-- [ ] Add `NEXT_PUBLIC_SITE_URL=https://mma-files.vercel.app` in Vercel Production.
+- [ ] Add `NEXT_PUBLIC_SITE_URL=https://mma-files.vercel.app` in Vercel Production so the intended origin is explicit. The code now safely falls back to this production URL if the variable is missing.
 - [ ] Keep `NEXT_PUBLIC_DEMO_MODE=true` until the first real package is visible.
   Set it to `false` and redeploy after that check.
 - [ ] Keep `NEXT_PUBLIC_ALLOW_INDEXING=false` during the showcase review. Set it

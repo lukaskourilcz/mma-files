@@ -83,9 +83,12 @@ export const demoMode = envFlag(process.env.NEXT_PUBLIC_DEMO_MODE, true);
 export const allowIndexing =
   !demoMode && envFlag(process.env.NEXT_PUBLIC_ALLOW_INDEXING, false);
 
-/** Set `NEXT_PUBLIC_SITE_URL` before deploying so canonicals and hreflang resolve. */
+/**
+ * Canonical production origin. Local development can opt back into localhost
+ * with `NEXT_PUBLIC_SITE_URL=http://localhost:3000`.
+ */
 export const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mma-files.vercel.app"
 ).replace(/\/$/, "");
 
 export function absoluteUrl(path: string): string {

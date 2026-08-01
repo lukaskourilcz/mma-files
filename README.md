@@ -46,7 +46,7 @@ All optional. Defaults are the safe ones.
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Origin for canonicals, `hreflang`, RSS and OG. **Set this before deploying.** |
+| `NEXT_PUBLIC_SITE_URL` | `https://mma-files.vercel.app` | Origin for canonicals, `hreflang`, RSS and OG. Set it to `http://localhost:3000` only when local absolute URLs are needed. |
 | `NEXT_PUBLIC_DEMO_MODE` | `true` | Demo badges on, indexing forced off, RSS empty. |
 | `NEXT_PUBLIC_ALLOW_INDEXING` | `false` | Master indexing switch. Ignored while `NEXT_PUBLIC_DEMO_MODE=true`. |
 
