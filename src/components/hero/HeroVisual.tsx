@@ -209,9 +209,7 @@ export function HeroVisual({
           <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 border-t border-rule-dark pt-4">
             {methodFull ? (
               <div>
-                <dt className="label-mono-sm text-muted">
-                  {dict.results.title}
-                </dt>
+                <dt className="label-mono-sm text-muted">{dict.labels.method}</dt>
                 <dd className="mt-1 font-mono text-sm text-white">{methodFull}</dd>
               </div>
             ) : null}

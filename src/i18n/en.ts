@@ -55,6 +55,7 @@ export const en = {
     demoData: "Demo data",
     sourceChecked: "Source checked",
     correction: "Correction",
+    method: "Method",
     update: "Update",
     titleFight: "Title fight",
     format: "Format",

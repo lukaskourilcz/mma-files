@@ -58,6 +58,7 @@ export const cs: Dictionary = {
     demoData: "Ukázková data",
     sourceChecked: "Zdroje ověřeny",
     correction: "Oprava",
+    method: "Způsob",
     update: "Doplnění",
     titleFight: "Titulový zápas",
     format: "Formát",
