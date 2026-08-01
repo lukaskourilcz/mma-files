@@ -57,6 +57,11 @@ export const cs: Dictionary = {
     sourceCount: (n: number) =>
       `${n} ${n === 1 ? "zdroj" : n < 5 ? "zdroje" : "zdrojů"}`,
     photoPending: "Fotografie zatím není",
+    photoSlots: {
+      lead: "Hlavní fotka — příchod nebo staredown, 4:5",
+      story: "Fotka k textu — 16:9",
+      portrait: "Portrét bojovníka — 4:5",
+    },
     theFile: "Složka k textu",
     relatedStories: "Související texty",
     byline: "Autor",
@@ -244,6 +249,13 @@ export const cs: Dictionary = {
       "Čtyři pravidla, která redakce uplatní dřív, než se cokoli dostane na tuhle stránku.",
     noLead: "Zatím nevyšel žádný text. Další složka se objeví tady.",
     noStories: "Zatím nevyšel žádný text.",
+  },
+
+  countdown: {
+    days: "Dny",
+    hrs: "Hod",
+    min: "Min",
+    sec: "Sek",
   },
 
   wire: {

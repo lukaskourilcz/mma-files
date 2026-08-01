@@ -54,6 +54,12 @@ export const en = {
     sources: "Sources",
     sourceCount: (n: number) => `${n} ${n === 1 ? "source" : "sources"}`,
     photoPending: "No photograph on file",
+    /** What belongs in an empty photo slot. A brief, never invented content. */
+    photoSlots: {
+      lead: "Lead image — walkout or face-off, 4:5",
+      story: "Story image — 16:9",
+      portrait: "Fighter portrait — 4:5",
+    },
     theFile: "The file",
     relatedStories: "Related stories",
     byline: "By",
@@ -247,6 +253,13 @@ export const en = {
       "Four rules the desks apply before anything reaches this page.",
     noLead: "No story has been released yet. The next file appears here.",
     noStories: "No stories have been released yet.",
+  },
+
+  countdown: {
+    days: "Days",
+    hrs: "Hrs",
+    min: "Min",
+    sec: "Sec",
   },
 
   /** The wire ticker. Every item is composed from repository data. */

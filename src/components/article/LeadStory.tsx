@@ -1,12 +1,26 @@
 import Link from "next/link";
-import { HeroVisual } from "@/components/hero/HeroVisual";
-import { Chip, Container } from "@/components/ui/primitives";
+import { Countdown } from "@/components/event/Countdown";
+import { PhotoSlot } from "@/components/media/PhotoSlot";
+import {
+  ButtonLink,
+  Container,
+  PromotionBadge,
+} from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { formatDate, readingTimeMinutes } from "@/lib/format";
 import { routes } from "@/lib/paths";
+import { accentFor } from "@/lib/promotion";
+import { getEventById } from "@/lib/repository";
 import type { Article, Locale } from "@/lib/types";
 
-/** The one dominant story: a dark feature band with the file's own hero. */
+/**
+ * The lead file: the story on the left, one big 4:5 photograph on the right.
+ *
+ * The right column is a single link to the same story, so the whole image is
+ * one target rather than a picture beside a link. Everything on the plate — the
+ * fight, the division, the venue — is read off the event the story points at,
+ * so a story with no card attached simply renders fewer lines.
+ */
 export function LeadStory({
   article,
   locale,
@@ -17,74 +31,163 @@ export function LeadStory({
   const dict = getDictionary(locale);
   const local = article.localizations[locale];
   const minutes = readingTimeMinutes(local.body);
+  const accent = accentFor(article.organization);
+
+  const event = article.eventRef ? getEventById(article.eventRef) : undefined;
+  const mainBout = event?.bouts.find((bout) => bout.billing === "main");
+  const isFightWeek = article.format === "fight-week-preview";
+
+  const stamp = [
+    article.fileNumber
+      ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")}`
+      : null,
+    formatDate(article.publishAt, locale, {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    }),
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  const boutLine = [
+    mainBout ? dict.divisions[mainBout.division] : null,
+    mainBout ? `${mainBout.scheduledRounds} × 5:00` : null,
+    event ? [event.venue, event.city].filter(Boolean).join(", ") : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
-    <section className="bg-ink text-white" aria-labelledby="lead-story">
-      <Container className="py-10 md:py-16">
-        <div className="grid items-center gap-8 md:grid-cols-12 md:gap-12">
-          <div className="md:col-span-6 lg:col-span-5">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span className="label-mono inline-flex items-center gap-2 text-ember">
-                <span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />
-                {dict.home.leadKicker}
+    <section
+      aria-labelledby="lead-story"
+      className="relative overflow-hidden border-b border-rule-strong"
+      style={{
+        background:
+          "radial-gradient(1100px 520px at 8% -14%, color-mix(in oklch, var(--color-ufc) 10%, transparent), transparent 70%), var(--color-paper)",
+      }}
+    >
+      <div aria-hidden="true" className="grid-rules pointer-events-none absolute inset-0" />
+
+      <Container className="relative grid items-start gap-10 py-12 lg:grid-cols-[1.02fr_0.98fr] lg:gap-14 lg:py-[52px] lg:pb-[60px]">
+        <div className="animate-rise">
+          <div className="flex flex-wrap items-center gap-3">
+            {article.organization ? (
+              <PromotionBadge
+                label={dict.organizationsShort[article.organization]}
+                accent={accent}
+              />
+            ) : null}
+            {isFightWeek ? (
+              <span className="label-mono-sm bg-signal px-2.5 py-1.5 font-semibold tracking-[0.18em] text-ink">
+                {dict.home.fightWeekTag}
               </span>
-              <Chip tone="dark">{dict.formats[article.format]}</Chip>
-              {article.organization ? (
-                <Chip tone="dark">
-                  {dict.organizationsShort[article.organization]}
-                </Chip>
-              ) : null}
-            </div>
-
-            <h1
-              id="lead-story"
-              className="mt-5 text-[2rem] leading-[1.05] tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem]"
-            >
-              <Link
-                href={routes.article(locale, article.slug)}
-                className="headline-link"
-              >
-                {local.title}
-              </Link>
-            </h1>
-
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-paper-muted md:text-lg">
-              {local.dek}
-            </p>
-
-            <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-rule-dark pt-5">
-              <Link
-                href={routes.article(locale, article.slug)}
-                className="label-mono group inline-flex items-center gap-2 rounded-[6px] bg-ember px-4 py-2.5 text-white hover:bg-ember/90"
-              >
-                {dict.actions.readTheFile}
-                <span
-                  aria-hidden="true"
-                  className="transition-transform duration-150 group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </Link>
-              <time
-                dateTime={article.publishAt}
-                className="label-mono-sm text-paper-muted"
-              >
-                {formatDate(article.publishAt, locale)}
-              </time>
-              <span className="label-mono-sm text-muted">
-                {minutes} {dict.labels.readingTime}
-              </span>
-            </div>
+            ) : null}
+            <span aria-hidden="true" className="h-3.5 w-px bg-rule-strong" />
+            <span className="label-mono-sm tracking-[0.18em] text-ink-meta">{stamp}</span>
           </div>
 
-          <div className="md:col-span-6 lg:col-span-7">
-            <HeroVisual
-              article={article}
-              locale={locale}
-              className="aspect-[4/3] sm:aspect-[16/10]"
-            />
+          <h1
+            id="lead-story"
+            className="display mt-5 max-w-[15ch] text-[40px] leading-[0.93] text-ink sm:text-[56px] lg:text-[76px]"
+          >
+            <Link href={routes.article(locale, article.slug)} className="headline-link">
+              {local.title}
+            </Link>
+          </h1>
+
+          <p className="mt-5 max-w-[56ch] text-[17px] leading-[1.55] text-ink-muted md:text-lg">
+            {local.dek}
+          </p>
+
+          {/* Black blocks are punctuation. This is the only one above the fold. */}
+          {article.heroLine ? (
+            <p className="display mt-6 bg-ink px-6 py-[22px] text-[19px] leading-[1.12] text-paper md:text-[23px]">
+              “{article.heroLine[locale]}”
+            </p>
+          ) : null}
+
+          {event ? (
+            <div className="mt-6">
+              <Countdown
+                startsAt={event.startsAt}
+                labels={{
+                  heading: dict.home.firstBell,
+                  days: dict.countdown.days,
+                  hrs: dict.countdown.hrs,
+                  min: dict.countdown.min,
+                  sec: dict.countdown.sec,
+                }}
+                fallback={formatDate(event.startsAt, locale)}
+              />
+            </div>
+          ) : null}
+
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <ButtonLink href={routes.article(locale, article.slug)}>
+              {dict.actions.readTheFile}
+              <span aria-hidden="true">→</span>
+            </ButtonLink>
+            {event ? (
+              <ButtonLink href={routes.event(locale, event.slug)} variant="outline">
+                {dict.actions.fullCard}
+              </ButtonLink>
+            ) : null}
+            <p className="label-mono-sm ml-1 flex items-center gap-[7px] tracking-[0.14em] text-ink-meta">
+              <span aria-hidden="true" className="block h-[5px] w-[5px] bg-verified" />
+              {dict.labels.sourceCount(article.sources.length)} · {minutes}{" "}
+              {dict.labels.readingTime}
+            </p>
           </div>
         </div>
+
+        <Link
+          href={routes.article(locale, article.slug)}
+          aria-label={`${dict.actions.readTheFile}: ${local.title}`}
+          className="group relative block animate-rise [animation-delay:100ms]"
+        >
+          <div className="relative aspect-[4/5] overflow-hidden border border-rule-strong">
+            <PhotoSlot
+              image={article.image}
+              locale={locale}
+              note={dict.labels.photoSlots.lead}
+              sizes="(min-width: 1024px) 48vw, 100vw"
+              priority
+            />
+            <span
+              aria-hidden="true"
+              style={{ backgroundColor: accent }}
+              className="absolute left-0 top-0 z-10 h-1 w-full origin-left animate-wipe"
+            />
+
+            <span className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 bg-gradient-to-t from-ink/90 to-transparent p-5">
+              <span className="block min-w-0">
+                <span className="label-mono-sm block tracking-[0.18em] text-signal">
+                  {article.fileNumber
+                    ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")} · `
+                    : ""}
+                  {dict.formats[article.format]}
+                </span>
+                {mainBout ? (
+                  <span className="display mt-2 block text-[22px] leading-none text-white md:text-[26px]">
+                    {mainBout.red.name} vs. {mainBout.blue.name}
+                  </span>
+                ) : null}
+                {boutLine ? (
+                  <span className="label-mono-sm mt-1.5 block text-paper-muted">
+                    {boutLine}
+                  </span>
+                ) : null}
+              </span>
+              <span
+                aria-hidden="true"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center bg-signal text-[19px] font-extrabold text-ink transition-transform duration-150 group-hover:translate-x-0.5"
+              >
+                →
+              </span>
+            </span>
+          </div>
+        </Link>
       </Container>
     </section>
   );

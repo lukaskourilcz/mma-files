@@ -67,6 +67,29 @@ export interface Source {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Images                                                                     */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * [site] A photograph. Optional wherever it appears, so an untouched engine
+ * payload still typechecks, but every field inside it is required: a slot with
+ * no alt text or no credit is not a publishable image.
+ *
+ * Still no AI-generated likenesses, and no promotion marks, event artwork or
+ * licensed photography without permission. A file with no photograph renders a
+ * labelled placeholder — never an empty box, never a stock substitute.
+ */
+export interface StoryImage {
+  /** Path or URL. Rendered at 4:5 for portraits and 16:9 for file cards. */
+  src: string;
+  /** Required, and per locale — alt text is reader-facing copy. */
+  alt: Record<Locale, string>;
+  credit: string;
+  /** CSS `object-position`, e.g. `"50% 20%"`. Defaults to centre. */
+  focalPoint?: string;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Articles                                                                   */
 /* -------------------------------------------------------------------------- */
 
@@ -144,6 +167,8 @@ export interface Article {
   fileNumber?: number;
   /** [site] Alt text for the generated hero, per locale. */
   heroAlt?: Record<Locale, string>;
+  /** [site] Fight photography. Absent means a labelled placeholder renders. */
+  image?: StoryImage;
   /**
    * [site] Editorial pull line for the `quote-led-preview` hero. It is the
    * desk's own line, never a quotation attributed to a person. Falls back to
@@ -199,6 +224,8 @@ export interface Fighter {
    */
   fieldStates: Partial<Record<FighterField, FieldState>>;
   sources: Source[];
+  /** [site] Portrait. Absent means a labelled placeholder renders. */
+  image?: StoryImage;
   isDemo?: boolean;
 }
 
