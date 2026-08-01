@@ -23,40 +23,63 @@ export function SiteFooter({ locale }: { locale: Locale }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-24 border-t-2 border-ember bg-ink text-white">
-      <Container className="py-14 md:py-16">
-        <div className="grid gap-10 border-b border-rule-dark pb-12 md:grid-cols-12 md:gap-8">
-          <div className="md:col-span-4">
-            <span aria-hidden="true" className="mb-3 block h-[3px] w-9 bg-ember" />
-            <p className="text-[1.5rem] font-bold leading-none tracking-[-0.045em]">
-              {siteConfig.wordmark}
-            </p>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper-muted">
-              {siteConfig.tagline[locale]}
+    <footer className="mt-20 bg-ink text-white">
+      {/* Both promotions, split down the middle. */}
+      <div
+        aria-hidden="true"
+        className="h-1"
+        style={{
+          background:
+            "linear-gradient(90deg, var(--color-ufc) 0 50%, var(--color-oktagon) 50% 100%)",
+        }}
+      />
+      <Container className="py-12 md:py-14">
+        <div className="grid gap-10 border-b border-rule-dark pb-9 md:grid-cols-12 md:gap-10">
+          <div className="md:col-span-5">
+            <div className="flex items-center gap-[11px]">
+              <span
+                aria-hidden="true"
+                className="block h-[30px] w-[5px] -skew-x-12 bg-signal"
+              />
+              <span className="display text-[27px] leading-none text-paper">
+                {siteConfig.wordmark}
+              </span>
+            </div>
+            <p className="mt-4 max-w-[38ch] text-sm leading-relaxed text-paper-meta">
+              {siteConfig.tagline[locale]} {dict.footer.blurb}
             </p>
           </div>
 
-          <nav className="md:col-span-3" aria-labelledby="footer-sections">
-            <h2 id="footer-sections" className="label-mono text-muted">
+          <nav className="md:col-span-2" aria-labelledby="footer-sections">
+            <h2
+              id="footer-sections"
+              className="label-mono-sm font-semibold text-paper-meta"
+            >
               {dict.footer.sections}
             </h2>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-3.5 space-y-2.5">
               <FooterLink href={routes.latest(locale)}>{dict.nav.latest}</FooterLink>
+              <FooterLink href={routes.organization(locale, "ufc")}>
+                {dict.nav.ufc}
+              </FooterLink>
+              <FooterLink href={routes.organization(locale, "oktagon")}>
+                {dict.nav.oktagon}
+              </FooterLink>
               <FooterLink href={routes.fightWeek(locale)}>
                 {dict.nav.fightWeek}
               </FooterLink>
               <FooterLink href={routes.results(locale)}>{dict.nav.results}</FooterLink>
-              <FooterLink href={routes.events(locale)}>{dict.nav.events}</FooterLink>
-              <FooterLink href={routes.fighters(locale)}>{dict.nav.fighters}</FooterLink>
-              <FooterLink href={routes.dataDesk(locale)}>{dict.nav.dataDesk}</FooterLink>
+              <FooterLink href={routes.fighters(locale)}>
+                {dict.nav.fighters}
+              </FooterLink>
             </ul>
           </nav>
 
           <nav className="md:col-span-3" aria-labelledby="footer-desk">
-            <h2 id="footer-desk" className="label-mono text-muted">
+            <h2 id="footer-desk" className="label-mono-sm font-semibold text-paper-meta">
               {dict.footer.theDesk}
             </h2>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-3.5 space-y-2.5">
               <FooterLink href={routes.about(locale)}>{dict.footer.about}</FooterLink>
               <FooterLink href={routes.howItWorks(locale)}>
                 {dict.footer.howItWorks}
@@ -75,8 +98,10 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </nav>
 
           <div className="md:col-span-2">
-            <h2 className="label-mono text-muted">{dict.footer.follow}</h2>
-            <ul className="mt-4 space-y-2.5">
+            <h2 className="label-mono-sm font-semibold text-paper-meta">
+              {dict.footer.follow}
+            </h2>
+            <ul className="mt-3.5 space-y-2.5">
               <li>
                 {siteConfig.social.instagram ? (
                   <a
@@ -87,7 +112,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                     {dict.footer.instagram}
                   </a>
                 ) : (
-                  <span className="text-sm text-muted">{dict.footer.instagram}</span>
+                  <span className="text-sm text-paper-meta">{dict.footer.instagram}</span>
                 )}
               </li>
               <li>
@@ -100,13 +125,10 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                     {dict.footer.threads}
                   </a>
                 ) : (
-                  <span className="text-sm text-muted">{dict.footer.threads}</span>
+                  <span className="text-sm text-paper-meta">{dict.footer.threads}</span>
                 )}
               </li>
-              <li className="label-mono-sm pt-1 text-muted">
-                {dict.footer.socialPending}
-              </li>
-              <li className="pt-1">
+              <li>
                 <a
                   href={routes.rss(locale)}
                   className="text-sm text-paper-muted hover:text-white"
@@ -114,22 +136,25 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                   {dict.footer.rss}
                 </a>
               </li>
+              <li className="label-mono-sm pt-1 text-paper-meta">
+                {dict.footer.socialPending}
+              </li>
             </ul>
           </div>
         </div>
 
-        <div className="grid gap-8 pt-10 md:grid-cols-12">
-          <p className="max-w-2xl text-sm leading-relaxed text-paper-muted md:col-span-7">
+        <div className="grid gap-8 pt-7 md:grid-cols-12">
+          <p className="max-w-[70ch] text-[13px] leading-relaxed text-paper-meta md:col-span-7">
             {dict.footer.transparency}
           </p>
           <div className="md:col-span-5 md:text-right">
-            <p className="label-mono text-paper-muted">
+            <p className="label-mono-sm text-paper-meta">
               {dict.footer.poweredBy(
                 siteConfig.engine.name,
                 siteConfig.engine.descriptor[locale],
               )}
             </p>
-            <p className="label-mono-sm mt-3 text-muted">
+            <p className="label-mono-sm mt-2.5 text-paper-meta">
               © {year} {siteConfig.name}. {dict.footer.rights}
             </p>
           </div>

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { LocaleSwitcher } from "@/components/site/LocaleSwitcher";
 import { PrimaryNav, type NavItem } from "@/components/site/PrimaryNav";
-import { Container } from "@/components/ui/primitives";
+import { WireTicker } from "@/components/site/WireTicker";
 import { demoMode, siteConfig } from "@/config/site";
 import { getDictionary, otherLocale } from "@/i18n";
 import { routes } from "@/lib/paths";
+import { PROMOTION_ACCENT } from "@/lib/promotion";
 import type { Locale } from "@/lib/types";
 
 export function Masthead({ locale }: { locale: Locale }) {
@@ -14,65 +15,75 @@ export function Masthead({ locale }: { locale: Locale }) {
 
   const items: NavItem[] = [
     { href: routes.latest(locale), label: dict.nav.latest },
-    { href: routes.organization(locale, "ufc"), label: dict.nav.ufc },
-    { href: routes.organization(locale, "oktagon"), label: dict.nav.oktagon },
+    {
+      href: routes.organization(locale, "ufc"),
+      label: dict.nav.ufc,
+      accent: PROMOTION_ACCENT.ufc,
+    },
+    {
+      href: routes.organization(locale, "oktagon"),
+      label: dict.nav.oktagon,
+      accent: PROMOTION_ACCENT.oktagon,
+    },
     { href: routes.fightWeek(locale), label: dict.nav.fightWeek },
+    { href: routes.results(locale), label: dict.nav.results },
     { href: routes.fighters(locale), label: dict.nav.fighters },
-    { href: routes.dataDesk(locale), label: dict.nav.dataDesk },
+    { href: routes.dataDesk(locale), label: dict.nav.numbers },
   ];
 
   return (
     <header>
       <a
         href="#main"
-        className="label-mono sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-[6px] focus:bg-ember focus:px-4 focus:py-2.5 focus:text-white"
+        className="label-mono sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-ink focus:px-4 focus:py-2.5 focus:text-paper"
       >
         {dict.nav.skipToContent}
       </a>
 
-      {demoMode ? (
-        <div className="border-b border-ember/30 bg-ember-soft">
-          <Container className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2">
-            <span className="label-mono-sm rounded-[4px] bg-ember px-1.5 py-0.5 text-white">
-              {dict.demo.bannerLabel}
-            </span>
-            <p className="text-xs leading-relaxed text-ink-muted">
-              {dict.demo.bannerBody}
-            </p>
-          </Container>
-        </div>
-      ) : null}
+      <WireTicker locale={locale} />
 
-      <div className="bg-ink text-white">
-        <Container className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4 py-5 md:py-7">
-          <div>
-            <span aria-hidden="true" className="mb-2.5 block h-[3px] w-9 bg-ember" />
-            <Link
-              href={routes.home(locale)}
-              className="block text-[1.75rem] font-bold leading-none tracking-[-0.045em] text-white md:text-[2.25rem]"
-            >
+      <div className="sticky top-0 z-40 border-b border-rule-strong bg-paper/95 backdrop-blur-[10px]">
+        <div className="mx-auto flex h-[68px] w-full max-w-[90rem] items-center gap-5 px-5 md:gap-9 md:px-10">
+          <Link
+            href={routes.home(locale)}
+            className="flex shrink-0 items-center gap-[11px]"
+          >
+            <span
+              aria-hidden="true"
+              className="block h-[30px] w-[5px] -skew-x-12 bg-ink"
+            />
+            <span className="display text-[22px] leading-none text-ink md:text-[27px]">
               {siteConfig.wordmark}
-            </Link>
-            <p className="label-mono-sm mt-2.5 text-paper-muted">
-              {siteConfig.utilityLine[locale]}
-            </p>
-          </div>
+            </span>
+          </Link>
 
-          <LocaleSwitcher
-            locale={locale}
-            other={alternate}
-            currentLabel={dict.meta.localeShort}
-            otherLabel={alternateDict.meta.localeShort}
-            switchLabel={dict.nav.localeSwitch}
-          />
-        </Container>
-      </div>
-
-      <div className="sticky top-0 z-40 border-b border-rule-strong bg-paper/95 backdrop-blur-sm">
-        <Container>
           <PrimaryNav items={items} label={dict.nav.primary} />
-        </Container>
+
+          <div className="ml-auto flex shrink-0 items-center gap-3.5">
+            {demoMode ? (
+              <span className="label-mono-sm hidden text-ink-meta lg:inline">
+                {dict.demo.bannerLabel}
+              </span>
+            ) : null}
+            <LocaleSwitcher
+              locale={locale}
+              other={alternate}
+              currentLabel={dict.meta.localeShort}
+              otherLabel={alternateDict.meta.localeShort}
+              switchLabel={dict.nav.localeSwitch}
+            />
+          </div>
+        </div>
       </div>
+
+      {demoMode ? (
+        <p className="border-b border-rule-strong bg-card px-5 py-2 text-center text-xs leading-relaxed text-ink-muted md:px-10">
+          <span className="label-mono-sm mr-2.5 bg-signal px-1.5 py-0.5 text-ink">
+            {dict.demo.bannerLabel}
+          </span>
+          {dict.demo.bannerBody}
+        </p>
+      ) : null}
     </header>
   );
 }

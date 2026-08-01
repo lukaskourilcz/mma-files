@@ -23,6 +23,7 @@ export const cs: Dictionary = {
     fightWeek: "Zápasový týden",
     fighters: "Bojovníci",
     dataDesk: "Datová redakce",
+    numbers: "Čísla",
     results: "Výsledky",
     events: "Turnaje",
     skipToContent: "Přejít na obsah",
@@ -34,6 +35,10 @@ export const cs: Dictionary = {
     readTheFile: "Otevřít složku",
     readMore: "Otevřít složku",
     allStories: "Všechny texty",
+    allResults: "Všechny výsledky",
+    allFighters: "Všichni bojovníci",
+    openTheCard: "Otevřít kartu",
+    fullCard: "Celá karta",
     exploreFighters: "Projít složky bojovníků",
     howChecked: "Jak texty kontrolujeme",
     viewEvent: "Otevřít složku turnaje",
@@ -49,6 +54,9 @@ export const cs: Dictionary = {
     published: "Publikováno",
     readingTime: "min čtení",
     sources: "Zdroje",
+    sourceCount: (n: number) =>
+      `${n} ${n === 1 ? "zdroj" : n < 5 ? "zdroje" : "zdrojů"}`,
+    photoPending: "Fotografie zatím není",
     theFile: "Složka k textu",
     relatedStories: "Související texty",
     byline: "Autor",
@@ -206,10 +214,29 @@ export const cs: Dictionary = {
 
   home: {
     leadKicker: "Hlavní složka",
-    latestTitle: "Nejnovější složky",
-    latestDek: "Všechno, co redakce vydala, od nejnovějšího.",
-    fightWeekTitle: "Zápasový týden",
-    fightWeekDek: "Co je nasmlouvané v UFC a Oktagonu.",
+    fightWeekTag: "Zápasový týden",
+    firstBell: "První gong",
+    latestTitle: "Složky",
+    latestDek: "Všechno, co redakce vydala",
+    fightWeekTitle: "Co je dál",
+    fightWeekDek: "Co je nasmlouvané a co je zatím jen věta",
+    resultsTitle: "Výsledky",
+    resultsDek: "Každý způsob ukončení tak, jak je na oficiálním listu",
+    numbersTitle: "Čísla",
+    numbersDek: "Spočítané ze složek. Nikdy předpověď, nikdy kurz.",
+    rosterTitle: "Soupiska",
+    rosterDek: (files: number) =>
+      `${files} ${files === 1 ? "složka" : files < 5 ? "složky" : "složek"}. U každého pole je uvedeno, odkud pochází.`,
+    markingTitle: "Jak je každé pole označené",
+    markingNote: (open: number, total: number) =>
+      `${open} z ${total} polí není uzavřených a zůstávají na stránce jako mezery. Žádné kurzy, žádné pravděpodobnosti, žádné tipy — číslo, které vidíte, je počet dokumentů, ne sázka.`,
+    visibleGap: "Viditelná mezera",
+    noCompletedCard: (promotion: string) =>
+      `Žádná odjetá karta ${promotion} v záznamu není`,
+    noCompletedCardBody:
+      "Tenhle sloupec se naplní ve chvíli, kdy tu vyjde odjetá karta. Do té doby zůstane prázdný, místo aby ho vyplnila karta, kterou redakce nemá podloženou.",
+    nextCard: "Další",
+    noCardCompleted: "Žádná odjetá karta",
     dataTitle: "Data za textem",
     dataDek: "Každá složka začíná v důkazní vrstvě, ne v konceptu.",
     transparencyTitle: "Každý text začíná složkou",
@@ -217,6 +244,12 @@ export const cs: Dictionary = {
       "Čtyři pravidla, která redakce uplatní dřív, než se cokoli dostane na tuhle stránku.",
     noLead: "Zatím nevyšel žádný text. Další složka se objeví tady.",
     noStories: "Zatím nevyšel žádný text.",
+  },
+
+  wire: {
+    label: "Drát",
+    booked: "Nasmlouváno",
+    open: "Otevřené",
   },
 
   transparency: [
@@ -537,6 +570,7 @@ export const cs: Dictionary = {
   },
 
   footer: {
+    blurb: "UFC a Oktagon — česky a anglicky, se zdroji u každého tvrzení.",
     about: "O MMA Files",
     howItWorks: "Jak to funguje",
     standards: "Redakční standardy",

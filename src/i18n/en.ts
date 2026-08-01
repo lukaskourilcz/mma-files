@@ -20,6 +20,8 @@ export const en = {
     fightWeek: "Fight Week",
     fighters: "Fighters",
     dataDesk: "Data Desk",
+    /** The masthead's short label for the same destination. */
+    numbers: "Numbers",
     results: "Results",
     events: "Events",
     skipToContent: "Skip to content",
@@ -31,6 +33,10 @@ export const en = {
     readTheFile: "Read the file",
     readMore: "Read the file",
     allStories: "All stories",
+    allResults: "All results",
+    allFighters: "All fighters",
+    openTheCard: "Open the card",
+    fullCard: "Full card",
     exploreFighters: "Explore fighter files",
     howChecked: "See how stories are checked",
     viewEvent: "Open the event file",
@@ -46,6 +52,8 @@ export const en = {
     published: "Published",
     readingTime: "min read",
     sources: "Sources",
+    sourceCount: (n: number) => `${n} ${n === 1 ? "source" : "sources"}`,
+    photoPending: "No photograph on file",
     theFile: "The file",
     relatedStories: "Related stories",
     byline: "By",
@@ -208,10 +216,30 @@ export const en = {
 
   home: {
     leadKicker: "Lead file",
-    latestTitle: "Latest files",
-    latestDek: "Everything the desks have released, newest first.",
-    fightWeekTitle: "Fight week",
-    fightWeekDek: "What is booked next across UFC and Oktagon.",
+    fightWeekTag: "Fight week",
+    firstBell: "First bell",
+    latestTitle: "The files",
+    latestDek: "Everything the desks have released",
+    fightWeekTitle: "Next up",
+    fightWeekDek: "What is booked, and what is still a sentence",
+    resultsTitle: "Results",
+    resultsDek: "Every method as recorded on the official sheet",
+    numbersTitle: "The numbers",
+    numbersDek: "Counted from the files. Never a forecast, never a price.",
+    rosterTitle: "The roster",
+    /** The count is read from the repository, never written into the copy. */
+    rosterDek: (files: number) =>
+      `${files} ${files === 1 ? "file" : "files"}. Every field states where it came from.`,
+    markingTitle: "How every field is marked",
+    markingNote: (open: number, total: number) =>
+      `${open} of ${total} fields are not settled, and they stay on the page as gaps. No odds, no probabilities, no picks — the number you see is a count of documents, not a bet.`,
+    visibleGap: "Visible gap",
+    noCompletedCard: (promotion: string) =>
+      `No completed ${promotion} card is on file`,
+    noCompletedCardBody:
+      "This column fills the moment a completed card is published here. Until then it stays empty rather than being padded with a card the desks have not sourced.",
+    nextCard: "Next",
+    noCardCompleted: "No card completed",
     dataTitle: "The data behind the story",
     dataDek: "Every file starts in the evidence layer, not in a draft.",
     transparencyTitle: "Every story starts with a file",
@@ -219,6 +247,13 @@ export const en = {
       "Four rules the desks apply before anything reaches this page.",
     noLead: "No story has been released yet. The next file appears here.",
     noStories: "No stories have been released yet.",
+  },
+
+  /** The wire ticker. Every item is composed from repository data. */
+  wire: {
+    label: "Wire",
+    booked: "Booked",
+    open: "Open",
   },
 
   transparency: [
@@ -541,6 +576,7 @@ export const en = {
   },
 
   footer: {
+    blurb: "UFC and Oktagon — in English and Czech, with the sources attached.",
     about: "About MMA Files",
     howItWorks: "How it works",
     standards: "Editorial standards",

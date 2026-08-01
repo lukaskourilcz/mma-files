@@ -26,21 +26,18 @@ export function LocaleSwitcher({
 
   return (
     <div
-      className="label-mono flex items-center rounded-[6px] border border-rule-dark-strong"
+      className="flex shrink-0 items-center border border-rule-strong font-mono text-[10px] font-semibold uppercase tracking-[0.14em]"
       role="group"
       aria-label={switchLabel}
     >
-      <span
-        aria-current="true"
-        className="bg-ember px-2.5 py-1.5 text-white first:rounded-l-[5px]"
-      >
+      <span aria-current="true" className="bg-ink px-2.5 py-1.5 text-paper">
         {currentLabel}
       </span>
       <Link
         href={withLocale(pathname, other)}
         hrefLang={other}
         lang={other}
-        className="px-2.5 py-1.5 text-paper-muted last:rounded-r-[5px] hover:bg-graphite hover:text-white"
+        className="px-2.5 py-1.5 text-ink-muted hover:bg-ink hover:text-paper"
       >
         {otherLabel}
       </Link>
