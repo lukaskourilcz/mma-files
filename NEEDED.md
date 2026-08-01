@@ -41,3 +41,12 @@ account or editorial decisions that cannot be made inside the repository.
 
 No model keys, source keys, GitHub App private key or admin credentials belong in
 this repository or its Vercel environment.
+
+## Verified in code
+
+- On 2026-08-01, a clean-checkout rehearsal accepted one bilingual article and
+  one FightAIQ snapshot, treated an identical article replay as a no-op, passed
+  its tests and type-check, and built the English and Czech article, event,
+  fighter and Data Desk routes from the delivered files.
+- BoardlessAI refuses an MMA Files delivery-only run unless
+  `MMA_FILES_LIVE_ENABLED=true`; a retry does not call a model.
