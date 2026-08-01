@@ -154,7 +154,7 @@ Hotové není tohle: pátý zápas, pořadí předzápasů a jestli Rahal vůbec
       cs: "Redakční karta k hlavnímu zápasu 8. srpna: Reece Alderton proti Idrisi Rahalovi na pět kol. Sedmnáct profesionálních zápasů, ani jeden za třetím kolem.",
     },
     packageHash: "9f21c0ad",
-    relatedSlugs: ["nadia-ferreiro-file", "forty-two-tracked-fields"],
+    relatedSlugs: ["nadia-ferreiro-file", "twenty-eight-tracked-fields"],
     isDemo: true,
   },
 
@@ -401,138 +401,6 @@ Karta má čtyři zápasy a [[event:oktagon-90|celé pořadí je ve složce turn
     isDemo: true,
   },
 
-  /* ---------------------------------------------------------------- FILE 021 */
-  {
-    id: "article:2026-07-19-ksw-107-recap",
-    slug: "ksw-107-lempicki-stops-brandt",
-    status: "published",
-    format: "post-event-recap",
-    fileNumber: 21,
-    organization: "ksw",
-    eventRef: "event:ksw/ksw-107",
-    fighterRefs: ["fighter:ksw/borys-lempicki", "fighter:ksw/kacper-wisniewski"],
-    publishAt: "2026-07-19T09:00:00+02:00",
-    updatedAt: "2026-07-19T16:20:00+02:00",
-    localizations: {
-      en: {
-        title: "Łempicki stops Brandt in the third at KSW 107",
-        dek: "The heavyweight main event ended at 2:14 of round three in Gdańsk. Wiśniewski took the co-main on all three cards.",
-        body: `Borys Łempicki stopped Otto Brandt with punches at 2:14 of the third round in the KSW 107 main event in Gdańsk on Saturday.
-
-The finish came off a short right hand as Brandt came out of a clinch against the fence. Brandt went down along the cage, took two more shots on the floor, and the referee stepped in.
-
-## How it got there
-
-The first round was Brandt's. He landed the cleaner work at range and [[fighter:borys-lempicki|Łempicki]] spent most of it walking forward without much return. That has been the shape of a Łempicki fight before: ten of his eleven wins have come in the second round or later, and the pattern held again.
-
-The second was closer. The third was not — Brandt's output dropped, the clinches got longer, and the exchange that ended it was the third time in ninety seconds that Łempicki had thrown the same short right.
-
-## The co-main
-
-[[fighter:kacper-wisniewski|Kacper Wiśniewski]] beat Aleksy Nowotny by unanimous decision at light heavyweight. It was a controlled three rounds from southpaw at range rather than a memorable one, and it is the fourth of his last six fights to go to the cards.
-
-He headlines KSW 108 on 5 September.
-
-## The rest of the card
-
-Roman Piotrowski and Lars Ferber fought to a draw at welterweight. Zofia Kruk submitted Iga Malec with a rear-naked choke at 3:58 of the first on the preliminary card.
-
-[[event:ksw-107|The full card file]] carries every result, method and time as recorded on the official sheet.`,
-      },
-      cs: {
-        title: "Łempicki ukončil Brandta ve třetím kole na KSW 107",
-        dek: "Hlavní zápas těžké váhy skončil v Gdaňsku ve 2:14 třetího kola. Wiśniewski vyhrál hlavní předzápas na všech třech kartách.",
-        body: `Borys Łempicki v sobotu v hlavním zápase KSW 107 v Gdaňsku ukončil Otto Brandta údery ve 2:14 třetího kola.
-
-Konec přišel po krátké pravačce ve chvíli, kdy Brandt vycházel z klinče u klece. Brandt šel podél pletiva k zemi, dostal na zemi ještě dvě rány a rozhodčí zasáhl.
-
-## Jak se k tomu došlo
-
-První kolo patřilo Brandtovi. Na distanc trefoval čistěji a [[fighter:borys-lempicki|Łempicki]] ho z větší části prochodil dopředu bez odpovědi. Takhle jeho zápasy vypadaly už dřív: deset z jedenácti výher má z druhého kola nebo později a schéma se zopakovalo.
-
-Druhé kolo bylo těsnější. Třetí ne — Brandtovi klesl objem práce, klinče se protahovaly a výměna, která zápas ukončila, byla třetí za devadesát sekund, kdy Łempicki hodil stejnou krátkou pravou.
-
-## Hlavní předzápas
-
-[[fighter:kacper-wisniewski|Kacper Wiśniewski]] porazil Aleksyho Nowotného jednomyslně na body v polotěžké váze. Byla to spíš kontrolovaná tři kola ze southpaw postoje na distanc než zápas, který si člověk zapamatuje, a je to čtvrtý z jeho posledních šesti duelů, který dopadl na karty sudích.
-
-5. září povede kartu KSW 108.
-
-## Zbytek karty
-
-Roman Piotrowski a Lars Ferber remizovali ve velterové váze. Zofia Kruk ukončila Igu Malec škrcením zezadu ve 3:58 prvního kola v předzápasech.
-
-[[event:ksw-107|Složka celé karty]] obsahuje každý výsledek, způsob i čas tak, jak je zapsaný na oficiálním listu.`,
-      },
-    },
-    corrections: [
-      {
-        at: "2026-07-19T16:20:00+02:00",
-        kind: "correction",
-        note: {
-          en: "An earlier version of this recap gave the main event stoppage time as 2:41. The official result sheet records 2:14. The time has been corrected in the text and in the event file.",
-          cs: "Dřívější verze tohohle reportu uváděla čas ukončení hlavního zápasu 2:41. Oficiální výsledkový list uvádí 2:14. Čas je opravený v textu i ve složce turnaje.",
-        },
-      },
-    ],
-    confirmed: {
-      en: [
-        "Łempicki def. Brandt, technical knockout (punches), round 3, 2:14",
-        "Wiśniewski def. Nowotny, unanimous decision",
-        "Piotrowski vs. Ferber ruled a draw",
-        "Kruk def. Malec, submission (rear-naked choke), round 1, 3:58",
-      ],
-      cs: [
-        "Łempicki porazil Brandta, technický knockout (údery), 3. kolo, 2:14",
-        "Wiśniewski porazil Nowotného jednomyslně na body",
-        "Piotrowski vs. Ferber skončil remízou",
-        "Kruk porazila Malec submisí (škrcení zezadu), 1. kolo, 3:58",
-      ],
-    },
-    sources: [
-      {
-        kind: "external",
-        title: "KSW 107 official result sheet",
-        publisher: "Promotion media release (demo)",
-        classification: "primary",
-        retrievedAt: "2026-07-19T07:20:00Z",
-        supports: ["All four results", "Methods", "Rounds and times"],
-      },
-      {
-        kind: "internal",
-        ref: "fightaiq:event/ksw/ksw-107@11",
-        classification: "primary",
-        retrievedAt: "2026-07-19T07:20:00Z",
-        supports: ["Card order", "Corrected stoppage time"],
-      },
-      {
-        kind: "internal",
-        ref: "fightaiq:fighter/ksw/borys-lempicki@8",
-        classification: "secondary",
-        retrievedAt: "2026-07-30T06:12:00Z",
-        supports: ["Ten of eleven wins in round two or later"],
-      },
-    ],
-    heroSpec: {
-      template: "type-led-result",
-      bindings: {
-        winner: "Borys Łempicki",
-        loser: "Otto Brandt",
-        methodKey: "tko",
-        round: 3,
-        time: "2:14",
-        eventName: "KSW 107",
-      },
-    },
-    heroAlt: {
-      en: "Result card: Borys Łempicki defeated Otto Brandt by technical knockout in round three at 2:14, KSW 107.",
-      cs: "Výsledková karta: Borys Łempicki porazil Otto Brandta technickým knockoutem ve třetím kole ve 2:14, KSW 107.",
-    },
-    packageHash: "5d0b62c8",
-    relatedSlugs: ["forty-two-tracked-fields", "alderton-vs-rahal-fight-week"],
-    isDemo: true,
-  },
-
   /* ---------------------------------------------------------------- FILE 020 */
   {
     id: "article:2026-07-28-hruska-profile",
@@ -664,7 +532,7 @@ Titulový zápas je na pět kol. Hruška byl za třetím kolem dvakrát. Jestli 
   /* ---------------------------------------------------------------- FILE 019 */
   {
     id: "article:2026-07-22-coverage-audit",
-    slug: "forty-two-tracked-fields",
+    slug: "twenty-eight-tracked-fields",
     status: "published",
     format: "data-story",
     fileNumber: 19,
@@ -672,11 +540,11 @@ Titulový zápas je na pět kol. Hruška byl za třetím kolem dvakrát. Jestli 
     publishAt: "2026-07-22T10:00:00+02:00",
     localizations: {
       en: {
-        title: "Forty-two tracked fields, seven that are not settled",
+        title: "Twenty-eight tracked fields, five that are not settled",
         dek: "A pass over every fighter file on this site: what is verified, what rests on one source, what is in conflict, and what is simply absent.",
-        body: `Six fighter files are published here. Each one tracks seven fields — record, stance, height, reach, date of birth, team and division — which makes forty-two field slots in total.
+        body: `Four fighter files are published here. Each one tracks seven fields — record, stance, height, reach, date of birth, team and division — which makes twenty-eight field slots in total.
 
-Thirty-five are verified. Four are provisional. One is disputed. Two are not available at all.
+Twenty-three are verified. Three are provisional. One is disputed. One is not available at all.
 
 ## What each state means
 
@@ -684,26 +552,26 @@ A field is **verified** when two independent sources agree on it. It is **provis
 
 The distinction matters most in the last two cases, because they are the ones a normal publishing workflow smooths over. A disputed record becomes whichever number the writer saw first. An unavailable reach becomes a number from a database that copied it from another database.
 
-## The seven
+## The five
 
-The four provisional fields are Reece Alderton's team, Kacper Wiśniewski's listed height, and Adam Bezák's stance and reach. Each rests on a single source.
+The three provisional fields are Reece Alderton's team, and Adam Bezák's stance and reach. Each rests on a single source.
 
 The one disputed field is Bezák's professional record: two registries differ on whether an early regional bout counts, and neither has been resolved against a primary document.
 
-The two unavailable fields are Nadia Ferreiro's reach and Borys Łempicki's date of birth. In Łempicki's case two registries differ by two years. Rather than publish an age, his file publishes nothing, and every story that mentions him works without one.
+The one unavailable field is Nadia Ferreiro's reach. Two registries carry different figures and neither is traced to a measurement taken by a promotion. Rather than publish one of them, her file publishes nothing, and every story that mentions her works without it.
 
 ## What this is not
 
-These are counts of coverage, not a measure of anybody's ability, and nothing here is a forecast. The aggregate is deterministic: the same six files produce the same forty-two figures every time, and the version below identifies exactly which pass produced them.
+These are counts of coverage, not a measure of anybody's ability, and nothing here is a forecast. The aggregate is deterministic: the same four files produce the same twenty-eight figures every time, and the version below identifies exactly which pass produced them.
 
-Seven unsettled fields out of forty-two is a small number in a small set. It is published because the alternative — showing forty-two clean fields and quietly rounding the awkward seven — is how a file stops being a file.`,
+Five unsettled fields out of twenty-eight is a small number in a small set. It is published because the alternative — showing twenty-eight clean fields and quietly rounding the awkward five — is how a file stops being a file.`,
       },
       cs: {
-        title: "Dvaačtyřicet sledovaných polí, sedm z nich neuzavřených",
+        title: "Osmadvacet sledovaných polí, pět z nich neuzavřených",
         dek: "Průchod všemi složkami bojovníků na tomhle webu: co je ověřené, co stojí na jediném zdroji, co je v rozporu a co prostě chybí.",
-        body: `Publikovaných je tu šest složek bojovníků. Každá sleduje sedm polí — bilanci, postoj, výšku, rozpětí paží, datum narození, tým a váhu — což dohromady dělá dvaačtyřicet míst.
+        body: `Publikované jsou tu čtyři složky bojovníků. Každá sleduje sedm polí — bilanci, postoj, výšku, rozpětí paží, datum narození, tým a váhu — což dohromady dělá osmadvacet míst.
 
-Pětatřicet je ověřených. Čtyři jsou předběžné. Jedno je sporné. Dvě nejsou dostupné vůbec.
+Třiadvacet je ověřených. Tři jsou předběžná. Jedno je sporné. Jedno není dostupné vůbec.
 
 ## Co jednotlivé stavy znamenají
 
@@ -711,19 +579,19 @@ Pole je **ověřené**, když se na něm shodnou dva nezávislé zdroje. **Před
 
 Nejvíc záleží na posledních dvou případech, protože právě ty běžný publikační postup zahladí. Ze sporné bilance se stane číslo, které pisatel viděl jako první. Z nedostupného rozpětí paží se stane hodnota z databáze, která ji opsala z jiné databáze.
 
-## Těch sedm
+## Těch pět
 
-Čtyři předběžná pole jsou tým Reece Aldertona, uváděná výška Kacpera Wiśniewského a postoj a rozpětí paží Adama Bezáka. Každé stojí na jediném zdroji.
+Tři předběžná pole jsou tým Reece Aldertona a postoj a rozpětí paží Adama Bezáka. Každé stojí na jediném zdroji.
 
 Jedno sporné pole je Bezákova profesionální bilance: dva registry se liší v tom, jestli se počítá raný regionální zápas, a rozpor nerozhodl žádný primární dokument.
 
-Dvě nedostupná pole jsou rozpětí paží Nadii Ferreiro a datum narození Borysu Łempickému. U Łempického se dva registry liší o dva roky. Místo aby složka vydala věk, nevydává nic, a každý text, který se o něm zmiňuje, se bez věku obejde.
+Jedno nedostupné pole je rozpětí paží Nadii Ferreiro. Dva registry u ní uvádějí různé hodnoty a ani jedna nevychází z měření provedeného organizací. Místo aby složka vydala jednu z nich, nevydává nic, a každý text, který se o ní zmiňuje, se bez toho čísla obejde.
 
 ## Co tohle není
 
-Jsou to počty pokrytí, ne měřítko něčích schopností, a nic z toho není předpověď. Souhrn je deterministický: stejných šest složek vydá pokaždé stejných dvaačtyřicet čísel a verze níž přesně určuje, který průchod je vyrobil.
+Jsou to počty pokrytí, ne měřítko něčích schopností, a nic z toho není předpověď. Souhrn je deterministický: stejné čtyři složky vydají pokaždé stejných osmadvacet čísel a verze níž přesně určuje, který průchod je vyrobil.
 
-Sedm neuzavřených polí ze dvaačtyřiceti je v malém vzorku malé číslo. Vydáváme ho proto, že ta druhá možnost — ukázat dvaačtyřicet čistých polí a těch sedm nepohodlných potichu zaokrouhlit — je přesně to, čím složka přestává být složkou.`,
+Pět neuzavřených polí z osmadvaceti je v malém vzorku malé číslo. Vydáváme ho proto, že ta druhá možnost — ukázat osmadvacet čistých polí a těch pět nepohodlných potichu zaokrouhlit — je přesně to, čím složka přestává být složkou.`,
       },
     },
     modelDisclosure: {
@@ -733,23 +601,21 @@ Sedm neuzavřených polí ze dvaačtyřiceti je v malém vzorku malé číslo. V
         "fightaiq:fighter/ufc/nadia-ferreiro@6",
         "fightaiq:fighter/oktagon/stepan-hruska@14",
         "fightaiq:fighter/oktagon/adam-bezak@9",
-        "fightaiq:fighter/ksw/kacper-wisniewski@12",
-        "fightaiq:fighter/ksw/borys-lempicki@8",
       ],
       uncertainty: {
-        en: "Descriptive counts over six files. The set is small enough that a single new file moves every proportion, so no rate here should be read as a general property of the sport or of any promotion.",
-        cs: "Popisné počty přes šest složek. Vzorek je tak malý, že jedna nová složka pohne každým poměrem, takže žádný z těch podílů nečtěte jako obecnou vlastnost sportu ani organizace.",
+        en: "Descriptive counts over four files. The set is small enough that a single new file moves every proportion, so no rate here should be read as a general property of the sport or of any promotion.",
+        cs: "Popisné počty přes čtyři složky. Vzorek je tak malý, že jedna nová složka pohne každým poměrem, takže žádný z těch podílů nečtěte jako obecnou vlastnost sportu ani organizace.",
       },
     },
     confirmed: {
       en: [
-        "42 tracked field slots across six published fighter files",
-        "35 verified, four provisional, one disputed, two unavailable",
+        "28 tracked field slots across four published fighter files",
+        "23 verified, three provisional, one disputed, one unavailable",
         "Aggregate is deterministic and versioned",
       ],
       cs: [
-        "42 sledovaných polí napříč šesti publikovanými složkami bojovníků",
-        "35 ověřených, čtyři předběžná, jedno sporné, dvě nedostupná",
+        "28 sledovaných polí napříč čtyřmi publikovanými složkami bojovníků",
+        "23 ověřených, tři předběžná, jedno sporné, jedno nedostupné",
         "Souhrn je deterministický a má verzi",
       ],
     },
@@ -770,10 +636,10 @@ Sedm neuzavřených polí ze dvaačtyřiceti je v malém vzorku malé číslo. V
       },
       {
         kind: "internal",
-        ref: "fightaiq:fighter/ksw/borys-lempicki@8",
+        ref: "fightaiq:fighter/ufc/nadia-ferreiro@6",
         classification: "secondary",
         retrievedAt: "2026-07-22T05:00:00Z",
-        supports: ["Unavailable date of birth"],
+        supports: ["Unavailable reach field"],
       },
     ],
     modelVersion: "fightaiq-coverage@2026.07.3",
@@ -781,16 +647,16 @@ Sedm neuzavřených polí ze dvaačtyřiceti je v malém vzorku malé číslo. V
       template: "data-card",
       bindings: {
         metric1: "fields-tracked",
-        value1: 42,
+        value1: 28,
         metric2: "fields-verified",
-        value2: 35,
+        value2: 23,
         metric3: "fields-open",
-        value3: 7,
+        value3: 5,
       },
     },
     heroAlt: {
-      en: "Data card: 42 tracked fields, 35 verified, seven not settled.",
-      cs: "Datová karta: 42 sledovaných polí, 35 ověřených, sedm neuzavřených.",
+      en: "Data card: 28 tracked fields, 23 verified, five not settled.",
+      cs: "Datová karta: 28 sledovaných polí, 23 ověřených, pět neuzavřených.",
     },
     packageHash: "e6c9d204",
     relatedSlugs: ["nadia-ferreiro-file", "why-a-slot-gets-killed"],
@@ -911,7 +777,7 @@ Tři kola v ženské muší váze. [[event:ufc-fight-night-alderton-rahal|Složk
       cs: "Karta s parametry Nadii Ferreiro: 9-2-0, 168 centimetrů, southpaw, ženská muší váha. Pole s rozpětím paží je označené jako nedostupné.",
     },
     packageHash: "77bd1a5e",
-    relatedSlugs: ["alderton-vs-rahal-fight-week", "forty-two-tracked-fields"],
+    relatedSlugs: ["alderton-vs-rahal-fight-week", "twenty-eight-tracked-fields"],
     isDemo: true,
   },
 
@@ -1011,7 +877,7 @@ Zhruba stejná úvaha rozhoduje o tom, co ukáže složka. Když pole není dolo
       cs: "Redakční karta: oba sloty na 9. července označené jako zabité, ten den nevyšlo nic.",
     },
     packageHash: "1c53f8ba",
-    relatedSlugs: ["forty-two-tracked-fields", "stepan-hruska-file"],
+    relatedSlugs: ["twenty-eight-tracked-fields", "stepan-hruska-file"],
     isDemo: true,
   },
 ];

@@ -4,9 +4,10 @@ import type { FightEvent } from "@/lib/types";
  * DEMO DATA — every event, venue, bout and result below is fictional.
  *
  * Venues are invented so nothing here can be mistaken for a real announcement.
- * Cards are deliberately uneven: one is fully confirmed, one is still forming,
- * one has nothing but a main event booked. That last case is the point — an
- * unbuilt card renders as an unbuilt card rather than being padded out.
+ * Cards are deliberately uneven: one is fully confirmed, one is still forming
+ * with no preliminary card announced, one is complete. The middle case is the
+ * point — an unbuilt card renders as an unbuilt card rather than being padded
+ * out to look finished.
  *
  * Dates are anchored to the 2026-08-01 seed date. When these fall into the
  * past, replace the file rather than editing dates in place — see README,
@@ -161,51 +162,6 @@ export const events: FightEvent[] = [
   },
 
   {
-    id: "event:ksw/ksw-108",
-    slug: "ksw-108",
-    organization: "ksw",
-    name: "KSW 108",
-    startsAt: "2026-09-05T20:00:00+02:00",
-    timeZone: "Europe/Warsaw",
-    venue: "Hala Powiśle",
-    city: "Warszawa",
-    country: "PL",
-    status: "announced",
-    bouts: [
-      {
-        id: "bout:ksw-108/1",
-        division: "light-heavyweight",
-        red: { name: "Kacper Wiśniewski", fighterRef: "fighter:ksw/kacper-wisniewski" },
-        blue: { name: "Dawid Sroka" },
-        scheduledRounds: 5,
-        billing: "main",
-      },
-    ],
-    localizations: {
-      en: {
-        summary:
-          "Kacper Wiśniewski against Dawid Sroka at light heavyweight, seven weeks after Wiśniewski's decision win in Gdańsk.",
-        note: "Only the main event is booked. Nothing else on this card has been announced, so nothing else is listed.",
-      },
-      cs: {
-        summary:
-          "Kacper Wiśniewski proti Dawidu Srokovi v polotěžké váze, sedm týdnů po Wiśniewského výhře na body v Gdaňsku.",
-        note: "Nasmlouvaný je jen hlavní zápas. Nic dalšího organizace neoznámila, takže tu nic dalšího není.",
-      },
-    },
-    sources: [
-      {
-        kind: "internal",
-        ref: "fightaiq:event/ksw/ksw-108@2",
-        classification: "primary",
-        retrievedAt: "2026-07-31T05:50:00Z",
-        supports: ["Main event booking", "Date", "Venue"],
-      },
-    ],
-    isDemo: true,
-  },
-
-  {
     id: "event:oktagon/oktagon-90",
     slug: "oktagon-90",
     organization: "oktagon",
@@ -288,99 +244,6 @@ export const events: FightEvent[] = [
         classification: "primary",
         retrievedAt: "2026-07-26T08:05:00Z",
         supports: ["Main event result", "No contest ruling"],
-      },
-    ],
-    isDemo: true,
-  },
-
-  {
-    id: "event:ksw/ksw-107",
-    slug: "ksw-107",
-    organization: "ksw",
-    name: "KSW 107",
-    startsAt: "2026-07-18T20:00:00+02:00",
-    timeZone: "Europe/Warsaw",
-    venue: "Hala Motława",
-    city: "Gdańsk",
-    country: "PL",
-    status: "completed",
-    bouts: [
-      {
-        id: "bout:ksw-107/1",
-        division: "heavyweight",
-        red: { name: "Borys Łempicki", fighterRef: "fighter:ksw/borys-lempicki" },
-        blue: { name: "Otto Brandt" },
-        scheduledRounds: 5,
-        billing: "main",
-        result: {
-          winnerRef: "fighter:ksw/borys-lempicki",
-          method: "tko",
-          finish: "punches",
-          round: 3,
-          time: "2:14",
-        },
-      },
-      {
-        id: "bout:ksw-107/2",
-        division: "light-heavyweight",
-        red: { name: "Kacper Wiśniewski", fighterRef: "fighter:ksw/kacper-wisniewski" },
-        blue: { name: "Aleksy Nowotny" },
-        scheduledRounds: 3,
-        billing: "co-main",
-        result: {
-          winnerRef: "fighter:ksw/kacper-wisniewski",
-          method: "decision-unanimous",
-        },
-      },
-      {
-        id: "bout:ksw-107/3",
-        division: "welterweight",
-        red: { name: "Roman Piotrowski" },
-        blue: { name: "Lars Ferber" },
-        scheduledRounds: 3,
-        billing: "main-card",
-        result: { method: "draw" },
-      },
-      {
-        id: "bout:ksw-107/4",
-        division: "womens-strawweight",
-        red: { name: "Zofia Kruk" },
-        blue: { name: "Iga Malec" },
-        scheduledRounds: 3,
-        billing: "prelim",
-        result: {
-          method: "submission",
-          finish: "rear-naked-choke",
-          round: 1,
-          time: "3:58",
-        },
-      },
-    ],
-    localizations: {
-      en: {
-        summary:
-          "Borys Łempicki stopped Otto Brandt in the third round in Gdańsk. Kacper Wiśniewski took a unanimous decision in the co-main event.",
-      },
-      cs: {
-        summary:
-          "Borys Łempicki ukončil v Gdaňsku Otto Brandta ve třetím kole. Kacper Wiśniewski vyhrál hlavní předzápas jednomyslně na body.",
-      },
-    },
-    sources: [
-      {
-        kind: "internal",
-        ref: "fightaiq:event/ksw/ksw-107@11",
-        classification: "primary",
-        retrievedAt: "2026-07-19T07:20:00Z",
-        supports: ["Results", "Methods", "Rounds and times"],
-      },
-      {
-        kind: "external",
-        title: "KSW 107 official result sheet",
-        publisher: "Promotion media release (demo)",
-        classification: "primary",
-        retrievedAt: "2026-07-19T07:20:00Z",
-        supports: ["Main event stoppage", "Co-main scorecards"],
       },
     ],
     isDemo: true,

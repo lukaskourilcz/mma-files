@@ -16,7 +16,6 @@ export function Masthead({ locale }: { locale: Locale }) {
     { href: routes.latest(locale), label: dict.nav.latest },
     { href: routes.organization(locale, "ufc"), label: dict.nav.ufc },
     { href: routes.organization(locale, "oktagon"), label: dict.nav.oktagon },
-    { href: routes.organization(locale, "ksw"), label: dict.nav.ksw },
     { href: routes.fightWeek(locale), label: dict.nav.fightWeek },
     { href: routes.fighters(locale), label: dict.nav.fighters },
     { href: routes.dataDesk(locale), label: dict.nav.dataDesk },

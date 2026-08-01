@@ -20,7 +20,6 @@ export const cs: Dictionary = {
     latest: "Nejnovější",
     ufc: "UFC",
     oktagon: "Oktagon",
-    ksw: "KSW",
     fightWeek: "Zápasový týden",
     fighters: "Bojovníci",
     dataDesk: "Datová redakce",
@@ -92,13 +91,11 @@ export const cs: Dictionary = {
   organizations: {
     ufc: "UFC",
     oktagon: "Oktagon MMA",
-    ksw: "KSW",
   },
 
   organizationsShort: {
     ufc: "UFC",
     oktagon: "Oktagon",
-    ksw: "KSW",
   },
 
   divisions: {
@@ -212,7 +209,7 @@ export const cs: Dictionary = {
     latestTitle: "Nejnovější složky",
     latestDek: "Všechno, co redakce vydala, od nejnovějšího.",
     fightWeekTitle: "Zápasový týden",
-    fightWeekDek: "Co je nasmlouvané v UFC, Oktagonu a KSW.",
+    fightWeekDek: "Co je nasmlouvané v UFC a Oktagonu.",
     dataTitle: "Data za textem",
     dataDek: "Každá složka začíná v důkazní vrstvě, ne v konceptu.",
     transparencyTitle: "Každý text začíná složkou",
@@ -256,7 +253,7 @@ export const cs: Dictionary = {
 
   fightWeek: {
     title: "Zápasový týden",
-    dek: "Nasmlouvané karty v UFC, Oktagonu a KSW — co je hotové a co ne.",
+    dek: "Nasmlouvané karty v UFC a Oktagonu — co je hotové a co ne.",
     upcoming: "Nasmlouváno",
     recent: "Poslední karta",
     noUpcoming:
@@ -288,7 +285,7 @@ export const cs: Dictionary = {
 
   events: {
     title: "Turnaje",
-    dek: "Složky turnajů UFC, Oktagonu a KSW.",
+    dek: "Složky turnajů UFC a Oktagonu.",
     empty: "Zatím nevyšla žádná složka turnaje.",
     card: "Karta",
     coverage: "Texty k tomuto turnaji",
@@ -386,15 +383,15 @@ export const cs: Dictionary = {
 
   about: {
     title: "O MMA Files",
-    dek: "Redakce, která staví na zdrojích. UFC, Oktagon a KSW, česky a anglicky.",
+    dek: "Redakce, která staví na zdrojích. UFC a Oktagon, česky a anglicky.",
     whatTitle: "Co to je",
     whatBody: [
-      "MMA Files píše o UFC, Oktagonu a KSW. Pozvánky na turnaje, reporty po akci, vážení, profily bojovníků, datové rozbory a poznámky redakce — všechno vychází česky i anglicky a všechno se dá dohledat zpátky k podkladu, ze kterého to vzniklo.",
+      "MMA Files píše o UFC a Oktagonu. Pozvánky na turnaje, reporty po akci, vážení, profily bojovníků, datové rozbory a poznámky redakce — všechno vychází česky i anglicky a všechno se dá dohledat zpátky k podkladu, ze kterého to vzniklo.",
       "Magazín stojí na redakčním systému řízeném důkazy a na důkazní vrstvě FightAIQ. Texty v něm vznikají a procházejí kontrolou; o vydání rozhoduje člověk.",
     ],
     coversTitle: "Co pokrýváme",
     coversList: [
-      "UFC, Oktagon MMA a KSW",
+      "UFC a Oktagon MMA",
       "Pozvánky na turnaje a reporty po akci",
       "Reporty z vážení a profily bojovníků",
       "Datové rozbory a poznámky redakce",
@@ -520,7 +517,7 @@ export const cs: Dictionary = {
 
   newsletter: {
     title: "Zápasy týdne bez šumu.",
-    dek: "Jeden krátký přehled pro UFC, Oktagon a KSW.",
+    dek: "Jeden krátký přehled pro UFC a Oktagon.",
     placeholder: "vy@example.com",
     localeQuestion: "V jakém jazyce?",
     submit: "Odebírat",

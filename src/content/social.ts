@@ -55,45 +55,4 @@ export const socialVariants: SocialVariant[] = [
       "Alderton vs. Rahal, pět kol v Las Vegas. Na kartě čtyři zápasy, pátý zmíněný a nepojmenovaný.",
     state: "draft",
   },
-
-  {
-    id: "social:2026-07-19-ksw-107-recap/A/en",
-    articleId: "article:2026-07-19-ksw-107-recap",
-    variant: "A",
-    locale: "en",
-    family: "type-led-result",
-    caption:
-      "Łempicki stops Brandt at 2:14 of round three. Ten of his eleven wins have come in round two or later.",
-    state: "draft",
-  },
-  {
-    id: "social:2026-07-19-ksw-107-recap/A/cs",
-    articleId: "article:2026-07-19-ksw-107-recap",
-    variant: "A",
-    locale: "cs",
-    family: "type-led-result",
-    caption:
-      "Łempicki ukončil Brandta ve 2:14 třetího kola. Deset z jedenácti výher má z druhého kola nebo později.",
-    state: "draft",
-  },
-  {
-    id: "social:2026-07-19-ksw-107-recap/B/en",
-    articleId: "article:2026-07-19-ksw-107-recap",
-    variant: "B",
-    locale: "en",
-    family: "data-card",
-    caption:
-      "KSW 107, Gdańsk: one technical knockout, one submission, one unanimous decision, one draw.",
-    state: "draft",
-  },
-  {
-    id: "social:2026-07-19-ksw-107-recap/B/cs",
-    articleId: "article:2026-07-19-ksw-107-recap",
-    variant: "B",
-    locale: "cs",
-    family: "data-card",
-    caption:
-      "KSW 107, Gdaňsk: jeden technický knockout, jedna submise, jedno jednomyslné rozhodnutí, jedna remíza.",
-    state: "draft",
-  },
 ];

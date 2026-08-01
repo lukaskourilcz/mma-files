@@ -26,8 +26,8 @@ export const siteConfig = {
   } satisfies Record<Locale, string>,
 
   description: {
-    en: "Reporting on UFC, Oktagon and KSW with sources attached — in English and Czech.",
-    cs: "Zpravodajství o UFC, Oktagonu a KSW se zdroji u každého tvrzení — česky a anglicky.",
+    en: "Reporting on UFC and Oktagon with sources attached — in English and Czech.",
+    cs: "Zpravodajství o UFC a Oktagonu se zdroji u každého tvrzení — česky a anglicky.",
   } satisfies Record<Locale, string>,
 
   /**
@@ -48,7 +48,7 @@ export const siteConfig = {
   dataLayer: {
     name: "FightAIQ",
     mode: "data-only" as const,
-    coverage: ["ufc", "oktagon", "ksw"] as const,
+    coverage: ["ufc", "oktagon"] as const,
   },
 
   byline: {

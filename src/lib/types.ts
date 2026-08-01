@@ -16,7 +16,7 @@ export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value);
 }
 
-export const ORGANIZATIONS = ["ufc", "oktagon", "ksw"] as const;
+export const ORGANIZATIONS = ["ufc", "oktagon"] as const;
 export type Organization = (typeof ORGANIZATIONS)[number];
 
 export function isOrganization(value: string): value is Organization {

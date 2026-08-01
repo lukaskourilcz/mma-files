@@ -12,7 +12,7 @@ import {
 } from "@/lib/repository";
 import type { Locale, Organization } from "@/lib/types";
 
-/** One layout for UFC, Oktagon and KSW — the three routes are thin wrappers. */
+/** One layout for UFC and Oktagon — both routes are thin wrappers. */
 export function OrganizationPage({
   locale,
   organization,

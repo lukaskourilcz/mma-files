@@ -1,7 +1,7 @@
 # MMA Files
 
-A bilingual (English / Czech) public fighting magazine covering UFC, Oktagon and
-KSW. Every released story carries its sources, keeps unknowns visible, and shows
+A bilingual (English / Czech) public fighting magazine covering UFC and Oktagon.
+Every released story carries its sources, keeps unknowns visible, and shows
 corrections on the page.
 
 > The fight is the headline. The file is the proof.
@@ -95,7 +95,7 @@ interface Article {
     | "fight-week-preview" | "post-event-recap" | "fighter-profile"
     | "data-story" | "weigh-in-report" | "desk-notes";
   localizations: Record<"en" | "cs", ArticleLocale>;
-  organization?: "ufc" | "oktagon" | "ksw";
+  organization?: "ufc" | "oktagon";
   fighterRefs: string[];
   eventRef?: string;
   sources: Source[];
@@ -145,14 +145,14 @@ locales are required.
 
 ```ts
 {
-  id: "article:2026-09-06-ksw-108-recap",
-  slug: "ksw-108-recap",
+  id: "article:2026-09-06-oktagon-92-recap",
+  slug: "oktagon-92-recap",
   status: "published",
   format: "post-event-recap",
   fileNumber: 25,
-  organization: "ksw",
-  eventRef: "event:ksw/ksw-108",
-  fighterRefs: ["fighter:ksw/kacper-wisniewski"],
+  organization: "oktagon",
+  eventRef: "event:oktagon/oktagon-92",
+  fighterRefs: ["fighter:oktagon/stepan-hruska"],
   publishAt: "2026-09-06T09:00:00+02:00",
   localizations: {
     en: { title: "…", dek: "…", body: "…" },
@@ -211,7 +211,7 @@ shown on the page.
 // Internal: a FightAIQ evidence reference
 {
   kind: "internal",
-  ref: "fightaiq:fighter/ksw/kacper-wisniewski@12",
+  ref: "fightaiq:fighter/oktagon/stepan-hruska@14",
   classification: "primary",
   retrievedAt: "2026-09-06T05:10:00Z",
   supports: ["Record", "Stance"],
@@ -220,8 +220,8 @@ shown on the page.
 // External: a real document, with a link
 {
   kind: "external",
-  title: "KSW 108 official result sheet",
-  publisher: "KSW",
+  title: "Oktagon 92 official result sheet",
+  publisher: "Oktagon MMA",
   url: "https://…",
   classification: "primary",
   retrievedAt: "2026-09-06T05:10:00Z",

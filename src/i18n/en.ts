@@ -17,7 +17,6 @@ export const en = {
     latest: "Latest",
     ufc: "UFC",
     oktagon: "Oktagon",
-    ksw: "KSW",
     fightWeek: "Fight Week",
     fighters: "Fighters",
     dataDesk: "Data Desk",
@@ -89,13 +88,11 @@ export const en = {
   organizations: {
     ufc: "UFC",
     oktagon: "Oktagon MMA",
-    ksw: "KSW",
   },
 
   organizationsShort: {
     ufc: "UFC",
     oktagon: "Oktagon",
-    ksw: "KSW",
   },
 
   divisions: {
@@ -214,7 +211,7 @@ export const en = {
     latestTitle: "Latest files",
     latestDek: "Everything the desks have released, newest first.",
     fightWeekTitle: "Fight week",
-    fightWeekDek: "What is booked next across UFC, Oktagon and KSW.",
+    fightWeekDek: "What is booked next across UFC and Oktagon.",
     dataTitle: "The data behind the story",
     dataDek: "Every file starts in the evidence layer, not in a draft.",
     transparencyTitle: "Every story starts with a file",
@@ -258,7 +255,7 @@ export const en = {
 
   fightWeek: {
     title: "Fight week",
-    dek: "Booked cards across UFC, Oktagon and KSW, with what is settled and what is not.",
+    dek: "Booked cards across UFC and Oktagon, with what is settled and what is not.",
     upcoming: "Booked next",
     recent: "Most recent card",
     noUpcoming:
@@ -290,7 +287,7 @@ export const en = {
 
   events: {
     title: "Events",
-    dek: "Event files for UFC, Oktagon and KSW.",
+    dek: "Event files for UFC and Oktagon.",
     empty: "No event files have been published yet.",
     card: "The card",
     coverage: "Files from this event",
@@ -390,15 +387,15 @@ export const en = {
 
   about: {
     title: "About MMA Files",
-    dek: "A source-first newsroom for UFC, Oktagon and KSW, in English and Czech.",
+    dek: "A source-first newsroom for UFC and Oktagon, in English and Czech.",
     whatTitle: "What this is",
     whatBody: [
-      "MMA Files reports on UFC, Oktagon and KSW. Fight-week previews, post-event recaps, weigh-in reports, fighter profiles, data stories and desk notes — each one published in English and Czech, each one traceable to the evidence it was built from.",
+      "MMA Files reports on UFC and Oktagon. Fight-week previews, post-event recaps, weigh-in reports, fighter profiles, data stories and desk notes — each one published in English and Czech, each one traceable to the evidence it was built from.",
       "The magazine is built on an evidence-governed editorial engine and the FightAIQ evidence layer. Stories are drafted and reviewed inside that system; a person decides what is released.",
     ],
     coversTitle: "What it covers",
     coversList: [
-      "UFC, Oktagon MMA and KSW",
+      "UFC and Oktagon MMA",
       "Fight-week previews and post-event recaps",
       "Weigh-in reports and fighter profiles",
       "Data stories and desk notes",
@@ -524,7 +521,7 @@ export const en = {
 
   newsletter: {
     title: "The week's fights, without the noise.",
-    dek: "One concise briefing for UFC, Oktagon and KSW.",
+    dek: "One concise briefing for UFC and Oktagon.",
     placeholder: "you@example.com",
     localeQuestion: "Which language?",
     submit: "Subscribe",
