@@ -138,6 +138,25 @@ export const cs: Dictionary = {
     "no-contest": "Bez výsledku",
   },
 
+  finishes: {
+    "head-kick": "kop na hlavu",
+    punches: "údery",
+    "rear-naked-choke": "škrcení zezadu",
+    "accidental-foul": "nechtěný faul",
+  },
+
+  heroMetrics: {
+    "bouts-confirmed": "Potvrzených zápasů",
+    "title-fights": "Titulových zápasů",
+    "days-turnaround": "Dní od výsledku k domluvě",
+    "fighters-weighed": "Bojovníků na váze",
+    "made-weight": "Splnilo limit",
+    "missed-weight": "Nesplnilo limit",
+    "fields-tracked": "Sledovaných polí",
+    "fields-verified": "Ověřených",
+    "fields-open": "Neuzavřených",
+  },
+
   billing: {
     main: "Hlavní zápas",
     "co-main": "Hlavní předzápas",

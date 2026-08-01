@@ -135,6 +135,30 @@ export const en = {
     "no-contest": "NC",
   },
 
+  /** Finish detail keys used by `BoutResult.finish`. */
+  finishes: {
+    "head-kick": "head kick",
+    punches: "punches",
+    "rear-naked-choke": "rear-naked choke",
+    "accidental-foul": "accidental foul",
+  },
+
+  /**
+   * Metric keys referenced by `data-card` hero bindings. Bindings carry only
+   * locale-neutral values; the label always comes from here.
+   */
+  heroMetrics: {
+    "bouts-confirmed": "Bouts confirmed",
+    "title-fights": "Title fights",
+    "days-turnaround": "Days from result to booking",
+    "fighters-weighed": "Fighters weighed",
+    "made-weight": "Made weight",
+    "missed-weight": "Missed weight",
+    "fields-tracked": "Tracked fields",
+    "fields-verified": "Verified",
+    "fields-open": "Not settled",
+  },
+
   billing: {
     main: "Main event",
     "co-main": "Co-main event",
