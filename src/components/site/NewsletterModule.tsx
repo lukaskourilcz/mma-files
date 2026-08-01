@@ -2,7 +2,18 @@
 
 import { useId, useState } from "react";
 import { Container } from "@/components/ui/primitives";
-import type { Dictionary } from "@/i18n";
+
+/**
+ * Only plain strings cross the server/client boundary — the dictionary itself
+ * carries functions and cannot be serialised into a client component.
+ */
+export interface NewsletterCopy {
+  title: string;
+  dek: string;
+  placeholder: string;
+  submit: string;
+  notWired: string;
+}
 
 /**
  * Layout preview only.
@@ -13,10 +24,10 @@ import type { Dictionary } from "@/i18n";
  * the submit handler here and update the privacy page in the same change.
  */
 export function NewsletterModule({
-  dict,
+  copy,
   variant = "band",
 }: {
-  dict: Dictionary;
+  copy: NewsletterCopy;
   variant?: "band" | "panel";
 }) {
   const [email, setEmail] = useState("");
@@ -29,14 +40,14 @@ export function NewsletterModule({
       noValidate
     >
       <label htmlFor={inputId} className="sr-only">
-        {dict.newsletter.placeholder}
+        {copy.placeholder}
       </label>
       <input
         id={inputId}
         type="email"
         inputMode="email"
         autoComplete="email"
-        placeholder={dict.newsletter.placeholder}
+        placeholder={copy.placeholder}
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         aria-describedby={`${inputId}-note`}
@@ -48,7 +59,7 @@ export function NewsletterModule({
         aria-disabled="true"
         className="label-mono shrink-0 cursor-not-allowed rounded-[6px] border border-rule-dark-strong px-5 py-3 text-muted"
       >
-        {dict.newsletter.submit}
+        {copy.submit}
       </button>
     </form>
   );
@@ -58,7 +69,7 @@ export function NewsletterModule({
       id={`${inputId}-note`}
       className="mt-4 max-w-lg text-xs leading-relaxed text-muted"
     >
-      {dict.newsletter.notWired}
+      {copy.notWired}
     </p>
   );
 
@@ -66,10 +77,10 @@ export function NewsletterModule({
     return (
       <div className="sheet-dark p-6 text-white md:p-8">
         <h2 className="text-xl leading-tight tracking-[-0.03em] text-white md:text-2xl">
-          {dict.newsletter.title}
+          {copy.title}
         </h2>
         <p className="mt-2.5 text-sm leading-relaxed text-paper-muted">
-          {dict.newsletter.dek}
+          {copy.dek}
         </p>
         {form}
         {note}
@@ -87,10 +98,10 @@ export function NewsletterModule({
               id="newsletter"
               className="text-[1.75rem] leading-[1.1] tracking-[-0.035em] text-white md:text-[2.25rem]"
             >
-              {dict.newsletter.title}
+              {copy.title}
             </h2>
             <p className="mt-3 max-w-md text-base leading-relaxed text-paper-muted">
-              {dict.newsletter.dek}
+              {copy.dek}
             </p>
           </div>
           <div className="md:col-span-6">
