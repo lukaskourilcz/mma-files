@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "fightaiq-delivery/1",
+  "generatedAt": null,
+  "fighters": [],
+  "events": [],
+  "odds": [],
+  "modelRuns": [],
+  "edgeReports": [],
+  "slips": [],
+  "trackRecord": null,
+  "packageHash": null
+}
