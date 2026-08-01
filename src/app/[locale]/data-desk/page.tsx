@@ -108,7 +108,7 @@ export default async function DataDeskPage({
             </ul>
 
             <p className="mt-6 text-sm leading-relaxed text-ink-muted">
-              {dict.fighters.coverage}:{" "}
+              {dict.dataDesk.fieldsTracked}:{" "}
               <span className="font-mono">
                 {FIGHTER_FIELDS.map((field) => dict.fighterFields[field]).join(" · ")}
               </span>
