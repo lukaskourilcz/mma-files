@@ -53,6 +53,12 @@ function timestamp(value: string, locale: Locale): string {
   }).format(date);
 }
 
+function marketLabel(value: string): string {
+  const [market, ...source] = value.split(":");
+  const label = market?.toUpperCase() || value;
+  return source.length ? `${label} · ${source.join(":")}` : label;
+}
+
 export function FightAiQFeed({ snapshot, locale }: { snapshot: FightAiQDelivery; locale: Locale }) {
   const text = copy[locale];
   if (!snapshot.generatedAt) {
@@ -97,7 +103,11 @@ export function FightAiQFeed({ snapshot, locale }: { snapshot: FightAiQDelivery;
                     {snapshot.odds.map((item) => (
                       <tr className="border-b border-rule last:border-0" key={`${item.boutRef}-${item.phase}-${item.source}`}>
                         <td className="px-4 py-3 font-medium text-ink">{item.boutRef}</td>
-                        <td className="px-4 py-3 text-ink-muted">{item.phase.toUpperCase()} · {item.source}<br />{timestamp(item.capturedAt, locale)}</td>
+                        <td className="px-4 py-3 text-ink-muted">
+                          {item.phase.toUpperCase()} · {item.source}<br />
+                          {marketLabel(item.market)}<br />
+                          {timestamp(item.capturedAt, locale)}
+                        </td>
                         <td className="px-4 py-3 font-mono text-xs text-ink">{item.prices.map((price) => `${price.pick}: ${price.decimal.toFixed(2)}`).join(" · ")}</td>
                       </tr>
                     ))}
