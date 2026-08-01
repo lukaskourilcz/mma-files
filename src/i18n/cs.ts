@@ -242,7 +242,7 @@ export const cs: Dictionary = {
       `${files} ${files === 1 ? "složka" : files < 5 ? "složky" : "složek"}. U každého pole je uvedeno, odkud pochází.`,
     markingTitle: "Jak je každé pole označené",
     markingNote: (open: number, total: number) =>
-      `${open} z ${total} polí není uzavřených a zůstávají na stránce jako mezery. Žádné kurzy, žádné pravděpodobnosti, žádné tipy — číslo, které vidíte, je počet dokumentů, ne sázka.`,
+      `${open} z ${total} polí není uzavřených a zůstávají na stránce jako mezery. Tohle číslo popisuje důkazní složky; kurzy a výstupy modelu jsou označené zvlášť.`,
     visibleGap: "Viditelná mezera",
     noCompletedCard: (promotion: string) =>
       `Žádná odjetá karta ${promotion} v záznamu není`,
@@ -341,17 +341,17 @@ export const cs: Dictionary = {
     eventFiles: "Složky turnajů",
     sourceRefs: "Odkazy na zdroje",
     fieldsTracked: "Sledovaná pole",
-    boundaryTitle: "Co datová redakce nepublikuje",
+    boundaryTitle: "Jak číst sázková data",
     boundaryLead:
-      "FightAIQ běží v režimu data-only. Tenhle magazín proto neobsahuje nic z následujícího:",
+      "FightAIQ může dodat kurzy s časem pořízení a verzované výstupy modelu. Čtyři omezení zůstávají pevná:",
     boundaries: [
-      "Žádné pravděpodobnosti zápasů, modelové předpovědi ani odhady výsledků.",
-      "Žádné kurzy, srovnání kurzů ani zavírací linie.",
-      "Žádné tipy, sázkové výběry, kombinované sázky ani „jistoty“.",
-      "Žádné odkazy na sázkové kanceláře, affiliate odkazy ani propagaci hazardu.",
+      "U každého kurzu je čas a způsob pořízení; nejde o živou nabídku.",
+      "U každé pravděpodobnosti je verze modelu a viditelná nejistota.",
+      "Rozdíl mezi modelem a trhem je výsledek výzkumu, ne zaručená výhoda.",
+      "Web neobsahuje odkazy na sázkové kanceláře, affiliate odkazy ani automatické sázení.",
     ],
     boundaryFooter:
-      "Pokud se někdy v textu objeví deterministický souhrn, bude u něj přímo na stránce přesná verze, vstupy a srozumitelně napsaná nejistota.",
+      "Pokud text cituje deterministický výstup, přímo na stránce uvádí přesnou verzi modelu, vstupy a srozumitelně popsanou nejistotu.",
     statesTitle: "Jak se pole označuje",
     statesDek:
       "Pole u bojovníků a turnajů mají jeden ze čtyř stavů. Nic se nedoplňuje jen proto, aby složka vypadala kompletně.",
@@ -366,7 +366,7 @@ export const cs: Dictionary = {
     modelInputs: "Vstupy",
     modelUncertainty: "Nejistota",
     responsiblePlay:
-      "Jde výhradně o popisná čísla. Nic na této stránce není předpověď, kurz ani doporučení vsadit peníze.",
+      "Jde o výzkumná data. Nic na této stránce není slib ani osobní doporučení vsadit peníze.",
   },
 
   howItWorks: {
@@ -379,7 +379,7 @@ export const cs: Dictionary = {
       { title: "Redakční porada MMA Files", body: "Na pražský den se plánují nejvýš dva sloty. Slot bez podkladu se zabije." },
       { title: "Anglická a česká redakce", body: "Anglický text vzniká jako první. Česká verze se píše česky, nepřekládá se." },
       { title: "Kontrola zdrojů, jazyka a kvality", body: "Tvrzení se párují zpět na odkazy a obě jazykové verze projdou kontrolou srozumitelnosti a původnosti." },
-      { title: "Vydání schválené člověkem", body: "Text vydá editor. Nic se nepublikuje samo." },
+      { title: "Kontrolované doručení přes Git", body: "Text, který projde oběma redakcemi a kontrolami, se zapíše do webu a automaticky nasadí." },
       { title: "Zpětná vazba a měření na sítích", body: "Sociální varianty se připraví, publikují ručně a měří po 48 hodinách a po sedmi dnech." },
     ],
     cadenceTitle: "Denní rytmus",
@@ -405,7 +405,7 @@ export const cs: Dictionary = {
     ],
     humanTitle: "Co zůstává na člověku",
     humanBody:
-      "Oprávnění, vydání, rozpočty, účty a opravy má na starosti majitel. Nic se nepublikuje automaticky a nic se automaticky neposílá na sítě.",
+      "Oprávnění, rozpočty, účty a opravy má na starosti majitel. Schválené články se mohou nasadit automaticky; publikování na sítě zůstává ruční.",
     socialTitle: "Varianty pro sítě",
     socialBody: (treatments: number, stories: number) =>
       `Připraveno ${treatments} lokalizovaných variant k ${stories} textům — dvě grafické varianty na text, každá v obou jazycích. Žádná zveřejněná není. Publikuje se ručně a je k tomu potřeba samostatné schválení.`,
@@ -483,10 +483,10 @@ export const cs: Dictionary = {
         ],
       },
       {
-        title: "Žádný sázkový obsah",
+        title: "Sázková data mají pevné hranice",
         body: [
-          "Nikde na tomhle webu nejsou kurzy, pravděpodobnosti, tipy, sázkové výběry ani odkazy na sázkové kanceláře.",
-          "Důkazní vrstva běží v režimu data-only. Pokud se někdy v textu objeví deterministický souhrn, bude u něj přesná verze, vstupy a srozumitelně napsaná nejistota.",
+          "Kurzy a modelové výstupy uvádějí čas pořízení, zdroj, verzi a srozumitelně popsanou nejistotu.",
+          "Web nemá affiliate odkazy, propagaci sázkových kanceláří, zaručené výsledky, práci se sázkovým účtem ani automatické sázení.",
         ],
       },
       {
@@ -584,7 +584,7 @@ export const cs: Dictionary = {
     socialPending: "Účty zatím neběží",
     rss: "RSS",
     transparency:
-      "MMA Files vychází česky a anglicky. Každý vydaný text má u sebe zdroje, nechává neznámé údaje vidět a opravy ukazuje přímo na stránce. Žádný sázkový obsah, žádné vymyšlené citace, žádné automatické publikování.",
+      "MMA Files vychází česky a anglicky. Každý text má u sebe zdroje, nechává neznámé údaje vidět a opravy ukazuje přímo na stránce. Sázková data jsou časově označená a jasně oddělená od doporučení.",
     poweredBy: (engine: string, descriptor: string) =>
       `MMA Files pohání ${engine} — ${descriptor}.`,
     rights: "Všechna práva vyhrazena.",

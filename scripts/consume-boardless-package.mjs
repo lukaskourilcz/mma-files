@@ -114,6 +114,44 @@ function validateFightAiQ(value) {
       if (org !== undefined && org !== "ufc" && org !== "oktagon") {
         throw new DeliveryError("schema_invalid", `${key}[${index}] is outside UFC and Oktagon`);
       }
+      if (key === "fighters") {
+        const fighter = object(entry);
+        const id = requiredString(fighter.id, `fighters[${index}].id`, 180);
+        const slug = requiredString(fighter.slug, `fighters[${index}].slug`, 160);
+        if (id !== `${fighter.org}:${slug}` || !/^(?:ufc|oktagon):[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id)) {
+          throw new DeliveryError("schema_invalid", `fighters[${index}] identity is invalid`);
+        }
+        const fields = object(fighter.fields);
+        if (!fields || Object.keys(fields).length === 0) throw new DeliveryError("schema_invalid", `fighters[${index}].fields cannot be empty`);
+        for (const [fieldName, rawField] of Object.entries(fields)) {
+          const sourced = object(rawField);
+          if (!sourced || !Array.isArray(sourced.sourceRefs) || sourced.sourceRefs.length === 0) {
+            throw new DeliveryError("schema_invalid", `fighters[${index}].fields.${fieldName} needs sourceRefs`);
+          }
+          sourced.sourceRefs.forEach((reference, sourceIndex) => requiredString(reference, `fighters[${index}].fields.${fieldName}.sourceRefs[${sourceIndex}]`, 240));
+          isoDateTime(sourced.retrievedAt, `fighters[${index}].fields.${fieldName}.retrievedAt`);
+          if (!["verified", "provisional", "disputed"].includes(sourced.status) || typeof sourced.corroborated !== "boolean") {
+            throw new DeliveryError("schema_invalid", `fighters[${index}].fields.${fieldName} evidence state is invalid`);
+          }
+        }
+        if (!Array.isArray(fighter.criticalFields) || !Array.isArray(fighter.discrepancies)) {
+          throw new DeliveryError("schema_invalid", `fighters[${index}] review fields are invalid`);
+        }
+        isoDateTime(fighter.updatedAt, `fighters[${index}].updatedAt`);
+      }
+      if (key === "events") {
+        const event = object(entry);
+        requiredString(event.id, `events[${index}].id`, 180);
+        requiredString(event.name, `events[${index}].name`, 180);
+        requiredString(event.venue, `events[${index}].venue`, 180);
+        isoDateTime(event.startsAtLocal, `events[${index}].startsAtLocal`);
+        isoDateTime(event.startsAtUtc, `events[${index}].startsAtUtc`);
+        requiredString(event.timeZone, `events[${index}].timeZone`, 100);
+        if (!Array.isArray(event.sourceRefs) || event.sourceRefs.length === 0 || !Array.isArray(event.bouts) || event.bouts.length === 0) {
+          throw new DeliveryError("schema_invalid", `events[${index}] needs sources and bouts`);
+        }
+        isoDateTime(event.updatedAt, `events[${index}].updatedAt`);
+      }
     }
   }
   if (feed.trackRecord !== null && object(feed.trackRecord)?.schemaVersion !== "track-record/1") {

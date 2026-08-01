@@ -31,11 +31,43 @@ function article(overrides = {}) {
 }
 
 function fightFeed(overrides = {}) {
+  const sourced = (value) => ({
+    value,
+    sourceRefs: ["https://example.com/file"],
+    retrievedAt: "2026-08-01T08:00:00.000Z",
+    status: "provisional",
+    corroborated: false,
+  });
   const value = {
     schemaVersion: "fightaiq-delivery/1",
     generatedAt: "2026-08-01T08:30:00.000Z",
-    fighters: [{ schemaVersion: "fighter-record/1", id: "ufc:alex-example", org: "ufc" }],
-    events: [{ schemaVersion: "event-card/1", id: "ufc:event:fixture-night", org: "ufc" }],
+    fighters: [{
+      schemaVersion: "fighter-record/1",
+      id: "ufc:alex-example",
+      slug: "alex-example",
+      org: "ufc",
+      fields: { name: sourced("Alex Example"), division: sourced("Lightweight") },
+      criticalFields: ["name", "division"],
+      discrepancies: [],
+      completeness: 0.25,
+      corroboration: 0,
+      modelEligible: false,
+      modelVersion: "mma-1.0.0+fixture",
+      updatedAt: "2026-08-01T08:00:00.000Z",
+    }],
+    events: [{
+      schemaVersion: "event-card/1",
+      id: "ufc:event:fixture-night",
+      org: "ufc",
+      name: "Fixture Night",
+      venue: "Fixture Arena",
+      startsAtLocal: "2026-08-08T20:00:00+02:00",
+      timeZone: "Europe/Prague",
+      startsAtUtc: "2026-08-08T18:00:00.000Z",
+      sourceRefs: ["https://example.com/event"],
+      bouts: [{ id: "bout-1", red: "ufc:alex-example", blue: "ufc:sam-example", division: "Lightweight", scheduledRounds: 3, status: "announced" }],
+      updatedAt: "2026-08-01T08:00:00.000Z",
+    }],
     odds: [], modelRuns: [], edgeReports: [], slips: [], trackRecord: null,
     ...overrides,
   };

@@ -2,6 +2,7 @@ import { articles as seedArticles } from "@/content/articles";
 import { events as seedEvents } from "@/content/events";
 import { fighters as seedFighters } from "@/content/fighters";
 import { socialVariants as seedSocial } from "@/content/social";
+import { getDeliveredArticles, getDeliveredEvents, getDeliveredFighters, getFightAiQDelivery } from "@/lib/boardless";
 import {
   FIGHTER_FIELDS,
   LOCALES,
@@ -48,7 +49,15 @@ export function isRenderable(article: Article): boolean {
 const byNewest = (a: Article, b: Article) =>
   new Date(b.publishAt).getTime() - new Date(a.publishAt).getTime();
 
-const publishedArticles: Article[] = seedArticles.filter(isRenderable).sort(byNewest);
+const deliveredArticles = getDeliveredArticles();
+const publishedArticles: Article[] = (deliveredArticles.length ? deliveredArticles : seedArticles)
+  .filter(isRenderable)
+  .sort(byNewest);
+
+const deliveredFighters = getDeliveredFighters();
+const availableFighters: Fighter[] = deliveredFighters.length ? deliveredFighters : seedFighters;
+const deliveredEvents = getDeliveredEvents();
+const availableEvents: FightEvent[] = deliveredEvents.length ? deliveredEvents : seedEvents;
 
 /* -------------------------------------------------------------------------- */
 /* Articles                                                                   */
@@ -128,7 +137,7 @@ export function getCorrectionLog(): CorrectionEntry[] {
 /* -------------------------------------------------------------------------- */
 
 export function getFighters(): Fighter[] {
-  return [...seedFighters].sort((a, b) => a.name.localeCompare(b.name, "cs"));
+  return [...availableFighters].sort((a, b) => a.name.localeCompare(b.name, "cs"));
 }
 
 export function getFightersByOrganization(organization: Organization): Fighter[] {
@@ -136,14 +145,14 @@ export function getFightersByOrganization(organization: Organization): Fighter[]
 }
 
 export function getFighterById(id: string): Fighter | undefined {
-  return seedFighters.find((f) => f.id === id);
+  return availableFighters.find((f) => f.id === id);
 }
 
 export function getFighterBySlug(
   organization: Organization,
   slug: string,
 ): Fighter | undefined {
-  return seedFighters.find(
+  return availableFighters.find(
     (f) => f.organization === organization && f.slug === slug,
   );
 }
@@ -162,15 +171,15 @@ const byStartAsc = (a: FightEvent, b: FightEvent) =>
   new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
 
 export function getEvents(): FightEvent[] {
-  return [...seedEvents].sort(byStartAsc);
+  return [...availableEvents].sort(byStartAsc);
 }
 
 export function getEventById(id: string): FightEvent | undefined {
-  return seedEvents.find((e) => e.id === id);
+  return availableEvents.find((e) => e.id === id);
 }
 
 export function getEventBySlug(slug: string): FightEvent | undefined {
-  return seedEvents.find((e) => e.slug === slug);
+  return availableEvents.find((e) => e.slug === slug);
 }
 
 export function getEventsByOrganization(organization: Organization): FightEvent[] {
@@ -238,28 +247,30 @@ export function getCoverageStats(): CoverageStats {
     unavailable: 0,
   };
 
-  for (const fighter of seedFighters) {
+  for (const fighter of availableFighters) {
     for (const field of FIGHTER_FIELDS) {
       byState[fighter.fieldStates[field] ?? "unavailable"] += 1;
     }
   }
 
   const sourceRefs =
-    seedFighters.reduce((n, f) => n + f.sources.length, 0) +
-    seedEvents.reduce((n, e) => n + e.sources.length, 0) +
+    availableFighters.reduce((n, f) => n + f.sources.length, 0) +
+    availableEvents.reduce((n, e) => n + e.sources.length, 0) +
     publishedArticles.reduce((n, a) => n + a.sources.length, 0);
 
   return {
-    fighterFiles: seedFighters.length,
-    eventFiles: seedEvents.length,
+    fighterFiles: availableFighters.length,
+    eventFiles: availableEvents.length,
     articleFiles: publishedArticles.length,
     sourceRefs,
-    fieldsTracked: seedFighters.length * FIGHTER_FIELDS.length,
+    fieldsTracked: availableFighters.length * FIGHTER_FIELDS.length,
     byState,
     storiesWithSocialTreatments: new Set(seedSocial.map((v) => v.articleId)).size,
     socialTreatments: seedSocial.length,
   };
 }
+
+export { getFightAiQDelivery };
 
 /* -------------------------------------------------------------------------- */
 /* Locale helpers                                                             */

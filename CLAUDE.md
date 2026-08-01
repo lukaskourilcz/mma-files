@@ -19,8 +19,10 @@ is done. Do not wait for the user to ask for a commit.
   guesswork, or fake specificity.
 - All seed content is fictional. It must stay labelled `isDemo: true`, carry a
   visible demo badge, and stay `noindex`.
-- No betting content: no odds, probabilities, tips, affiliate links, or
-  bookmaker references. FightAIQ is in `data-only` mode.
+- FightAIQ may deliver source-labelled odds, probabilities, model comparisons
+  and experimental pick files. Every item must keep its capture time, model
+  version and uncertainty. No affiliate links, bookmaker promotion, guaranteed
+  outcomes, account automation or automatic bet placement.
 - No AI-generated fighter imagery presented as photography, and no promotion
   logos or licensed photos. Heroes are typographic and deterministic.
 - Do not claim the publication is live, established, independent, or fully
@@ -30,8 +32,9 @@ is done. Do not wait for the user to ask for a commit.
 
 ## Layout
 
-- `src/content/` — seed data (articles, fighters, events). Replace this, not the
-  components, when a real feed arrives.
+- `src/content/` — fictional seed data used until a real delivery exists.
+- `data/boardless/` — the only canonical write target for BoardlessAI article
+  and FightAIQ delivery packages.
 - `src/lib/repository.ts` — the only sanctioned read path for content. Route
   files must not import `src/content/` directly.
 - `src/i18n/` — UI dictionaries. Both locales must stay complete; the type
@@ -44,4 +47,6 @@ is done. Do not wait for the user to ask for a commit.
 npm run dev
 npm run typecheck
 npm run build
+npm run test
+npm run consume:boardless -- <package.json> [repository-root]
 ```

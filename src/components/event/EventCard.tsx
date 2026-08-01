@@ -177,8 +177,7 @@ export function EventCard({
 
         <p className="label-mono-sm mt-2.5 tracking-[0.13em] text-ink-muted">
           {formatDateTime(event.startsAt, locale, event.timeZone)} ·{" "}
-          {event.venue ? `${event.venue}, ` : ""}
-          {event.city}, {countryName(event.country, dict)}
+          {[event.venue, event.city, event.country ? countryName(event.country, dict) : ""].filter(Boolean).join(", ")}
         </p>
 
         {bouts.length > 0 ? (

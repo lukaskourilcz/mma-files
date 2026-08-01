@@ -132,8 +132,8 @@ export interface Correction {
 
 /**
  * [site] Disclosure block required whenever a story leans on a deterministic
- * FightAIQ output. FightAIQ is in `data-only` mode: descriptive aggregates only,
- * never a forecast, a price or a recommendation.
+ * FightAIQ output. Versioned forecasts and captured prices remain research
+ * artifacts: they keep their inputs and uncertainty and are never promises.
  */
 export interface ModelDisclosure {
   /** Exact, hash-coupled version string. */

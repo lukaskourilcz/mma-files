@@ -89,7 +89,7 @@ export const en = {
     noLink: "No public link — demo evidence file",
     methodology: "How this story was made",
     methodologyBody:
-      "Sourced by the FightAIQ evidence layer, drafted and reviewed on the English and Czech desks, and released by a human editor.",
+      "Sourced by FightAIQ, drafted and reviewed on the English and Czech desks, then delivered through the checked BoardlessAI publishing path.",
   },
 
   formats: {
@@ -248,7 +248,7 @@ export const en = {
       `${files} ${files === 1 ? "file" : "files"}. Every field states where it came from.`,
     markingTitle: "How every field is marked",
     markingNote: (open: number, total: number) =>
-      `${open} of ${total} fields are not settled, and they stay on the page as gaps. No odds, no probabilities, no picks — the number you see is a count of documents, not a bet.`,
+      `${open} of ${total} fields are not settled, and they stay on the page as gaps. This count describes evidence files; odds and model outputs are labelled separately.`,
     visibleGap: "Visible gap",
     noCompletedCard: (promotion: string) =>
       `No completed ${promotion} card is on file`,
@@ -351,17 +351,17 @@ export const en = {
     eventFiles: "Event files",
     sourceRefs: "Source references",
     fieldsTracked: "Evidence-tracked fields",
-    boundaryTitle: "What the Data Desk does not publish",
+    boundaryTitle: "How to read betting data here",
     boundaryLead:
-      "FightAIQ is in data-only mode. This magazine therefore carries none of the following:",
+      "FightAIQ can deliver time-stamped odds and versioned model files. Four limits remain fixed:",
     boundaries: [
-      "No fight probabilities, model forecasts or projected outcomes.",
-      "No odds, price comparisons or closing-line figures.",
-      "No betting tips, picks, parlays or “best bets”.",
-      "No bookmaker links, affiliate links or gambling promotion.",
+      "Every price shows when and how it was captured; it is not a live quote.",
+      "Every probability names the model version and keeps uncertainty visible.",
+      "A model-versus-market gap is a research result, not a guaranteed edge.",
+      "There are no bookmaker links, affiliate links or automated bet placement.",
     ],
     boundaryFooter:
-      "If a future story does cite a deterministic aggregate, it carries the exact version, its inputs and a plain uncertainty statement on the page.",
+      "When a story cites a deterministic result, the page carries the exact model version, its inputs and a plain uncertainty statement.",
     statesTitle: "How a field is marked",
     statesDek:
       "Fighter and event fields carry one of four states. Nothing is filled in to look complete.",
@@ -376,7 +376,7 @@ export const en = {
     modelInputs: "Inputs",
     modelUncertainty: "Uncertainty",
     responsiblePlay:
-      "Descriptive figures only. Nothing on this page is a forecast, a price or a recommendation to stake money.",
+      "Research only. Nothing on this page is a promise or personal advice to stake money.",
   },
 
   howItWorks: {
@@ -389,7 +389,7 @@ export const en = {
       { title: "MMA Files editorial meeting", body: "At most two story slots are planned per Prague day. A slot without evidence is killed." },
       { title: "English and Czech editorial desks", body: "The English draft is reported first. The Czech version is written as Czech, not translated." },
       { title: "Source, language and quality review", body: "Claims are matched back to references, and both languages are checked for clarity and originality." },
-      { title: "Human-approved publication", body: "An editor releases the story. Nothing publishes automatically." },
+      { title: "Checked repository delivery", body: "A story that clears both desks and the release gates is committed to this site and deployed automatically." },
       { title: "Reader feedback and measured social performance", body: "Social treatments are prepared, posted manually, and measured after 48 hours and seven days." },
     ],
     cadenceTitle: "Daily cadence",
@@ -415,7 +415,7 @@ export const en = {
     ],
     humanTitle: "What stays with a person",
     humanBody:
-      "Final permissions, publication, budgets, accounts and corrections are the owner's responsibility. There is no automatic publishing and no automatic social posting.",
+      "Final permissions, budgets, accounts and corrections remain the owner's responsibility. Cleared articles can deploy automatically; social posting stays manual.",
     socialTitle: "Social treatments",
     socialBody: (treatments: number, stories: number) =>
       `${treatments} localised treatments prepared across ${stories} stories — two design variants per story, each in both languages. None has been posted. Publishing is manual and needs a separate authorisation step.`,
@@ -442,7 +442,7 @@ export const en = {
     ],
     notTitle: "What it does not do",
     notList: [
-      "No betting tips, odds, bookmaker links or affiliate gambling content",
+      "No bookmaker promotion, affiliate gambling links or automated bet placement",
       "No invented quotes, records, injuries, reactions or statistics",
       "No anonymous certainty and no unnamed observers",
       "No AI-generated fighter imagery presented as photography",
@@ -493,10 +493,10 @@ export const en = {
         ],
       },
       {
-        title: "No betting content",
+        title: "Betting data has hard limits",
         body: [
-          "No odds, probabilities, tips, picks or bookmaker links appear anywhere on this site.",
-          "The evidence layer is in data-only mode. If a future story cites a deterministic aggregate, it carries the exact version, its inputs and a plain uncertainty statement.",
+          "Odds and model files show their capture time, source, version and uncertainty.",
+          "There are no affiliate links, bookmaker promotion, guaranteed outcomes, account automation or automatic bet placement.",
         ],
       },
       {
@@ -594,7 +594,7 @@ export const en = {
     socialPending: "Accounts not live yet",
     rss: "RSS",
     transparency:
-      "MMA Files publishes in English and Czech. Every released story carries its sources, keeps unknowns visible, and shows corrections on the page. No betting content, no invented quotes, no automatic publishing.",
+      "MMA Files publishes in English and Czech. Every released story carries its sources, keeps unknowns visible and shows corrections. Betting data stays time-stamped and clearly separated from advice.",
     poweredBy: (engine: string, descriptor: string) =>
       `MMA Files is powered by ${engine} — ${descriptor}.`,
     rights: "All rights reserved.",

@@ -99,8 +99,7 @@ export default async function EventPage({
               </time>
             </DataRow>
             <DataRow label={dict.events.where} tone="paper">
-              {event.venue ? `${event.venue}, ` : ""}
-              {event.city}, {countryName(event.country, dict)}
+              {[event.venue, event.city, event.country ? countryName(event.country, dict) : ""].filter(Boolean).join(", ")}
             </DataRow>
           </dl>
         </Container>

@@ -91,9 +91,7 @@ export default async function FighterPage({
           <div className="mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-2">
             <Chip tone="ember">{dict.organizations[fighter.organization]}</Chip>
             <Chip tone="dark">{dict.divisions[fighter.division]}</Chip>
-            <span className="label-mono-sm text-muted">
-              {countryName(fighter.country, dict)}
-            </span>
+            {fighter.country ? <span className="label-mono-sm text-muted">{countryName(fighter.country, dict)}</span> : null}
           </div>
 
           <h1 className="mt-5 text-[2rem] leading-[1.06] tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem]">

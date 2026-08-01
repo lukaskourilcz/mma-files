@@ -44,10 +44,10 @@ export const siteConfig = {
     url: null as string | null,
   },
 
-  /** Sourced fight data and analysis layer. Currently `data-only`. */
+  /** Sourced fight data, captured market prices and versioned model layer. */
   dataLayer: {
     name: "FightAIQ",
-    mode: "data-only" as const,
+    mode: "verified-data" as const,
     coverage: ["ufc", "oktagon"] as const,
   },
 
@@ -70,10 +70,9 @@ export const siteConfig = {
 } as const;
 
 /**
- * Everything currently on the site is fictional seed content. While this is
- * true the site stays out of search indexes and the RSS feed carries no
- * stories. Flip `NEXT_PUBLIC_DEMO_MODE=false` only once real sourced articles
- * have replaced `src/content/`.
+ * The repository starts with fictional seed content. While that is the only
+ * content, the site stays out of search indexes and the RSS feed carries no
+ * stories. Flip `NEXT_PUBLIC_DEMO_MODE=false` after a real delivery lands.
  */
 export const demoMode = envFlag(process.env.NEXT_PUBLIC_DEMO_MODE, true);
 

@@ -85,13 +85,8 @@ export function FighterCard({
         </p>
 
         <p className="label-mono-sm mt-1.5 tracking-[0.13em] text-ink-meta">
-          {dict.divisions[fighter.division]} ·{" "}
-          <abbr
-            title={countryName(fighter.country, dict)}
-            className="no-underline"
-          >
-            {fighter.country}
-          </abbr>
+          {dict.divisions[fighter.division]}
+          {fighter.country ? <> ·{" "}<abbr title={countryName(fighter.country, dict)} className="no-underline">{fighter.country}</abbr></> : null}
         </p>
       </div>
     </article>

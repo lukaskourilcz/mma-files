@@ -11,9 +11,11 @@ evidence-governed editorial engine, and reads its facts from the FightAIQ
 evidence layer. This repository is the public website only — it holds no
 credentials, no drafts and no private newsroom state.
 
-**Everything currently in `src/content/` is fictional demo content.** The site
-ships in demo mode: demo stories are badged, `robots.txt` refuses every crawler,
-the sitemap is empty and the RSS feed carries no items. See
+**Everything in `src/content/` is fictional fallback content.** Once a real
+BoardlessAI delivery exists, the repository read path uses the delivered records
+instead of the matching seed collection. The site ships in demo mode: demo
+stories are badged, `robots.txt` refuses every crawler, the sitemap is empty and
+the RSS feed carries no items. See
 [Indexing and demo mode](#indexing-and-demo-mode).
 
 ---
@@ -31,7 +33,9 @@ npm run dev
 | `npm run build` | Production build; prerenders every route in both locales |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint |
-| `npm run check` | Typecheck then lint |
+| `npm run test` | Content-delivery boundary tests |
+| `npm run check` | Typecheck, lint and delivery tests |
+| `npm run consume:boardless -- <package.json> [repository-root]` | Validate and store one BoardlessAI package |
 
 Stack: Next.js 15 (App Router), React 19, TypeScript in strict mode, Tailwind
 CSS v4. No external service is required to run or build the site.
@@ -46,6 +50,9 @@ All optional. Defaults are the safe ones.
 | `NEXT_PUBLIC_DEMO_MODE` | `true` | Demo badges on, indexing forced off, RSS empty. |
 | `NEXT_PUBLIC_ALLOW_INDEXING` | `false` | Master indexing switch. Ignored while `NEXT_PUBLIC_DEMO_MODE=true`. |
 
+The repository itself needs no model or source API secrets. BoardlessAI keeps
+those credentials. Vercel only needs these public build settings.
+
 ---
 
 ## Layout
@@ -56,7 +63,7 @@ src/
 │                          root layout, so <html lang> is always correct.
 ├── components/            article/ event/ fighter/ hero/ media/ site/ ui/ pages/
 ├── config/site.ts         Brand, engine attribution, indexing switches
-├── content/               Seed data — replace this, not the components
+├── content/               Fictional seed data used only until delivery exists
 ├── i18n/                  en.ts is the structural source of truth; cs.ts is
 │                          typed against it, so a missing key fails the build
 ├── lib/
@@ -68,6 +75,8 @@ src/
 │   ├── paths.ts           Route builders — never hand-write a URL
 │   └── promotion.ts       Per-promotion accents, exhaustive over the union
 └── middleware.ts          Redirects unprefixed paths, negotiates the locale
+data/boardless/             Hash-checked article and FightAIQ delivery stores
+scripts/                    Content-only BoardlessAI consumer
 ```
 
 Two rules keep this maintainable:
@@ -292,13 +301,32 @@ that impossible to do quietly.
 
 ---
 
-## Replacing the demo data
+## BoardlessAI delivery
 
-The seed arrays in `src/content/` are the only thing that needs to change.
+BoardlessAI sends two package types through a repository-scoped GitHub App:
 
-### Swapping in a CMS or the BoardlessAI delivery API
+- `article/1` — one sourced, published article with complete English and Czech
+  versions and a deterministic hero specification;
+- `fightaiq-delivery/1` — the latest UFC/Oktagon fighter files, event cards,
+  captured prices and any separately approved versioned model outputs.
 
-1. Keep `src/lib/repository.ts` as the single boundary. Replace the seed imports
+The consumer validates organization scope, required evidence fields, immutable
+article slots, stale snapshots and the canonical SHA-256 before it writes. It can
+change only `data/boardless/articles.json` or `data/boardless/fightaiq.json`.
+The delivery workflow runs this repository's tests, typecheck and production
+build before pushing the content commit to `main`; Vercel then deploys that commit.
+
+Application code, settings, social accounts and private newsroom state are outside
+the delivery boundary. Replaying the same package is a no-op. A changed package for
+an occupied date/slot or an older FightAIQ snapshot fails closed.
+
+## Replacing the demo data manually
+
+Manual replacement is still possible, but normal production uses `data/boardless/`.
+
+### Swapping in a different CMS
+
+1. Keep `src/lib/repository.ts` as the single boundary. Replace the delivery imports
    with your client.
 2. Widen the return types to promises (`Promise<Article[]>` and so on) and
    `await` them in the route files. Every route is already an async server
@@ -306,7 +334,7 @@ The seed arrays in `src/content/` are the only thing that needs to change.
 3. Keep `isRenderable()` in the read path. It is the guard that stops a
    one-language or unsourced story from reaching a reader.
 4. Drop `isDemo` from real records, or leave it unset — it defaults to falsy.
-5. Set `NEXT_PUBLIC_DEMO_MODE=false` and, when you are ready to be indexed,
+5. Set `NEXT_PUBLIC_DEMO_MODE=false` after the first real package and, when you are ready to be indexed,
    `NEXT_PUBLIC_ALLOW_INDEXING=true`.
 6. Add `revalidate` or on-demand revalidation to the routes if the source is
    remote. They are fully static today.
@@ -389,13 +417,15 @@ without explicit platform approval and a deliberate authorisation gate.
 These are product requirements, not preferences, and they are enforced in the
 components as well as the copy:
 
-- No odds, probabilities, forecasts, tips, picks, bookmaker links or affiliate
-  gambling content. FightAIQ is in `data-only` mode and the Data Desk states
-  this boundary on the page.
+- FightAIQ deliveries may include captured odds, versioned probabilities,
+  model-versus-market comparisons and experimental pick files. The Data Desk
+  labels their source, capture time and uncertainty. The site has no bookmaker
+  promotion, affiliate links, account automation or automatic bet placement.
 - No invented quotes, records, injuries, reactions or statistics.
 - No AI-generated fighter imagery presented as photography.
 - No promotion marks, event artwork or licensed photography without permission.
-- No automatic publishing and no automatic social posting.
+- Bilingual articles that clear BoardlessAI's release gates are delivered as
+  content-only Git commits and deploy automatically. Social posting stays manual.
 
 If a future story does cite a deterministic aggregate, it must carry a
 `modelDisclosure`: the exact version, its input references, a plain-language
