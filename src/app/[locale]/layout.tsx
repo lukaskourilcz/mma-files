@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Anton, Archivo, IBM_Plex_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Masthead } from "@/components/site/Masthead";
 import { SiteFooter } from "@/components/site/SiteFooter";
@@ -9,9 +9,20 @@ import "@/app/globals.css";
 import { routes } from "@/lib/paths";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
-const dmSans = DM_Sans({
+// Anton ships one weight. Latin Extended is loaded because fighter and event
+// names carry Czech and Slovak diacritics and the display face has to render
+// them rather than falling back mid-headline.
+const anton = Anton({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-dm-sans",
+  weight: ["400"],
+  variable: "--font-anton",
+  display: "swap",
+  fallback: ["Impact", "sans-serif"],
+});
+
+const archivo = Archivo({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-archivo",
   display: "swap",
   fallback: ["system-ui", "sans-serif"],
 });
@@ -106,7 +117,10 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html lang={dict.meta.htmlLang} className={`${dmSans.variable} ${plexMono.variable}`}>
+    <html
+      lang={dict.meta.htmlLang}
+      className={`${anton.variable} ${archivo.variable} ${plexMono.variable}`}
+    >
       <body className="flex min-h-dvh flex-col">
         <script
           type="application/ld+json"

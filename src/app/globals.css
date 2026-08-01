@@ -5,36 +5,104 @@
 /* -------------------------------------------------------------------------- */
 
 @theme {
-  /* Brand palette. Signal ember is punctuation, never decoration. */
-  --color-ink: #09090b;
-  --color-graphite: #18181b;
-  --color-paper: #f4f4f5;
-  --color-muted: #94949c;
-  --color-ember: #ff5a00;
-  --color-ember-soft: #fff0e8;
+  /* Surfaces */
+  --color-paper: #f7f7f5; /* page */
+  --color-card: #ffffff; /* panels, cards */
+  --color-ink: #0b0b0c; /* text, inverted blocks */
+
+  /* Text */
+  --color-ink-muted: #5e5e66; /* deks, secondary body */
+  --color-ink-meta: #6b6b66; /* small mono metadata — 4.6:1 on white, do not lighten */
+
+  /* Rules */
+  --color-rule: #e4e4e0;
+  --color-rule-strong: #d0d0ca;
+
+  /* Promotions. A fill, a top rule or a section rule — never body text. */
+  --color-ufc: oklch(0.52 0.22 27); /* red */
+  --color-oktagon: oklch(0.56 0.17 55); /* amber */
+
+  /* Signal — always a FILL behind ink text, never a text colour. */
+  --color-signal: oklch(0.88 0.19 108); /* lime */
+
+  /* Evidence states — bar and dot fills on the Numbers module. */
+  --color-verified: oklch(0.55 0.15 150);
+  --color-provisional: oklch(0.68 0.14 75);
+  --color-disputed: oklch(0.55 0.2 25);
+  --color-gap: #7a7a73;
+
+  /* On the inverted (black) blocks. #8E8E96 is the floor there. */
+  --color-paper-muted: #b8b8be;
+  --color-paper-meta: #8e8e96;
+  --color-rule-dark: #26262c;
+
+  /*
+   * Legacy aliases. The article, event and fighter pages have not been
+   * redesigned yet, so their utilities still resolve — but they resolve into
+   * the new palette rather than the old orange one, which keeps the whole site
+   * on one colour system. Retire these as each interior page is redrawn.
+   */
+  --color-ember: var(--color-ink);
+  --color-ember-soft: #ededE8;
+  --color-graphite: var(--color-ink);
+  --color-muted: var(--color-ink-meta);
+  --color-rule-dark-strong: #3a3a42;
   --color-success: #166534;
   --color-warning: #854d0e;
   --color-danger: #b91c1c;
 
-  /* Derived structural neutrals — hairlines and second-level text. */
-  --color-rule: #e4e4e7;
-  --color-rule-strong: #d4d4d8;
-  --color-rule-dark: #27272a;
-  --color-rule-dark-strong: #3f3f46;
-  --color-ink-muted: #52525b;
-  --color-paper-muted: #a1a1aa;
-
+  --font-display: var(--font-anton), "Impact", ui-sans-serif, sans-serif;
   --font-sans:
-    var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    var(--font-archivo), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     sans-serif;
   --font-mono:
     var(--font-plex-mono), ui-monospace, "SFMono-Regular", "Menlo", monospace;
 
-  --radius-card: 10px;
-  --radius-chip: 6px;
+  /* Broadcast furniture. Every one of these is muted by reduced-motion below. */
+  --animate-ticker: ticker 44s linear infinite;
+  --animate-rise: rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  --animate-wipe: wipe 0.7s 0.25s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  --animate-wipe-slow: wipe 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  --animate-livedot: livedot 1.4s ease-in-out infinite;
+}
 
-  /* 12-column editorial grid, generous but not airy. */
-  --spacing-gutter: 1.25rem;
+@keyframes ticker {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wipe {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes livedot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -57,14 +125,14 @@
   }
 
   ::selection {
-    background-color: var(--color-ember);
-    color: #ffffff;
+    background-color: var(--color-signal);
+    color: var(--color-ink);
   }
 
+  /* Square, like every other border on the site. */
   :focus-visible {
-    outline: 2px solid var(--color-ember);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
   }
 
   h1,
@@ -72,7 +140,7 @@
   h3,
   h4 {
     font-weight: 700;
-    letter-spacing: -0.022em;
+    letter-spacing: -0.01em;
     text-wrap: balance;
   }
 
@@ -102,6 +170,15 @@
 /* -------------------------------------------------------------------------- */
 
 @layer components {
+  /* Poster display type. Always uppercase, always tight. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    line-height: 0.95;
+  }
+
   /* Uppercase mono label: file numbers, formats, timestamps, source kinds. */
   .label-mono {
     font-family: var(--font-mono);
@@ -121,11 +198,10 @@
     font-weight: 500;
   }
 
-  /* Clipped dossier sheet, not a bubbly SaaS card. */
+  /* Square hairline panel on white. No shadow, no radius. */
   .sheet {
-    background-color: #ffffff;
-    border: 1px solid var(--color-rule);
-    border-radius: var(--radius-card);
+    background-color: var(--color-card);
+    border: 1px solid var(--color-rule-strong);
     transition: border-color 160ms ease;
   }
 
@@ -134,9 +210,8 @@
   }
 
   .sheet-dark {
-    background-color: var(--color-graphite);
+    background-color: var(--color-ink);
     border: 1px solid var(--color-rule-dark);
-    border-radius: var(--radius-card);
     transition: border-color 160ms ease;
   }
 
@@ -144,7 +219,7 @@
     border-color: var(--color-rule-dark-strong);
   }
 
-  /* Headline link: ember underline slides in, and stays put for reduced motion. */
+  /* Headline link: the rule slides in, and stays put for reduced motion. */
   .headline-link {
     text-decoration-line: underline;
     text-decoration-color: transparent;
@@ -154,15 +229,24 @@
   }
 
   .headline-link:hover {
-    text-decoration-color: var(--color-ember);
+    text-decoration-color: currentColor;
   }
 
-  /* Faint vertical grid rules on dark feature bands. */
+  /* Faint 120px vertical rules behind the hero. */
   .grid-rules {
     background-image: repeating-linear-gradient(
       to right,
-      color-mix(in srgb, #ffffff 5%, transparent) 0 1px,
-      transparent 1px 8.3333%
+      color-mix(in srgb, var(--color-ink) 4.5%, transparent) 0 1px,
+      transparent 1px 120px
+    );
+  }
+
+  /* Photo slot with no photograph in it yet. */
+  .stripes {
+    background-image: repeating-linear-gradient(
+      135deg,
+      #ededE8 0 11px,
+      #f3f3ef 11px 22px
     );
   }
 }
@@ -175,7 +259,7 @@
   .prose-file {
     font-size: 1.0625rem;
     line-height: 1.7;
-    color: var(--color-graphite);
+    color: var(--color-ink-muted);
   }
 
   @media (min-width: 768px) {
@@ -219,14 +303,14 @@
   .prose-file a {
     color: var(--color-ink);
     text-decoration-line: underline;
-    text-decoration-color: var(--color-ember);
+    text-decoration-color: var(--color-ink);
     text-decoration-thickness: 1.5px;
     text-underline-offset: 3px;
     font-weight: 500;
   }
 
   .prose-file a:hover {
-    background-color: var(--color-ember-soft);
+    background-color: var(--color-signal);
   }
 
   .prose-file ul {
@@ -250,11 +334,11 @@
     top: 0.72em;
     width: 0.6em;
     height: 1px;
-    background-color: var(--color-ember);
+    background-color: var(--color-ink);
   }
 
   .prose-file blockquote {
-    border-left: 2px solid var(--color-ember);
+    border-left: 2px solid var(--color-ink);
     padding-left: 1.15rem;
     font-size: 1.1875rem;
     line-height: 1.5;
