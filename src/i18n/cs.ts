@@ -376,6 +376,9 @@ export const cs: Dictionary = {
     humanTitle: "Co zůstává na člověku",
     humanBody:
       "Oprávnění, vydání, rozpočty, účty a opravy má na starosti majitel. Nic se nepublikuje automaticky a nic se automaticky neposílá na sítě.",
+    socialTitle: "Varianty pro sítě",
+    socialBody: (treatments: number, stories: number) =>
+      `Připraveno ${treatments} lokalizovaných variant k ${stories} textům — dvě grafické varianty na text, každá v obou jazycích. Žádná zveřejněná není. Publikuje se ručně a je k tomu potřeba samostatné schválení.`,
     killTitle: "Když se slot zabije",
     killBody:
       "Když podklad chybí, je tenký, už byl jinde nebo je nespolehlivý, slot padá a důvod se zapíše. Nic se nepíše jen proto, aby bylo místo zaplněné.",

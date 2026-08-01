@@ -380,6 +380,9 @@ export const en = {
     humanTitle: "What stays with a person",
     humanBody:
       "Final permissions, publication, budgets, accounts and corrections are the owner's responsibility. There is no automatic publishing and no automatic social posting.",
+    socialTitle: "Social treatments",
+    socialBody: (treatments: number, stories: number) =>
+      `${treatments} localised treatments prepared across ${stories} stories — two design variants per story, each in both languages. None has been posted. Publishing is manual and needs a separate authorisation step.`,
     killTitle: "When a slot is killed",
     killBody:
       "If the evidence is missing, thin, already reported or unreliable, the slot is dropped and the reason is recorded. Nothing is written to fill space.",
