@@ -1,47 +1,36 @@
+import Link from "next/link";
 import type { FightAiQDelivery } from "@/lib/boardless";
+import { getFighterById } from "@/lib/repository";
+import { routes } from "@/lib/paths";
 import type { Locale } from "@/lib/types";
 
 const copy = {
   en: {
     eyebrow: "Delivered by FightAIQ",
-    title: "Current odds and model files",
-    empty: "No verified FightAIQ snapshot has been delivered yet. The page stays empty instead of showing made-up prices or forecasts.",
+    title: "Current fight forecasts",
+    empty: "No eligible confirmed fight has a verified forecast yet. The page stays empty instead of showing a made-up prediction.",
     updated: "Snapshot updated",
-    odds: "Captured prices",
-    models: "Model runs",
-    comparisons: "Model and market comparisons",
-    slips: "Experimental ten-fight files",
-    bout: "Bout",
-    capture: "Capture",
-    prices: "Decimal prices",
+    models: "Current predictions",
     model: "Model",
-    view: "Model view",
-    market: "Market view",
-    gap: "Difference",
-    warning: "These are time-stamped research files, not a promise, a bookmaker feed or personal betting advice. Prices move. Check the source and your local rules before acting.",
+    warning: "These are time-stamped early model outputs, not a promise or personal betting advice. Raw prices and private FightAIQ research files are not published here.",
+    early: "Early model",
+    notAdvice: "Model output, not betting advice.",
   },
   cs: {
     eyebrow: "Data dodává FightAIQ",
-    title: "Aktuální kurzy a modelové výstupy",
-    empty: "FightAIQ zatím nedodal ověřený balíček. Stránka zůstává prázdná, místo aby ukazovala vymyšlené kurzy nebo odhady.",
+    title: "Aktuální odhady zápasů",
+    empty: "Žádný potvrzený zápas zatím nemá ověřený odhad. Stránka zůstává prázdná, místo aby ukazovala vymyšlenou predikci.",
     updated: "Data aktualizována",
-    odds: "Zachycené kurzy",
-    models: "Běhy modelu",
-    comparisons: "Srovnání modelu s trhem",
-    slips: "Experimentální složky deseti zápasů",
-    bout: "Zápas",
-    capture: "Záznam",
-    prices: "Desetinné kurzy",
+    models: "Aktuální predikce",
     model: "Model",
-    view: "Pohled modelu",
-    market: "Pohled trhu",
-    gap: "Rozdíl",
-    warning: "Jde o výzkumná data s časem pořízení, ne o slib, živý bookmaker feed ani osobní sázkové doporučení. Kurzy se mění. Před rozhodnutím ověřte zdroj i místní pravidla.",
+    warning: "Jde o rané modelové výstupy s časem vytvoření, ne o slib ani osobní sázkové doporučení. Nezveřejňujeme zde surové kurzy ani interní výzkumné soubory FightAIQ.",
+    early: "Raný model",
+    notAdvice: "Výstup modelu, ne sázkové doporučení.",
   },
 } as const;
 
-function percent(value: number | null | undefined): string {
-  return value === null || value === undefined ? "—" : `${(value * 100).toFixed(1)}%`;
+function percent(value: number): string {
+  return `${(value * 100).toFixed(1)}%`;
 }
 
 function timestamp(value: string, locale: Locale): string {
@@ -53,14 +42,9 @@ function timestamp(value: string, locale: Locale): string {
   }).format(date);
 }
 
-function marketLabel(value: string): string {
-  const [market, ...source] = value.split(":");
-  const label = market?.toUpperCase() || value;
-  return source.length ? `${label} · ${source.join(":")}` : label;
-}
-
 export function FightAiQFeed({ snapshot, locale }: { snapshot: FightAiQDelivery; locale: Locale }) {
   const text = copy[locale];
+  const currentStats = snapshot.statsEntries.filter((entry) => entry.status === "active");
   if (!snapshot.generatedAt) {
     return (
       <section className="border-b border-rule bg-card py-10 md:py-12" aria-labelledby="fightaiq-feed">
@@ -86,86 +70,33 @@ export function FightAiQFeed({ snapshot, locale }: { snapshot: FightAiQDelivery;
 
         <p className="mt-6 max-w-4xl border-l-2 border-signal pl-4 text-sm leading-relaxed text-ink-muted">{text.warning}</p>
 
-        <div className="mt-10 grid gap-8 xl:grid-cols-2">
-          <section aria-labelledby="fightaiq-odds">
-            <h3 className="label-mono text-ink" id="fightaiq-odds">{text.odds} · {snapshot.odds.length}</h3>
-            {snapshot.odds.length ? (
-              <div className="mt-4 overflow-x-auto border border-rule bg-paper">
-                <table className="w-full min-w-[38rem] border-collapse text-left text-sm">
-                  <thead className="border-b border-rule-strong bg-ink text-paper">
-                    <tr>
-                      <th className="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]">{text.bout}</th>
-                      <th className="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]">{text.capture}</th>
-                      <th className="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]">{text.prices}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {snapshot.odds.map((item) => (
-                      <tr className="border-b border-rule last:border-0" key={`${item.boutRef}-${item.phase}-${item.source}`}>
-                        <td className="px-4 py-3 font-medium text-ink">{item.boutRef}</td>
-                        <td className="px-4 py-3 text-ink-muted">
-                          {item.phase.toUpperCase()} · {item.source}<br />
-                          {marketLabel(item.market)}<br />
-                          {timestamp(item.capturedAt, locale)}
-                        </td>
-                        <td className="px-4 py-3 font-mono text-xs text-ink">{item.prices.map((price) => `${price.pick}: ${price.decimal.toFixed(2)}`).join(" · ")}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : <p className="mt-4 text-sm text-ink-muted">{text.empty}</p>}
-          </section>
-
-          <section aria-labelledby="fightaiq-models">
-            <h3 className="label-mono text-ink" id="fightaiq-models">{text.models} · {snapshot.modelRuns.length}</h3>
-            <div className="mt-4 space-y-3">
-              {snapshot.modelRuns.flatMap((run) => run.bouts.map((bout) => (
-                <article className="border border-rule bg-paper p-4" key={`${run.modelVersion}-${bout.boutRef}`}>
+        <section className="mt-10" aria-labelledby="fightaiq-models">
+          <h3 className="label-mono text-ink" id="fightaiq-models">{text.models} · {currentStats.length}</h3>
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            {currentStats.map((entry) => {
+              const red = getFighterById(`fighter:${entry.fighterRefs[0].replace(":", "/")}`);
+              const blue = getFighterById(`fighter:${entry.fighterRefs[1].replace(":", "/")}`);
+              const name = (fighter: typeof red, fallback: string) => fighter
+                ? <Link className="underline decoration-ember underline-offset-[3px]" href={routes.fighter(locale, fighter.organization, fighter.slug)}>{fighter.name}</Link>
+                : fallback;
+              return (
+                <article className="border border-rule bg-paper p-4" key={entry.id}>
                   <div className="flex flex-wrap justify-between gap-3">
-                    <h4 className="font-semibold text-ink">{bout.boutRef}</h4>
-                    <span className="label-mono-sm text-ink-meta">{run.modelVersion}</span>
+                    <h4 className="font-semibold text-ink">{name(red, entry.fighterRefs[0])} <span className="font-normal text-ink-meta">vs</span> {name(blue, entry.fighterRefs[1])}</h4>
+                    <span className="label-mono-sm text-ink-meta">{entry.modelVersion}</span>
                   </div>
                   <dl className="mt-4 grid grid-cols-3 gap-3 text-sm">
-                    <div><dt className="text-ink-meta">{text.view}</dt><dd className="mt-1 font-mono text-ink">{percent(bout.probabilities.redWin)}</dd></div>
-                    <div><dt className="text-ink-meta">{text.market}</dt><dd className="mt-1 font-mono text-ink">{percent(bout.probabilities.marketRedWin)}</dd></div>
-                    <div><dt className="text-ink-meta">{text.model}</dt><dd className="mt-1 font-mono text-ink">{bout.probabilities.uncertainty.replaceAll("-", " ")}</dd></div>
+                    <div><dt className="text-ink-meta">{locale === "cs" ? "Červený roh" : "Red corner"}</dt><dd className="mt-1 font-mono text-ink">{percent(entry.redWin)}</dd></div>
+                    <div><dt className="text-ink-meta">{locale === "cs" ? "Modrý roh" : "Blue corner"}</dt><dd className="mt-1 font-mono text-ink">{percent(entry.blueWin)}</dd></div>
+                    <div><dt className="text-ink-meta">{text.model}</dt><dd className="mt-1 font-mono text-ink">{entry.uncertainty.replaceAll("-", " ")}</dd></div>
                   </dl>
+                  <p className="mt-3 text-xs text-ink-muted"><span className="font-semibold text-ink">{text.early}</span> · {text.notAdvice}</p>
                 </article>
-              )))}
-              {snapshot.modelRuns.length === 0 ? <p className="text-sm text-ink-muted">{text.empty}</p> : null}
-            </div>
-          </section>
-        </div>
-
-        {snapshot.edgeReports.length ? (
-          <section className="mt-10" aria-labelledby="fightaiq-comparisons">
-            <h3 className="label-mono text-ink" id="fightaiq-comparisons">{text.comparisons}</h3>
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
-              {snapshot.edgeReports.flatMap((report) => report.bouts.map((bout) => (
-                <article className="sheet p-5" key={`${report.modelRunRef}-${bout.boutRef}`}>
-                  <div className="flex flex-wrap items-baseline justify-between gap-3">
-                    <h4 className="font-semibold text-ink">{bout.boutRef}</h4>
-                    <span className="font-mono text-sm text-ink-muted">{text.gap}: {percent(bout.divergence)}</span>
-                  </div>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-muted">{bout.recommendation}</p>
-                </article>
-              )))}
-            </div>
-          </section>
-        ) : null}
-
-        {snapshot.slips.length ? (
-          <section className="mt-10 border border-danger/25 bg-danger/6 p-5" aria-labelledby="fightaiq-slips">
-            <h3 className="label-mono text-danger" id="fightaiq-slips">{text.slips}</h3>
-            {snapshot.slips.map((slip) => (
-              <div className="mt-4" key={slip.generatedAt}>
-                <p className="text-sm font-medium text-ink">{slip.expectedLossLine}</p>
-                <p className="mt-2 text-sm text-ink-muted">{slip.stakeGuidance}</p>
-              </div>
-            ))}
-          </section>
-        ) : null}
+              );
+            })}
+            {currentStats.length === 0 ? <p className="text-sm text-ink-muted">{text.empty}</p> : null}
+          </div>
+        </section>
       </div>
     </section>
   );

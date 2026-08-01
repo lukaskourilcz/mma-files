@@ -30,14 +30,20 @@ account or editorial decisions that cannot be made inside the repository.
 
 ## First FightAIQ check
 
-- [ ] Deliver one `fightaiq-delivery/1` package after at least one UFC or Oktagon
-  fighter and event file has cleared the source checks.
+- [ ] Set BoardlessAI `FIGHTAIQ_ANALYSIS_ENABLED=true`; owner decision D8 now
+  authorizes guarded predictions.
+- [ ] Run BoardlessAI `mma-intake`, then `mma-analysis`, and deliver one
+  `fightaiq-delivery/2` package after at least one fighter card and bout have cleared
+  their source checks.
 - [ ] Confirm the target commit changes only `data/boardless/fightaiq.json` and
   passes GitHub Actions.
-- [ ] Check Fighters, Events and Data Desk in both languages. Missing fields must
-  stay visible as missing; captured prices must show their time and source.
-- [ ] Keep BoardlessAI `FIGHTAIQ_ANALYSIS_ENABLED=false` until the separate model
-  mode decision is signed. The public data delivery does not turn analysis on.
+- [ ] Check Fighters, Upcoming Fights and Data Desk in both languages. Missing fields
+  must stay visible as missing; raw prices must not appear in the delivered snapshot.
+- [ ] Cancel or postpone one fixture bout in a rehearsal package and confirm it leaves
+  every upcoming view without losing its status history.
+- [ ] If a prediction is eligible, confirm both fighter names link to their profiles
+  and the card shows “Early model” plus “Model output, not betting advice.” A run with
+  no eligible confirmed bout should render no invented forecast.
 
 No model keys, source keys, GitHub App private key or admin credentials belong in
 this repository or its Vercel environment.

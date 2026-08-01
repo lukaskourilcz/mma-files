@@ -53,7 +53,7 @@ interface DeliveredArticlePackage {
 }
 
 export interface FightAiQFighterRecord {
-  schemaVersion: "fighter-record/1";
+  schemaVersion: "fighter-card/1";
   id: string;
   slug: string;
   org: Organization;
@@ -71,6 +71,12 @@ export interface FightAiQFighterRecord {
   modelEligible: boolean;
   modelVersion: string;
   updatedAt: string;
+  canonicalName: string;
+  sources: Array<{ id: string; url?: string; publisher: string; title: string; retrievedAt: string; evidenceTier: "primary" | "secondary" | "tertiary"; license?: string }>;
+  history: Array<{ boutRef: string; eventRef: string; happenedAt: string; opponentRef: string; result: "win" | "loss" | "draw" | "no-contest"; method: string | null; round: number | null }>;
+  statsProfiles: Array<{ id: string; label: string; bouts: number; values: Record<string, number | null>; updatedAt: string }>;
+  rating: { rating: number; deviation: number; volatility: number; boutCount: number };
+  quality: { evidenceTier: "primary" | "secondary" | "tertiary"; gaps: string[] };
 }
 
 export interface FightAiQEvent {
@@ -94,74 +100,45 @@ export interface FightAiQEvent {
   updatedAt: string;
 }
 
-export interface FightAiQOddsSnapshot {
-  schemaVersion: "odds-snapshot/1";
+export interface FightAiQBout {
+  schemaVersion: "bout/1";
+  id: string;
+  org: Organization;
+  event: { ref: string; name: string; startsAtUtc: string; venue: string | null };
+  fighters: { red: string; blue: string };
+  division: string | null;
+  scheduledRounds: 3 | 5 | null;
+  status: "proposed" | "announced" | "confirmed" | "weigh-in" | "completed" | "cancelled" | "postponed";
+  sourceRefs: string[];
+  result: { winner: "red" | "blue" | "draw" | "no-contest"; method: string | null; round: number | null; elapsedSeconds: number | null; sourceRefs: string[] } | null;
+  updatedAt: string;
+}
+
+export interface FightAiQStatsEntry {
+  schemaVersion: "fightaiq-stats/1";
+  id: string;
   boutRef: string;
-  phase: "t3" | "t1" | "closing";
-  source: "odds-api" | "owner-entry";
-  market: string;
-  prices: Array<{ pick: string; decimal: number }>;
-  capturedAt: string;
-}
-
-export interface FightAiQModelRun {
-  schemaVersion: "model-run/1";
-  modelVersion: string;
-  bouts: Array<{
-    boutRef: string;
-    probabilities: {
-      redWin: number;
-      blueWin: number;
-      uncertainty: "clear-lean" | "lean" | "coin-flip" | "divergence";
-      marketRedWin?: number;
-      blendedRedWin: number;
-    };
-    excludedInputs: string[];
-  }>;
-  createdAt: string;
-}
-
-export interface FightAiQEdgeReport {
-  schemaVersion: "edge-report/1";
   eventRef: string;
-  modelRunRef: string;
-  bouts: Array<{
-    boutRef: string;
-    modelProbability: number;
-    marketProbability: number | null;
-    divergence: number | null;
-    recommendation: string;
-  }>;
-  calibrationContext: string;
-  generatedAt: string;
-}
-
-export interface FightAiQSlip {
-  schemaVersion: "slip-of-ten/1";
-  eventRefs: string[];
-  legs: Array<{
-    boutRef: string;
-    pick: string;
-    modelProb: number;
-    fairOdds: number;
-    bookOdds?: number;
-    note: string;
-  }>;
-  expectedLossLine: string;
-  stakeGuidance: string;
+  fighterRefs: [string, string];
+  modelVersion: string;
+  redWin: number;
+  blueWin: number;
+  uncertainty: "clear-lean" | "lean" | "coin-flip" | "divergence";
+  calibrationLabel: "early-model";
+  marketUsed: boolean;
+  status: "active" | "scored" | "void";
+  outcome: "red" | "blue" | "draw" | "no-contest" | null;
+  brierContribution: number | null;
   generatedAt: string;
 }
 
 export interface FightAiQDelivery {
-  schemaVersion: "fightaiq-delivery/1";
+  schemaVersion: "fightaiq-delivery/2";
   generatedAt: string | null;
   fighters: FightAiQFighterRecord[];
   events: FightAiQEvent[];
-  odds: FightAiQOddsSnapshot[];
-  modelRuns: FightAiQModelRun[];
-  edgeReports: FightAiQEdgeReport[];
-  slips: FightAiQSlip[];
-  trackRecord: unknown;
+  bouts: FightAiQBout[];
+  statsEntries: FightAiQStatsEntry[];
   packageHash: string | null;
 }
 
@@ -236,8 +213,8 @@ export function getDeliveredArticles(): Article[] {
 
 export function getFightAiQDelivery(): FightAiQDelivery {
   const value = fightAiQStore as unknown as FightAiQDelivery;
-  if (value.schemaVersion !== "fightaiq-delivery/1" || !Array.isArray(value.fighters) || !Array.isArray(value.events)) {
-    return { schemaVersion: "fightaiq-delivery/1", generatedAt: null, fighters: [], events: [], odds: [], modelRuns: [], edgeReports: [], slips: [], trackRecord: null, packageHash: null };
+  if (value.schemaVersion !== "fightaiq-delivery/2" || !Array.isArray(value.fighters) || !Array.isArray(value.events) || !Array.isArray(value.bouts) || !Array.isArray(value.statsEntries)) {
+    return { schemaVersion: "fightaiq-delivery/2", generatedAt: null, fighters: [], events: [], bouts: [], statsEntries: [], packageHash: null };
   }
   return value;
 }
@@ -300,9 +277,13 @@ function sourcesFor(record: FightAiQFighterRecord): Source[] {
       if (!retrievedAtByRef.has(reference)) retrievedAtByRef.set(reference, value.retrievedAt);
     }
   }
-  return [...retrievedAtByRef].map(([reference, retrievedAt]) => reference.startsWith("https://")
+  const structured = record.sources.map((item): Source => item.url
+    ? { kind: "external", url: item.url, title: item.title, publisher: item.publisher, retrievedAt: item.retrievedAt, classification: item.evidenceTier === "primary" ? "primary" : "secondary" }
+    : { kind: "internal", ref: item.id, title: item.title, publisher: item.publisher, retrievedAt: item.retrievedAt, classification: item.evidenceTier === "primary" ? "primary" : "secondary" });
+  const fieldSources = [...retrievedAtByRef].map(([reference, retrievedAt]): Source => reference.startsWith("https://")
     ? { kind: "external", url: reference, retrievedAt, classification: "primary" }
     : { kind: "internal", ref: reference, retrievedAt, classification: "primary" });
+  return [...new Map([...structured, ...fieldSources].map((item) => [item.url ?? item.ref ?? JSON.stringify(item), item])).values()];
 }
 
 function deliveredFighter(value: FightAiQFighterRecord): Fighter | null {
@@ -349,6 +330,13 @@ function deliveredFighter(value: FightAiQFighterRecord): Fighter | null {
     },
     sources: sourceList,
     isDemo: false,
+    fightFile: {
+      evidenceTier: value.quality.evidenceTier,
+      gaps: value.quality.gaps,
+      rating: { rating: value.rating.rating, deviation: value.rating.deviation, boutCount: value.rating.boutCount },
+      history: value.history,
+      statsProfiles: value.statsProfiles
+    }
   };
 }
 
@@ -398,11 +386,85 @@ function deliveredEvent(value: FightAiQEvent, fighters: readonly FightAiQFighter
   };
 }
 
+function resultMethod(value: FightAiQBout["result"]): import("@/lib/types").ResultMethod {
+  if (!value || value.winner === "draw") return "draw";
+  if (value.winner === "no-contest") return "no-contest";
+  const method = value.method?.toLowerCase() ?? "";
+  if (method.includes("submission") || method.includes("sub")) return "submission";
+  if (method.includes("split")) return "decision-split";
+  if (method.includes("majority")) return "decision-majority";
+  if (method.includes("decision")) return "decision-unanimous";
+  if (method.includes("tko")) return "tko";
+  return "ko";
+}
+
+function resultTime(seconds: number | null): string | undefined {
+  if (seconds === null) return undefined;
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly FightAiQFighterRecord[], statsEntries: readonly FightAiQStatsEntry[]): FightEvent[] {
+  const active = values.filter((bout) => bout.status !== "cancelled" && bout.status !== "postponed");
+  const predictions = new Map(statsEntries.filter((entry) => entry.status === "active").map((entry) => [entry.boutRef, entry]));
+  const groups = new Map<string, FightAiQBout[]>();
+  for (const bout of active) groups.set(bout.event.ref, [...(groups.get(bout.event.ref) ?? []), bout]);
+  return [...groups.values()].flatMap((bouts) => {
+    const first = bouts[0];
+    if (!first) return [];
+    const slug = first.event.ref.replace(`${first.org}:event:`, "");
+    const complete = bouts.every((bout) => bout.status === "completed");
+    const confirmed = bouts.some((bout) => bout.status === "confirmed" || bout.status === "weigh-in");
+    const sources = [...new Set(bouts.flatMap((bout) => bout.sourceRefs))];
+    return [{
+      id: `event:${first.org}/${slug}`,
+      slug,
+      organization: first.org,
+      name: first.event.name,
+      startsAt: first.event.startsAtUtc,
+      timeZone: "UTC",
+      ...(first.event.venue ? { venue: first.event.venue } : {}),
+      city: "",
+      country: "",
+      status: complete ? "completed" as const : confirmed ? "confirmed" as const : "card-forming" as const,
+      bouts: bouts.sort((left, right) => left.id.localeCompare(right.id)).map((bout, index) => ({
+        id: bout.id,
+        division: division(bout.division ?? undefined) ?? "catchweight",
+        red: { name: fighterName(bout.fighters.red, fighters), fighterRef: `fighter:${bout.fighters.red.replace(":", "/")}` },
+        blue: { name: fighterName(bout.fighters.blue, fighters), fighterRef: `fighter:${bout.fighters.blue.replace(":", "/")}` },
+        scheduledRounds: bout.scheduledRounds ?? 3,
+        billing: index === 0 ? "main" as const : index === 1 ? "co-main" as const : "main-card" as const,
+        ...(predictions.get(bout.id) ? { prediction: {
+          redWin: predictions.get(bout.id)!.redWin,
+          blueWin: predictions.get(bout.id)!.blueWin,
+          uncertainty: predictions.get(bout.id)!.uncertainty,
+          modelVersion: predictions.get(bout.id)!.modelVersion,
+          calibrationLabel: predictions.get(bout.id)!.calibrationLabel
+        } } : {}),
+        ...(bout.result ? { result: {
+          ...(bout.result.winner === "red" ? { winnerRef: `fighter:${bout.fighters.red.replace(":", "/")}` } : bout.result.winner === "blue" ? { winnerRef: `fighter:${bout.fighters.blue.replace(":", "/")}` } : {}),
+          method: resultMethod(bout.result),
+          ...(bout.result.method ? { finish: bout.result.method.toLowerCase().replace(/[^a-z0-9]+/gu, "-").replace(/^-+|-+$/gu, "") } : {}),
+          ...(bout.result.round ? { round: bout.result.round } : {}),
+          ...(resultTime(bout.result.elapsedSeconds) ? { time: resultTime(bout.result.elapsedSeconds) } : {})
+        } } : {})
+      })),
+      localizations: {
+        en: { summary: `${first.event.name} has ${bouts.length} sourced fight${bouts.length === 1 ? "" : "s"} on file.` },
+        cs: { summary: `${first.event.name} má v podkladech ${bouts.length} ${bouts.length === 1 ? "zápas" : bouts.length < 5 ? "zápasy" : "zápasů"}.` }
+      },
+      sources: sources.map((reference) => eventSource(reference, first.updatedAt)),
+      isDemo: false
+    }];
+  });
+}
+
 export function getDeliveredFighters(): Fighter[] {
   return getFightAiQDelivery().fighters.map(deliveredFighter).filter((value): value is Fighter => Boolean(value));
 }
 
 export function getDeliveredEvents(): FightEvent[] {
   const snapshot = getFightAiQDelivery();
+  const eventBouts = snapshot.bouts.filter((bout) => !bout.event.ref.includes(":event:history-"));
+  if (eventBouts.length) return deliveredBoutEvents(eventBouts, snapshot.fighters, snapshot.statsEntries);
   return snapshot.events.map((value) => deliveredEvent(value, snapshot.fighters)).filter((event): event is FightEvent => Boolean(event));
 }

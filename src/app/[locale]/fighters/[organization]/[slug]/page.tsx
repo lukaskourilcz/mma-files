@@ -18,10 +18,62 @@ import { routes } from "@/lib/paths";
 import {
   getArticlesByFighter,
   getEventsForFighter,
+  getFighterById,
   getFighterBySlug,
   getFighters,
 } from "@/lib/repository";
 import { LOCALES, isLocale, isOrganization, type Locale } from "@/lib/types";
+
+const resultLabels = {
+  en: { win: "win", loss: "loss", draw: "draw", "no-contest": "no contest" },
+  cs: { win: "výhra", loss: "prohra", draw: "remíza", "no-contest": "bez výsledku" },
+} as const;
+
+const statLabels: Record<string, { en: string; cs: string }> = {
+  bouts: { en: "Fights", cs: "Zápasy" },
+  wins: { en: "Wins", cs: "Výhry" },
+  losses: { en: "Losses", cs: "Prohry" },
+  draws: { en: "Draws", cs: "Remízy" },
+  noContests: { en: "No contests", cs: "Bez výsledku" },
+  finishRate: { en: "Wins before the final bell", cs: "Výhry před limitem" },
+  koTkoWins: { en: "KO/TKO wins", cs: "Výhry KO/TKO" },
+  submissionWins: { en: "Submission wins", cs: "Výhry na submisi" },
+  decisionWins: { en: "Decision wins", cs: "Výhry na body" },
+  koTkoWinShare: { en: "Share of wins by KO/TKO", cs: "Podíl výher KO/TKO" },
+  submissionWinShare: { en: "Share of wins by submission", cs: "Podíl výher na submisi" },
+  decisionWinShare: { en: "Share of wins by decision", cs: "Podíl výher na body" },
+  averageElapsedSeconds: { en: "Average fight time", cs: "Průměrná délka zápasu" },
+  recentThreeWinRate: { en: "Wins in the last 3", cs: "Úspěšnost v posledních 3" },
+  recentFiveWinRate: { en: "Wins in the last 5", cs: "Úspěšnost v posledních 5" },
+  fightsPerYear: { en: "Fights per year", cs: "Zápasů za rok" },
+  layoffDays: { en: "Days since last fight", cs: "Dnů od posledního zápasu" },
+};
+
+const gapLabels: Record<string, { en: string; cs: string }> = {
+  stance: { en: "Stance", cs: "Postoj" },
+  division: { en: "Current division", cs: "Aktuální váha" },
+  record: { en: "Overall record", cs: "Celková bilance" },
+  "record-history-mismatch": { en: "Overall record differs from parsed history", cs: "Celková bilance se liší od zpracované historie" },
+};
+
+function statValue(key: string, value: number | null): string {
+  if (value === null) return "—";
+  if (key.toLowerCase().includes("rate") || key.endsWith("Share")) return `${Math.round(value * 100)}%`;
+  if (key === "averageElapsedSeconds") return `${Math.floor(value / 60)}:${String(Math.round(value % 60)).padStart(2, "0")}`;
+  return Number.isInteger(value) ? String(value) : value.toFixed(2);
+}
+
+function methodLabel(method: string, locale: Locale): string {
+  if (locale === "en") return method;
+  return method
+    .replace(/^Technical Submission/iu, "technická submise")
+    .replace(/^Submission/iu, "submise")
+    .replace(/^Technical Decision/iu, "technické rozhodnutí")
+    .replace(/^Decision/iu, "rozhodnutí")
+    .replace(/unanimous/giu, "jednomyslně")
+    .replace(/split/giu, "děleně")
+    .replace(/majority/giu, "většinově");
+}
 
 export function generateStaticParams() {
   return LOCALES.flatMap((locale) =>
@@ -70,6 +122,7 @@ export default async function FighterPage({
   const events = getEventsForFighter(fighter.id);
   const now = Date.now();
   const booked = events.filter((e) => new Date(e.startsAt).getTime() >= now);
+  const file = fighter.fightFile;
 
   return (
     <>
@@ -128,6 +181,19 @@ export default async function FighterPage({
               </p>
             </section>
 
+            <section aria-labelledby="recorded-history" className="sheet p-5 md:p-6">
+              <h2 id="recorded-history" className="label-mono flex items-center gap-2 text-ink"><span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />{locale === "cs" ? "Doložené zápasy" : "Recorded fight history"}</h2>
+              {file?.history.length ? <ol className="mt-4 divide-y divide-rule">{[...file.history].reverse().slice(0, 10).map((bout) => {
+                const opponent = getFighterById(`fighter:${bout.opponentRef.replace(":", "/")}`);
+                return <li className="grid gap-2 py-3 first:pt-0 sm:grid-cols-[6rem_1fr_auto] sm:items-center" key={bout.boutRef}><time className="label-mono-sm text-ink-meta" dateTime={bout.happenedAt}>{new Intl.DateTimeFormat(locale === "cs" ? "cs-CZ" : "en-GB", { dateStyle: "medium" }).format(new Date(bout.happenedAt))}</time><span className="text-sm text-ink">{opponent ? <Link className="font-medium underline decoration-ember underline-offset-[3px]" href={routes.fighter(locale, opponent.organization, opponent.slug)}>{opponent.name}</Link> : bout.opponentRef}</span><span className="label-mono-sm text-ink-meta">{resultLabels[locale][bout.result]}{bout.method ? ` · ${methodLabel(bout.method, locale)}` : ""}{bout.round ? ` · R${bout.round}` : ""}</span></li>;
+              })}</ol> : <p className="mt-4 text-sm text-ink-muted">{locale === "cs" ? "V ověřených podkladech zatím není žádný zápas." : "No verified bout history is available yet."}</p>}
+            </section>
+
+            <section aria-labelledby="derived-stats" className="sheet p-5 md:p-6">
+              <h2 id="derived-stats" className="label-mono flex items-center gap-2 text-ink"><span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />{locale === "cs" ? "Odvozené statistiky" : "Derived stats"}</h2>
+              {file?.statsProfiles.length ? file.statsProfiles.map((profile) => <div className="mt-4" key={profile.id}><p className="text-sm text-ink-muted">{locale === "cs" ? "Souhrn vypočítaný z doložených zápasů" : "Career totals calculated from sourced fights"} · {profile.bouts} {locale === "cs" ? "zápasů" : "fights"}</p><dl className="mt-3 grid grid-cols-2 gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-3">{Object.entries(profile.values).map(([key, value]) => <div className="bg-card p-3" key={key}><dt className="label-mono-sm text-ink-meta">{statLabels[key]?.[locale] ?? key.replaceAll(/([A-Z])/g, " $1").toLowerCase()}</dt><dd className="mt-1 font-mono text-lg text-ink">{statValue(key, value)}</dd></div>)}</dl></div>) : <p className="mt-4 text-sm text-ink-muted">{locale === "cs" ? "Výpočty čekají na doloženou historii zápasů." : "The calculations need sourced fight history."}</p>}
+            </section>
+
             {booked.length > 0 ? (
               <section aria-labelledby="booked" className="sheet p-5 md:p-6">
                 <h2 id="booked" className="label-mono flex items-center gap-2 text-ink">
@@ -162,6 +228,8 @@ export default async function FighterPage({
           </div>
 
           <aside className="space-y-6 lg:col-span-5 xl:col-span-4">
+            <div className="sheet p-5"><Kicker>{locale === "cs" ? "Glicko stav" : "Glicko state"}</Kicker>{file ? <dl className="mt-4 grid grid-cols-2 gap-3"><div><dt className="label-mono-sm text-ink-meta">{locale === "cs" ? "Hodnocení" : "Rating"}</dt><dd className="mt-1 font-mono text-2xl text-ink">{Math.round(file.rating.rating)}</dd></div><div><dt className="label-mono-sm text-ink-meta">{locale === "cs" ? "Nejistota" : "Deviation"}</dt><dd className="mt-1 font-mono text-2xl text-ink">±{Math.round(file.rating.deviation)}</dd></div></dl> : <p className="mt-3 text-sm text-ink-muted">{locale === "cs" ? "Nedostupné" : "Unavailable"}</p>}<p className="mt-4 text-xs leading-relaxed text-ink-muted">{locale === "cs" ? "Jde o interní stav modelu z doložených výsledků, ne o oficiální žebříček." : "This is an internal model state built from sourced results, not an official ranking."}</p></div>
+            {file?.gaps.length ? <div className="sheet p-5"><Kicker>{locale === "cs" ? "Chybějící podklady" : "Evidence gaps"}</Kicker><ul className="mt-3 space-y-2 text-sm text-ink-muted">{file.gaps.map((gap) => <li key={gap}>• {gapLabels[gap]?.[locale] ?? gap.replaceAll("-", " ")}</li>)}</ul></div> : null}
             <EvidenceCoverage fighter={fighter} locale={locale} />
             <SourceList sources={fighter.sources} locale={locale} />
             <div className="sheet p-5">

@@ -1,6 +1,4 @@
 import { articles as seedArticles } from "@/content/articles";
-import { events as seedEvents } from "@/content/events";
-import { fighters as seedFighters } from "@/content/fighters";
 import { socialVariants as seedSocial } from "@/content/social";
 import { getDeliveredArticles, getDeliveredEvents, getDeliveredFighters, getFightAiQDelivery } from "@/lib/boardless";
 import {
@@ -55,9 +53,9 @@ const publishedArticles: Article[] = (deliveredArticles.length ? deliveredArticl
   .sort(byNewest);
 
 const deliveredFighters = getDeliveredFighters();
-const availableFighters: Fighter[] = deliveredFighters.length ? deliveredFighters : seedFighters;
+const availableFighters: Fighter[] = deliveredFighters;
 const deliveredEvents = getDeliveredEvents();
-const availableEvents: FightEvent[] = deliveredEvents.length ? deliveredEvents : seedEvents;
+const availableEvents: FightEvent[] = deliveredEvents;
 
 /* -------------------------------------------------------------------------- */
 /* Articles                                                                   */

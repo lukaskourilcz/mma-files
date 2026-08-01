@@ -20,7 +20,7 @@ function object(value) {
 function canonical(value) {
   if (value === null || typeof value !== "object") return JSON.stringify(value);
   if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
-  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(",")}}`;
+  return `{${Object.keys(value).sort((left, right) => left.localeCompare(right)).map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(",")}}`;
 }
 
 function hashView(value) {
@@ -56,6 +56,17 @@ function scopedReference(value, field) {
     throw new DeliveryError("schema_invalid", `${field} is outside UFC and Oktagon`);
   }
   return text;
+}
+
+function independentSourceCount(sourceRefs) {
+  return new Set(sourceRefs.map((reference) => {
+    if (reference.startsWith("source:cito-ufc:")) return "provider:cito-ufc";
+    if (reference.startsWith("source:wikipedia:")) return "provider:wikipedia";
+    if (reference.startsWith("source:wikidata:")) return "provider:wikidata";
+    if (reference.startsWith("source:the-odds-api:")) return "provider:the-odds-api";
+    if (reference.startsWith("https://")) return `host:${new URL(reference).hostname.toLowerCase()}`;
+    return reference.split(":").slice(0, 2).join(":");
+  })).size;
 }
 
 function base64Bytes(value, field, maximum) {
@@ -135,18 +146,21 @@ async function validateArticle(value) {
 }
 
 const acceptedFightSchemas = {
-  fighters: "fighter-record/1",
+  fighters: "fighter-card/1",
   events: "event-card/1",
-  odds: "odds-snapshot/1",
-  modelRuns: "model-run/1",
-  edgeReports: "edge-report/1",
-  slips: "slip-of-ten/1",
+  bouts: "bout/1",
+  statsEntries: "fightaiq-stats/1",
 };
+
+const privateFightAiQFields = ["odds", "modelRuns", "edgeReports", "slips", "trackRecord"];
 
 function validateFightAiQ(value) {
   const feed = object(value);
-  if (!feed || feed.schemaVersion !== "fightaiq-delivery/1") {
-    throw new DeliveryError("schema_invalid", "FightAIQ payload must use fightaiq-delivery/1");
+  if (!feed || feed.schemaVersion !== "fightaiq-delivery/2") {
+    throw new DeliveryError("schema_invalid", "FightAIQ payload must use fightaiq-delivery/2");
+  }
+  for (const field of privateFightAiQFields) {
+    if (field in feed) throw new DeliveryError("schema_invalid", `FightAIQ payload must not publish private ${field} data`);
   }
   isoDateTime(feed.generatedAt, "generatedAt");
   for (const [key, schemaVersion] of Object.entries(acceptedFightSchemas)) {
@@ -182,7 +196,41 @@ function validateFightAiQ(value) {
         if (!Array.isArray(fighter.criticalFields) || !Array.isArray(fighter.discrepancies)) {
           throw new DeliveryError("schema_invalid", `fighters[${index}] review fields are invalid`);
         }
+        requiredString(fighter.canonicalName, `fighters[${index}].canonicalName`, 160);
+        if (!Array.isArray(fighter.sources) || fighter.sources.length === 0 || !Array.isArray(fighter.history) || !Array.isArray(fighter.statsProfiles) || !Array.isArray(fighter.changeLog) || fighter.changeLog.length === 0) {
+          throw new DeliveryError("schema_invalid", `fighters[${index}] card collections are invalid`);
+        }
+        const quality = object(fighter.quality);
+        if (!quality || !["primary", "secondary", "tertiary"].includes(quality.evidenceTier) || !Array.isArray(quality.gaps)) {
+          throw new DeliveryError("schema_invalid", `fighters[${index}].quality is invalid`);
+        }
         isoDateTime(fighter.updatedAt, `fighters[${index}].updatedAt`);
+      }
+      if (key === "bouts") {
+        const bout = object(entry);
+        const event = object(bout.event);
+        const fighters = object(bout.fighters);
+        scopedReference(bout.id, `bouts[${index}].id`);
+        scopedReference(event?.ref, `bouts[${index}].event.ref`);
+        isoDateTime(event?.startsAtUtc, `bouts[${index}].event.startsAtUtc`);
+        scopedReference(fighters?.red, `bouts[${index}].fighters.red`);
+        scopedReference(fighters?.blue, `bouts[${index}].fighters.blue`);
+        if (!["proposed", "announced", "confirmed", "weigh-in", "completed", "cancelled", "postponed"].includes(bout.status) || !Array.isArray(bout.statusHistory) || bout.statusHistory.length === 0 || object(bout.statusHistory.at(-1))?.status !== bout.status) {
+          throw new DeliveryError("schema_invalid", `bouts[${index}] status history is invalid`);
+        }
+        if (!Array.isArray(bout.sourceRefs) || bout.sourceRefs.length === 0) throw new DeliveryError("schema_invalid", `bouts[${index}] needs sourceRefs`);
+        if (["confirmed", "weigh-in"].includes(bout.status) && independentSourceCount(bout.sourceRefs) < 2) throw new DeliveryError("schema_invalid", `bouts[${index}] needs two independent sources before confirmation`);
+        isoDateTime(bout.updatedAt, `bouts[${index}].updatedAt`);
+      }
+      if (key === "statsEntries") {
+        const stats = object(entry);
+        scopedReference(stats.boutRef, `statsEntries[${index}].boutRef`);
+        if (typeof stats.redWin !== "number" || typeof stats.blueWin !== "number" || Math.abs(stats.redWin + stats.blueWin - 1) > 0.000001) {
+          throw new DeliveryError("schema_invalid", `statsEntries[${index}] probabilities are invalid`);
+        }
+        if (stats.calibrationLabel !== "early-model") throw new DeliveryError("schema_invalid", `statsEntries[${index}] needs the early-model label`);
+        if (stats.status === "scored" && (typeof stats.brierContribution !== "number" || !["red", "blue"].includes(stats.outcome))) throw new DeliveryError("schema_invalid", `statsEntries[${index}] scored result is incomplete`);
+        isoDateTime(stats.generatedAt, `statsEntries[${index}].generatedAt`);
       }
       if (key === "events") {
         const event = object(entry);
@@ -198,9 +246,6 @@ function validateFightAiQ(value) {
         isoDateTime(event.updatedAt, `events[${index}].updatedAt`);
       }
     }
-  }
-  if (feed.trackRecord !== null && object(feed.trackRecord)?.schemaVersion !== "track-record/1") {
-    throw new DeliveryError("schema_invalid", "trackRecord must be null or track-record/1");
   }
   const expected = packageHash(feed);
   if (feed.packageHash !== expected) {
@@ -295,7 +340,7 @@ export async function materializeBoardlessPackage(value, root = process.cwd()) {
     return { status: "written", kind: "article", packageHash: article.packageHash, paths: ["data/boardless/articles.json", heroRelative, thumbRelative] };
   }
 
-  if (candidate?.schemaVersion === "fightaiq-delivery/1") {
+  if (candidate?.schemaVersion === "fightaiq-delivery/2") {
     const feed = validateFightAiQ(candidate);
     const file = path.join(root, "data", "boardless", "fightaiq.json");
     const current = await readJson(file, null);

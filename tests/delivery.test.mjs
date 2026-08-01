@@ -57,16 +57,26 @@ function fightFeed(overrides = {}) {
     corroborated: false,
   });
   const value = {
-    schemaVersion: "fightaiq-delivery/1",
+    schemaVersion: "fightaiq-delivery/2",
     generatedAt: "2026-08-01T08:30:00.000Z",
     fighters: [{
-      schemaVersion: "fighter-record/1",
+      schemaVersion: "fighter-card/1",
       id: "ufc:alex-example",
       slug: "alex-example",
       org: "ufc",
+      canonicalName: "Alex Example",
+      aliases: [],
+      identity: { wikidataId: null, wikipediaTitle: "Alex Example", externalIds: {} },
+      organizationHistory: [{ org: "ufc", from: null, to: null, status: "active", sourceRefs: ["https://example.com/file"] }],
+      sources: [{ id: "source:fixture", url: "https://example.com/file", publisher: "Fixture", title: "Fixture", retrievedAt: "2026-08-01T08:00:00.000Z", evidenceTier: "secondary" }],
       fields: { name: sourced("Alex Example"), division: sourced("Lightweight") },
       criticalFields: ["name", "division"],
       discrepancies: [],
+      history: [],
+      statsProfiles: [],
+      rating: { system: "glicko2", rating: 1500, deviation: 350, volatility: 0.06, boutCount: 0, asOfBoutRef: null, updatedAt: "2026-08-01T08:00:00.000Z" },
+      quality: { evidenceTier: "secondary", gaps: ["record"], lastReviewedAt: null },
+      changeLog: [{ at: "2026-08-01T08:00:00.000Z", kind: "created", fields: ["identity"], sourceRefs: ["source:fixture"], note: "Fixture record." }],
       completeness: 0.25,
       corroboration: 0,
       modelEligible: false,
@@ -86,11 +96,32 @@ function fightFeed(overrides = {}) {
       bouts: [{ id: "bout-1", red: "ufc:alex-example", blue: "ufc:sam-example", division: "Lightweight", scheduledRounds: 3, status: "announced" }],
       updatedAt: "2026-08-01T08:00:00.000Z",
     }],
-    odds: [], modelRuns: [], edgeReports: [], slips: [], trackRecord: null,
+    bouts: [{
+      schemaVersion: "bout/1",
+      id: "ufc:bout:fixture-bout",
+      org: "ufc",
+      event: { ref: "ufc:event:fixture-night", name: "Fixture Night", startsAtUtc: "2026-08-08T18:00:00.000Z", venue: "Fixture Arena" },
+      fighters: { red: "ufc:alex-example", blue: "ufc:sam-example" },
+      division: "lightweight",
+      scheduledRounds: 3,
+      status: "announced",
+      statusHistory: [{ status: "announced", at: "2026-08-01T08:00:00.000Z", sourceRefs: ["https://example.com/event"], note: "Fixture." }],
+      discovery: { firstSeenAt: "2026-08-01T08:00:00.000Z", lastSeenAt: "2026-08-01T08:00:00.000Z", sourceRefs: ["https://example.com/event"] },
+      sourceRefs: ["https://example.com/event"],
+      result: null,
+      predictionRefs: [],
+      changeLog: [{ at: "2026-08-01T08:00:00.000Z", kind: "created", fields: ["status"], sourceRefs: ["https://example.com/event"], note: "Fixture." }],
+      updatedAt: "2026-08-01T08:00:00.000Z",
+    }],
+    statsEntries: [],
     ...overrides,
   };
   return { ...value, packageHash: packageHash(value) };
 }
+
+test("matches BoardlessAI locale-aware canonical key ordering", () => {
+  assert.equal(packageHash({ Z: 1, a: 2 }), "904baf6c3b55f398cb3d7d18b7b2a5ff2b3e2cef2e9b0b2761fd3c6de6f6882d");
+});
 
 test("stores a bilingual article once and rejects a changed same-slot replay", async () => {
   const target = await root();
@@ -125,8 +156,10 @@ test("stores the newest FightAIQ snapshot and rejects stale replacement", async 
 test("rejects out-of-scope organizations and tampered hashes", async () => {
   const target = await root();
   try {
-    const outOfScope = fightFeed({ fighters: [{ schemaVersion: "fighter-record/1", id: "ksw:bad", org: "ksw" }] });
+    const outOfScope = fightFeed({ fighters: [{ schemaVersion: "fighter-card/1", id: "pfl:bad", org: "pfl" }] });
     await assert.rejects(materializeBoardlessPackage(outOfScope, target), /outside UFC and Oktagon/);
+    const leakedOdds = fightFeed({ odds: [{ schemaVersion: "odds-snapshot/1", prices: [{ decimal: 1.8 }] }] });
+    await assert.rejects(materializeBoardlessPackage(leakedOdds, target), /must not publish private odds data/);
     const tampered = article();
     tampered.localizations.en.title = "Changed after signing";
     await assert.rejects(materializeBoardlessPackage(tampered, target), /canonical bytes/);

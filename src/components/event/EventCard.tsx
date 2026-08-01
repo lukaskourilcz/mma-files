@@ -7,7 +7,7 @@ import { PROMOTION_ACCENT } from "@/lib/promotion";
 import { getFighterById } from "@/lib/repository";
 import type { Bout, FightEvent, Locale } from "@/lib/types";
 
-function FighterName({
+export function FighterName({
   name,
   fighterRef,
   locale,
@@ -92,6 +92,13 @@ export function BoutRow({ bout, locale }: { bout: Bout; locale: Locale }) {
           </>
         ) : null}
       </div>
+      {bout.prediction && !result ? (
+        <p className="mt-2 border-l-2 border-signal pl-2.5 text-xs leading-relaxed text-ink-muted">
+          <span className="font-semibold text-ink">{locale === "cs" ? "Raný model" : "Early model"}</span>
+          {` · ${bout.red.name} ${Math.round(bout.prediction.redWin * 100)}% · ${bout.blue.name} ${Math.round(bout.prediction.blueWin * 100)}%. `}
+          {locale === "cs" ? "Výstup modelu, ne sázkové doporučení." : "Model output, not betting advice."}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -107,15 +114,22 @@ function CardBout({ bout, locale }: { bout: Bout; locale: Locale }) {
       </span>
       <div className="min-w-0 flex-1">
         <p className="text-[15px] font-bold leading-tight text-ink">
-          {bout.red.name}{" "}
+          <FighterName name={bout.red.name} fighterRef={bout.red.fighterRef} locale={locale} strong />{" "}
           <span className="label-mono-sm font-normal text-ink-meta">
             {dict.results.versus}
           </span>{" "}
-          {bout.blue.name}
+          <FighterName name={bout.blue.name} fighterRef={bout.blue.fighterRef} locale={locale} strong />
         </p>
         <p className="label-mono-sm mt-[3px] tracking-[0.13em] text-ink-meta">
           {dict.divisions[bout.division]} · {bout.scheduledRounds} × 5:00
         </p>
+        {bout.prediction ? (
+          <p className="mt-1.5 text-[11px] leading-snug text-ink-muted">
+            <span className="font-semibold text-ink">{locale === "cs" ? "Raný model" : "Early model"}</span>
+            {` · ${bout.red.name} ${Math.round(bout.prediction.redWin * 100)}% · ${bout.blue.name} ${Math.round(bout.prediction.blueWin * 100)}%`}
+            <span className="block">{locale === "cs" ? "Výstup modelu, ne sázkové doporučení." : "Model output, not betting advice."}</span>
+          </p>
+        ) : null}
       </div>
       {bout.titleFight ? (
         <span className="label-mono-sm shrink-0 bg-signal px-[7px] py-[3px] font-semibold text-ink">

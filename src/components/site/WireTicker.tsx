@@ -17,7 +17,9 @@ interface WireItem {
  */
 function buildWire(locale: Locale): WireItem[] {
   const dict = getDictionary(locale);
-  const items: WireItem[] = [];
+  const results: WireItem[] = [];
+  const bookings: WireItem[] = [];
+  const questions: WireItem[] = [];
 
   for (const event of getCompletedEvents()) {
     for (const bout of event.bouts) {
@@ -43,7 +45,7 @@ function buildWire(locale: Locale): WireItem[] {
         : "";
       const detail = [dict.methods[result.method], finish].filter(Boolean).join(", ");
 
-      items.push({
+      results.push({
         key: `result:${bout.id}`,
         tag: event.name,
         // A draw or a no contest has no winner, so it is never phrased as one.
@@ -57,7 +59,7 @@ function buildWire(locale: Locale): WireItem[] {
   for (const event of getUpcomingEvents()) {
     for (const bout of event.bouts) {
       const title = bout.titleFight ? ` (${dict.labels.titleFight})` : "";
-      items.push({
+      bookings.push({
         key: `booked:${bout.id}`,
         tag: dict.wire.booked,
         text: `${bout.red.name} ${dict.results.versus} ${bout.blue.name}${title}, ${dict.divisions[bout.division]} — ${formatDate(
@@ -73,11 +75,11 @@ function buildWire(locale: Locale): WireItem[] {
 
   for (const article of getArticles()) {
     for (const [i, line] of (article.unconfirmed?.[locale] ?? []).entries()) {
-      items.push({ key: `open:${article.id}:${i}`, tag: dict.wire.open, text: line });
+      questions.push({ key: `open:${article.id}:${i}`, tag: dict.wire.open, text: line });
     }
   }
 
-  return items;
+  return [...bookings.slice(0, 5), ...results.slice(0, 8), ...questions.slice(0, 3)];
 }
 
 function WireLine({ item }: { item: WireItem }) {

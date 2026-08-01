@@ -229,6 +229,27 @@ export interface Fighter {
   /** [site] Portrait. Absent means a labelled placeholder renders. */
   image?: StoryImage;
   isDemo?: boolean;
+  fightFile?: {
+    evidenceTier: "primary" | "secondary" | "tertiary";
+    gaps: string[];
+    rating: { rating: number; deviation: number; boutCount: number };
+    history: Array<{
+      boutRef: string;
+      eventRef: string;
+      happenedAt: string;
+      opponentRef: string;
+      result: "win" | "loss" | "draw" | "no-contest";
+      method: string | null;
+      round: number | null;
+    }>;
+    statsProfiles: Array<{
+      id: string;
+      label: string;
+      bouts: number;
+      values: Record<string, number | null>;
+      updatedAt: string;
+    }>;
+  };
 }
 
 export const FIGHTER_FIELDS = [
@@ -274,6 +295,14 @@ export interface BoutSide {
   fighterRef?: string;
 }
 
+export interface BoutPrediction {
+  redWin: number;
+  blueWin: number;
+  uncertainty: "clear-lean" | "lean" | "coin-flip" | "divergence";
+  modelVersion: string;
+  calibrationLabel: "early-model";
+}
+
 export interface Bout {
   id: string;
   division: Division;
@@ -284,6 +313,7 @@ export interface Bout {
   /** `main`, `co-main` and the rest of the card in listed order. */
   billing: "main" | "co-main" | "main-card" | "prelim";
   result?: BoutResult;
+  prediction?: BoutPrediction;
 }
 
 export type EventStatus = "announced" | "card-forming" | "confirmed" | "completed";

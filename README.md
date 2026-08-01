@@ -11,9 +11,10 @@ evidence-governed editorial engine, and reads its facts from the FightAIQ
 evidence layer. This repository is the public website only — it holds no
 credentials, no drafts and no private newsroom state.
 
-**Everything in `src/content/` is fictional fallback content.** Once a real
-BoardlessAI delivery exists, the repository read path uses the delivered records
-instead of the matching seed collection. The site ships in demo mode: demo
+**Everything in `src/content/` is fictional demo content.** Articles use those
+fixtures only until the first real article delivery. Fighter and event pages do not
+fall back to fictional records: they stay empty until a valid FightAIQ package arrives.
+The site ships in demo mode: demo
 stories are badged, `robots.txt` refuses every crawler, the sitemap is empty and
 the RSS feed carries no items. See
 [Indexing and demo mode](#indexing-and-demo-mode).
@@ -307,11 +308,13 @@ BoardlessAI sends two package types through a repository-scoped GitHub App:
 
 - `article/1` — one sourced, published article with complete English and Czech
   versions, plus exactly one rehosted, attributed image and thumbnail;
-- `fightaiq-delivery/1` — the latest UFC/Oktagon fighter files, event cards,
-  captured prices and any separately approved versioned model outputs.
+- `fightaiq-delivery/2` — canonical UFC/Oktagon fighter cards, status-tracked bouts,
+  event projections and current Stats predictions. Raw prices and private research
+  files never cross the delivery boundary.
 
-The consumer validates organization scope, required evidence fields, immutable
-article slots, stale snapshots and the canonical SHA-256 before it writes. It can
+The consumer validates organization scope, fighter provenance, two-source confirmed
+bouts, the early-model label, immutable article slots, stale snapshots and the
+canonical SHA-256 before it writes. It can
 change only `data/boardless/articles.json` or `data/boardless/fightaiq.json`.
 The delivery workflow runs this repository's tests, typecheck and production
 build before pushing the content commit to `main`; Vercel then deploys that commit.
@@ -417,10 +420,10 @@ those credentials.
 These are product requirements, not preferences, and they are enforced in the
 components as well as the copy:
 
-- FightAIQ deliveries may include captured odds, versioned probabilities,
-  model-versus-market comparisons and experimental pick files. The Data Desk
-  labels their source, capture time and uncertainty. The site has no bookmaker
-  promotion, affiliate links, account automation or automatic bet placement.
+- FightAIQ deliveries include sourced fighter cards, canonical bouts and early-model
+  probability descriptors. Raw odds, model-versus-market comparisons and experimental
+  pick files remain private in BoardlessAI. The site has no bookmaker promotion,
+  affiliate links, account automation or automatic bet placement.
 - No invented quotes, records, injuries, reactions or statistics.
 - No AI-generated fighter imagery presented as photography.
 - No promotion marks, event artwork or licensed photography without permission.

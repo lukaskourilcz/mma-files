@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FighterName } from "@/components/event/EventCard";
 import { getDictionary } from "@/i18n";
 import { formatDate } from "@/lib/format";
 import { routes } from "@/lib/paths";
@@ -50,7 +51,8 @@ function ResultRow({
         ? bout.blue.name
         : undefined
     : undefined;
-  const loser = winner === bout.red.name ? bout.blue.name : bout.red.name;
+  const winnerSide = winner === bout.red.name ? bout.red : winner === bout.blue.name ? bout.blue : null;
+  const loserSide = winnerSide === bout.red ? bout.blue : bout.red;
 
   const timing = result.round
     ? `R${result.round}${result.time ? ` · ${result.time}` : ""}`
@@ -66,23 +68,23 @@ function ResultRow({
         {winner ? (
           <>
             <p className="text-base font-extrabold leading-tight text-ink">
-              {winner}
+              {winnerSide ? <FighterName name={winnerSide.name} fighterRef={winnerSide.fighterRef} locale={locale} strong /> : winner}
             </p>
             <p className="mt-[3px] text-sm font-medium leading-tight text-ink-muted">
               <span className="label-mono-sm text-ink-meta">
                 {dict.results.defeated}
               </span>{" "}
-              {loser}
+              <FighterName name={loserSide.name} fighterRef={loserSide.fighterRef} locale={locale} />
             </p>
           </>
         ) : (
           /* Neither name goes first or bold: nobody won this one. */
           <p className="text-[15px] font-bold leading-tight text-ink">
-            {bout.red.name}{" "}
+            <FighterName name={bout.red.name} fighterRef={bout.red.fighterRef} locale={locale} strong />{" "}
             <span className="label-mono-sm font-normal text-ink-meta">
               {dict.results.versus}
             </span>{" "}
-            {bout.blue.name}
+            <FighterName name={bout.blue.name} fighterRef={bout.blue.fighterRef} locale={locale} strong />
           </p>
         )}
       </div>
@@ -111,11 +113,11 @@ function UpcomingRow({ bout, locale }: { bout: Bout; locale: Locale }) {
         {dict.billingShort[bout.billing]}
       </span>
       <p className="min-w-0 flex-1 text-[15px] font-bold leading-tight text-ink">
-        {bout.red.name}{" "}
+        <FighterName name={bout.red.name} fighterRef={bout.red.fighterRef} locale={locale} strong />{" "}
         <span className="label-mono-sm font-normal text-ink-meta">
           {dict.results.versus}
         </span>{" "}
-        {bout.blue.name}
+        <FighterName name={bout.blue.name} fighterRef={bout.blue.fighterRef} locale={locale} strong />
       </p>
       <span className="label-mono-sm shrink-0 text-ink-muted">
         {dict.divisions[bout.division]} · {bout.scheduledRounds} × 5:00
