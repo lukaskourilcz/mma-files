@@ -4,8 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
-    // The magazine ships typographic, deterministic heroes rather than photography.
-    // When a licensed photo pipeline is connected, add its host here.
+    // Delivery rehosts every licensed image under public/images; remote hosts stay blocked.
     remotePatterns: [],
   },
   async headers() {

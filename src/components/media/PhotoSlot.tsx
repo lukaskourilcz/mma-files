@@ -15,6 +15,7 @@ export function PhotoSlot({
   note,
   sizes = "100vw",
   priority = false,
+  useThumbnail = false,
 }: {
   image?: StoryImage;
   locale: Locale;
@@ -22,6 +23,7 @@ export function PhotoSlot({
   note?: string;
   sizes?: string;
   priority?: boolean;
+  useThumbnail?: boolean;
 }) {
   const dict = getDictionary(locale);
 
@@ -29,7 +31,7 @@ export function PhotoSlot({
     return (
       <>
         <Image
-          src={image.src}
+          src={useThumbnail ? image.thumbnailSrc ?? image.src : image.src}
           alt={image.alt[locale]}
           fill
           sizes={sizes}
@@ -37,9 +39,13 @@ export function PhotoSlot({
           style={image.focalPoint ? { objectPosition: image.focalPoint } : undefined}
           className="object-cover"
         />
-        <span className="label-mono-sm absolute bottom-2 right-2 z-10 bg-ink/70 px-1.5 py-1 text-paper-muted">
-          {image.credit}
-        </span>
+        {image.creditUrl ? (
+          <a href={image.creditUrl} target="_blank" rel="noopener noreferrer" className="label-mono-sm absolute bottom-2 right-2 z-20 bg-ink/80 px-1.5 py-1 text-paper-muted underline-offset-2 hover:underline">
+            {image.credit}
+          </a>
+        ) : (
+          <span className="label-mono-sm absolute bottom-2 right-2 z-10 bg-ink/70 px-1.5 py-1 text-paper-muted">{image.credit}</span>
+        )}
       </>
     );
   }

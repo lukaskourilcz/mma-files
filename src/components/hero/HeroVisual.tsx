@@ -1,5 +1,6 @@
 import { getDictionary } from "@/i18n";
 import type { Article, Locale } from "@/lib/types";
+import { PhotoSlot } from "@/components/media/PhotoSlot";
 
 /**
  * Deterministic, typographic heroes built from the story's own data.
@@ -118,6 +119,14 @@ export function HeroVisual({
   const fileTag = article.fileNumber
     ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")}`
     : dict.formats[article.format];
+
+  if (article.image) {
+    return (
+      <figure className={`relative overflow-hidden rounded-[10px] border border-rule-strong bg-ink ${className}`}>
+        <PhotoSlot image={article.image} locale={locale} sizes="(min-width: 1024px) 80vw, 100vw" priority />
+      </figure>
+    );
+  }
 
   switch (article.heroSpec.template) {
     /* ---------------------------------------------------------------- tape */

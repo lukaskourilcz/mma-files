@@ -22,12 +22,26 @@ interface DeliveredLocalization {
   bodyMDX: string;
 }
 
+interface DeliveredArticleImage {
+  hero_path: string;
+  thumb_path: string;
+  width: number;
+  height: number;
+  alt_en: string;
+  alt_cs: string;
+  license: { name: string; author: string; source_url: string; attribution_html: string };
+  origin: "photo" | "svg";
+  hero_bytes_base64: string;
+  thumb_bytes_base64: string;
+}
+
 interface DeliveredArticlePackage {
   schemaVersion: "article/1";
   slug: string;
   localizations: { en: DeliveredLocalization; cs: DeliveredLocalization };
   format: ArticleFormat;
   sources: Array<{ kind: "internal"; ref: string } | { kind: "external"; url: string; retrievedAt: string }>;
+  image: DeliveredArticleImage;
   heroSpec: { template: string; bindings: Record<string, string | number | boolean> };
   fighterRefs: string[];
   eventRef?: string;
@@ -203,6 +217,13 @@ function deliveredArticle(value: DeliveredArticlePackage): Article | null {
     heroSpec: { template, bindings: value.heroSpec.bindings },
     ...(value.modelVersion ? { modelVersion: value.modelVersion } : {}),
     packageHash: value.packageHash,
+    image: {
+      src: value.image.hero_path.replace(/^public/u, ""),
+      thumbnailSrc: value.image.thumb_path.replace(/^public/u, ""),
+      alt: { en: value.image.alt_en, cs: value.image.alt_cs },
+      credit: value.image.license.attribution_html,
+      creditUrl: value.image.license.source_url,
+    },
     isDemo: false,
   };
 }

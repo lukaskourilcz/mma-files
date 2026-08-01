@@ -64,6 +64,7 @@ export async function generateMetadata({
       modifiedTime: article.updatedAt ?? article.publishAt,
       authors: [siteConfig.byline[locale]],
       locale: locale === "cs" ? "cs_CZ" : "en_GB",
+      ...(article.image ? { images: [{ url: article.image.src, alt: article.image.alt[locale] }] } : {}),
     },
   };
 }
@@ -112,10 +113,12 @@ export default async function ArticlePage({
         publisher: { "@type": "NewsMediaOrganization", name: siteConfig.name },
         mainEntityOfPage: absoluteUrl(routes.article(locale, slug)),
         isAccessibleForFree: true,
+        ...(article.image ? { image: absoluteUrl(article.image.src) } : {}),
       };
 
   return (
     <article>
+      {article.packageHash ? <meta name="boardless-content-hash" content={article.packageHash} /> : null}
       {articleLd ? (
         <script
           type="application/ld+json"

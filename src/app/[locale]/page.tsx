@@ -40,6 +40,7 @@ export default async function HomePage({
 
   return (
     <>
+      {lead?.packageHash ? <meta name="boardless-content-hash" content={lead.packageHash} /> : null}
       {lead ? (
         <LeadStory article={lead} locale={locale} />
       ) : (

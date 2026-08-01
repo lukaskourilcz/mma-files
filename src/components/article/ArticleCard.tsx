@@ -49,6 +49,7 @@ export function ArticleCard({
             locale={locale}
             note={dict.labels.photoSlots.story}
             sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+            useThumbnail
           />
           <span
             aria-hidden="true"

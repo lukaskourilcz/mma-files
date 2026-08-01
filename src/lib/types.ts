@@ -82,9 +82,11 @@ export interface Source {
 export interface StoryImage {
   /** Path or URL. Rendered at 4:5 for portraits and 16:9 for file cards. */
   src: string;
+  thumbnailSrc?: string;
   /** Required, and per locale — alt text is reader-facing copy. */
   alt: Record<Locale, string>;
   credit: string;
+  creditUrl?: string;
   /** CSS `object-position`, e.g. `"50% 20%"`. Defaults to centre. */
   focalPoint?: string;
 }

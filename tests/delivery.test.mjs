@@ -10,6 +10,7 @@ async function root() {
 }
 
 function article(overrides = {}) {
+  const svg = (width, height) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" fill="#111"/></svg>`).toString("base64");
   const value = {
     schemaVersion: "article/1",
     slug: "verified-fight-preview",
@@ -19,6 +20,23 @@ function article(overrides = {}) {
     },
     format: "fight-week-preview",
     sources: [{ kind: "internal", ref: "state/ventures/fightaiq/events/ufc/event.json" }],
+    image: {
+      hero_path: "public/images/articles/verified-fight-preview/hero.svg",
+      thumb_path: "public/images/articles/verified-fight-preview/thumb.svg",
+      width: 1600,
+      height: 900,
+      alt_en: "A verified fixture fight preview",
+      alt_cs: "Doložená pozvánka na zkušební zápas",
+      license: {
+        name: "BoardlessAI deterministic",
+        author: "BoardlessAI FRAME",
+        source_url: "https://boardless-ai.vercel.app/",
+        attribution_html: "Artwork by BoardlessAI FRAME",
+      },
+      origin: "svg",
+      hero_bytes_base64: svg(1600, 900),
+      thumb_bytes_base64: svg(640, 360),
+    },
     heroSpec: { template: "data-card", bindings: { label: "Verified" } },
     fighterRefs: ["ufc:alex-example"],
     eventRef: "ufc:event:fixture-night",
@@ -80,10 +98,12 @@ test("stores a bilingual article once and rejects a changed same-slot replay", a
     const pkg = article();
     assert.equal((await materializeBoardlessPackage(pkg, target)).status, "written");
     assert.equal((await materializeBoardlessPackage(pkg, target)).status, "noop");
-    const changed = article({ slug: "different-story" });
+    const changed = article({ format: "data-story" });
     await assert.rejects(materializeBoardlessPackage(changed, target), /different immutable bytes/);
     const stored = JSON.parse(await readFile(path.join(target, "data/boardless/articles.json"), "utf8"));
     assert.equal(stored.packages.length, 1);
+    assert.equal((await readFile(path.join(target, pkg.image.hero_path))).equals(Buffer.from(pkg.image.hero_bytes_base64, "base64")), true);
+    assert.equal((await readFile(path.join(target, pkg.image.thumb_path))).equals(Buffer.from(pkg.image.thumb_bytes_base64, "base64")), true);
   } finally {
     await rm(target, { recursive: true, force: true });
   }

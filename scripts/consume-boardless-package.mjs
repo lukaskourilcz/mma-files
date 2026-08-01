@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 
 export class DeliveryError extends Error {
   constructor(code, message) {
@@ -57,7 +58,15 @@ function scopedReference(value, field) {
   return text;
 }
 
-function validateArticle(value) {
+function base64Bytes(value, field, maximum) {
+  const encoded = requiredString(value, field, Math.ceil(maximum * 1.4));
+  if (!/^[A-Za-z0-9+/]+={0,2}$/u.test(encoded)) throw new DeliveryError("schema_invalid", `${field} must be base64`);
+  const bytes = Buffer.from(encoded, "base64");
+  if (!bytes.length || bytes.byteLength > maximum) throw new DeliveryError("schema_invalid", `${field} exceeds its byte limit`);
+  return bytes;
+}
+
+async function validateArticle(value) {
   const article = object(value);
   if (!article || article.schemaVersion !== "article/1" || article.status !== "published") {
     throw new DeliveryError("schema_invalid", "MMA Files accepts only published article/1 packages");
@@ -73,6 +82,42 @@ function validateArticle(value) {
     requiredString(localized?.title, `${locale}.title`, 180);
     requiredString(localized?.dek, `${locale}.dek`, 360);
     requiredString(localized?.bodyMDX, `${locale}.bodyMDX`);
+  }
+  const image = object(article.image);
+  if (!image) throw new DeliveryError("schema_invalid", "article.image is required");
+  const expectedBase = `public/images/articles/${article.slug}`;
+  const pathPattern = new RegExp(`^${expectedBase}/(?:hero|thumb)\\.(?:webp|png|svg)$`);
+  const heroPath = requiredString(image.hero_path, "image.hero_path", 260);
+  const thumbPath = requiredString(image.thumb_path, "image.thumb_path", 260);
+  if (!pathPattern.test(heroPath) || !heroPath.includes("/hero.")) throw new DeliveryError("schema_invalid", "image.hero_path is outside the article asset directory");
+  if (!pathPattern.test(thumbPath) || !thumbPath.includes("/thumb.")) throw new DeliveryError("schema_invalid", "image.thumb_path is outside the article asset directory");
+  if (heroPath === thumbPath) throw new DeliveryError("schema_invalid", "hero and thumbnail paths must differ");
+  const width = Number(image.width);
+  const height = Number(image.height);
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 640 || height < 360) throw new DeliveryError("schema_invalid", "image dimensions are invalid");
+  requiredString(image.alt_en, "image.alt_en", 300);
+  requiredString(image.alt_cs, "image.alt_cs", 300);
+  const license = object(image.license);
+  const licenseName = requiredString(license?.name, "image.license.name", 80);
+  if (!["CC0", "CC BY", "CC BY-SA", "Pexels License", "Pixabay Content License", "BoardlessAI deterministic"].includes(licenseName)) {
+    throw new DeliveryError("schema_invalid", "image license is not allowed");
+  }
+  requiredString(license?.author, "image.license.author", 200);
+  const sourceUrl = requiredString(license?.source_url, "image.license.source_url", 600);
+  if (!sourceUrl.startsWith("https://")) throw new DeliveryError("schema_invalid", "image license source must use HTTPS");
+  requiredString(license?.attribution_html, "image.license.attribution_html", 2_000);
+  if (!["photo", "svg"].includes(image.origin)) throw new DeliveryError("schema_invalid", "image.origin must be photo or svg");
+  if ((image.origin === "svg") !== (licenseName === "BoardlessAI deterministic")) throw new DeliveryError("schema_invalid", "image origin and license disagree");
+  const heroBytes = base64Bytes(image.hero_bytes_base64, "image.hero_bytes_base64", 800_000);
+  const thumbBytes = base64Bytes(image.thumb_bytes_base64, "image.thumb_bytes_base64", 300_000);
+  try {
+    const [heroMetadata, thumbMetadata] = await Promise.all([sharp(heroBytes).metadata(), sharp(thumbBytes).metadata()]);
+    if (heroMetadata.width !== width || heroMetadata.height !== height) throw new Error("hero dimensions differ from image metadata");
+    if (thumbMetadata.width !== 640 || thumbMetadata.height !== 360) throw new Error("thumbnail must be 640x360");
+    if (image.origin === "svg" && heroMetadata.format !== "svg") throw new Error("FRAME fallback must contain SVG bytes");
+    if (image.origin === "photo" && !["webp", "png", "jpeg"].includes(heroMetadata.format ?? "")) throw new Error("licensed photo must be a supported raster image");
+  } catch (error) {
+    throw new DeliveryError("content_invalid", error instanceof Error ? error.message : "image bytes are invalid");
   }
   if (!Array.isArray(article.sources) || article.sources.length === 0) {
     throw new DeliveryError("schema_invalid", "article sources cannot be empty");
@@ -184,6 +229,26 @@ async function atomicJson(file, value) {
   }
 }
 
+async function atomicBytes(file, bytes) {
+  await mkdir(path.dirname(file), { recursive: true });
+  const temporary = `${file}.boardlessai-${process.pid}.tmp`;
+  try {
+    await writeFile(temporary, bytes, { flag: "wx" });
+    await rename(temporary, file);
+  } finally {
+    await rm(temporary, { force: true });
+  }
+}
+
+async function readBytes(file) {
+  try {
+    return await readFile(file);
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    throw error;
+  }
+}
+
 function articleIdentity(article) {
   return `${article.publishAt.slice(0, 10)}:${article.slot}`;
 }
@@ -191,7 +256,7 @@ function articleIdentity(article) {
 export async function materializeBoardlessPackage(value, root = process.cwd()) {
   const candidate = object(value);
   if (candidate?.schemaVersion === "article/1") {
-    const article = validateArticle(candidate);
+    const article = await validateArticle(candidate);
     const file = path.join(root, "data", "boardless", "articles.json");
     const store = await readJson(file, { schemaVersion: "mma-files-article-store/1", packages: [] });
     if (store.schemaVersion !== "mma-files-article-store/1" || !Array.isArray(store.packages)) {
@@ -200,14 +265,34 @@ export async function materializeBoardlessPackage(value, root = process.cwd()) {
     const current = store.packages.find((entry) => articleIdentity(entry) === articleIdentity(article));
     if (current) {
       if (current.packageHash === article.packageHash && canonical(current) === canonical(article)) {
-        return { status: "noop", kind: "article", packageHash: article.packageHash, paths: [] };
+        const heroFile = path.join(root, article.image.hero_path);
+        const thumbFile = path.join(root, article.image.thumb_path);
+        const [heroCurrent, thumbCurrent] = await Promise.all([readBytes(heroFile), readBytes(thumbFile)]);
+        const heroExpected = Buffer.from(article.image.hero_bytes_base64, "base64");
+        const thumbExpected = Buffer.from(article.image.thumb_bytes_base64, "base64");
+        if (heroCurrent?.equals(heroExpected) && thumbCurrent?.equals(thumbExpected)) {
+          return { status: "noop", kind: "article", packageHash: article.packageHash, paths: [] };
+        }
+        throw new DeliveryError("hash_conflict", `${articleIdentity(article)} image assets are missing or changed`);
       }
       throw new DeliveryError("hash_conflict", `${articleIdentity(article)} already contains different immutable bytes`);
     }
     const packages = [...store.packages, article].sort((left, right) =>
       left.publishAt.localeCompare(right.publishAt) || left.slot.localeCompare(right.slot));
+    const heroRelative = article.image.hero_path;
+    const thumbRelative = article.image.thumb_path;
+    const heroFile = path.join(root, heroRelative);
+    const thumbFile = path.join(root, thumbRelative);
+    const heroBytes = Buffer.from(article.image.hero_bytes_base64, "base64");
+    const thumbBytes = Buffer.from(article.image.thumb_bytes_base64, "base64");
+    const [existingHero, existingThumb] = await Promise.all([readBytes(heroFile), readBytes(thumbFile)]);
+    if ((existingHero && !existingHero.equals(heroBytes)) || (existingThumb && !existingThumb.equals(thumbBytes))) {
+      throw new DeliveryError("hash_conflict", `${articleIdentity(article)} image path already contains different bytes`);
+    }
+    if (!existingHero) await atomicBytes(heroFile, heroBytes);
+    if (!existingThumb) await atomicBytes(thumbFile, thumbBytes);
     await atomicJson(file, { schemaVersion: "mma-files-article-store/1", packages });
-    return { status: "written", kind: "article", packageHash: article.packageHash, paths: ["data/boardless/articles.json"] };
+    return { status: "written", kind: "article", packageHash: article.packageHash, paths: ["data/boardless/articles.json", heroRelative, thumbRelative] };
   }
 
   if (candidate?.schemaVersion === "fightaiq-delivery/1") {
