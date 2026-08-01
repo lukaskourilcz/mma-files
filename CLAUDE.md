@@ -23,8 +23,10 @@ is done. Do not wait for the user to ask for a commit.
   and experimental pick files. Every item must keep its capture time, model
   version and uncertainty. No affiliate links, bookmaker promotion, guaranteed
   outcomes, account automation or automatic bet placement.
-- No AI-generated fighter imagery presented as photography, and no promotion
-  logos or licensed photos. Heroes are typographic and deterministic.
+- No AI-generated fighter imagery may be presented as photography, and no
+  promotion logo or unlicensed photo may be used. Every new article delivery
+  includes one rehosted, attributed allowlisted photo or a deterministic
+  typographic fallback.
 - Do not claim the publication is live, established, independent, or fully
   automated. BoardlessAI wording is configurable in `src/config/site.ts`.
 - Banned phrase lists for both desks live in `src/lib/style-guard.ts`. Run

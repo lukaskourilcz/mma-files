@@ -306,7 +306,7 @@ that impossible to do quietly.
 BoardlessAI sends two package types through a repository-scoped GitHub App:
 
 - `article/1` — one sourced, published article with complete English and Czech
-  versions and a deterministic hero specification;
+  versions, plus exactly one rehosted, attributed image and thumbnail;
 - `fightaiq-delivery/1` — the latest UFC/Oktagon fighter files, event cards,
   captured prices and any separately approved versioned model outputs.
 
@@ -405,10 +405,10 @@ languages: four localised treatments. They are stored in
 [`src/content/social.ts`](src/content/social.ts) and surfaced as counts on the
 methodology page.
 
-**Nothing is wired to a platform.** Captions are not rendered publicly.
-Publishing is manual and requires a separate authorisation step with credentials
-this repository does not hold. Do not add an Instagram or Threads integration
-without explicit platform approval and a deliberate authorisation gate.
+**Nothing in this repository is wired to a platform.** Captions are not rendered
+publicly. BoardlessAI owns the separate Instagram and Threads connectors, health
+counters, credentials and global stop switch; this public site never receives
+those credentials.
 
 ---
 
@@ -425,7 +425,8 @@ components as well as the copy:
 - No AI-generated fighter imagery presented as photography.
 - No promotion marks, event artwork or licensed photography without permission.
 - Bilingual articles that clear BoardlessAI's release gates are delivered as
-  content-only Git commits and deploy automatically. Social posting stays manual.
+  content-only Git commits and deploy automatically. Social posting remains outside
+  this repository and cannot start until BoardlessAI's signed activation gates pass.
 
 If a future story does cite a deterministic aggregate, it must carry a
 `modelDisclosure`: the exact version, its input references, a plain-language
@@ -460,10 +461,10 @@ uncertainty statement and the responsible-play line. The
 
 ## Known issues
 
-`npm audit` reports advisories in `postcss` and `sharp`, both transitive
-build-time dependencies of Next.js 15.5. `npm audit fix --force` would downgrade
-Next to v9 and is not the fix; they clear on a future Next release. No raster
-image pipeline is used by this site.
+Next 15.5 still requests older PostCSS and Sharp ranges, so `package.json`
+overrides them to the audited fixed versions. The BoardlessAI consumer uses
+Sharp only while validating and rehosting delivered WebP images; reader requests
+do not process remote images.
 
 ## Licence
 
