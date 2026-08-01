@@ -145,9 +145,13 @@ Hotové není tohle: pátý zápas, pořadí předzápasů a jestli Rahal vůbec
         rounds: 5,
       },
     },
+    heroLine: {
+      en: "Seventeen professional fights. Not one of them has gone past the third round.",
+      cs: "Sedmnáct profesionálních zápasů. Ani jeden nešel za třetí kolo.",
+    },
     heroAlt: {
-      en: "Editorial card for the 8 August main event: Reece Alderton against Idris Rahal, five rounds.",
-      cs: "Redakční karta k hlavnímu zápasu 8. srpna: Reece Alderton proti Idrisi Rahalovi na pět kol.",
+      en: "Editorial card for the 8 August main event: Reece Alderton against Idris Rahal, five rounds. Seventeen professional fights, none past the third round.",
+      cs: "Redakční karta k hlavnímu zápasu 8. srpna: Reece Alderton proti Idrisi Rahalovi na pět kol. Sedmnáct profesionálních zápasů, ani jeden za třetím kolem.",
     },
     packageHash: "9f21c0ad",
     relatedSlugs: ["nadia-ferreiro-file", "forty-two-tracked-fields"],
@@ -998,9 +1002,13 @@ Zhruba stejná úvaha rozhoduje o tom, co ukáže složka. Když pole není dolo
         rounds: 0,
       },
     },
+    heroLine: {
+      en: "Two slots planned. Two slots killed. Nothing published that day.",
+      cs: "Dva sloty naplánované. Dva sloty zabité. Ten den nevyšlo nic.",
+    },
     heroAlt: {
-      en: "Editorial card: both story slots for 9 July marked killed.",
-      cs: "Redakční karta: oba sloty na 9. července označené jako zabité.",
+      en: "Editorial card: both story slots for 9 July marked killed, nothing published that day.",
+      cs: "Redakční karta: oba sloty na 9. července označené jako zabité, ten den nevyšlo nic.",
     },
     packageHash: "1c53f8ba",
     relatedSlugs: ["forty-two-tracked-fields", "stepan-hruska-file"],

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ActionLink, Chip, MissingValue } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
-import { countryName, formatDateTime, formatRelative } from "@/lib/format";
+import { countryName, formatCountdown, formatDateTime } from "@/lib/format";
 import { routes } from "@/lib/paths";
 import { getFighterById } from "@/lib/repository";
 import type { Bout, FightEvent, Locale } from "@/lib/types";
@@ -60,8 +60,8 @@ export function BoutRow({ bout, locale }: { bout: Bout; locale: Locale }) {
           fighterRef={bout.red.fighterRef}
           locale={locale}
           strong={Boolean(redWon)}
-        />
-        <span className="label-mono-sm mx-2 align-middle text-muted">vs</span>
+        />{" "}
+        <span className="label-mono-sm align-middle text-muted">vs</span>{" "}
         <FighterName
           name={bout.blue.name}
           fighterRef={bout.blue.fighterRef}
@@ -119,7 +119,9 @@ export function EventCard({
         <Chip tone="dark">{dict.organizationsShort[event.organization]}</Chip>
         <Chip tone={STATUS_TONE[event.status]}>{dict.eventStatus[event.status]}</Chip>
         <span className="label-mono-sm ml-auto text-muted">
-          {isPast ? dict.fightWeek.countdownPast : formatRelative(event.startsAt, locale)}
+          {isPast
+            ? dict.fightWeek.countdownPast
+            : formatCountdown(event.startsAt, locale)}
         </span>
       </div>
 
@@ -152,7 +154,7 @@ export function EventCard({
 
       {event.bouts.length > showBouts ? (
         <p className="label-mono-sm mt-3 text-muted">
-          +{event.bouts.length - showBouts}
+          {dict.events.moreOnCard} {event.bouts.length - showBouts}
         </p>
       ) : null}
 

@@ -200,8 +200,8 @@ export function HeroVisual({
               {methodShort ?? methodFull ?? "—"}
             </p>
             <p className="mt-5 max-w-xl text-lg font-medium leading-snug text-paper sm:text-xl">
-              <span className="text-white">{str(b, "winner")}</span>
-              <span className="label-mono mx-2.5 align-middle text-ember">def.</span>
+              <span className="text-white">{str(b, "winner")}</span>{" "}
+              <span className="label-mono align-middle text-ember">def.</span>{" "}
               <span className="text-paper-muted">{str(b, "loser")}</span>
             </p>
           </div>
@@ -281,16 +281,14 @@ export function HeroVisual({
           <div className="mt-7 flex flex-1 flex-col justify-center">
             <span aria-hidden="true" className="mb-4 block h-[2px] w-10 bg-ember" />
             <p className="max-w-2xl text-xl font-medium leading-[1.32] tracking-[-0.02em] text-white sm:text-2xl md:text-[1.75rem]">
-              {article.localizations[locale].dek}
+              {article.heroLine?.[locale] ?? article.localizations[locale].dek}
             </p>
           </div>
 
           <div className="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-rule-dark pt-4">
             {left && right ? (
               <p className="label-mono text-paper">
-                {left}
-                <span className="mx-2 text-ember">vs</span>
-                {right}
+                {left} <span className="text-ember">vs</span> {right}
               </p>
             ) : null}
             {rounds ? (

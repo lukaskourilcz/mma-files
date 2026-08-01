@@ -144,6 +144,12 @@ export interface Article {
   fileNumber?: number;
   /** [site] Alt text for the generated hero, per locale. */
   heroAlt?: Record<Locale, string>;
+  /**
+   * [site] Editorial pull line for the `quote-led-preview` hero. It is the
+   * desk's own line, never a quotation attributed to a person. Falls back to
+   * the dek, though repeating the dek beside it reads as a duplicate.
+   */
+  heroLine?: Record<Locale, string>;
   /** [site] Bullets for "The file" panel. */
   confirmed?: Record<Locale, string[]>;
   unconfirmed?: Record<Locale, string[]>;

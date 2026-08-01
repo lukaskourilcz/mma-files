@@ -69,14 +69,30 @@ export function formatRelative(iso: string, locale: Locale, now = new Date()): s
   return rtf.format(0, "minute");
 }
 
-/** ~230 wpm, floored at one minute. Counts the rendered body, not the markup. */
+/** 200 wpm, floored at one minute. Counts the rendered body, not the markup. */
 export function readingTimeMinutes(body: string): number {
   const words = body
     .replace(/\[\[[^\]|]+\|([^\]]+)\]\]/g, "$1")
     .replace(/[#>*_`\-]/g, " ")
     .split(/\s+/)
     .filter(Boolean).length;
-  return Math.max(1, Math.round(words / 230));
+  return Math.max(1, Math.round(words / 200));
+}
+
+/**
+ * Countdown to a card. Inside two months, fight scheduling is read in days —
+ * "in 35 days" is useful where `Intl`'s coarser "next month" is not.
+ */
+export function formatCountdown(iso: string, locale: Locale, now = new Date()): string {
+  const diffMs = new Date(iso).getTime() - now.getTime();
+  const days = Math.round(diffMs / (24 * 60 * 60 * 1000));
+  if (Math.abs(days) < 60 && Math.abs(diffMs) >= 24 * 60 * 60 * 1000) {
+    return new Intl.RelativeTimeFormat(BCP47[locale], { numeric: "auto" }).format(
+      days,
+      "day",
+    );
+  }
+  return formatRelative(iso, locale, now);
 }
 
 export function formatRecord(record: {

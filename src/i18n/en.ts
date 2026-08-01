@@ -299,6 +299,9 @@ export const en = {
     localTime: "Local time",
     noBouts: "No bouts have been confirmed on this card yet.",
     boutsPending: "The rest of the card is not confirmed.",
+    /** Rendered as `More on the card: 2` — the number trails the label so no
+     *  locale has to inflect the noun to agree with it. */
+    moreOnCard: "More on the card:",
   },
 
   dataDesk: {

@@ -297,6 +297,7 @@ export const cs: Dictionary = {
     localTime: "Místní čas",
     noBouts: "Na této kartě zatím není potvrzený žádný zápas.",
     boutsPending: "Zbytek karty potvrzený není.",
+    moreOnCard: "Dál na kartě:",
   },
 
   dataDesk: {
