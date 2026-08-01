@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PhotoSlot } from "@/components/media/PhotoSlot";
 import { Chip, DataRow, MissingValue } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import {
@@ -8,6 +9,7 @@ import {
   formatRecord,
 } from "@/lib/format";
 import { routes } from "@/lib/paths";
+import { PROMOTION_ACCENT } from "@/lib/promotion";
 import type { FieldState, Fighter, FighterField, Locale } from "@/lib/types";
 import { FIGHTER_FIELDS } from "@/lib/types";
 
@@ -29,6 +31,11 @@ export function FieldStateChip({
   return <Chip tone={STATE_TONE[state]}>{dict.fieldStates[state]}</Chip>;
 }
 
+/**
+ * A roster card: 4:5 portrait, the name in display type, and the record
+ * underneath. A disputed record renders as the word, in the disputed colour —
+ * never as one of the two numbers the registries disagree about.
+ */
 export function FighterCard({
   fighter,
   locale,
@@ -37,46 +44,55 @@ export function FighterCard({
   locale: Locale;
 }) {
   const dict = getDictionary(locale);
+  const accent = PROMOTION_ACCENT[fighter.organization];
+  const recordState = fighter.fieldStates.record ?? "unavailable";
 
   return (
-    <article className="sheet sheet-hover flex h-full flex-col p-5">
-      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2">
-        <Chip tone="dark">{dict.organizationsShort[fighter.organization]}</Chip>
-        <span className="label-mono-sm text-ink-muted">
-          {dict.divisions[fighter.division]}
+    <article className="sheet sheet-hover flex h-full flex-col">
+      <div className="relative aspect-[4/5] overflow-hidden border-b border-rule">
+        <PhotoSlot
+          image={fighter.image}
+          locale={locale}
+          note={dict.labels.photoSlots.portrait}
+          sizes="(min-width: 1024px) 23vw, (min-width: 640px) 45vw, 100vw"
+        />
+        <span
+          style={{ backgroundColor: `color-mix(in oklch, ${accent} 88%, black)` }}
+          className="label-mono-sm absolute left-3 top-3 z-10 px-2 py-1 font-semibold tracking-[0.14em] text-white"
+        >
+          {dict.organizationsShort[fighter.organization]}
         </span>
       </div>
 
-      <h3 className="mt-4 text-lg leading-tight tracking-[-0.025em] text-ink">
-        <Link
-          href={routes.fighter(locale, fighter.organization, fighter.slug)}
-          className="headline-link after:absolute after:inset-0"
-        >
-          {fighter.name}
-        </Link>
-      </h3>
+      <div className="px-4 pb-4 pt-3.5">
+        <h3 className="display text-[20px] leading-none text-ink md:text-[22px]">
+          <Link
+            href={routes.fighter(locale, fighter.organization, fighter.slug)}
+            className="headline-link after:absolute after:inset-0"
+          >
+            {fighter.name}
+          </Link>
+        </h3>
 
-      {fighter.nickname ? (
-        <p className="label-mono-sm mt-1.5 text-ember">“{fighter.nickname}”</p>
-      ) : null}
+        <p className="mt-2 font-mono text-sm font-semibold">
+          {recordState === "disputed" ? (
+            <span className="text-disputed">{dict.fieldStates.disputed}</span>
+          ) : fighter.record && recordState !== "unavailable" ? (
+            <span className="text-ink">{formatRecord(fighter.record)}</span>
+          ) : (
+            <MissingValue label={dict.fighters.recordUnavailable} />
+          )}
+        </p>
 
-      <p className="mt-3 text-sm text-ink-muted">
-        {countryName(fighter.country, dict)}
-      </p>
-
-      <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-5">
-        {fighter.record && fighter.fieldStates.record !== "unavailable" ? (
-          <>
-            <span className="font-mono text-sm font-medium text-ink">
-              {formatRecord(fighter.record)}
-            </span>
-            {fighter.fieldStates.record && fighter.fieldStates.record !== "verified" ? (
-              <FieldStateChip state={fighter.fieldStates.record} locale={locale} />
-            ) : null}
-          </>
-        ) : (
-          <MissingValue label={dict.fighters.recordUnavailable} />
-        )}
+        <p className="label-mono-sm mt-1.5 tracking-[0.13em] text-ink-meta">
+          {dict.divisions[fighter.division]} ·{" "}
+          <abbr
+            title={countryName(fighter.country, dict)}
+            className="no-underline"
+          >
+            {fighter.country}
+          </abbr>
+        </p>
       </div>
     </article>
   );

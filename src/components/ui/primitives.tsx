@@ -58,7 +58,13 @@ export function Chip({
   );
 }
 
-/** Solid promotion badge. The colour arrives as a fill, never as text. */
+/**
+ * Solid promotion badge. The colour arrives as a fill, never as text.
+ *
+ * The fill is the promotion colour taken down a step: white on the amber at
+ * full strength is 4.4:1, which is under the floor for a label this small.
+ * Darkening clears 4.5:1 for both promotions and still reads as red and amber.
+ */
 export function PromotionBadge({
   label,
   accent,
@@ -70,7 +76,7 @@ export function PromotionBadge({
 }) {
   return (
     <span
-      style={{ backgroundColor: accent }}
+      style={{ backgroundColor: `color-mix(in oklch, ${accent} 88%, black)` }}
       className={`inline-flex items-center px-2.5 py-1.5 text-[11px] font-extrabold uppercase leading-none tracking-[0.16em] text-white ${className}`}
     >
       {label}

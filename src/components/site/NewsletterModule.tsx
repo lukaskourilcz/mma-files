@@ -35,7 +35,7 @@ export function NewsletterModule({
 
   const form = (
     <form
-      className="mt-6 flex w-full max-w-lg flex-col gap-3 sm:flex-row"
+      className="flex w-full max-w-lg flex-col gap-2.5 sm:flex-row"
       onSubmit={(event) => event.preventDefault()}
       noValidate
     >
@@ -51,13 +51,13 @@ export function NewsletterModule({
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         aria-describedby={`${inputId}-note`}
-        className="min-w-0 flex-1 rounded-[6px] border border-rule-dark-strong bg-graphite px-4 py-3 text-[0.9375rem] text-white placeholder:text-muted focus:border-ember focus:outline-none"
+        className="min-w-0 flex-1 border border-rule-strong bg-card px-4 py-[15px] text-[15px] text-ink placeholder:text-ink-meta focus:border-ink focus:outline-none"
       />
       <button
         type="submit"
         disabled
         aria-disabled="true"
-        className="label-mono shrink-0 cursor-not-allowed rounded-[6px] border border-rule-dark-strong px-5 py-3 text-muted"
+        className="shrink-0 cursor-not-allowed border border-rule-strong bg-ember-soft px-[22px] py-[15px] text-[12px] font-extrabold uppercase tracking-[0.13em] text-ink-meta"
       >
         {copy.submit}
       </button>
@@ -67,7 +67,7 @@ export function NewsletterModule({
   const note = (
     <p
       id={`${inputId}-note`}
-      className="mt-4 max-w-lg text-xs leading-relaxed text-muted"
+      className="mt-3 max-w-lg text-xs leading-relaxed text-ink-meta"
     >
       {copy.notWired}
     </p>
@@ -75,39 +75,34 @@ export function NewsletterModule({
 
   if (variant === "panel") {
     return (
-      <div className="sheet-dark p-6 text-white md:p-8">
-        <h2 className="text-xl leading-tight tracking-[-0.03em] text-white md:text-2xl">
+      <div className="sheet p-6 md:p-8">
+        <h2 className="display text-[24px] leading-none text-ink md:text-[28px]">
           {copy.title}
         </h2>
-        <p className="mt-2.5 text-sm leading-relaxed text-paper-muted">
-          {copy.dek}
-        </p>
-        {form}
+        <p className="mt-3 text-sm leading-relaxed text-ink-muted">{copy.dek}</p>
+        <div className="mt-6">{form}</div>
         {note}
       </div>
     );
   }
 
   return (
-    <section aria-labelledby="newsletter" className="bg-ink py-14 text-white md:py-20">
-      <Container>
-        <div className="grid gap-8 md:grid-cols-12 md:items-center">
-          <div className="md:col-span-6">
-            <span aria-hidden="true" className="mb-4 block h-[2px] w-10 bg-ember" />
-            <h2
-              id="newsletter"
-              className="text-[1.75rem] leading-[1.1] tracking-[-0.035em] text-white md:text-[2.25rem]"
-            >
-              {copy.title}
-            </h2>
-            <p className="mt-3 max-w-md text-base leading-relaxed text-paper-muted">
-              {copy.dek}
-            </p>
-          </div>
-          <div className="md:col-span-6">
-            {form}
-            {note}
-          </div>
+    <section aria-labelledby="newsletter" className="border-b border-rule-strong">
+      <Container className="grid items-center gap-10 py-12 md:py-13 lg:grid-cols-2 lg:gap-14">
+        <div>
+          <h2
+            id="newsletter"
+            className="display text-[34px] leading-[0.95] text-ink sm:text-[44px] lg:text-[52px]"
+          >
+            {copy.title}
+          </h2>
+          <p className="mt-4 max-w-[44ch] text-base leading-relaxed text-ink-muted">
+            {copy.dek}
+          </p>
+        </div>
+        <div>
+          {form}
+          {note}
         </div>
       </Container>
     </section>

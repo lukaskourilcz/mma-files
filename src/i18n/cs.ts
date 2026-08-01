@@ -57,6 +57,7 @@ export const cs: Dictionary = {
     sourceCount: (n: number) =>
       `${n} ${n === 1 ? "zdroj" : n < 5 ? "zdroje" : "zdrojů"}`,
     photoPending: "Fotografie zatím není",
+    desk: "Redakce",
     photoSlots: {
       lead: "Hlavní fotka — příchod nebo staredown, 4:5",
       story: "Fotka k textu — 16:9",
@@ -175,6 +176,13 @@ export const cs: Dictionary = {
     prelim: "Předzápasy",
   },
 
+  billingShort: {
+    main: "Hlavní",
+    "co-main": "Předzápas",
+    "main-card": "Karta",
+    prelim: "Prelim",
+  },
+
   eventStatus: {
     announced: "Oznámeno",
     "card-forming": "Karta se skládá",
@@ -244,9 +252,6 @@ export const cs: Dictionary = {
     noCardCompleted: "Žádná odjetá karta",
     dataTitle: "Data za textem",
     dataDek: "Každá složka začíná v důkazní vrstvě, ne v konceptu.",
-    transparencyTitle: "Každý text začíná složkou",
-    transparencyDek:
-      "Čtyři pravidla, která redakce uplatní dřív, než se cokoli dostane na tuhle stránku.",
     noLead: "Zatím nevyšel žádný text. Další složka se objeví tady.",
     noStories: "Zatím nevyšel žádný text.",
   },
@@ -263,25 +268,6 @@ export const cs: Dictionary = {
     booked: "Nasmlouváno",
     open: "Otevřené",
   },
-
-  transparency: [
-    {
-      title: "Fakta mají zdroj",
-      body: "Každé faktické tvrzení má odkaz. Slot s tenkým podkladem se zabije, nedoplňuje.",
-    },
-    {
-      title: "Kontrolujeme obě verze",
-      body: "Česká verze se píše česky, nepřekládá se z angličtiny. Obě projdou kontrolou před vydáním.",
-    },
-    {
-      title: "Chybějící informace zůstává vidět",
-      body: "Neznámá bilance, čas nebo zápas se ukáže jako neznámá. Nulou ani odhadem ji nenahrazujeme.",
-    },
-    {
-      title: "Opravy zůstávají na stránce",
-      body: "Když text upravíme, změna i její datum zůstanou vidět.",
-    },
-  ],
 
   latest: {
     title: "Nejnovější",
@@ -309,6 +295,8 @@ export const cs: Dictionary = {
   },
 
   results: {
+    defeated: "porazil(a)",
+    versus: "vs",
     title: "Výsledky",
     dek: "Odjeté karty po pořadí zápasů, se způsobem a časem ukončení tam, kde to záznam dovoluje.",
     empty: "Zatím nemáme složku k žádnému odjetému turnaji.",

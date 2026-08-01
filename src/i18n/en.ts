@@ -54,6 +54,8 @@ export const en = {
     sources: "Sources",
     sourceCount: (n: number) => `${n} ${n === 1 ? "source" : "sources"}`,
     photoPending: "No photograph on file",
+    /** Badge for a file the desk wrote itself, with no promotion attached. */
+    desk: "Desk",
     /** What belongs in an empty photo slot. A brief, never invented content. */
     photoSlots: {
       lead: "Lead image — walkout or face-off, 4:5",
@@ -178,6 +180,14 @@ export const en = {
     prelim: "Preliminary card",
   },
 
+  /** Slot labels for the fixed-width column on card and results rows. */
+  billingShort: {
+    main: "Main",
+    "co-main": "Co-main",
+    "main-card": "Card",
+    prelim: "Prelim",
+  },
+
   eventStatus: {
     announced: "Announced",
     "card-forming": "Card forming",
@@ -248,9 +258,6 @@ export const en = {
     noCardCompleted: "No card completed",
     dataTitle: "The data behind the story",
     dataDek: "Every file starts in the evidence layer, not in a draft.",
-    transparencyTitle: "Every story starts with a file",
-    transparencyDek:
-      "Four rules the desks apply before anything reaches this page.",
     noLead: "No story has been released yet. The next file appears here.",
     noStories: "No stories have been released yet.",
   },
@@ -268,25 +275,6 @@ export const en = {
     booked: "Booked",
     open: "Open",
   },
-
-  transparency: [
-    {
-      title: "Facts are sourced",
-      body: "Every factual claim carries a reference. A slot with thin evidence is killed, not filled.",
-    },
-    {
-      title: "Both languages are checked",
-      body: "The Czech version is written as Czech, not translated from English, and both are reviewed before release.",
-    },
-    {
-      title: "Missing information stays visible",
-      body: "An unknown record, time or booking is shown as unknown. It is never replaced by a zero or a guess.",
-    },
-    {
-      title: "Corrections remain visible",
-      body: "When a story is amended, the change and its date stay on the page.",
-    },
-  ],
 
   latest: {
     title: "Latest",
@@ -314,6 +302,9 @@ export const en = {
   },
 
   results: {
+    /** Winner-to-loser relation on a result row. */
+    defeated: "def.",
+    versus: "vs",
     title: "Results",
     dek: "Completed cards, in fight order, with method and time where the record supports it.",
     empty: "No completed events are on file yet.",

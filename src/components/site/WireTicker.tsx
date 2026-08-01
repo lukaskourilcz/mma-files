@@ -24,12 +24,15 @@ function buildWire(locale: Locale): WireItem[] {
       const result = bout.result;
       if (!result) continue;
 
-      const winner =
-        result.winnerRef === bout.red.fighterRef
+      // Guard the ref before comparing: two absent refs are not a match, and
+      // treating them as one would report a no contest as a win.
+      const winner = result.winnerRef
+        ? result.winnerRef === bout.red.fighterRef
           ? bout.red.name
           : result.winnerRef === bout.blue.fighterRef
             ? bout.blue.name
-            : undefined;
+            : undefined
+        : undefined;
       const loser = winner === bout.red.name ? bout.blue.name : bout.red.name;
 
       const finish = result.finish
@@ -45,8 +48,8 @@ function buildWire(locale: Locale): WireItem[] {
         tag: event.name,
         // A draw or a no contest has no winner, so it is never phrased as one.
         text: winner
-          ? `${winner} def. ${loser} — ${detail}${timing}`
-          : `${bout.red.name} vs ${bout.blue.name} — ${detail}${timing}`,
+          ? `${winner} ${dict.results.defeated} ${loser} — ${detail}${timing}`
+          : `${bout.red.name} ${dict.results.versus} ${bout.blue.name} — ${detail}${timing}`,
       });
     }
   }
@@ -57,10 +60,12 @@ function buildWire(locale: Locale): WireItem[] {
       items.push({
         key: `booked:${bout.id}`,
         tag: dict.wire.booked,
-        text: `${bout.red.name} vs ${bout.blue.name}${title}, ${dict.divisions[bout.division]} — ${formatDate(
+        text: `${bout.red.name} ${dict.results.versus} ${bout.blue.name}${title}, ${dict.divisions[bout.division]} — ${formatDate(
           event.startsAt,
           locale,
-          { day: "numeric", month: "short" },
+          // The venue's date, not the server's: a 19:00 Las Vegas card is
+          // already the next day in Prague.
+          { day: "numeric", month: "short", timeZone: event.timeZone },
         )}`,
       });
     }

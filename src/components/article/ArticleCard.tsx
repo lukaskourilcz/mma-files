@@ -1,19 +1,24 @@
 import Link from "next/link";
-import { Chip } from "@/components/ui/primitives";
+import { PhotoSlot } from "@/components/media/PhotoSlot";
 import { getDictionary } from "@/i18n";
 import { formatDate, readingTimeMinutes } from "@/lib/format";
 import { routes } from "@/lib/paths";
+import { accentFor } from "@/lib/promotion";
 import type { Article, Locale } from "@/lib/types";
 
 export function FileNumber({ article }: { article: Article }) {
   if (!article.fileNumber) return null;
   return (
-    <span className="label-mono-sm text-muted">
+    <span className="label-mono-sm text-ink-meta">
       {String(article.fileNumber).padStart(3, "0")}
     </span>
   );
 }
 
+/**
+ * A file card: 16:9 photo slot with the promotion rule and badge, then the
+ * headline, the dek, and a footer of date, read time and source count.
+ */
 export function ArticleCard({
   article,
   locale,
@@ -23,63 +28,96 @@ export function ArticleCard({
   article: Article;
   locale: Locale;
   headingLevel?: "h2" | "h3";
+  /** `compact` drops the photo slot and the dek — used in sidebars. */
   size?: "default" | "compact";
 }) {
   const dict = getDictionary(locale);
   const local = article.localizations[locale];
   const Heading = headingLevel;
   const minutes = readingTimeMinutes(local.body);
+  const accent = accentFor(article.organization);
+  const promotion = article.organization
+    ? dict.organizationsShort[article.organization]
+    : dict.labels.desk;
 
   return (
-    <article className="sheet sheet-hover group flex h-full flex-col p-5 md:p-6">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <Chip tone="ember">{dict.formats[article.format]}</Chip>
-        {article.organization ? (
-          <Chip tone="muted">{dict.organizationsShort[article.organization]}</Chip>
-        ) : null}
-        <FileNumber article={article} />
-      </div>
-
-      <Heading
-        className={`mt-4 tracking-[-0.025em] text-ink ${
-          size === "compact" ? "text-[1.0625rem] leading-snug" : "text-xl leading-[1.22] md:text-[1.375rem]"
-        }`}
-      >
-        <Link
-          href={routes.article(locale, article.slug)}
-          className="headline-link after:absolute after:inset-0"
-        >
-          {local.title}
-        </Link>
-      </Heading>
-
+    <article className="sheet sheet-hover flex h-full flex-col">
       {size === "default" ? (
-        <p className="mt-3 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink-muted">
-          {local.dek}
-        </p>
+        <div className="relative aspect-video overflow-hidden border-b border-rule">
+          <PhotoSlot
+            image={article.image}
+            locale={locale}
+            note={dict.labels.photoSlots.story}
+            sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+          />
+          <span
+            aria-hidden="true"
+            style={{ backgroundColor: accent }}
+            className="absolute left-0 top-0 z-10 h-1 w-full"
+          />
+          <span
+            style={{ backgroundColor: `color-mix(in oklch, ${accent} 88%, black)` }}
+            className="label-mono-sm absolute bottom-3 left-3 z-10 px-2 py-1 font-semibold tracking-[0.14em] text-white"
+          >
+            {promotion}
+          </span>
+        </div>
       ) : null}
 
-      <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-5">
-        <time
-          dateTime={article.publishAt}
-          className="label-mono-sm text-ink-muted"
+      <div className="flex flex-1 flex-col p-4 md:px-4.5 md:pb-4.5">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className="label-mono-sm font-semibold tracking-[0.16em] text-ink-muted">
+            {dict.formats[article.format]}
+          </span>
+          {article.fileNumber ? (
+            <>
+              <span aria-hidden="true" className="h-2.5 w-px bg-rule-strong" />
+              <span className="label-mono-sm tracking-[0.16em] text-ink-meta">
+                {dict.labels.file} {String(article.fileNumber).padStart(3, "0")}
+              </span>
+            </>
+          ) : null}
+        </div>
+
+        <Heading
+          className={`mt-2.5 font-extrabold leading-[1.16] tracking-[-0.01em] text-ink ${
+            size === "compact" ? "text-[1.0625rem]" : "text-[1.25rem]"
+          }`}
         >
-          {formatDate(article.publishAt, locale, {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })}
-        </time>
-        <span aria-hidden="true" className="h-3 w-px bg-rule-strong" />
-        <span className="label-mono-sm text-muted">
-          {minutes} {dict.labels.readingTime}
-        </span>
-        {article.isDemo ? (
-          <>
-            <span aria-hidden="true" className="h-3 w-px bg-rule-strong" />
-            <span className="label-mono-sm text-ember">{dict.labels.demoShort}</span>
-          </>
+          <Link
+            href={routes.article(locale, article.slug)}
+            className="headline-link after:absolute after:inset-0"
+          >
+            {local.title}
+          </Link>
+        </Heading>
+
+        {size === "default" ? (
+          <p className="mt-2 line-clamp-3 text-[13.5px] leading-[1.55] text-ink-muted">
+            {local.dek}
+          </p>
         ) : null}
+
+        <div className="mt-auto flex flex-wrap items-center gap-x-2.5 gap-y-1 pt-4">
+          <time
+            dateTime={article.publishAt}
+            className="label-mono-sm tracking-[0.14em] text-ink-meta"
+          >
+            {formatDate(article.publishAt, locale, {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </time>
+          <span aria-hidden="true" className="h-2.5 w-px bg-rule-strong" />
+          <span className="label-mono-sm tracking-[0.14em] text-ink-meta">
+            {minutes} {dict.labels.readingTime}
+          </span>
+          <span className="label-mono-sm ml-auto flex items-center gap-1.5 tracking-[0.14em] text-ink-meta">
+            <span aria-hidden="true" className="block h-1 w-1 bg-verified" />
+            {dict.labels.sourceCount(article.sources.length)}
+          </span>
+        </div>
       </div>
     </article>
   );
@@ -106,9 +144,7 @@ export function ArticleGrid({
 
   return (
     <ul
-      className={`grid gap-5 sm:grid-cols-2 ${
-        columns === 3 ? "lg:grid-cols-3" : ""
-      }`}
+      className={`grid gap-5 sm:grid-cols-2 ${columns === 3 ? "lg:grid-cols-3" : ""}`}
     >
       {articles.map((article) => (
         <li key={article.id} className="relative">

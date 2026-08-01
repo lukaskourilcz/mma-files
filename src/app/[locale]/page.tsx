@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
-import { ArticleGrid } from "@/components/article/ArticleCard";
+import { ArticleCard } from "@/components/article/ArticleCard";
 import { LeadStory } from "@/components/article/LeadStory";
 import { EventCard } from "@/components/event/EventCard";
-import { DataDeskModule, TransparencyBlock } from "@/components/site/HomeModules";
+import { ResultsBoard } from "@/components/event/ResultsBoard";
+import { FighterCard } from "@/components/fighter/FighterCard";
+import { DataDeskModule } from "@/components/site/HomeModules";
 import { NewsletterModule } from "@/components/site/NewsletterModule";
 import { ActionLink, Container, SectionHeading } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
@@ -10,6 +12,7 @@ import { routes } from "@/lib/paths";
 import {
   getArticles,
   getCompletedEvents,
+  getFighters,
   getLeadArticle,
   getUpcomingEvents,
 } from "@/lib/repository";
@@ -26,12 +29,14 @@ export default async function HomePage({
   const dict = getDictionary(locale);
 
   const lead = getLeadArticle();
-  const latest = getArticles().filter((a) => a.slug !== lead?.slug).slice(0, 6);
+  const files = getArticles().filter((a) => a.slug !== lead?.slug).slice(0, 6);
 
   // If no card is booked, show the most recent completed one rather than an
   // empty strip — the section is about what is real, not about being full.
   const upcoming = getUpcomingEvents();
-  const events = upcoming.length > 0 ? upcoming.slice(0, 3) : getCompletedEvents().slice(0, 1);
+  const cards = upcoming.length > 0 ? upcoming.slice(0, 2) : getCompletedEvents().slice(0, 1);
+
+  const roster = getFighters();
 
   return (
     <>
@@ -43,37 +48,31 @@ export default async function HomePage({
         </Container>
       )}
 
-      <section aria-labelledby="latest-files" className="py-14 md:py-20">
-        <Container>
+      <section
+        aria-labelledby="results"
+        className="border-b border-rule-strong bg-card"
+      >
+        <Container className="py-10 md:py-12">
           <SectionHeading
-            kicker={dict.labels.file}
-            title={dict.home.latestTitle}
-            dek={dict.home.latestDek}
+            id="results"
+            title={dict.home.resultsTitle}
+            note={dict.home.resultsDek}
             action={
-              <ActionLink href={routes.latest(locale)}>
-                {dict.actions.allStories}
+              <ActionLink href={routes.results(locale)}>
+                {dict.actions.allResults}
               </ActionLink>
             }
           />
-          <div className="mt-8">
-            <ArticleGrid
-              articles={latest}
-              locale={locale}
-              emptyLabel={dict.home.noStories}
-            />
-          </div>
+          <ResultsBoard locale={locale} />
         </Container>
       </section>
 
-      <section
-        aria-labelledby="fight-week"
-        className="border-y border-rule-strong bg-white py-14 md:py-20"
-      >
-        <Container>
+      <section aria-labelledby="next-up" className="border-b border-rule-strong">
+        <Container className="py-11 md:py-13">
           <SectionHeading
-            kicker={dict.nav.fightWeek}
+            id="next-up"
             title={dict.home.fightWeekTitle}
-            dek={dict.home.fightWeekDek}
+            note={dict.home.fightWeekDek}
             action={
               <ActionLink href={routes.fightWeek(locale)}>
                 {dict.nav.fightWeek}
@@ -82,13 +81,13 @@ export default async function HomePage({
           />
 
           {upcoming.length === 0 ? (
-            <p className="mt-8 text-sm leading-relaxed text-ink-muted">
+            <p className="mt-6 text-sm leading-relaxed text-ink-muted">
               {dict.fightWeek.noUpcoming}
             </p>
           ) : null}
 
-          <ul className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {events.map((event) => (
+          <ul className="mt-5 grid gap-5 lg:grid-cols-2">
+            {cards.map((event) => (
               <li key={event.id} className="relative">
                 <EventCard event={event} locale={locale} />
               </li>
@@ -97,8 +96,72 @@ export default async function HomePage({
         </Container>
       </section>
 
+      <section
+        aria-labelledby="files"
+        className="border-b border-rule-strong bg-card"
+      >
+        <Container className="py-11 md:py-13">
+          <SectionHeading
+            id="files"
+            title={dict.home.latestTitle}
+            note={dict.home.latestDek}
+            action={
+              <ActionLink href={routes.latest(locale)}>
+                {dict.actions.allStories}
+              </ActionLink>
+            }
+          />
+
+          {files.length === 0 ? (
+            <p className="mt-6 text-sm leading-relaxed text-ink-muted">
+              {dict.home.noStories}
+            </p>
+          ) : (
+            <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {files.map((article) => (
+                <li key={article.id} className="relative">
+                  <ArticleCard article={article} locale={locale} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </Container>
+      </section>
+
       <DataDeskModule locale={locale} />
-      <TransparencyBlock locale={locale} />
+
+      <section
+        aria-labelledby="roster"
+        className="border-b border-rule-strong bg-card"
+      >
+        <Container className="py-11 md:py-13">
+          <SectionHeading
+            id="roster"
+            title={dict.home.rosterTitle}
+            note={dict.home.rosterDek(roster.length)}
+            action={
+              <ActionLink href={routes.fighters(locale)}>
+                {dict.actions.allFighters}
+              </ActionLink>
+            }
+          />
+
+          {roster.length === 0 ? (
+            <p className="mt-6 text-sm leading-relaxed text-ink-muted">
+              {dict.fighters.empty}
+            </p>
+          ) : (
+            <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {roster.map((fighter) => (
+                <li key={fighter.id} className="relative">
+                  <FighterCard fighter={fighter} locale={locale} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </Container>
+      </section>
+
       <NewsletterModule copy={dict.newsletter} />
     </>
   );

@@ -1,63 +1,25 @@
 import Link from "next/link";
-import {
-  ActionLink,
-  Container,
-  Kicker,
-  SectionHeading,
-} from "@/components/ui/primitives";
-import { siteConfig } from "@/config/site";
+import { CountUp } from "@/components/site/CountUp";
+import { ActionLink, Container, SectionHeading } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
 import { getCoverageStats } from "@/lib/repository";
 import type { FieldState, Locale } from "@/lib/types";
 
-/** Four rules the desks apply before anything reaches a page. */
-export function TransparencyBlock({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
+const STATE_FILL: Record<FieldState, string> = {
+  verified: "var(--color-verified)",
+  provisional: "var(--color-provisional)",
+  disputed: "var(--color-disputed)",
+  unavailable: "var(--color-gap)",
+};
 
-  return (
-    <section aria-labelledby="transparency" className="py-14 md:py-20">
-      <Container>
-        <div className="max-w-2xl">
-          <Kicker>{dict.labels.sourceChecked}</Kicker>
-          <h2
-            id="transparency"
-            className="mt-3 text-[1.75rem] leading-[1.1] tracking-[-0.035em] text-ink md:text-[2.25rem]"
-          >
-            {dict.home.transparencyTitle}
-          </h2>
-          <p className="mt-3 text-base leading-relaxed text-ink-muted">
-            {dict.home.transparencyDek}
-          </p>
-        </div>
+const STATES: FieldState[] = ["verified", "provisional", "disputed", "unavailable"];
 
-        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {dict.transparency.map((item, i) => (
-            <li key={item.title} className="sheet flex flex-col p-5">
-              <span className="label-mono-sm text-ember">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-3 text-base leading-snug tracking-[-0.02em] text-ink">
-                {item.title}
-              </h3>
-              <p className="mt-2.5 text-sm leading-relaxed text-ink-muted">
-                {item.body}
-              </p>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-8">
-          <ActionLink href={routes.standards(locale)}>
-            {dict.footer.standards}
-          </ActionLink>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-/** FightAIQ coverage, read from the repository — counts, never predictions. */
+/**
+ * The numbers. Every figure is read from `getCoverageStats()` — a count of the
+ * documents this repository actually holds, never a forecast, never a price
+ * and never a hard-coded marketing figure.
+ */
 export function DataDeskModule({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const stats = getCoverageStats();
@@ -69,63 +31,75 @@ export function DataDeskModule({ locale }: { locale: Locale }) {
     { label: dict.dataDesk.fieldsTracked, value: stats.fieldsTracked },
   ];
 
-  const states: FieldState[] = ["verified", "provisional", "disputed", "unavailable"];
+  const unsettled = stats.fieldsTracked - stats.byState.verified;
 
   return (
-    <section
-      aria-labelledby="data-desk"
-      className="grid-rules border-y border-rule-dark bg-ink py-14 text-white md:py-20"
-    >
-      <Container>
+    <section aria-labelledby="numbers" className="border-b border-rule-strong">
+      <Container className="py-12 md:py-14">
         <SectionHeading
-          kicker={siteConfig.dataLayer.name}
-          title={dict.home.dataTitle}
-          dek={dict.home.dataDek}
-          tone="paper"
+          id="numbers"
+          title={dict.home.numbersTitle}
+          note={dict.home.numbersDek}
           action={
-            <ActionLink href={routes.dataDesk(locale)} tone="paper">
-              {dict.actions.howChecked}
+            <ActionLink href={routes.dataDesk(locale)}>
+              {dict.nav.dataDesk}
             </ActionLink>
           }
         />
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-12">
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-8 lg:col-span-7 lg:grid-cols-4">
+        <div className="mt-6 grid items-start gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-12">
+          <dl className="grid grid-cols-2 gap-px border border-rule-strong bg-rule-strong md:grid-cols-4">
             {figures.map((figure) => (
-              <div key={figure.label} className="border-t border-rule-dark pt-4">
-                <dd className="text-[2.25rem] font-bold leading-none tracking-[-0.045em] text-white md:text-[2.75rem]">
-                  {figure.value}
+              <div key={figure.label} className="bg-card px-5 pb-5 pt-6">
+                <dd className="display text-[44px] leading-[0.9] text-ink md:text-[62px]">
+                  <CountUp value={figure.value} />
                 </dd>
-                <dt className="label-mono-sm mt-3 text-paper-muted">{figure.label}</dt>
+                <dt className="label-mono-sm mt-3 tracking-[0.16em] text-ink-muted">
+                  {figure.label}
+                </dt>
               </div>
             ))}
           </dl>
 
-          <div className="lg:col-span-5">
-            <h3 className="label-mono text-ember">{dict.dataDesk.statesTitle}</h3>
-            <ul className="mt-4 space-y-0">
-              {states.map((state) => (
-                <li
-                  key={state}
-                  className="flex items-baseline justify-between gap-4 border-b border-rule-dark py-2.5 last:border-b-0"
-                >
-                  <span className="label-mono-sm text-paper-muted">
-                    {dict.fieldStates[state]}
-                  </span>
-                  <span className="font-mono text-sm text-white">
-                    {stats.byState[state]}
-                  </span>
-                </li>
-              ))}
+          <div>
+            <h3 className="label-mono-sm inline-flex bg-signal px-2.5 py-[5px] font-semibold tracking-[0.18em] text-ink">
+              {dict.home.markingTitle}
+            </h3>
+
+            <ul className="mt-4 flex flex-col gap-3">
+              {STATES.map((state) => {
+                const count = stats.byState[state];
+                const pct = stats.fieldsTracked
+                  ? (count / stats.fieldsTracked) * 100
+                  : 0;
+
+                return (
+                  <li key={state}>
+                    <div className="flex items-baseline justify-between gap-3">
+                      <span className="label-mono-sm tracking-[0.14em] text-ink-muted">
+                        {dict.fieldStates[state]}
+                      </span>
+                      <span className="font-mono text-sm font-semibold text-ink">
+                        {count}
+                      </span>
+                    </div>
+                    <div className="mt-[7px] h-1.5 overflow-hidden bg-rule">
+                      <div
+                        className="h-full origin-left animate-wipe-slow"
+                        style={{
+                          width: `${pct}%`,
+                          backgroundColor: STATE_FILL[state],
+                        }}
+                      />
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
-            <p className="mt-5 text-sm leading-relaxed text-muted">
-              {dict.dataDesk.responsiblePlay}
+
+            <p className="mt-5 text-[13px] leading-relaxed text-ink-muted">
+              {dict.home.markingNote(unsettled, stats.fieldsTracked)}
             </p>
-            <div className="mt-5">
-              <ActionLink href={routes.fighters(locale)} tone="paper">
-                {dict.actions.exploreFighters}
-              </ActionLink>
-            </div>
           </div>
         </div>
       </Container>
@@ -144,8 +118,8 @@ export function DemoNotice({
   const dict = getDictionary(locale);
 
   return (
-    <p className="flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-[10px] border border-ember/30 bg-ember-soft px-4 py-3">
-      <span className="label-mono-sm rounded-[4px] bg-ember px-1.5 py-0.5 text-white">
+    <p className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border border-rule-strong bg-card px-4 py-3">
+      <span className="label-mono-sm bg-signal px-1.5 py-0.5 font-semibold text-ink">
         {variant === "article" ? dict.demo.articleBadge : dict.demo.dataBadge}
       </span>
       <span className="text-xs leading-relaxed text-ink-muted">
@@ -171,7 +145,7 @@ export function DeskLinks({ locale }: { locale: Locale }) {
         <Link
           key={link.href}
           href={link.href}
-          className="label-mono-sm text-ink-muted underline decoration-rule-strong underline-offset-[3px] hover:text-ink hover:decoration-ember"
+          className="label-mono-sm text-ink-muted underline decoration-rule-strong underline-offset-[3px] hover:text-ink hover:decoration-ink"
         >
           {link.label}
         </Link>
