@@ -54,7 +54,7 @@ All optional. Defaults are the safe ones.
 src/
 ├── app/[locale]/          Every reader-facing route. The locale layout IS the
 │                          root layout, so <html lang> is always correct.
-├── components/            article/ event/ fighter/ hero/ site/ ui/ pages/
+├── components/            article/ event/ fighter/ hero/ media/ site/ ui/ pages/
 ├── config/site.ts         Brand, engine attribution, indexing switches
 ├── content/               Seed data — replace this, not the components
 ├── i18n/                  en.ts is the structural source of truth; cs.ts is
@@ -65,7 +65,8 @@ src/
 │   ├── types.ts           The content model
 │   ├── format.ts          Dates, relative times, records, reading time
 │   ├── metadata.ts        Canonical + hreflang + robots for a route
-│   └── paths.ts           Route builders — never hand-write a URL
+│   ├── paths.ts           Route builders — never hand-write a URL
+│   └── promotion.ts       Per-promotion accents, exhaustive over the union
 └── middleware.ts          Redirects unprefixed paths, negotiates the locale
 ```
 
@@ -76,6 +77,42 @@ Two rules keep this maintainable:
    change in one file.
 2. **URLs come from `src/lib/paths.ts`.** Canonicals, `hreflang` alternates and
    the sitemap all call the same builders, so they cannot drift apart.
+
+---
+
+## Design system
+
+Everything visual is declared in the `@theme` block of `src/app/globals.css`.
+Change it there; no component hard-codes a colour except through a token.
+
+**Type.** Three families, loaded via `next/font/google` in the locale layout.
+`--font-display` is Anton — headlines, section titles, fighter names, methods
+and the big figures, always uppercase at a line height of 0.9–1.05, applied via
+the `.display` class. `--font-sans` is Archivo for deks, body, nav and buttons.
+`--font-mono` is IBM Plex Mono for every date, time, record, count and tag,
+uppercase with wide tracking via `.label-mono` / `.label-mono-sm`.
+
+**Colour.** `paper` / `card` / `ink` are the surfaces. `ufc` and `oktagon` are
+promotion accents; `signal` is the lime. Four evidence colours — `verified`,
+`provisional`, `disputed`, `gap` — drive the state bars and the disputed
+record.
+
+Three rules the components follow, and any new component must:
+
+- **Lime is never text.** It is a fill, and the text on it is `ink`.
+- **Promotion colour is never small text.** It is a card's top rule, a section
+  rule, or a badge fill. Display headings at 24px and up may use it directly;
+  `PromotionBadge` darkens the fill one step so white on it clears 4.5:1.
+- **Black blocks are punctuation.** The wire, the hero pull-quote and the
+  footer. Nothing else.
+
+Small mono metadata is `ink-meta` (`#6B6B66`, 4.6:1 on white — do not lighten
+it); on the black footer the floor is `paper-meta`. Every border is square —
+there are no radius tokens.
+
+**Motion** lives in the same file as `--animate-*` tokens and is covered by the
+global `prefers-reduced-motion` block. The count-up in `CountUp.tsx` checks the
+media query in JavaScript too, because a rAF loop is not a CSS animation.
 
 ---
 
@@ -115,8 +152,15 @@ interface Article {
   corrections?: Correction[];
   modelDisclosure?: ModelDisclosure;
   relatedSlugs?: string[];
+  image?: StoryImage;
 }
 ```
+
+`StoryImage` is `{ src, alt: Record<Locale, string>, credit, focalPoint? }`. It
+is optional on both `Article` and `Fighter`, so an untouched engine payload
+still typechecks — but every field inside it is required. A file with no
+photograph renders a labelled placeholder, never an empty box and never a stock
+substitute.
 
 Alongside `Article` the repository holds `Fighter`, `FightEvent` and
 `SocialVariant`. Fighters carry a `fieldStates` map — one of `verified`,
@@ -190,10 +234,16 @@ never a dead link.
 
 ### Hero visuals
 
-Four deterministic typographic templates: `tale-of-the-tape`,
-`type-led-result`, `data-card` and `quote-led-preview`. They are generated from
-the story's own data. There is no photography anywhere in this project, and no
-generated likeness is presented as one.
+The front page is image-led: the lead file renders one 4:5 photograph, file
+cards render 16:9, and roster cards render 4:5 portraits. Where no photograph
+exists the slot says so and states what belongs there — see `StoryImage` above
+and `src/components/media/PhotoSlot.tsx`.
+
+The article page still uses the four deterministic typographic templates:
+`tale-of-the-tape`, `type-led-result`, `data-card` and `quote-led-preview`,
+generated from the story's own data. No AI-generated likeness is presented as a
+photograph, and no promotion mark, event artwork or licensed image is used
+without permission.
 
 `heroSpec.bindings` carry **locale-neutral values only** — names, numbers,
 times, and keys like `methodKey` or `metric1`. Every label is looked up in the
@@ -274,6 +324,8 @@ Keep these if you replace the fixtures with different demo content:
   be a fabricated attribution.
 - **Fictional venues and fighters.** No demo record describes a real person,
   gym, card or result.
+- **No demo photography.** The seed records carry no `image`, so every photo
+  slot renders its placeholder. Do not fill them with stock images.
 - **`isDemo: true` on every seed record.** This drives the badges and the
   indexing exclusions.
 
@@ -357,10 +409,17 @@ uncertainty statement and the responsible-play line. The
 
 - Semantic landmarks, a skip link, and a heading order that starts at one `h1`
   per page.
-- Visible 2px focus rings on every interactive element.
+- Visible 2px ink focus rings on every interactive element.
 - Hero visuals are exposed as a single labelled image (`role="img"` plus
   `aria-label` from `heroAlt`); the same facts appear in the body and in "The
   file", so nothing is only available visually.
+- Promotion colour is a fill, a card rule or a section rule — never small text.
+  Badge fills are darkened one step so white on them clears 4.5:1 for both
+  promotions. The lime signal colour is never a text colour.
+- The wire ticker duplicates its item list so the marquee can loop seamlessly;
+  the second pass is `aria-hidden`, and the whole strip is a labelled `aside`.
+- The countdown renders the static date on the server pass and starts ticking
+  after hydration, so the markup matches and no clock arrives stale.
 - Relative times go through `Intl.RelativeTimeFormat`, which already knows Czech
   numeral agreement — no relative time string is hand-assembled.
 - Counts shown to readers (Data Desk figures, evidence coverage) are computed
