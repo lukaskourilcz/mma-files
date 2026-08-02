@@ -117,6 +117,24 @@ function renderBlock(block: string, locale: Locale, key: string): ReactNode {
   return <p key={key}>{renderInline(lines.join(" "), locale, key)}</p>;
 }
 
+/**
+ * Remove the grounding markers BoardlessAI writes into an article body.
+ *
+ * A marker is how the desk proves a figure came from a record, and its release gate rejects
+ * any line carrying a figure without one. It names a path inside that repository, so it is
+ * not a citation a reader can follow: the first delivered article printed
+ * "[source:state/mma/fighters/ufc:valentina-shevchenko.json]" in the middle of a sentence,
+ * six times, in both languages. BoardlessAI no longer sends them, and this strips whatever
+ * already shipped, since a delivered package is sealed by its hash and cannot be edited.
+ */
+function withoutSourceMarkers(body: string): string {
+  return body
+    .replace(/(?:\[\^source-\d+\]|\[source:[^\]]+\])/giu, "")
+    .replace(/[ \t]+([.,;:!?])/gu, "$1")
+    .replace(/[ \t]{2,}/gu, " ")
+    .replace(/[ \t]+$/gmu, "");
+}
+
 export function Prose({
   body,
   locale,
@@ -126,7 +144,7 @@ export function Prose({
   locale: Locale;
   className?: string;
 }) {
-  const blocks = body
+  const blocks = withoutSourceMarkers(body)
     .split(/\n{2,}/)
     .map((b) => b.trim())
     .filter(Boolean);

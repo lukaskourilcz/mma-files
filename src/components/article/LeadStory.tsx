@@ -89,7 +89,12 @@ export function LeadStory({
 
           <h1
             id="lead-story"
-            className="display mt-5 max-w-[15ch] text-[40px] leading-[0.93] text-ink sm:text-[56px] lg:text-[76px]"
+            className={`display mt-5 max-w-[15ch] text-[40px] text-ink sm:text-[56px] lg:text-[76px] ${
+              // Czech sets carons and acutes above the capitals, and at 0.93 the line box is
+              // shorter than the glyphs need, so TRI, ZAVERECNOU and KARIERY lost their marks
+              // into the line above. English has nothing above the cap height to lose.
+              locale === "cs" ? "leading-[1.1]" : "leading-[0.93]"
+            }`}
           >
             <Link href={routes.article(locale, article.slug)} className="headline-link">
               {local.title}
@@ -135,8 +140,7 @@ export function LeadStory({
             ) : null}
             <p className="label-mono-sm ml-1 flex items-center gap-[7px] tracking-[0.14em] text-ink-meta">
               <span aria-hidden="true" className="block h-[5px] w-[5px] bg-verified" />
-              {dict.labels.sourceCount(article.sources.length)} · {minutes}{" "}
-              {dict.labels.readingTime}
+              {minutes} {dict.labels.readingTime}
             </p>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 import { LeadStory } from "@/components/article/LeadStory";
 import { EventCard } from "@/components/event/EventCard";
 import { ResultsBoard } from "@/components/event/ResultsBoard";
-import { FighterCard } from "@/components/fighter/FighterCard";
+import { RandomRoster } from "@/components/fighter/RandomRoster";
 import { DataDeskModule } from "@/components/site/HomeModules";
 import { NewsletterModule } from "@/components/site/NewsletterModule";
 import { ActionLink, Container, SectionHeading } from "@/components/ui/primitives";
@@ -37,6 +37,9 @@ export default async function HomePage({
   const cards = upcoming.length > 0 ? upcoming.slice(0, 2) : getCompletedEvents().slice(0, 1);
 
   const roster = getFighters();
+  // Only the pool travels to the browser, not the whole roster. A card's view model is small,
+  // but 339 of them is not, and the draw only needs enough names to feel different each time.
+  const rosterPool = roster.filter((_, index) => index % Math.max(1, Math.ceil(roster.length / 24)) === 0).slice(0, 24);
 
   return (
     <>
@@ -152,13 +155,7 @@ export default async function HomePage({
               {dict.fighters.empty}
             </p>
           ) : (
-            <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {roster.map((fighter) => (
-                <li key={fighter.id} className="relative">
-                  <FighterCard fighter={fighter} locale={locale} />
-                </li>
-              ))}
-            </ul>
+            <RandomRoster pool={rosterPool} locale={locale} />
           )}
         </Container>
       </section>

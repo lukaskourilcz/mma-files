@@ -5,7 +5,6 @@ import {
   CorrectionHistory,
   MethodologyNote,
   ModelDisclosureBlock,
-  SourceList,
   TheFile,
 } from "@/components/article/ArticleFile";
 import { HeroVisual } from "@/components/hero/HeroVisual";
@@ -194,10 +193,6 @@ export default async function ArticlePage({
                 <CorrectionHistory corrections={article.corrections} locale={locale} />
               </div>
             ) : null}
-
-            <div className="mt-12">
-              <SourceList sources={article.sources} locale={locale} />
-            </div>
           </div>
 
           <aside className="space-y-6 lg:col-span-5 xl:col-span-4">

@@ -193,13 +193,6 @@ export function TheFile({ article, locale }: { article: Article; locale: Locale 
             </span>
           </DataRow>
         ) : null}
-        {article.packageHash ? (
-          <DataRow label="hash">
-            <span className="font-mono text-xs text-ink-muted">
-              {article.packageHash}
-            </span>
-          </DataRow>
-        ) : null}
       </dl>
 
       {confirmed.length > 0 ? (
