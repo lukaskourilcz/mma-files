@@ -1,7 +1,7 @@
 import type { Dictionary } from "@/i18n";
 import type { Locale } from "@/lib/types";
 
-const BCP47: Record<Locale, string> = { en: "en-GB", cs: "cs-CZ" };
+const BCP47: Record<Locale, string> = { cs: "cs-CZ" };
 
 export function formatDate(
   iso: string,

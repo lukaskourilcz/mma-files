@@ -16,17 +16,14 @@ export const siteConfig = {
   name: "MMA Files",
   wordmark: "MMA FILES",
   utilityLine: {
-    en: "Fight reporting / Data / Czech + English",
     cs: "Zápasová žurnalistika / Data / Česky + anglicky",
   } satisfies Record<Locale, string>,
 
   tagline: {
-    en: "The fight is the headline. The file is the proof.",
     cs: "Zápas je zpráva. Složka je důkaz.",
   } satisfies Record<Locale, string>,
 
   description: {
-    en: "Reporting on UFC and Oktagon with sources attached — in English and Czech.",
     cs: "Zpravodajství o UFC a Oktagonu se zdroji u každého tvrzení — česky a anglicky.",
   } satisfies Record<Locale, string>,
 
@@ -37,7 +34,6 @@ export const siteConfig = {
   engine: {
     name: "BoardlessAI",
     descriptor: {
-      en: "an evidence-governed editorial engine",
       cs: "redakční systém řízený důkazy",
     } satisfies Record<Locale, string>,
     /** Set once a public BoardlessAI page exists. `null` renders plain text. */
@@ -52,7 +48,6 @@ export const siteConfig = {
   },
 
   byline: {
-    en: "MMA Files Editorial Desk",
     cs: "Redakce MMA Files",
   } satisfies Record<Locale, string>,
 

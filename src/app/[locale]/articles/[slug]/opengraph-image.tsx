@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { siteConfig } from "@/config/site";
 import { getDictionary } from "@/i18n";
 import { articleTitle, getArticleBySlug, getArticles } from "@/lib/repository";
-import { LOCALES, isLocale } from "@/lib/types";
+import { DEFAULT_LOCALE, LOCALES, isLocale } from "@/lib/types";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -24,7 +24,7 @@ export default async function Image({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale: raw, slug } = await params;
-  const locale = isLocale(raw) ? raw : "en";
+  const locale = isLocale(raw) ? raw : DEFAULT_LOCALE;
   const dict = getDictionary(locale);
   const article = getArticleBySlug(slug);
 

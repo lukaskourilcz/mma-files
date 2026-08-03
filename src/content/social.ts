@@ -16,16 +16,6 @@ import type { SocialVariant } from "@/lib/types";
  */
 export const socialVariants: SocialVariant[] = [
   {
-    id: "social:2026-08-01-alderton-rahal/A/en",
-    articleId: "article:2026-08-01-alderton-rahal",
-    variant: "A",
-    locale: "en",
-    family: "quote-led-preview",
-    caption:
-      "Reece Alderton headlines for the first time on 8 August. Five rounds, and none of his seventeen fights has gone past three. The file has what is confirmed and what is not.",
-    state: "draft",
-  },
-  {
     id: "social:2026-08-01-alderton-rahal/A/cs",
     articleId: "article:2026-08-01-alderton-rahal",
     variant: "A",
@@ -33,16 +23,6 @@ export const socialVariants: SocialVariant[] = [
     family: "quote-led-preview",
     caption:
       "Reece Alderton povede 8. srpna poprvé kartu. Pět kol — a ani jeden z jeho sedmnácti zápasů nešel za třetí. Ve složce je, co je potvrzené a co ne.",
-    state: "draft",
-  },
-  {
-    id: "social:2026-08-01-alderton-rahal/B/en",
-    articleId: "article:2026-08-01-alderton-rahal",
-    variant: "B",
-    locale: "en",
-    family: "tale-of-the-tape",
-    caption:
-      "Alderton vs. Rahal, five rounds in Las Vegas. Four bouts on the card, a fifth referred to and never named.",
     state: "draft",
   },
   {

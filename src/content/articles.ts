@@ -30,31 +30,6 @@ export const articles: Article[] = [
     fighterRefs: ["fighter:ufc/reece-alderton", "fighter:ufc/nadia-ferreiro"],
     publishAt: "2026-08-01T08:00:00+02:00",
     localizations: {
-      en: {
-        title: "Alderton gets five rounds for the first time, against Rahal",
-        dek: "The lightweight headlines in Las Vegas on 8 August. Four bouts are confirmed; a fifth has been referred to but never named.",
-        body: `Reece Alderton headlines for the first time on 8 August, meeting Idris Rahal over five rounds at the Silverline Pavilion in Las Vegas.
-
-It is the first booking of his career scheduled past three rounds. [[fighter:reece-alderton|Alderton]] is 14-3, and eleven of those wins have reached the third round. None of his seventeen professional fights has gone beyond it. Against Rahal that record cuts both ways: he has spent more time in deep water than most lightweights at his level, and he has never had to stay in it for twenty-five minutes.
-
-## What the card actually holds
-
-Four bouts are on file for 8 August. [[fighter:nadia-ferreiro|Nadia Ferreiro]] takes the co-main event against Wren Delacroix at women's flyweight — her third appearance on the roster and her first above the preliminary card.
-
-The promotion referred to a fifth bout in its 29 July listing without naming either fighter. Until a name is attached, it is not part of this card as far as this file is concerned.
-
-## The reach question
-
-Ferreiro's reach is the one number the evidence layer will not settle. Two registries carry different figures, neither traced to a measurement taken by the promotion, so her file shows the field as unavailable instead of choosing between them. It is a small gap. It is also the kind that quietly becomes a fact once somebody fills it in.
-
-## What is settled
-
-The main event is five rounds at lightweight. The co-main is three at women's flyweight. Both were confirmed in the same 29 July listing, and neither the venue nor the date has moved since the card was announced.
-
-What is not settled: the fifth bout, the order of the preliminary card, and whether Rahal makes the walk as a lightweight at all. He has fought twice at welterweight in the last eighteen months, and the weight on the bout agreement is the only evidence either way.
-
-[[event:ufc-fight-night-alderton-rahal|The full card file]] carries the confirmed bouts, the source behind each one, and the fields still open.`,
-      },
       cs: {
         title: "Alderton jde poprvé na pět kol. Soupeřem je Rahal",
         dek: "Lehká váha povede 8. srpna kartu v Las Vegas. Potvrzené jsou čtyři zápasy, o pátém organizace mluvila, ale nepojmenovala ho.",
@@ -82,11 +57,6 @@ Hotové není tohle: pátý zápas, pořadí předzápasů a jestli Rahal vůbec
       },
     },
     confirmed: {
-      en: [
-        "Five-round main event at lightweight on 8 August, Silverline Pavilion, Las Vegas",
-        "Ferreiro vs. Delacroix confirmed as the co-main event at women's flyweight",
-        "Four bouts listed in the promotion's release of 29 July",
-      ],
       cs: [
         "Hlavní zápas na pět kol v lehké váze 8. srpna, Silverline Pavilion, Las Vegas",
         "Ferreiro vs. Delacroix potvrzené jako hlavní předzápas v ženské muší váze",
@@ -94,11 +64,6 @@ Hotové není tohle: pátý zápas, pořadí předzápasů a jestli Rahal vůbec
       ],
     },
     unconfirmed: {
-      en: [
-        "A fifth bout referred to on 29 July, with neither fighter named",
-        "The order of the preliminary card",
-        "Nadia Ferreiro's reach — two registries disagree and neither is primary",
-      ],
       cs: [
         "Pátý zápas zmíněný 29. července, ani jeden bojovník nepojmenovaný",
         "Pořadí předzápasů",
@@ -146,11 +111,9 @@ Hotové není tohle: pátý zápas, pořadí předzápasů a jestli Rahal vůbec
       },
     },
     heroLine: {
-      en: "Seventeen professional fights. Not one of them has gone past the third round.",
       cs: "Sedmnáct profesionálních zápasů. Ani jeden nešel za třetí kolo.",
     },
     heroAlt: {
-      en: "Editorial card for the 8 August main event: Reece Alderton against Idris Rahal, five rounds. Seventeen professional fights, none past the third round.",
       cs: "Redakční karta k hlavnímu zápasu 8. srpna: Reece Alderton proti Idrisi Rahalovi na pět kol. Sedmnáct profesionálních zápasů, ani jeden za třetím kolem.",
     },
     packageHash: "9f21c0ad",
@@ -170,29 +133,6 @@ Hotové není tohle: pátý zápas, pořadí předzápasů a jestli Rahal vůbec
     fighterRefs: ["fighter:oktagon/stepan-hruska", "fighter:oktagon/adam-bezak"],
     publishAt: "2026-07-31T18:00:00+02:00",
     localizations: {
-      en: {
-        title: "Hruška gets the Oktagon 91 title shot four days after Ostrava",
-        dek: "Three bouts are confirmed for Prague on 22 August. The preliminary card does not exist yet, and this file says so.",
-        body: `Štěpán Hruška fights Marek Zvolánek for the welterweight title at Oktagon 91 in Prague on 22 August, four days after he knocked out Milan Ostrý in Ostrava.
-
-Four days is a short turnaround for a title booking, and it is worth being precise about what that means. The knockout was on 25 July. The announcement carrying both names and the championship status was issued on 29 July. [[fighter:stepan-hruska|Hruška]] had not fought at Oktagon 91's venue before, and the promotion has not said whether the bout was contingent on the Ostrava result.
-
-## Three bouts, not a card
-
-Oktagon 91 has three confirmed bouts. The main event is five rounds for the title. [[fighter:adam-bezak|Adam Bezák]] meets Ivan Halás at lightweight in the co-main. Petra Sládková and Nela Bergerová are on at women's strawweight.
-
-That is the whole card as of this file. There is no preliminary card yet — not a thin one, not a provisional one. It has not been announced, so [[event:oktagon-91|the event file]] shows three bouts and a note.
-
-## The one number that is not clean
-
-Bezák's professional record is marked disputed on his file, and it will stay that way until somebody produces a primary document. Two registries disagree about whether a regional bout from early in his career counts. One says 8-1, the other 9-1.
-
-The desk did not average them, did not pick the higher one, and did not quietly use the number that reads better in a sentence. His file shows the conflict, and this story does not use a record figure for him at all.
-
-## What comes next
-
-Nothing on this booking is due to change before fight week. If the preliminary card is announced, [[event:oktagon-91|the event file]] updates and this story gets an update note rather than a silent edit.`,
-      },
       cs: {
         title: "Hruška má titulovou šanci na Oktagonu 91, čtyři dny po Ostravě",
         dek: "Na 22. srpna jsou v Praze potvrzené tři zápasy. Předzápasy zatím neexistují a tahle složka to říká nahlas.",
@@ -218,11 +158,6 @@ Do zápasového týdne se na téhle domluvě nemá nic měnit. Jestli organizace
       },
     },
     confirmed: {
-      en: [
-        "Zvolánek vs. Hruška for the welterweight title, five rounds, 22 August, Vltava Arena, Prague",
-        "Bezák vs. Halás confirmed as the co-main event",
-        "Sládková vs. Bergerová confirmed at women's strawweight",
-      ],
       cs: [
         "Zvolánek vs. Hruška o titul ve velterové váze, pět kol, 22. srpna, Vltava Arena, Praha",
         "Bezák vs. Halás potvrzení jako hlavní předzápas",
@@ -230,11 +165,6 @@ Do zápasového týdne se na téhle domluvě nemá nic měnit. Jestli organizace
       ],
     },
     unconfirmed: {
-      en: [
-        "The entire preliminary card — nothing has been announced",
-        "Whether the title booking was contingent on the Oktagon 90 result",
-        "Adam Bezák's professional record, which two registries report differently",
-      ],
       cs: [
         "Celé předzápasy — nic nebylo oznámeno",
         "Jestli byla titulová domluva podmíněná výsledkem z Oktagonu 90",
@@ -278,7 +208,6 @@ Do zápasového týdne se na téhle domluvě nemá nic měnit. Jestli organizace
       },
     },
     heroAlt: {
-      en: "Data card for Oktagon 91: three bouts confirmed, one title fight, four days between the Ostrava knockout and the booking.",
       cs: "Datová karta k Oktagonu 91: tři potvrzené zápasy, jeden titulový, čtyři dny mezi ostravským knockoutem a domluvou.",
     },
     packageHash: "3b8e47f1",
@@ -298,27 +227,6 @@ Do zápasového týdne se na téhle domluvě nemá nic měnit. Jestli organizace
     fighterRefs: ["fighter:oktagon/stepan-hruska", "fighter:oktagon/adam-bezak"],
     publishAt: "2026-07-24T14:00:00+02:00",
     localizations: {
-      en: {
-        title: "All eight make weight for Oktagon 90",
-        dek: "Nobody used the extra hour in Ostrava. The main event is on at welterweight as booked.",
-        body: `All eight fighters on the Oktagon 90 card made weight in Ostrava on Friday morning, and no bout needed a catchweight agreement.
-
-[[fighter:stepan-hruska|Štěpán Hruška]] and Milan Ostrý both cleared the welterweight limit at the first attempt for Saturday's five-round main event. So did [[fighter:adam-bezak|Adam Bezák]] and Radek Ptáček at lightweight in the co-main.
-
-## The numbers on the sheet
-
-Eight fighters were scheduled. Eight stepped on the scale within the official window. None returned for a second attempt, and none requested the additional hour the rules allow.
-
-That is a clean sheet, and it is worth saying plainly because it is not the usual outcome. It is also the whole of what the weigh-in tells us. A fighter who makes weight comfortably and a fighter who scrapes it look identical on a result sheet, and this file does not have the rehydration figures that would separate them.
-
-## What the sheet does not say
-
-The promotion published confirmations, not the individual figures. So this report can say that everybody made the limit and cannot say by how much. Where a story would normally reach for a weight in kilograms, this one stops.
-
-## Saturday
-
-The card runs four bouts, with [[event:oktagon-90|the full order in the event file]]. The main event is five rounds; everything below it is three.`,
-      },
       cs: {
         title: "Na Oktagonu 90 splnili limit všichni",
         dek: "Hodinu navíc v Ostravě nepotřeboval nikdo. Hlavní zápas jde ve velterové váze tak, jak byl domluvený.",
@@ -342,11 +250,6 @@ Karta má čtyři zápasy a [[event:oktagon-90|celé pořadí je ve složce turn
       },
     },
     confirmed: {
-      en: [
-        "Eight of eight fighters made weight inside the official window",
-        "No catchweight agreement was needed on any bout",
-        "The main event proceeds at welterweight over five rounds",
-      ],
       cs: [
         "Osm z osmi bojovníků splnilo limit v oficiálním okně",
         "U žádného zápasu nebyla potřeba smluvní váha",
@@ -354,10 +257,6 @@ Karta má čtyři zápasy a [[event:oktagon-90|celé pořadí je ve složce turn
       ],
     },
     unconfirmed: {
-      en: [
-        "Individual weights — the promotion published confirmations only",
-        "Rehydration figures, which are not collected for this promotion",
-      ],
       cs: [
         "Jednotlivé hodnoty — organizace zveřejnila jen potvrzení",
         "Čísla o doplnění vody, která se u téhle organizace nesbírají",
@@ -393,7 +292,6 @@ Karta má čtyři zápasy a [[event:oktagon-90|celé pořadí je ve složce turn
       },
     },
     heroAlt: {
-      en: "Data card for the Oktagon 90 weigh-in: eight fighters weighed, eight made weight, none missed.",
       cs: "Datová karta k vážení na Oktagon 90: osm bojovníků na váze, osm splnilo limit, nikdo neselhal.",
     },
     packageHash: "c47a1e93",
@@ -413,29 +311,6 @@ Karta má čtyři zápasy a [[event:oktagon-90|celé pořadí je ve složce turn
     eventRef: "event:oktagon/oktagon-90",
     publishAt: "2026-07-28T10:00:00+02:00",
     localizations: {
-      en: {
-        title: "The file on Štěpán Hruška",
-        dek: "Twelve wins, six stoppages, and a consistent pattern in when they arrive.",
-        body: `Štěpán Hruška has stopped six opponents in twelve wins. Five of those six stoppages came after he had already lost the opening round on at least one judge's card.
-
-That is the single most useful thing in his file, and it is the reason the [[event:oktagon-91|Oktagon 91]] title booking is more interesting than a four-day turnaround usually is.
-
-## The shape of it
-
-[[fighter:stepan-hruska|Hruška]] is a pressure fighter with an orthodox stance, 183 centimetres and a 191-centimetre reach. He walks opponents down and throws a right hand over the top of a jab. Nothing about that is unusual.
-
-What is unusual is the timing. He is behind in the first round more often than not, and he is a different fighter from the middle of the second onward. On 25 July in Ostrava he lost the opening five minutes to Milan Ostrý and finished the fight with a head kick at 4:31 of the second.
-
-## What the record does not settle
-
-Six stoppages in twelve wins is a rate, not a plan. The evidence layer holds his results, methods, rounds and times; it does not hold round-by-round strike counts for this promotion, so this file cannot say whether the second-round shift is a conditioning gap in his opponents or a deliberate opening pattern from him.
-
-It is worth naming that gap rather than writing around it. A profile that explains the mechanism without the data to support it is guessing in a confident voice.
-
-## Against Zvolánek
-
-The title fight is five rounds. Hruška has been past the third round twice. Whether the pattern that has worked for him over three rounds survives being stretched to five is the question the booking asks, and there is nothing in his file that answers it yet.`,
-      },
       cs: {
         title: "Složka: Štěpán Hruška",
         dek: "Dvanáct výher, šest ukončení a jasný vzorec v tom, kdy přicházejí.",
@@ -461,11 +336,6 @@ Titulový zápas je na pět kol. Hruška byl za třetím kolem dvakrát. Jestli 
       },
     },
     confirmed: {
-      en: [
-        "12-2 professional record, six stoppages",
-        "Knockout of Milan Ostrý by head kick, round 2, 4:31, Oktagon 90",
-        "Booked against Marek Zvolánek for the welterweight title at Oktagon 91",
-      ],
       cs: [
         "Profesionální bilance 12-2, šest ukončení",
         "Knockout Milana Ostrého kopem na hlavu, 2. kolo, 4:31, Oktagon 90",
@@ -473,10 +343,6 @@ Titulový zápas je na pět kol. Hruška byl za třetím kolem dvakrát. Jestli 
       ],
     },
     unconfirmed: {
-      en: [
-        "Round-by-round strike counts, which are not collected for this promotion",
-        "Whether the second-round pattern reflects his opponents' conditioning or his own opening plan",
-      ],
       cs: [
         "Počty úderů po kolech, které se u téhle organizace nesbírají",
         "Jestli je vzorec druhého kola daný kondicí soupeřů, nebo jeho vlastním otevíráním",
@@ -521,7 +387,6 @@ Titulový zápas je na pět kol. Hruška byl za třetím kolem dvakrát. Jestli 
       },
     },
     heroAlt: {
-      en: "Tale-of-the-tape card for Štěpán Hruška: 12-2-0, 183 centimetres, 191-centimetre reach, orthodox, welterweight.",
       cs: "Karta s parametry Štěpána Hrušky: 12-2-0, 183 centimetrů, rozpětí paží 191, ortodoxní postoj, velterová váha.",
     },
     packageHash: "a10f4b77",
@@ -539,33 +404,6 @@ Titulový zápas je na pět kol. Hruška byl za třetím kolem dvakrát. Jestli 
     fighterRefs: [],
     publishAt: "2026-07-22T10:00:00+02:00",
     localizations: {
-      en: {
-        title: "Twenty-eight tracked fields, five that are not settled",
-        dek: "A pass over every fighter file on this site: what is verified, what rests on one source, what is in conflict, and what is simply absent.",
-        body: `Four fighter files are published here. Each one tracks seven fields — record, stance, height, reach, date of birth, team and division — which makes twenty-eight field slots in total.
-
-Twenty-three are verified. Three are provisional. One is disputed. One is not available at all.
-
-## What each state means
-
-A field is **verified** when two independent sources agree on it. It is **provisional** when only one source carries it: usable, flagged, not settled. It is **disputed** when sources conflict and no primary document has resolved them. It is **unavailable** when nothing sufficient exists, and in that case the field is left empty rather than filled.
-
-The distinction matters most in the last two cases, because they are the ones a normal publishing workflow smooths over. A disputed record becomes whichever number the writer saw first. An unavailable reach becomes a number from a database that copied it from another database.
-
-## The five
-
-The three provisional fields are Reece Alderton's team, and Adam Bezák's stance and reach. Each rests on a single source.
-
-The one disputed field is Bezák's professional record: two registries differ on whether an early regional bout counts, and neither has been resolved against a primary document.
-
-The one unavailable field is Nadia Ferreiro's reach. Two registries carry different figures and neither is traced to a measurement taken by a promotion. Rather than publish one of them, her file publishes nothing, and every story that mentions her works without it.
-
-## What this is not
-
-These are counts of coverage, not a measure of anybody's ability, and nothing here is a forecast. The aggregate is deterministic: the same four files produce the same twenty-eight figures every time, and the version below identifies exactly which pass produced them.
-
-Five unsettled fields out of twenty-eight is a small number in a small set. It is published because the alternative — showing twenty-eight clean fields and quietly rounding the awkward five — is how a file stops being a file.`,
-      },
       cs: {
         title: "Osmadvacet sledovaných polí, pět z nich neuzavřených",
         dek: "Průchod všemi složkami bojovníků na tomhle webu: co je ověřené, co stojí na jediném zdroji, co je v rozporu a co prostě chybí.",
@@ -603,16 +441,10 @@ Pět neuzavřených polí z osmadvaceti je v malém vzorku malé číslo. Vydáv
         "fightaiq:fighter/oktagon/adam-bezak@9",
       ],
       uncertainty: {
-        en: "Descriptive counts over four files. The set is small enough that a single new file moves every proportion, so no rate here should be read as a general property of the sport or of any promotion.",
         cs: "Popisné počty přes čtyři složky. Vzorek je tak malý, že jedna nová složka pohne každým poměrem, takže žádný z těch podílů nečtěte jako obecnou vlastnost sportu ani organizace.",
       },
     },
     confirmed: {
-      en: [
-        "28 tracked field slots across four published fighter files",
-        "23 verified, three provisional, one disputed, one unavailable",
-        "Aggregate is deterministic and versioned",
-      ],
       cs: [
         "28 sledovaných polí napříč čtyřmi publikovanými složkami bojovníků",
         "23 ověřených, tři předběžná, jedno sporné, jedno nedostupné",
@@ -655,7 +487,6 @@ Pět neuzavřených polí z osmadvaceti je v malém vzorku malé číslo. Vydáv
       },
     },
     heroAlt: {
-      en: "Data card: 28 tracked fields, 23 verified, five not settled.",
       cs: "Datová karta: 28 sledovaných polí, 23 ověřených, pět neuzavřených.",
     },
     packageHash: "e6c9d204",
@@ -674,29 +505,6 @@ Pět neuzavřených polí z osmadvaceti je v malém vzorku malé číslo. Vydáv
     fighterRefs: ["fighter:ufc/nadia-ferreiro"],
     publishAt: "2026-07-15T10:00:00+02:00",
     localizations: {
-      en: {
-        title: "The file on Nadia Ferreiro",
-        dek: "Nine wins, four of them inside a round, and one field the evidence layer will not fill.",
-        body: `Nadia Ferreiro has finished four of her nine wins inside the first round. She fights on 8 August in the co-main event, her first bout above the preliminary card.
-
-[[fighter:nadia-ferreiro|Ferreiro]] came to the sport from kickboxing and still fights like it at range: left straight down the middle from southpaw, then a step off to the open side rather than a follow-up combination. Four of her finishes have come inside five minutes; none of them came off a takedown.
-
-## The part that is missing
-
-Her reach is not published on this site. Two registries carry different figures for it, neither is traced to a measurement taken by a promotion, and the evidence layer will not choose between them.
-
-Reach is not a decorative field for a striker who fights at range against opponents she is usually taller than. It is a number a preview would reach for. This one does not have it, and the gap is on the page rather than behind it.
-
-## What is on the record
-
-Nine wins, two losses. One hundred and sixty-eight centimetres. Southpaw. Born 2 November 1997, verified against two sources. Fighting out of Clube Atlântico Faro.
-
-The four first-round finishes are the clearest pattern in the file. What the file cannot support is the sentence that usually follows — that she fades if a fight goes long. Two of her nine wins went to a decision, and two decisions is not enough to say anything about how she holds up.
-
-## Against Delacroix
-
-Three rounds at women's flyweight. [[event:ufc-fight-night-alderton-rahal|The card file]] has the confirmed bouts; the preliminary order is still open.`,
-      },
       cs: {
         title: "Složka: Nadia Ferreiro",
         dek: "Devět výher, čtyři z nich do konce prvního kola, a jedno pole, které důkazní vrstva nedoplní.",
@@ -722,11 +530,6 @@ Tři kola v ženské muší váze. [[event:ufc-fight-night-alderton-rahal|Složk
       },
     },
     confirmed: {
-      en: [
-        "9-2 professional record, four first-round finishes",
-        "Southpaw, 168 centimetres, born 2 November 1997",
-        "Booked against Wren Delacroix in the 8 August co-main event",
-      ],
       cs: [
         "Profesionální bilance 9-2, čtyři ukončení v prvním kole",
         "Southpaw, 168 centimetrů, narozena 2. listopadu 1997",
@@ -734,10 +537,6 @@ Tři kola v ženské muší váze. [[event:ufc-fight-night-alderton-rahal|Složk
       ],
     },
     unconfirmed: {
-      en: [
-        "Reach — two registries disagree and neither is primary",
-        "How she performs in a long fight; only two of her wins have gone to a decision",
-      ],
       cs: [
         "Rozpětí paží — dva registry se neshodnou a ani jeden není primární",
         "Jak si vede v dlouhém zápase; na body došly jen dvě její výhry",
@@ -773,7 +572,6 @@ Tři kola v ženské muší váze. [[event:ufc-fight-night-alderton-rahal|Složk
       },
     },
     heroAlt: {
-      en: "Tale-of-the-tape card for Nadia Ferreiro: 9-2-0, 168 centimetres, southpaw, women's flyweight. The reach field is marked not available.",
       cs: "Karta s parametry Nadii Ferreiro: 9-2-0, 168 centimetrů, southpaw, ženská muší váha. Pole s rozpětím paží je označené jako nedostupné.",
     },
     packageHash: "77bd1a5e",
@@ -791,29 +589,6 @@ Tři kola v ženské muší váze. [[event:ufc-fight-night-alderton-rahal|Složk
     fighterRefs: [],
     publishAt: "2026-07-11T18:00:00+02:00",
     localizations: {
-      en: {
-        title: "What happens when a story slot is killed",
-        dek: "Two slots are planned each day. On 9 July both were dropped, and this note is the reason.",
-        body: `Two story slots are planned for each Prague day, one produced in the morning and one in the evening. On 9 July both were killed before any of the writing started.
-
-Neither had enough behind it, and that is the whole explanation. It is written down here because a magazine that only ever shows what it published is describing half of its own editorial judgement.
-
-## What the two slots were
-
-The morning slot was a fight-week piece on a card whose main event had been reported by one outlet and not confirmed by the promotion. One outlet is a lead, not a booking. Running it would have meant either attributing a booking to a source that had not made one, or writing four hundred words around the fact that we did not know.
-
-The evening slot was a data story on stoppage timing across a set of files that turned out to hold eleven usable results. Eleven results will produce a chart. The chart would have been wrong in the specific way charts are wrong when the sample is too small to carry the sentence written underneath it.
-
-## Why this gets published
-
-The daily rhythm is a production constraint, not an editorial promise. Two slots a day is the ceiling, never the quota. A slot with nothing behind it is dropped and the reason is recorded, which is a cheaper failure than a story that reads fine and cannot be defended.
-
-Roughly the same discipline decides what a file shows. When a field is not evidenced, it stays visibly empty — the same instinct, one layer down.
-
-## What happened instead
-
-Nothing was published on 9 July. The next file went out on the morning of the eleventh, and both killed slots stay in the record with their reasons attached.`,
-      },
       cs: {
         title: "Co se stane, když se zabije slot",
         dek: "Na každý den jsou naplánované dva sloty. 9. července padly oba a tahle poznámka je důvod.",
@@ -839,11 +614,6 @@ Zhruba stejná úvaha rozhoduje o tom, co ukáže složka. Když pole není dolo
       },
     },
     confirmed: {
-      en: [
-        "Both 9 July slots were killed before production began",
-        "Nothing was published on 9 July",
-        "Kill reasons are recorded against each slot",
-      ],
       cs: [
         "Oba sloty na 9. července padly ještě před výrobou",
         "9. července nevyšlo nic",
@@ -869,11 +639,9 @@ Zhruba stejná úvaha rozhoduje o tom, co ukáže složka. Když pole není dolo
       },
     },
     heroLine: {
-      en: "Two slots planned. Two slots killed. Nothing published that day.",
       cs: "Dva sloty naplánované. Dva sloty zabité. Ten den nevyšlo nic.",
     },
     heroAlt: {
-      en: "Editorial card: both story slots for 9 July marked killed, nothing published that day.",
       cs: "Redakční karta: oba sloty na 9. července označené jako zabité, ten den nevyšlo nic.",
     },
     packageHash: "1c53f8ba",

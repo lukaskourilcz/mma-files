@@ -10,7 +10,7 @@ import type { Locale } from "@/lib/types";
 
 export function Masthead({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
-  const alternate = otherLocale(locale);
+  const alternate = otherLocale();
   const alternateDict = getDictionary(alternate);
 
   const items: NavItem[] = [

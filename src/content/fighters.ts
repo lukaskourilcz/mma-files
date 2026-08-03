@@ -27,12 +27,6 @@ export const fighters: Fighter[] = [
     reachCm: 188,
     dateOfBirth: "1996-03-14",
     localizations: {
-      en: {
-        summary:
-          "A lightweight who wins on volume and position rather than on one shot. Alderton has fought out of Northgate MMA since turning professional and headlines for the first time on 8 August.",
-        styleNote:
-          "Long, high-rate jab into low kicks; takes the back when an opponent turns. Eleven of his fourteen wins have gone past the second round.",
-      },
       cs: {
         summary:
           "Lehká váha, která vyhrává objemem práce a pozicí, ne jednou ranou. Alderton se od začátku profesionální kariéry připravuje v Northgate MMA a 8. srpna jde poprvé do hlavního zápasu.",
@@ -83,12 +77,6 @@ export const fighters: Fighter[] = [
     // reachCm is deliberately absent: no agreeing source exists for it.
     dateOfBirth: "1997-11-02",
     localizations: {
-      en: {
-        summary:
-          "Portugal's first flyweight on the roster. Ferreiro came up through kickboxing and has finished four of her nine wins inside a round.",
-        styleNote:
-          "Left straight down the middle, then a step-off to the open side. Her takedown defence is the field on this card that the evidence layer has the least on.",
-      },
       cs: {
         summary:
           "První Portugalka v muší váze na soupisce. Ferreiro vyrostla v kickboxu a čtyři z devíti výher ukončila do konce prvního kola.",
@@ -132,12 +120,6 @@ export const fighters: Fighter[] = [
     reachCm: 191,
     dateOfBirth: "1994-06-21",
     localizations: {
-      en: {
-        summary:
-          "The welterweight who knocked out Milan Ostrý in Ostrava on 25 July and was given a title shot four days later. Hruška has trained at Vysočany Fight Lab for his whole professional career.",
-        styleNote:
-          "Pressure and a right hand over the top. He has stopped six opponents; five of those came after he had already lost the opening round on at least one card.",
-      },
       cs: {
         summary:
           "Velterová váha, která 25. července v Ostravě knockoutovala Milana Ostrého a o čtyři dny později dostala titulovou šanci. Hruška trénuje celou profesionální kariéru ve Vysočany Fight Labu.",
@@ -188,12 +170,6 @@ export const fighters: Fighter[] = [
     reachCm: 180,
     dateOfBirth: "1999-01-30",
     localizations: {
-      en: {
-        summary:
-          "A 27-year-old Slovak lightweight who has won his last four. Two source registries disagree about whether an early regional bout counts toward his professional record, so the number on this page is marked disputed rather than picked.",
-        styleNote:
-          "Chain wrestling from the fence, then ground-and-pound rather than a submission hunt. He has never been stopped.",
-      },
       cs: {
         summary:
           "Sedmadvacetiletý slovenský lehkotonážník, který vyhrál poslední čtyři zápasy. Dva registry se neshodnou, jestli se jeden raný regionální zápas počítá do profesionální bilance, takže číslo na téhle stránce je označené jako sporné, ne vybrané.",

@@ -49,9 +49,8 @@ export async function generateMetadata({
     alternates: {
       canonical: routes.article(locale, slug),
       languages: {
-        en: routes.article("en", slug),
         cs: routes.article("cs", slug),
-        "x-default": routes.article("en", slug),
+        "x-default": routes.article("cs", slug),
       },
     },
     robots: indexable

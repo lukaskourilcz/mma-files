@@ -8,9 +8,12 @@
  * `[site]` — see README, "Content model".
  */
 
-export const LOCALES = ["en", "cs"] as const;
+// The desk publishes in Czech. The [locale] route segment stays — every route file keeps its
+// shape — and English simply stops being a locale the site offers. Nothing is orphaned by
+// this: robots.txt has been Disallow: / since launch, so no English URL was ever indexed.
+export const LOCALES = ["cs"] as const;
 export type Locale = (typeof LOCALES)[number];
-export const DEFAULT_LOCALE: Locale = "en";
+export const DEFAULT_LOCALE: Locale = "cs";
 
 export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value);

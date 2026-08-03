@@ -60,11 +60,6 @@ export const events: FightEvent[] = [
       },
     ],
     localizations: {
-      en: {
-        summary:
-          "Reece Alderton's first main event, opposite Idris Rahal over five rounds in Las Vegas. Nadia Ferreiro takes the co-main.",
-        note: "Four bouts are on file. The promotion has referred to a fifth without naming it, so it is not listed here.",
-      },
       cs: {
         summary:
           "První hlavní zápas Reece Aldertona, proti Idrisi Rahalovi na pět kol v Las Vegas. Hlavní předzápas obstará Nadia Ferreiro.",
@@ -130,11 +125,6 @@ export const events: FightEvent[] = [
       },
     ],
     localizations: {
-      en: {
-        summary:
-          "A welterweight title fight in Prague: champion Marek Zvolánek against Štěpán Hruška, four weeks after Hruška's knockout in Ostrava.",
-        note: "Three bouts are confirmed. The preliminary card has not been announced.",
-      },
       cs: {
         summary:
           "Titulový zápas velterové váhy v Praze: šampion Marek Zvolánek proti Štěpánu Hruškovi, čtyři týdny po Hruškově knockoutu v Ostravě.",
@@ -220,10 +210,6 @@ export const events: FightEvent[] = [
       },
     ],
     localizations: {
-      en: {
-        summary:
-          "Štěpán Hruška knocked out Milan Ostrý with a head kick in the second round in Ostrava. The preliminary featherweight bout was ruled a no contest after an accidental foul.",
-      },
       cs: {
         summary:
           "Štěpán Hruška v Ostravě knockoutoval Milana Ostrého kopem na hlavu ve druhém kole. Předzápas pérové váhy skončil bez výsledku po nechtěném faulu.",

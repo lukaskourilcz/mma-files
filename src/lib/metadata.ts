@@ -31,9 +31,8 @@ export function pageMetadata({
     alternates: {
       canonical: path(locale),
       languages: {
-        en: path("en"),
         cs: path("cs"),
-        "x-default": path("en"),
+        "x-default": path("cs"),
       },
     },
     robots: canIndex
@@ -44,7 +43,7 @@ export function pageMetadata({
       title,
       description,
       url: path(locale),
-      locale: locale === "cs" ? "cs_CZ" : "en_GB",
+      locale: "cs_CZ",
     },
   };
 }

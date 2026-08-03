@@ -59,9 +59,8 @@ export async function generateMetadata({
     alternates: {
       canonical: routes.home(locale),
       languages: {
-        en: routes.home("en"),
         cs: routes.home("cs"),
-        "x-default": routes.home("en"),
+        "x-default": routes.home("cs"),
       },
       types: {
         "application/rss+xml": [
@@ -76,8 +75,7 @@ export async function generateMetadata({
     openGraph: {
       type: "website",
       siteName: siteConfig.name,
-      locale: locale === "cs" ? "cs_CZ" : "en_GB",
-      alternateLocale: locale === "cs" ? "en_GB" : "cs_CZ",
+      locale: "cs_CZ",
       title: `${siteConfig.name} — ${siteConfig.tagline[locale]}`,
       description: siteConfig.description[locale],
       url: routes.home(locale),
@@ -109,7 +107,7 @@ export default async function LocaleLayout({
     url: absoluteUrl(routes.home(locale)),
     slogan: siteConfig.tagline[locale],
     description: siteConfig.description[locale],
-    knowsLanguage: ["en", "cs"],
+    knowsLanguage: ["cs"],
     publishingPrinciples: absoluteUrl(routes.standards(locale)),
     correctionsPolicy: absoluteUrl(routes.corrections(locale)),
     actionableFeedbackPolicy: absoluteUrl(routes.corrections(locale)),

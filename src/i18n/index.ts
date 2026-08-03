@@ -1,8 +1,9 @@
 import { cs } from "./cs";
-import { en, type Dictionary } from "./en";
+import { type Dictionary } from "./en";
 import { DEFAULT_LOCALE, isLocale, type Locale } from "@/lib/types";
 
-const dictionaries: Record<Locale, Dictionary> = { en, cs };
+// en.ts stays as the Dictionary type anchor; it is no longer a dictionary the site serves.
+const dictionaries: Record<Locale, Dictionary> = { cs };
 
 export function getDictionary(locale: Locale): Dictionary {
   return dictionaries[locale];
@@ -13,8 +14,9 @@ export function resolveLocale(segment: string): Locale {
   return isLocale(segment) ? segment : DEFAULT_LOCALE;
 }
 
-export function otherLocale(locale: Locale): Locale {
-  return locale === "en" ? "cs" : "en";
+/** One published locale, so there is no other one to switch to. */
+export function otherLocale(): Locale {
+  return "cs";
 }
 
 export type { Dictionary };

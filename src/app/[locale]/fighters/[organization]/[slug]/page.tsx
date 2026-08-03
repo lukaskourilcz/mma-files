@@ -57,8 +57,7 @@ function statValue(key: string, value: number | null): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(2);
 }
 
-function methodLabel(method: string, locale: Locale): string {
-  if (locale === "en") return method;
+function methodLabel(method: string): string {
   return method
     .replace(/^Technical Submission/iu, "technická submise")
     .replace(/^Submission/iu, "submise")
@@ -179,7 +178,7 @@ export default async function FighterPage({
               <h2 id="recorded-history" className="label-mono flex items-center gap-2 text-ink"><span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />{locale === "cs" ? "Doložené zápasy" : "Recorded fight history"}</h2>
               {file?.history.length ? <ol className="mt-4 divide-y divide-rule">{[...file.history].reverse().slice(0, 10).map((bout) => {
                 const opponent = getFighterById(`fighter:${bout.opponentRef.replace(":", "/")}`);
-                return <li className="grid gap-2 py-3 first:pt-0 sm:grid-cols-[6rem_1fr_auto] sm:items-center" key={bout.boutRef}><time className="label-mono-sm text-ink-meta" dateTime={bout.happenedAt}>{new Intl.DateTimeFormat(locale === "cs" ? "cs-CZ" : "en-GB", { dateStyle: "medium" }).format(new Date(bout.happenedAt))}</time><span className="text-sm text-ink">{opponent ? <Link className="font-medium underline decoration-ember underline-offset-[3px]" href={routes.fighter(locale, opponent.organization, opponent.slug)}>{opponent.name}</Link> : bout.opponentRef}</span><span className="label-mono-sm text-ink-meta">{resultLabels[locale][bout.result]}{bout.method ? ` · ${methodLabel(bout.method, locale)}` : ""}{bout.round ? ` · R${bout.round}` : ""}</span></li>;
+                return <li className="grid gap-2 py-3 first:pt-0 sm:grid-cols-[6rem_1fr_auto] sm:items-center" key={bout.boutRef}><time className="label-mono-sm text-ink-meta" dateTime={bout.happenedAt}>{new Intl.DateTimeFormat(locale === "cs" ? "cs-CZ" : "en-GB", { dateStyle: "medium" }).format(new Date(bout.happenedAt))}</time><span className="text-sm text-ink">{opponent ? <Link className="font-medium underline decoration-ember underline-offset-[3px]" href={routes.fighter(locale, opponent.organization, opponent.slug)}>{opponent.name}</Link> : bout.opponentRef}</span><span className="label-mono-sm text-ink-meta">{resultLabels[locale][bout.result]}{bout.method ? ` · ${methodLabel(bout.method)}` : ""}{bout.round ? ` · R${bout.round}` : ""}</span></li>;
               })}</ol> : <p className="mt-4 text-sm text-ink-muted">{locale === "cs" ? "V ověřených podkladech zatím není žádný zápas." : "No verified bout history is available yet."}</p>}
             </section>
 

@@ -295,11 +295,7 @@ function deliveredFighter(value: FightAiQFighterRecord): Fighter | null {
   const fighterRecord = record(fieldText(value, "record"));
   const sourceList = sourcesFor(value);
   if (sourceList.length === 0) return null;
-  const summary = `FightAIQ has ${Math.round(value.completeness * 100)}% of this file filled and ${Math.round(value.corroboration * 100)}% of recorded fields corroborated.`;
   const summaryCs = `FightAIQ má vyplněno ${Math.round(value.completeness * 100)} % tohoto profilu a ${Math.round(value.corroboration * 100)} % zaznamenaných údajů potvrzuje více zdrojů.`;
-  const modelNote = value.modelEligible
-    ? `The verified critical fields clear FightAIQ's ${value.modelVersion} analysis gate.`
-    : "One or more critical fields still need stronger evidence before model use.";
   const modelNoteCs = value.modelEligible
     ? `Ověřená klíčová pole splňují podmínky modelu FightAIQ ${value.modelVersion}.`
     : "Nejméně jeden klíčový údaj potřebuje lepší podklady, než jej bude možné použít v modelu.";
@@ -318,7 +314,6 @@ function deliveredFighter(value: FightAiQFighterRecord): Fighter | null {
     ...(fieldNumber(value, "reachCm") !== undefined ? { reachCm: fieldNumber(value, "reachCm") } : {}),
     ...(fieldText(value, "dateOfBirth") ? { dateOfBirth: fieldText(value, "dateOfBirth") } : {}),
     localizations: {
-      en: { summary, styleNote: fieldText(value, "styleNote") ?? modelNote },
       cs: { summary: summaryCs, styleNote: fieldText(value, "styleNoteCs") ?? modelNoteCs },
     },
     fieldStates: {
@@ -358,7 +353,6 @@ function deliveredEvent(value: FightAiQEvent, fighters: readonly FightAiQFighter
   if (!slug || value.sourceRefs.length === 0 || value.bouts.length === 0) return null;
   const completed = value.bouts.every((bout) => bout.status === "complete" || bout.status === "cancelled");
   const confirmed = value.bouts.some((bout) => bout.status === "weigh-in");
-  const boutWord = value.bouts.length === 1 ? "bout" : "bouts";
   const boutWordCs = value.bouts.length === 1 ? "zápas" : value.bouts.length < 5 ? "zápasy" : "zápasů";
   return {
     id: `event:${value.org}/${slug}`,
@@ -380,7 +374,6 @@ function deliveredEvent(value: FightAiQEvent, fighters: readonly FightAiQFighter
       billing: index === 0 ? "main" : index === 1 ? "co-main" : "main-card",
     })),
     localizations: {
-      en: { summary: `${value.name} has ${value.bouts.length} sourced ${boutWord} on file. The listing was last checked ${value.updatedAt.slice(0, 10)}.` },
       cs: { summary: `${value.name} má v podkladech ${value.bouts.length} ${boutWordCs}. Soupiska byla naposledy ověřena ${value.updatedAt.slice(0, 10)}.` },
     },
     sources: value.sourceRefs.map((reference) => eventSource(reference, value.updatedAt)),
