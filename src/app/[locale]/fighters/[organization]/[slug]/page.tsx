@@ -15,13 +15,7 @@ import { getDictionary } from "@/i18n";
 import { countryName } from "@/lib/format";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/paths";
-import {
-  getArticlesByFighter,
-  getEventsForFighter,
-  getFighterById,
-  getFighterBySlug,
-  getFighters,
-} from "@/lib/repository";
+import { articleTitle, getArticlesByFighter, getEventsForFighter, getFighterById, getFighterBySlug, getFighters } from "@/lib/repository";
 import { LOCALES, isLocale, isOrganization, type Locale } from "@/lib/types";
 
 const resultLabels = {
@@ -245,7 +239,7 @@ export default async function FighterPage({
                         href={routes.article(locale, article.slug)}
                         className="text-sm font-medium leading-snug text-ink underline decoration-ember decoration-[1.5px] underline-offset-[3px]"
                       >
-                        {article.localizations[locale].title}
+                        {articleTitle(article, locale)}
                       </Link>
                       <p className="label-mono-sm mt-1.5 text-muted">
                         {dict.formats[article.format]}

@@ -161,8 +161,36 @@ test("rejects out-of-scope organizations and tampered hashes", async () => {
     const leakedOdds = fightFeed({ odds: [{ schemaVersion: "odds-snapshot/1", prices: [{ decimal: 1.8 }] }] });
     await assert.rejects(materializeBoardlessPackage(leakedOdds, target), /must not publish private odds data/);
     const tampered = article();
-    tampered.localizations.en.title = "Changed after signing";
+    tampered.localizations.cs.title = "Changed after signing";
     await assert.rejects(materializeBoardlessPackage(tampered, target), /canonical bytes/);
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
+/** Re-sign a package after editing it, the way the producer would. */
+function sign({ packageHash: _stale, ...rest }) {
+  return { ...rest, packageHash: packageHash(rest) };
+}
+
+test("stores a Czech-only article, and still refuses one with no Czech", async () => {
+  // MMA Files is moving to Czech only. The consumer has to accept a package with no English
+  // half before BoardlessAI sends one: delivery fails closed and reverts, so a consumer one
+  // step behind the desk throws away an article that is perfectly good.
+  const target = await root();
+  try {
+    const czechOnly = article();
+    delete czechOnly.localizations.en;
+    delete czechOnly.image.alt_en;
+    assert.equal((await materializeBoardlessPackage(sign(czechOnly), target)).status, "written");
+    const stored = JSON.parse(await readFile(path.join(target, "data/boardless/articles.json"), "utf8"));
+    assert.equal(stored.packages.length, 1);
+    assert.equal(stored.packages[0].localizations.en, undefined);
+    assert.equal(stored.packages[0].localizations.cs.title, "Doložená pozvánka");
+
+    const englishOnly = article();
+    delete englishOnly.localizations.cs;
+    await assert.rejects(materializeBoardlessPackage(sign(englishOnly), target), /cs\.title/);
   } finally {
     await rm(target, { recursive: true, force: true });
   }

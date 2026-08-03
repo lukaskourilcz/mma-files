@@ -88,7 +88,10 @@ async function validateArticle(value) {
     throw new DeliveryError("schema_invalid", "slot must be am or pm");
   }
   const localizations = object(article.localizations);
-  for (const locale of ["en", "cs"]) {
+  // Czech is the published locale; English is optional and on its way out. A locale that is
+  // present is validated exactly as strictly as before — requiredString is the shared guard
+  // for every field in this file and is not relaxed.
+  for (const locale of ["cs", ...(localizations?.en ? ["en"] : [])]) {
     const localized = object(localizations?.[locale]);
     requiredString(localized?.title, `${locale}.title`, 180);
     requiredString(localized?.dek, `${locale}.dek`, 360);
@@ -106,8 +109,8 @@ async function validateArticle(value) {
   const width = Number(image.width);
   const height = Number(image.height);
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 640 || height < 360) throw new DeliveryError("schema_invalid", "image dimensions are invalid");
-  requiredString(image.alt_en, "image.alt_en", 300);
   requiredString(image.alt_cs, "image.alt_cs", 300);
+  if (image.alt_en !== undefined) requiredString(image.alt_en, "image.alt_en", 300);
   const license = object(image.license);
   const licenseName = requiredString(license?.name, "image.license.name", 80);
   if (!["CC0", "CC BY", "CC BY-SA", "Pexels License", "Pixabay Content License", "BoardlessAI deterministic"].includes(licenseName)) {

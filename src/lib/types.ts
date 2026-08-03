@@ -83,8 +83,8 @@ export interface StoryImage {
   /** Path or URL. Rendered at 4:5 for portraits and 16:9 for file cards. */
   src: string;
   thumbnailSrc?: string;
-  /** Required, and per locale — alt text is reader-facing copy. */
-  alt: Record<Locale, string>;
+  /** Reader-facing copy, per locale. Czech is always present. */
+  alt: Partial<Record<Locale, string>>;
   credit: string;
   creditUrl?: string;
   /** CSS `object-position`, e.g. `"50% 20%"`. Defaults to centre. */
@@ -151,7 +151,8 @@ export interface Article {
   slug: string;
   status: ArticleStatus;
   format: ArticleFormat;
-  localizations: Record<Locale, ArticleLocale>;
+  /** Czech is always present; English is optional and on its way out. */
+  localizations: Partial<Record<Locale, ArticleLocale>>;
   organization?: Organization;
   fighterRefs: string[];
   eventRef?: string;

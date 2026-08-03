@@ -32,7 +32,7 @@ export function PhotoSlot({
       <>
         <Image
           src={useThumbnail ? image.thumbnailSrc ?? image.src : image.src}
-          alt={image.alt[locale]}
+          alt={image.alt[locale] ?? image.alt.cs ?? ""}
           fill
           sizes={sizes}
           priority={priority}

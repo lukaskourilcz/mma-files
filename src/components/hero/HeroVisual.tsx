@@ -1,6 +1,7 @@
 import { getDictionary } from "@/i18n";
 import type { Article, Locale } from "@/lib/types";
 import { PhotoSlot } from "@/components/media/PhotoSlot";
+import { articleDek, articleTitle } from "@/lib/repository";
 
 /**
  * Deterministic, typographic heroes built from the story's own data.
@@ -114,7 +115,7 @@ export function HeroVisual({
   const dict = getDictionary(locale);
   const b = article.heroSpec.bindings;
   const label =
-    article.heroAlt?.[locale] ?? article.localizations[locale].title;
+    article.heroAlt?.[locale] ?? articleTitle(article, locale);
 
   const fileTag = article.fileNumber
     ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")}`
@@ -288,7 +289,7 @@ export function HeroVisual({
           <div className="mt-7 flex flex-1 flex-col justify-center">
             <span aria-hidden="true" className="mb-4 block h-[2px] w-10 bg-ember" />
             <p className="max-w-2xl text-xl font-medium leading-[1.32] tracking-[-0.02em] text-white sm:text-2xl md:text-[1.75rem]">
-              {article.heroLine?.[locale] ?? article.localizations[locale].dek}
+              {article.heroLine?.[locale] ?? articleDek(article, locale)}
             </p>
           </div>
 

@@ -16,12 +16,15 @@ import { getDictionary } from "@/i18n";
 import { formatDateTime, formatStamp, readingTimeMinutes } from "@/lib/format";
 import { Prose } from "@/lib/markdown";
 import { routes } from "@/lib/paths";
-import { getArticleBySlug, getArticles, getRelatedArticles } from "@/lib/repository";
+import { articleCopy, getArticleBySlug, getArticlesIn, getRelatedArticles } from "@/lib/repository";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
 export function generateStaticParams() {
+  // Only the locales an article was actually written in. English is optional and on its way
+  // out; prerendering /en for an article that has no English half would build a page whose
+  // only honest content is a 404.
   return LOCALES.flatMap((locale) =>
-    getArticles().map((article) => ({ locale, slug: article.slug })),
+    getArticlesIn(locale).map((article) => ({ locale, slug: article.slug })),
   );
 }
 
@@ -36,7 +39,7 @@ export async function generateMetadata({
   const article = getArticleBySlug(slug);
   if (!article) return {};
 
-  const local = article.localizations[locale];
+  const local = articleCopy(article, locale) ?? article.localizations.cs!;
   // Demo stories are never indexable, regardless of the global switch.
   const indexable = allowIndexing && !article.isDemo;
 
@@ -81,7 +84,10 @@ export default async function ArticlePage({
   const article = getArticleBySlug(slug);
   if (!article) notFound();
 
-  const local = article.localizations[locale];
+  // An article that was never written in this language does not exist at this URL. Serving the
+  // Czech body under lang="en" would be worse than a 404: it reads as an English edition.
+  const local = articleCopy(article, locale);
+  if (!local) notFound();
   const related = getRelatedArticles(article);
   const minutes = readingTimeMinutes(local.body);
 

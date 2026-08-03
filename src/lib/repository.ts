@@ -1,9 +1,9 @@
+import { demoMode } from "@/config/site";
 import { articles as seedArticles } from "@/content/articles";
 import { socialVariants as seedSocial } from "@/content/social";
 import { getDeliveredArticles, getDeliveredEvents, getDeliveredFighters, getFightAiQDelivery } from "@/lib/boardless";
 import {
   FIGHTER_FIELDS,
-  LOCALES,
   type Article,
   type ArticleFormat,
   type Correction,
@@ -30,25 +30,40 @@ import {
 /* -------------------------------------------------------------------------- */
 
 /**
- * An article renders publicly only when it is published, exists in *both*
- * locales with a title, a dek and a body, and carries at least one source.
+ * An article renders publicly only when it is published, carries at least one
+ * source, and is complete in Czech — a title, a dek and a body.
  * A story that fails this is not a rendering bug — it is content that is not
  * ready, and it stays invisible rather than half-rendered.
+ *
+ * The rule used to demand every locale in LOCALES. That made English mandatory,
+ * so the day the desk stopped writing it the site would have built green and
+ * published nothing at all: zero article pages and a 110-byte sitemap.
  */
 export function isRenderable(article: Article): boolean {
   if (article.status !== "published") return false;
   if (article.sources.length === 0) return false;
-  return LOCALES.every((locale) => {
-    const l = article.localizations[locale];
-    return Boolean(l?.title?.trim() && l?.dek?.trim() && l?.body?.trim());
-  });
+  return isRenderableIn(article, "cs");
+}
+
+/** Whether an article is complete in one specific locale. */
+export function isRenderableIn(article: Article, locale: Locale): boolean {
+  const l = article.localizations[locale];
+  return Boolean(l?.title?.trim() && l?.dek?.trim() && l?.body?.trim());
 }
 
 const byNewest = (a: Article, b: Article) =>
   new Date(b.publishAt).getTime() - new Date(a.publishAt).getTime();
 
 const deliveredArticles = getDeliveredArticles();
-const publishedArticles: Article[] = (deliveredArticles.length ? deliveredArticles : seedArticles)
+// Falling back on an empty array republished fiction. Any change that made a real delivered
+// package unreadable — a locale shape the reader did not expect, say — emptied this list and
+// the seven fictional demo stories silently took the magazine back over.
+//
+// A real delivery still always wins, so a live site cannot lose its articles to this. What
+// changed is the empty case: with demo mode off, no readable delivery renders an empty
+// magazine rather than fiction. Note demoMode defaults to TRUE when the env var is unset, so
+// production has to set NEXT_PUBLIC_DEMO_MODE=false for that to hold.
+const publishedArticles: Article[] = (deliveredArticles.length > 0 ? deliveredArticles : demoMode ? seedArticles : [])
   .filter(isRenderable)
   .sort(byNewest);
 
@@ -60,6 +75,23 @@ const availableEvents: FightEvent[] = deliveredEvents;
 /* -------------------------------------------------------------------------- */
 /* Articles                                                                   */
 /* -------------------------------------------------------------------------- */
+
+/**
+ * The copy for one locale, or null when the article was never written in it.
+ *
+ * Czech is always there; English is optional and on its way out. Callers that render a page
+ * must treat null as "this article does not exist in this language" — never as a reason to
+ * show the Czech text under an English heading.
+ */
+export function articleCopy(article: Article, locale: Locale) {
+  return article.localizations[locale] ?? null;
+}
+
+/** Articles complete in one locale. A list in English must not link pages that have none. */
+export function getArticlesIn(locale: Locale, options?: { limit?: number }): Article[] {
+  const inLocale = publishedArticles.filter((article) => isRenderableIn(article, locale));
+  return options?.limit ? inLocale.slice(0, options.limit) : inLocale;
+}
 
 export function getArticles(options?: { limit?: number }): Article[] {
   return options?.limit ? publishedArticles.slice(0, options.limit) : publishedArticles;
@@ -274,10 +306,17 @@ export { getFightAiQDelivery };
 /* Locale helpers                                                             */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * A label for an article in one locale, falling back to Czech.
+ *
+ * Czech is the locale every article has, so these never fail. The fallback is for labels
+ * only — a cross-reference showing a Czech headline is honest, a whole article body served
+ * under the wrong lang attribute is not. Pages resolve their own copy and 404 instead.
+ */
 export function articleTitle(article: Article, locale: Locale): string {
-  return article.localizations[locale].title;
+  return (article.localizations[locale] ?? article.localizations.cs)!.title;
 }
 
 export function articleDek(article: Article, locale: Locale): string {
-  return article.localizations[locale].dek;
+  return (article.localizations[locale] ?? article.localizations.cs)!.dek;
 }

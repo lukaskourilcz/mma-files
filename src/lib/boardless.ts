@@ -172,7 +172,7 @@ function source(value: DeliveredArticlePackage["sources"][number]): Source {
 
 function deliveredArticle(value: DeliveredArticlePackage): Article | null {
   if (value.schemaVersion !== "article/1" || value.status !== "published") return null;
-  if (!value.localizations.en.bodyMDX.trim() || !value.localizations.cs.bodyMDX.trim() || value.sources.length === 0) return null;
+  if (!value.localizations.cs?.bodyMDX?.trim() || value.sources.length === 0) return null;
   const org = organization(value);
   const template = heroTemplates.has(value.heroSpec.template as HeroTemplate)
     ? value.heroSpec.template as HeroTemplate
@@ -183,7 +183,9 @@ function deliveredArticle(value: DeliveredArticlePackage): Article | null {
     status: "published",
     format: value.format,
     localizations: {
-      en: { title: value.localizations.en.title, dek: value.localizations.en.dek, body: value.localizations.en.bodyMDX },
+      ...(value.localizations.en
+        ? { en: { title: value.localizations.en.title, dek: value.localizations.en.dek, body: value.localizations.en.bodyMDX } }
+        : {}),
       cs: { title: value.localizations.cs.title, dek: value.localizations.cs.dek, body: value.localizations.cs.bodyMDX },
     },
     ...(org ? { organization: org } : {}),
@@ -197,7 +199,7 @@ function deliveredArticle(value: DeliveredArticlePackage): Article | null {
     image: {
       src: value.image.hero_path.replace(/^public/u, ""),
       thumbnailSrc: value.image.thumb_path.replace(/^public/u, ""),
-      alt: { en: value.image.alt_en, cs: value.image.alt_cs },
+      alt: { ...(value.image.alt_en ? { en: value.image.alt_en } : {}), cs: value.image.alt_cs },
       credit: value.image.license.attribution_html,
       creditUrl: value.image.license.source_url,
     },

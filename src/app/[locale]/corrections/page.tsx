@@ -8,7 +8,7 @@ import { getDictionary } from "@/i18n";
 import { formatDate } from "@/lib/format";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/paths";
-import { getCorrectionLog } from "@/lib/repository";
+import { articleTitle, getCorrectionLog } from "@/lib/repository";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -89,7 +89,7 @@ export default async function CorrectionsPage({
                         href={routes.article(locale, article.slug)}
                         className="headline-link"
                       >
-                        {article.localizations[locale].title}
+                        {articleTitle(article, locale)}
                       </Link>
                     </h2>
 

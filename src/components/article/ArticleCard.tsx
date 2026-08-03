@@ -32,7 +32,9 @@ export function ArticleCard({
   size?: "default" | "compact";
 }) {
   const dict = getDictionary(locale);
-  const local = article.localizations[locale];
+  // Czech is the locale every article has; a card in a language the article was never
+  // written in shows its Czech copy rather than an empty tile.
+  const local = article.localizations[locale] ?? article.localizations.cs!;
   const Heading = headingLevel;
   const minutes = readingTimeMinutes(local.body);
   const accent = accentFor(article.organization);

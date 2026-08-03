@@ -16,7 +16,7 @@ import { getDictionary } from "@/i18n";
 import { countryName, formatCountdown, formatDateTime } from "@/lib/format";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/paths";
-import { getArticlesByEvent, getEventBySlug, getEvents } from "@/lib/repository";
+import { articleTitle, getArticlesByEvent, getEventBySlug, getEvents } from "@/lib/repository";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -151,7 +151,7 @@ export default async function EventPage({
                         href={routes.article(locale, article.slug)}
                         className="text-sm font-medium leading-snug text-ink underline decoration-ember decoration-[1.5px] underline-offset-[3px]"
                       >
-                        {article.localizations[locale].title}
+                        {articleTitle(article, locale)}
                       </a>
                       <p className="label-mono-sm mt-1.5 text-muted">
                         {dict.formats[article.format]}

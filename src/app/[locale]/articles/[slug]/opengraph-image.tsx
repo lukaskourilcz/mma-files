@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { siteConfig } from "@/config/site";
 import { getDictionary } from "@/i18n";
-import { getArticleBySlug, getArticles } from "@/lib/repository";
+import { articleTitle, getArticleBySlug, getArticles } from "@/lib/repository";
 import { LOCALES, isLocale } from "@/lib/types";
 
 export const size = { width: 1200, height: 630 };
@@ -28,7 +28,7 @@ export default async function Image({
   const dict = getDictionary(locale);
   const article = getArticleBySlug(slug);
 
-  const title = article?.localizations[locale].title ?? siteConfig.name;
+  const title = article ? articleTitle(article, locale) : siteConfig.name;
   const format = article ? dict.formats[article.format] : "";
   const fileTag = article?.fileNumber
     ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")}`

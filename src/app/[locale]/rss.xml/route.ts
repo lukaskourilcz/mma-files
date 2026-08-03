@@ -1,7 +1,7 @@
 import { absoluteUrl, allowIndexing, siteConfig } from "@/config/site";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
-import { getArticles } from "@/lib/repository";
+import { getArticlesIn } from "@/lib/repository";
 import { LOCALES, isLocale } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -32,12 +32,13 @@ export async function GET(
   }
 
   const dict = getDictionary(raw);
-  const articles = allowIndexing ? getArticles().filter((a) => !a.isDemo) : [];
+  // A feed in one language lists only what exists in it.
+  const articles = allowIndexing ? getArticlesIn(raw).filter((a) => !a.isDemo) : [];
   const self = absoluteUrl(routes.rss(raw));
 
   const items = articles
     .map((article) => {
-      const local = article.localizations[raw];
+      const local = article.localizations[raw]!;
       const url = absoluteUrl(routes.article(raw, article.slug));
       return `    <item>
       <title>${escapeXml(local.title)}</title>
