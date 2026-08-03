@@ -231,7 +231,12 @@ export interface Fighter {
   fieldStates: Partial<Record<FighterField, FieldState>>;
   sources: Source[];
   /** [site] Portrait. Absent means a labelled placeholder renders. */
-  image?: StoryImage;
+  /**
+   * No portrait is carried. A fighter photograph that is both accurate and licensed for a
+   * magazine to publish is not something this desk can obtain, so the roster card shows the
+   * verified data instead of a slot promising an image that never arrives.
+   */
+  image?: never;
   isDemo?: boolean;
   fightFile?: {
     evidenceTier: "primary" | "secondary" | "tertiary";

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { PhotoSlot } from "@/components/media/PhotoSlot";
 import { Chip, DataRow, MissingValue } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import {
@@ -32,9 +31,16 @@ export function FieldStateChip({
 }
 
 /**
- * A roster card: 4:5 portrait, the name in display type, and the record
- * underneath. A disputed record renders as the word, in the disputed colour —
- * never as one of the two numbers the registries disagree about.
+ * A roster card: the name in display type, the record underneath, and nothing else.
+ *
+ * There is no portrait. A fighter photograph that is both accurate and licensed for a magazine
+ * to publish is not something this desk can obtain — the free photo sources return whatever
+ * matches a name string, and an unlicensed press image is not an option — so the card carries
+ * what the files actually support. A named slot holding a placeholder is a promise the venture
+ * cannot keep; a card of verified data is one it can.
+ *
+ * A disputed record renders as the word, in the disputed colour, never as one of the two numbers
+ * the registries disagree about.
  */
 export function FighterCard({
   fighter,
@@ -49,23 +55,17 @@ export function FighterCard({
 
   return (
     <article className="sheet sheet-hover flex h-full flex-col">
-      <div className="relative aspect-[4/5] overflow-hidden border-b border-rule">
-        <PhotoSlot
-          image={fighter.image}
-          locale={locale}
-          note={dict.labels.photoSlots.portrait}
-          sizes="(min-width: 1024px) 23vw, (min-width: 640px) 45vw, 100vw"
-        />
+      <div className="border-b border-rule px-4 py-3">
         <span
           style={{ backgroundColor: `color-mix(in oklch, ${accent} 88%, black)` }}
-          className="label-mono-sm absolute left-3 top-3 z-10 px-2 py-1 font-semibold tracking-[0.14em] text-white"
+          className="label-mono-sm inline-block px-2 py-1 font-semibold tracking-[0.14em] text-white"
         >
           {dict.organizationsShort[fighter.organization]}
         </span>
       </div>
 
       <div className="px-4 pb-4 pt-3.5">
-        <h3 className="display text-[20px] leading-none text-ink md:text-[22px]">
+        <h3 className="display text-[22px] leading-tight text-ink md:text-[26px]">
           <Link
             href={routes.fighter(locale, fighter.organization, fighter.slug)}
             className="headline-link after:absolute after:inset-0"
