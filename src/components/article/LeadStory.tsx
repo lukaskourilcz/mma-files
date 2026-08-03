@@ -91,12 +91,13 @@ export function LeadStory({
 
           <h1
             id="lead-story"
-            className={`display mt-5 max-w-[15ch] text-[40px] text-ink sm:text-[56px] lg:text-[76px] ${
-              // Czech sets carons and acutes above the capitals, and at 0.93 the line box is
-              // shorter than the glyphs need, so TRI, ZAVERECNOU and KARIERY lost their marks
-              // into the line above. English has nothing above the cap height to lose.
-              locale === "cs" ? "leading-[1.1]" : "leading-[0.93]"
-            }`}
+            // One value, not one per locale. The split existed because English capitals have
+            // nothing above the cap height — but a Czech fighter's name does, in any locale, and
+            // this desk writes in Czech now. Measured on the live page at 76px: the carons in
+            // "TŘI ZÁVĚREČNOU" reach 83.6px from the baseline against a line box of exactly
+            // 83.6px, so the marks sat on the row above with nothing between them. 1.24 leaves
+            // about ten pixels of air at the largest step and scales with the clamp.
+            className="display mt-5 max-w-[15ch] text-[40px] leading-[1.24] text-ink sm:text-[56px] lg:text-[76px]"
           >
             <Link href={routes.article(locale, article.slug)} className="headline-link">
               {local.title}

@@ -170,13 +170,19 @@
 /* -------------------------------------------------------------------------- */
 
 @layer components {
-  /* Poster display type. Always uppercase, always tight. */
+  /* Poster display type. Always uppercase, and as tight as Czech allows.
+   *
+   * 0.95 was tight enough for English capitals, whose ink stops at the cap height. Czech sets
+   * carons and acutes above the capitals: measured on the live page, ÁČĎĚÍŇŘŠŤÚŮÝŽ in this face
+   * reach 1.108em from the baseline, so every .display heading on the site overlapped the line
+   * above — "VÝSLEDKY", "SLOŽKY" and "ČÍSLA" each by about three pixels at 30px. 1.16 clears the
+   * marks with a little air and still reads as poster type. */
   .display {
     font-family: var(--font-display);
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.005em;
-    line-height: 0.95;
+    line-height: 1.16;
   }
 
   /* Uppercase mono label: file numbers, formats, timestamps, source kinds. */
