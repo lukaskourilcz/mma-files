@@ -36,6 +36,11 @@ is done. Do not wait for the user to ask for a commit.
   article before the package is ever delivered here. There is no
   `src/lib/style-guard.ts` in this repository and adding a second, divergent
   banned-phrase list would put two desks in disagreement about the same copy.
+- A delivered package may carry `localizations.cs.altHeadline`, the short Czech
+  line the desk writes for a carousel cover. The reader pages use `title`; the
+  consumer picks the fields it needs and ignores the rest, so a package with the
+  field and one without both load. Do not render `altHeadline` as a headline on
+  an article page — it is written for a square, not for a page of prose.
 
 ## Layout
 
