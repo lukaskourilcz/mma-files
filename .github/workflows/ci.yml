@@ -1,8 +1,14 @@
 name: CI
 
 on:
+  # A delivered article was built and gated upstream in quorum before it was pushed here, so a
+  # full rebuild verifies the same bytes a second time. These two paths are what a delivery
+  # writes and nothing else does. Pull requests stay unfiltered.
   push:
     branches: [main, dev]
+    paths-ignore:
+      - "data/boardless/**"
+      - "public/images/articles/**"
   pull_request:
   workflow_dispatch:
 
