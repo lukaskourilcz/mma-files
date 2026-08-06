@@ -4,18 +4,9 @@ import { getFighterById } from "@/lib/repository";
 import { routes } from "@/lib/paths";
 import type { Locale } from "@/lib/types";
 
+// Czech only, because `Locale` is `"cs"` and nothing can ask for anything else. The English
+// half of this table was unreachable copy that still had to be kept in step with the Czech.
 const copy = {
-  en: {
-    eyebrow: "Delivered by FightAIQ",
-    title: "Current fight forecasts",
-    empty: "No eligible confirmed fight has a verified forecast yet. The page stays empty instead of showing a made-up prediction.",
-    updated: "Snapshot updated",
-    models: "Current predictions",
-    model: "Model",
-    warning: "These are time-stamped early model outputs, not a promise or personal betting advice. Raw prices and private FightAIQ research files are not published here.",
-    early: "Early model",
-    notAdvice: "Model output, not betting advice.",
-  },
   cs: {
     eyebrow: "Data dodává FightAIQ",
     title: "Aktuální odhady zápasů",
@@ -27,15 +18,15 @@ const copy = {
     early: "Raný model",
     notAdvice: "Výstup modelu, ne sázkové doporučení.",
   },
-} as const;
+} as const satisfies Record<Locale, unknown>;
 
 function percent(value: number): string {
   return `${(value * 100).toFixed(1)}%`;
 }
 
-function timestamp(value: string, locale: Locale): string {
+function timestamp(value: string): string {
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat(locale === "cs" ? "cs-CZ" : "en-GB", {
+  return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("cs-CZ", {
     dateStyle: "medium",
     timeStyle: "short",
     timeZone: "Europe/Prague",
@@ -65,7 +56,7 @@ export function FightAiQFeed({ snapshot, locale }: { snapshot: FightAiQDelivery;
             <p className="label-mono-sm text-ink-meta">{text.eyebrow}</p>
             <h2 className="display mt-2 text-3xl text-ink md:text-4xl" id="fightaiq-feed">{text.title}</h2>
           </div>
-          <p className="label-mono-sm text-ink-meta">{text.updated}: {timestamp(snapshot.generatedAt, locale)}</p>
+          <p className="label-mono-sm text-ink-meta">{text.updated}: {timestamp(snapshot.generatedAt)}</p>
         </div>
 
         <p className="mt-6 max-w-4xl border-l-2 border-signal pl-4 text-sm leading-relaxed text-ink-muted">{text.warning}</p>

@@ -1,11 +1,12 @@
-import type { Dictionary } from "./en";
-
 /**
- * Czech dictionary. Written as Czech, not translated from the English strings:
- * word order, declension and the vocabulary the sport actually uses here.
- * Typed against `Dictionary`, so a missing key fails the build.
+ * The Czech dictionary, and the only one. Written as Czech rather than translated: word order,
+ * declension and the vocabulary the sport actually uses here.
+ *
+ * It used to be typed against an English dictionary that served no page, so the structure of the
+ * one published locale was defined by a file nobody read and every key had to be written twice.
+ * This file is the structure now; `Dictionary` is derived from it.
  */
-export const cs: Dictionary = {
+export const cs = {
   meta: {
     localeName: "Čeština",
     localeShort: "CZ",
@@ -612,3 +613,5 @@ export const cs: Dictionary = {
     fightNight: "Zápasový večer",
   },
 };
+
+export type Dictionary = typeof cs;

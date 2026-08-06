@@ -16,7 +16,7 @@ export const siteConfig = {
   name: "MMA Files",
   wordmark: "MMA FILES",
   utilityLine: {
-    cs: "Zápasová žurnalistika / Data / Česky + anglicky",
+    cs: "Zápasová žurnalistika / Data / Česky",
   } satisfies Record<Locale, string>,
 
   tagline: {
@@ -24,7 +24,7 @@ export const siteConfig = {
   } satisfies Record<Locale, string>,
 
   description: {
-    cs: "Zpravodajství o UFC a Oktagonu se zdroji u každého tvrzení — česky a anglicky.",
+    cs: "Zpravodajství o UFC a Oktagonu se zdroji u každého tvrzení.",
   } satisfies Record<Locale, string>,
 
   /**

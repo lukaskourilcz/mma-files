@@ -1,7 +1,7 @@
 # MMA Files — agent instructions
 
-Public bilingual (EN/CS) fighting magazine. Next.js App Router + TypeScript +
-Tailwind v4. No external services are required to run it.
+Public Czech fighting magazine. Next.js App Router + TypeScript + Tailwind v4.
+No external services are required to run it.
 
 ## Always, in every session
 
@@ -12,8 +12,11 @@ is done. Do not wait for the user to ask for a commit.
 
 ## Editorial guardrails (these are product requirements, not preferences)
 
-- Every public article needs **both** an English and a Czech version. Never ship
-  a one-language story.
+- Czech is the only published locale: `LOCALES = ["cs"]`, `src/i18n/cs.ts` is
+  the dictionary and the structural source of truth, and there is no other
+  locale to switch to. Every article is written once, natively in Czech,
+  upstream in quorum. Do not reintroduce an English locale, an English
+  dictionary or a translation step.
 - Never invent fight records, dates, quotes, injuries, statistics, or news
   claims. Missing data stays visibly missing — never backfilled with `0`,
   guesswork, or fake specificity.
@@ -29,19 +32,26 @@ is done. Do not wait for the user to ask for a commit.
   typographic fallback.
 - Do not claim the publication is live, established, independent, or fully
   automated. BoardlessAI wording is configurable in `src/config/site.ts`.
-- Banned phrase lists for both desks live in `src/lib/style-guard.ts`. Run
-  `npm run typecheck` — the guard is unit-checked at module load in dev.
+- The style gate lives upstream: quorum's STYLEBOOK review runs over the Czech
+  article before the package is ever delivered here. There is no
+  `src/lib/style-guard.ts` in this repository and adding a second, divergent
+  banned-phrase list would put two desks in disagreement about the same copy.
 
 ## Layout
 
 - `src/content/` — fictional seed data used until a real delivery exists.
 - `data/boardless/` — the only canonical write target for BoardlessAI article
-  and FightAIQ delivery packages.
+  and FightAIQ delivery packages. `npm run consume:boardless` is the only path
+  that writes it; nothing in this repository authors content.
 - `src/lib/repository.ts` — the only sanctioned read path for content. Route
   files must not import `src/content/` directly.
-- `src/i18n/` — UI dictionaries. Both locales must stay complete; the type
-  system enforces it.
-- `src/config/site.ts` — brand, engine wording, indexing switches.
+- `src/i18n/` — the Czech UI dictionary. `Dictionary` is derived from `cs.ts`,
+  so the published locale defines the structure rather than being checked
+  against a locale nobody reads.
+- `src/config/site.ts` — brand, engine wording, indexing switches. `demoMode`
+  defaults to **true** when `NEXT_PUBLIC_DEMO_MODE` is unset, so production must
+  set `NEXT_PUBLIC_DEMO_MODE=false`; without it a delivery the reader cannot
+  parse silently hands the magazine back to the seven fictional demo stories.
 
 ## Commands
 

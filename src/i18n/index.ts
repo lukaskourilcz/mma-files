@@ -1,8 +1,6 @@
-import { cs } from "./cs";
-import { type Dictionary } from "./en";
+import { cs, type Dictionary } from "./cs";
 import { DEFAULT_LOCALE, isLocale, type Locale } from "@/lib/types";
 
-// en.ts stays as the Dictionary type anchor; it is no longer a dictionary the site serves.
 const dictionaries: Record<Locale, Dictionary> = { cs };
 
 export function getDictionary(locale: Locale): Dictionary {
