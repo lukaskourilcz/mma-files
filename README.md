@@ -1,8 +1,9 @@
 # MMA Files
 
-A bilingual (English / Czech) public fighting magazine covering UFC and Oktagon.
-Every released story carries its sources, keeps unknowns visible, and shows
-corrections on the page.
+A Czech public fighting magazine covering UFC and Oktagon. Every released story
+carries its sources, keeps unknowns visible, and shows corrections on the page.
+Czech is the only published locale: each article is written once, natively in
+Czech, upstream in quorum.
 
 > The fight is the headline. The file is the proof.
 
@@ -192,10 +193,10 @@ it is content that is not ready.
 
 ---
 
-## Adding a bilingual article
+## Adding an article
 
-Add an entry to [`src/content/articles.ts`](src/content/articles.ts). Both
-locales are required.
+Add an entry to [`src/content/articles.ts`](src/content/articles.ts). Czech is
+required; the `en` key is optional and only two legacy packages still carry one.
 
 ```ts
 {

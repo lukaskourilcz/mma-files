@@ -2,7 +2,7 @@
   "name": "mma-files",
   "version": "0.1.0",
   "private": true,
-  "description": "MMA Files — bilingual (EN/CS) public fighting magazine powered by the BoardlessAI editorial engine.",
+  "description": "MMA Files — Czech public fighting magazine powered by the BoardlessAI editorial engine.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
