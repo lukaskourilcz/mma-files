@@ -50,6 +50,12 @@ this repository or its Vercel environment.
 
 ## Verified in code
 
+- The repository is public as of 2026-08-07, which is what restores Actions:
+  standard runners are unmetered on public repositories, so the free-tier
+  minutes that had been exhausted no longer gate CI. A history and working-tree
+  sweep found no committed credential, and the delivered FightAIQ snapshot
+  carries no odds, price or bookmaker field — the private-research boundary
+  holds in the file that is now readable by anyone.
 - On 2026-08-01, a clean-checkout rehearsal accepted one article and one
   FightAIQ snapshot, treated an identical article replay as a no-op, passed its
   tests and type-check, and built the article, event, fighter and Data Desk
