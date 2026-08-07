@@ -22,11 +22,11 @@ account or editorial decisions that cannot be made inside the repository.
 
 ## First article check
 
-- [ ] Deliver one bilingual `article/1` package from BoardlessAI.
+- [ ] Deliver one Czech `article/1` package from BoardlessAI.
 - [ ] Confirm the target commit changes only `data/boardless/articles.json` and
   passes GitHub Actions.
-- [ ] Confirm the English and Czech routes show the same sourced story, the hero
-  renders, citations are present and no fictional seed story appears beside it.
+- [ ] Confirm the Czech article route shows the sourced story, the hero renders,
+  citations are present and no fictional seed story appears beside it.
 
 ## First FightAIQ check
 
@@ -37,7 +37,7 @@ account or editorial decisions that cannot be made inside the repository.
   their source checks.
 - [ ] Confirm the target commit changes only `data/boardless/fightaiq.json` and
   passes GitHub Actions.
-- [ ] Check Fighters, Upcoming Fights and Data Desk in both languages. Missing fields
+- [ ] Check Fighters, Upcoming Fights and Data Desk. Missing fields
   must stay visible as missing; raw prices must not appear in the delivered snapshot.
 - [ ] Cancel or postpone one fixture bout in a rehearsal package and confirm it leaves
   every upcoming view without losing its status history.
@@ -50,10 +50,10 @@ this repository or its Vercel environment.
 
 ## Verified in code
 
-- On 2026-08-01, a clean-checkout rehearsal accepted one bilingual article and
-  one FightAIQ snapshot, treated an identical article replay as a no-op, passed
-  its tests and type-check, and built the English and Czech article, event,
-  fighter and Data Desk routes from the delivered files.
+- On 2026-08-01, a clean-checkout rehearsal accepted one article and one
+  FightAIQ snapshot, treated an identical article replay as a no-op, passed its
+  tests and type-check, and built the article, event, fighter and Data Desk
+  routes from the delivered files.
 - BoardlessAI refuses an MMA Files delivery-only run unless
   `MMA_FILES_LIVE_ENABLED=true`; a retry does not call a model.
 - The "Víte, že…" belt ships complete and needs no owner action: the 50 facts

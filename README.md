@@ -3,7 +3,8 @@
 A Czech public fighting magazine covering UFC and Oktagon. Every released story
 carries its sources, keeps unknowns visible, and shows corrections on the page.
 Czech is the only published locale: each article is written once, natively in
-Czech, upstream in quorum.
+Czech, upstream in quorum. There is no English locale, no English dictionary
+and no translation step.
 
 > The fight is the headline. The file is the proof.
 
@@ -32,7 +33,7 @@ npm run dev
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Development server on `http://localhost:3000` |
-| `npm run build` | Production build; prerenders every route in both locales |
+| `npm run build` | Production build; prerenders every route |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint |
 | `npm run test` | Content-delivery boundary, dataset and daily-pick tests |
@@ -68,8 +69,9 @@ src/
 ├── content/               Fictional seed data used only until delivery exists
 ├── data/                  Verified fact dataset for the "Víte, že…" belt, plus
 │                          its append contract in README.md
-├── i18n/                  en.ts is the structural source of truth; cs.ts is
-│                          typed against it, so a missing key fails the build
+├── i18n/                  cs.ts is the dictionary and the structural source of
+│                          truth; Dictionary is derived from it, so the one
+│                          published locale defines the shape
 ├── lib/
 │   ├── repository.ts      The only sanctioned read path for content
 │   ├── markdown.tsx       Restricted Markdown → React (no raw HTML)
@@ -82,7 +84,8 @@ src/
 │   │                      node --test suite can import it (.d.mts types it)
 │   ├── daily.ts           Typed re-export of the above, plus dataset types
 │   └── facts.ts           Reads src/data/mma-facts.json once at build time
-└── middleware.ts          Redirects unprefixed paths, negotiates the locale
+└── middleware.ts          Redirects unprefixed paths to /cs; a leftover /en
+                           path is stripped, not prefixed
 data/boardless/             Hash-checked article and FightAIQ delivery stores
 scripts/                    Content-only BoardlessAI consumer
 ```
@@ -148,7 +151,7 @@ interface Article {
   format:
     | "fight-week-preview" | "post-event-recap" | "fighter-profile"
     | "data-story" | "weigh-in-report" | "desk-notes";
-  localizations: Record<"en" | "cs", ArticleLocale>;
+  localizations: Partial<Record<Locale, ArticleLocale>>;  // Locale = "cs"
   organization?: "ufc" | "oktagon";
   fighterRefs: string[];
   eventRef?: string;
@@ -190,19 +193,20 @@ visible-gaps behaviour throughout the UI.
 what the public site will render. An article appears only when it:
 
 - has `status: "published"`,
-- exists in **both** locales with a non-empty title, dek and body,
+- has a Czech version with a non-empty title, dek and body,
 - and carries **at least one** source.
 
 An article that fails this is invisible rather than half-rendered. That is
-deliberate: a one-language story or an unsourced claim is not a rendering bug,
-it is content that is not ready.
+deliberate: a story without Czech text or an unsourced claim is not a rendering
+bug, it is content that is not ready.
 
 ---
 
 ## Adding an article
 
 Add an entry to [`src/content/articles.ts`](src/content/articles.ts). Czech is
-required; the `en` key is optional and only two legacy packages still carry one.
+the only published locale; the `en` key survives only on two legacy packages and
+is never required.
 
 ```ts
 {
@@ -216,12 +220,11 @@ required; the `en` key is optional and only two legacy packages still carry one.
   fighterRefs: ["fighter:oktagon/stepan-hruska"],
   publishAt: "2026-09-06T09:00:00+02:00",
   localizations: {
-    en: { title: "…", dek: "…", body: "…" },
     cs: { title: "…", dek: "…", body: "…" },
   },
   sources: [ /* at least one — see below */ ],
   heroSpec: { template: "type-led-result", bindings: { /* … */ } },
-  heroAlt: { en: "…", cs: "…" },
+  heroAlt: { cs: "…" },
 }
 ```
 
@@ -264,8 +267,8 @@ without permission.
 
 `heroSpec.bindings` carry **locale-neutral values only** — names, numbers,
 times, and keys like `methodKey` or `metric1`. Every label is looked up in the
-dictionary, so one binding set renders correctly in both languages. `heroAlt`
-supplies the alt text per locale and is required for accessibility.
+dictionary, so one binding set renders correctly. `heroAlt` supplies the alt
+text and is required for accessibility.
 
 ---
 
@@ -313,8 +316,9 @@ that impossible to do quietly.
 
 BoardlessAI sends two package types through a repository-scoped GitHub App:
 
-- `article/1` — one sourced, published article with complete English and Czech
-  versions, plus exactly one rehosted, attributed image and thumbnail;
+- `article/1` — one sourced, published article with a complete Czech version,
+  plus exactly one rehosted, attributed image and thumbnail. English is legacy:
+  only two old packages carry it and it is never required;
 - `fightaiq-delivery/2` — canonical UFC/Oktagon fighter cards, status-tracked bouts,
   event projections and current Stats predictions. Raw prices and private research
   files never cross the delivery boundary.
@@ -457,7 +461,7 @@ components as well as the copy:
 - No invented quotes, records, injuries, reactions or statistics.
 - No AI-generated fighter imagery presented as photography.
 - No promotion marks, event artwork or licensed photography without permission.
-- Bilingual articles that clear BoardlessAI's release gates are delivered as
+- Czech articles that clear BoardlessAI's release gates are delivered as
   content-only Git commits and deploy automatically. Social posting remains outside
   this repository and cannot start until BoardlessAI's signed activation gates pass.
 
