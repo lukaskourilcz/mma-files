@@ -1,0 +1,814 @@
+{
+  "schemaVersion": "boardless-dataset/1",
+  "dataset": "mma-facts",
+  "anchor": "2026-07-01",
+  "categories": {
+    "history": { "en": "History", "cs": "Historie" },
+    "records": { "en": "Records", "cs": "Rekordy" },
+    "fighters": { "en": "Fighters", "cs": "Bojovníci" },
+    "events": { "en": "Events", "cs": "Turnaje" },
+    "business": { "en": "Business", "cs": "Byznys" }
+  },
+  "entries": [
+    {
+      "id": "mma-001",
+      "slug": "ufc-1-royce-gracie",
+      "category": "history",
+      "promotion": "ufc",
+      "en": {
+        "short": "Royce Gracie won the first UFC tournament in 1993 with under five minutes of total fight time",
+        "full": "At UFC 1 in Denver on 12 November 1993, Royce Gracie submitted three opponents in a single night with less than five minutes of combined fight time — and took home $50,000. The one-night, open-weight tournament was built to answer a simple question: which martial art actually works."
+      },
+      "cs": {
+        "short": "Royce Gracie vyhrál první turnaj UFC v roce 1993 za méně než pět minut čistého času v kleci",
+        "full": "Na UFC 1 v Denveru 12. listopadu 1993 Royce Gracie uškrtil tři soupeře během jediného večera — dohromady strávil v zápasech necelých pět minut a odnesl si 50 000 dolarů. Jednodenní turnaj bez váhových kategorií měl odpovědět na prostou otázku: které bojové umění doopravdy funguje."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 1 official results"
+    },
+    {
+      "id": "mma-002",
+      "slug": "oktagon-zalozeni-2016",
+      "category": "history",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Oktagon MMA was founded in 2016 by Ondřej Novotný and Pavol Neruda — and grew into Europe's leading promotion",
+        "full": "Ondřej Novotný and Pavol Neruda founded Oktagon MMA in 2016 as a Czech-Slovak project. Within a decade it grew from national TV beginnings into one of the biggest MMA promotions in Europe, selling out arenas in Czechia, Slovakia and Germany."
+      },
+      "cs": {
+        "short": "Oktagon MMA založili v roce 2016 Ondřej Novotný a Pavol Neruda — a vyrostl v jedničku evropského MMA",
+        "full": "Oktagon MMA založili v roce 2016 Ondřej Novotný a Pavol Neruda jako česko-slovenský projekt. Za dekádu vyrostl z televizních začátků v jednu z největších MMA organizací v Evropě, která vyprodává arény v Česku, na Slovensku i v Německu."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon MMA company history"
+    },
+    {
+      "id": "mma-003",
+      "slug": "masvidal-nejrychlejsi-ko",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "The fastest knockout in UFC history took five seconds: Masvidal's flying knee on Askren in 2019",
+        "full": "At UFC 239 in July 2019, Jorge Masvidal sprinted across the cage and knocked out the previously unbeaten Ben Askren with a flying knee in five seconds — the fastest knockout in UFC history. Masvidal later said he had rehearsed exactly that start backstage."
+      },
+      "cs": {
+        "short": "Nejrychlejší KO v historii UFC trvalo pět sekund: Masvidalovo letící koleno na Askrena v roce 2019",
+        "full": "Na UFC 239 v červenci 2019 Jorge Masvidal vystřelil přes klec a do té doby neporaženého Bena Askrena knockoutoval letícím kolenem za pět sekund — nejrychlejší KO v historii UFC. Masvidal později přiznal, že přesně tenhle začátek nacvičoval v šatně."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC record book, UFC 239"
+    },
+    {
+      "id": "mma-004",
+      "slug": "vemola-prvni-cech-v-ufc",
+      "category": "fighters",
+      "promotion": "cross",
+      "en": {
+        "short": "Karlos Vémola became the first Czech fighter in the UFC back in 2010",
+        "full": "Karlos Vémola made history in 2010 as the first Czech fighter to compete in the UFC, debuting at UFC 116 in Las Vegas. Years before Oktagon superstardom, the 'Terminator' was carrying the Czech flag on MMA's biggest stage."
+      },
+      "cs": {
+        "short": "Karlos Vémola se v roce 2010 stal prvním Čechem v UFC",
+        "full": "Karlos Vémola vstoupil do historie v roce 2010 jako první český zápasník v UFC — debutoval na turnaji UFC 116 v Las Vegas. Roky předtím, než se stal hvězdou Oktagonu, nesl 'Terminátor' českou vlajku na největší scéně MMA."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 116 official results"
+    },
+    {
+      "id": "mma-005",
+      "slug": "ufc-koupeno-za-2-miliony",
+      "category": "business",
+      "promotion": "ufc",
+      "en": {
+        "short": "The UFC sold for $2 million in 2001 — and for about $4 billion fifteen years later",
+        "full": "In January 2001 the Fertitta brothers and Dana White bought the struggling UFC for roughly $2 million. In 2016 they sold it for about $4.025 billion — at the time the largest single sale in sports history, a roughly 2,000-fold return."
+      },
+      "cs": {
+        "short": "UFC se v roce 2001 prodalo za 2 miliony dolarů — a o patnáct let později za zhruba 4 miliardy",
+        "full": "V lednu 2001 koupili bratři Fertittové s Danou Whitem skomírající UFC za zhruba 2 miliony dolarů. V roce 2016 ho prodali za přibližně 4,025 miliardy — tehdy největší jednorázový prodej ve sportovní historii a asi dvoutisícinásobné zhodnocení."
+      },
+      "verified": "2026-08-07",
+      "source": "Zuffa acquisition and 2016 WME-IMG sale coverage"
+    },
+    {
+      "id": "mma-006",
+      "slug": "souboj-stoleti-o2",
+      "category": "events",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Vémola vs. Végh in 2019 was the first MMA event to sell out Prague's O2 Arena — Végh won in round one",
+        "full": "On 9 November 2019, Oktagon 15 staged Karlos Vémola vs. Attila Végh, billed as the 'Fight of the Century' — the first MMA event to sell out Prague's O2 Arena. The biggest Czech-Slovak fight ever ended inside one round, with Végh knocking Vémola out."
+      },
+      "cs": {
+        "short": "Vémola vs. Végh v roce 2019 jako první MMA akce vyprodal pražskou O2 arenu — Végh vyhrál v prvním kole",
+        "full": "9. listopadu 2019 postavil Oktagon 15 proti sobě Karlose Vémolu a Attilu Végha v 'Souboji století' — první MMA akci, která vyprodala pražskou O2 arenu. Největší česko-slovenský zápas historie skončil už v prvním kole, když Végh Vémolu knockoutoval."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon 15 official results"
+    },
+    {
+      "id": "mma-007",
+      "slug": "mcgregor-13-sekund",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "The fastest finish in a UFC title fight: McGregor knocked out Aldo in 13 seconds",
+        "full": "At UFC 194 in December 2015, Conor McGregor knocked out featherweight champion José Aldo with a single left hand in 13 seconds — the fastest finish in UFC title-fight history. Aldo had not lost a fight in ten years."
+      },
+      "cs": {
+        "short": "Nejrychlejší konec titulového zápasu UFC: McGregor knockoutoval Alda za 13 sekund",
+        "full": "Na UFC 194 v prosinci 2015 Conor McGregor jedinou levačkou knockoutoval šampiona pérové váhy Josého Alda za 13 sekund — nejrychlejší konec titulového zápasu v historii UFC. Aldo do té doby neprohrál deset let."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC record book, UFC 194"
+    },
+    {
+      "id": "mma-008",
+      "slug": "prochazka-prvni-cesky-sampion",
+      "category": "records",
+      "promotion": "cross",
+      "en": {
+        "short": "Jiří Procházka won the UFC light heavyweight title in only his third UFC fight — the first Czech champion",
+        "full": "At UFC 275 in June 2022, Jiří Procházka submitted Glover Teixeira with 28 seconds left in the final round of a fight he was losing on the scorecards — becoming the first Czech UFC champion, in only his third fight in the organization."
+      },
+      "cs": {
+        "short": "Jiří Procházka získal titul UFC už ve svém třetím zápase v organizaci — jako první Čech v historii",
+        "full": "Na UFC 275 v červnu 2022 Jiří Procházka uškrtil Glovera Teixeiru 28 sekund před koncem posledního kola zápasu, který na bodech prohrával — a stal se prvním českým šampionem UFC, už ve svém třetím zápase v organizaci."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 275 official results"
+    },
+    {
+      "id": "mma-009",
+      "slug": "ufc-bez-pravidel",
+      "category": "history",
+      "promotion": "ufc",
+      "en": {
+        "short": "Early UFC had no gloves, no weight classes, no rounds and no judges — only biting and eye-gouging were banned",
+        "full": "For its first years the UFC ran with no gloves, no weight classes, no rounds and no judges; the only firm rules banned biting and eye-gouging. Gloves became mandatory in 1997, weight classes arrived the same year, and five-minute rounds only in 1999."
+      },
+      "cs": {
+        "short": "Rané UFC nemělo rukavice, váhové kategorie, kola ani rozhodčí u stolku — zakázané bylo jen kousání a píchání do očí",
+        "full": "První roky se v UFC zápasilo bez rukavic, bez váhových kategorií, bez kol a bez bodových rozhodčích; pevná pravidla zakazovala jen kousání a píchání do očí. Rukavice se staly povinnými v roce 1997, ve stejném roce přišly váhové kategorie a pětiminutová kola až v roce 1999."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC rules history (UFC 14, UFC 12, UFC 21)"
+    },
+    {
+      "id": "mma-010",
+      "slug": "oktagon-55-frankfurt",
+      "category": "events",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Oktagon 55 in Frankfurt drew over 57,000 fans — the biggest MMA event ever held in Europe",
+        "full": "On 8 June 2024, Oktagon 55 filled Frankfurt's Deutsche Bank Park football stadium with more than 57,000 fans for the German derby Christian Eckerlin vs. Christian Jungwirth — the largest attendance for any MMA event ever held in Europe, staged by a Czech-Slovak promotion."
+      },
+      "cs": {
+        "short": "Oktagon 55 ve Frankfurtu přilákal přes 57 000 diváků — největší MMA akce, jaká se kdy v Evropě konala",
+        "full": "8. června 2024 zaplnil Oktagon 55 frankfurtský fotbalový stadion Deutsche Bank Park více než 57 000 diváky na německé derby Christian Eckerlin vs. Christian Jungwirth — nejvyšší návštěva MMA akce v evropské historii, kterou uspořádala česko-slovenská organizace."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon 55 attendance reports"
+    },
+    {
+      "id": "mma-011",
+      "slug": "khabib-29-0",
+      "category": "fighters",
+      "promotion": "ufc",
+      "en": {
+        "short": "Khabib Nurmagomedov retired as undefeated champion with a perfect 29-0 record",
+        "full": "Khabib Nurmagomedov retired in October 2020 as the reigning UFC lightweight champion with a perfect 29-0 professional record, walking away immediately after defending his belt — keeping a promise to his mother following his father's death."
+      },
+      "cs": {
+        "short": "Khabib Nurmagomedov ukončil kariéru jako neporažený šampion s bilancí 29-0",
+        "full": "Khabib Nurmagomedov ukončil kariéru v říjnu 2020 jako úřadující šampion lehké váhy UFC s dokonalou bilancí 29-0. Odešel hned po obhajobě titulu — splnil tím slib, který dal matce po smrti svého otce."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 254 and Nurmagomedov retirement coverage"
+    },
+    {
+      "id": "mma-012",
+      "slug": "gamechanger-milion-eur",
+      "category": "business",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Oktagon's Tipsport Gamechanger tournament pays the winner €1,000,000 — the richest prize in European MMA",
+        "full": "Oktagon's Tipsport Gamechanger, a 16-man welterweight pyramid launched in 2022, put up €1,000,000 for the winner — the richest tournament prize in European MMA history. Czech veteran David Kozma fought his way through the bracket and claimed the first million in 2023."
+      },
+      "cs": {
+        "short": "Turnaj Tipsport Gamechanger od Oktagonu vyplácí vítězi 1 000 000 eur — nejvyšší prémii v evropském MMA",
+        "full": "Tipsport Gamechanger, pyramida šestnácti zápasníků velterové váhy, kterou Oktagon spustil v roce 2022, nabídla vítězi 1 000 000 eur — nejvyšší turnajovou prémii v historii evropského MMA. Prvním milionářem se v roce 2023 stal český veterán David Kozma, který prošel celým pavoukem."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon Tipsport Gamechanger coverage"
+    },
+    {
+      "id": "mma-013",
+      "slug": "johnson-11-obhajob",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Demetrious Johnson defended a UFC title 11 times in a row — still the all-time record",
+        "full": "Between 2012 and 2017, flyweight champion Demetrious 'Mighty Mouse' Johnson defended his UFC title eleven consecutive times — a record no champion in any division has matched since."
+      },
+      "cs": {
+        "short": "Demetrious Johnson obhájil titul UFC jedenáctkrát v řadě — dodnes absolutní rekord",
+        "full": "Šampion muší váhy Demetrious 'Mighty Mouse' Johnson v letech 2012 až 2017 obhájil titul UFC jedenáctkrát za sebou — rekord, který od té doby nevyrovnal žádný šampion v žádné divizi."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC record book"
+    },
+    {
+      "id": "mma-014",
+      "slug": "ufc-poprve-v-praze",
+      "category": "events",
+      "promotion": "cross",
+      "en": {
+        "short": "The UFC came to Czechia for the first time in February 2019 — a sold-out O2 Arena in Prague",
+        "full": "On 23 February 2019 the UFC held its first event on Czech soil: UFC Fight Night Prague in a sold-out O2 Arena, headlined by Thiago Santos' TKO of Jan Błachowicz. The demand proved what Czech MMA fans had long known — the country is fight territory."
+      },
+      "cs": {
+        "short": "UFC dorazilo do Česka poprvé v únoru 2019 — do vyprodané pražské O2 areny",
+        "full": "23. února 2019 uspořádalo UFC první turnaj na české půdě: UFC Fight Night Prague ve vyprodané O2 areně, v jejímž hlavním zápase Thiago Santos ukončil Jana Błachowicze TKO. Zájem potvrdil, co čeští fanoušci věděli dávno — tahle země je zápasnický region."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC Fight Night 145 official results"
+    },
+    {
+      "id": "mma-015",
+      "slug": "lidske-kohouti-zapasy",
+      "category": "history",
+      "promotion": "ufc",
+      "en": {
+        "short": "Senator McCain called the UFC 'human cockfighting' — and got it banned across much of the US in the 1990s",
+        "full": "In 1996, Senator John McCain wrote to the governors of all fifty states calling the UFC 'human cockfighting'. Dozens of states banned the sport and cable carriers dropped it — nearly killing the company and forcing the Unified Rules that legitimized modern MMA in 2000."
+      },
+      "cs": {
+        "short": "Senátor McCain nazval UFC 'lidskými kohoutími zápasy' — a v 90. letech ho dostal do zákazu ve velké části USA",
+        "full": "Senátor John McCain v roce 1996 napsal guvernérům všech padesáti států, že UFC jsou 'lidské kohoutí zápasy'. Desítky států sport zakázaly a kabelové televize ho vyřadily — společnost to téměř zabilo a vynutilo si to Sjednocená pravidla, která v roce 2000 dala modernímu MMA legitimitu."
+      },
+      "verified": "2026-08-07",
+      "source": "1990s UFC regulation history, Unified Rules of MMA"
+    },
+    {
+      "id": "mma-016",
+      "slug": "vegh-sampion-bellatoru",
+      "category": "fighters",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Attila Végh held a major American world title: he was Bellator light heavyweight champion in 2013",
+        "full": "Years before becoming an Oktagon icon, Slovakia's Attila Végh won the Bellator light heavyweight world title in 2013, beating champion Christian M'Pumbu after winning the season tournament — a Slovak holding one of America's major MMA belts."
+      },
+      "cs": {
+        "short": "Attila Végh držel velký americký titul: v roce 2013 byl šampionem polotěžké váhy Bellatoru",
+        "full": "Roky předtím, než se stal ikonou Oktagonu, vybojoval Slovák Attila Végh v roce 2013 světový titul polotěžké váhy organizace Bellator — po vítězství v sezónním turnaji porazil šampiona Christiana M'Pumbua. Slovák tehdy držel jeden z velkých amerických opasků MMA."
+      },
+      "verified": "2026-08-07",
+      "source": "Bellator 91 official results"
+    },
+    {
+      "id": "mma-017",
+      "slug": "ufc-229-ppv-rekord",
+      "category": "business",
+      "promotion": "ufc",
+      "en": {
+        "short": "Khabib vs. McGregor sold about 2.4 million pay-per-views — the biggest MMA event ever sold",
+        "full": "UFC 229 in October 2018, headlined by Khabib Nurmagomedov vs. Conor McGregor, sold approximately 2.4 million pay-per-view buys — the highest-selling MMA event in history, roughly double the previous UFC record."
+      },
+      "cs": {
+        "short": "Khabib vs. McGregor prodal zhruba 2,4 milionu pay-per-view — komerčně největší MMA akce historie",
+        "full": "UFC 229 z října 2018 s hlavním zápasem Khabib Nurmagomedov vs. Conor McGregor prodalo přibližně 2,4 milionu pay-per-view — nejprodávanější MMA akce v historii, zhruba dvojnásobek předchozího rekordu UFC."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 229 PPV reporting"
+    },
+    {
+      "id": "mma-018",
+      "slug": "silva-16-vyher",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Anderson Silva won 16 UFC fights in a row and held the middleweight title for 2,457 days",
+        "full": "Anderson Silva ran off sixteen straight UFC wins between 2006 and 2012 and reigned as middleweight champion for 2,457 days — both still records for the longest win streak and the longest single title reign in UFC history."
+      },
+      "cs": {
+        "short": "Anderson Silva vyhrál 16 zápasů UFC v řadě a titul střední váhy držel 2 457 dní",
+        "full": "Anderson Silva mezi lety 2006 a 2012 vyhrál šestnáct zápasů UFC v řadě a titul střední váhy držel 2 457 dní — dodnes rekordy pro nejdelší vítěznou sérii i nejdelší nepřerušenou vládu šampiona v historii UFC."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC record book"
+    },
+    {
+      "id": "mma-019",
+      "slug": "oktagon-underground",
+      "category": "history",
+      "promotion": "oktagon",
+      "en": {
+        "short": "When COVID stopped sport in 2020, Oktagon kept fighting behind closed doors with the Underground series",
+        "full": "During the 2020 lockdowns, Oktagon launched Oktagon Underground — a televised behind-closed-doors tournament series from an empty gym. While most European sport stood still, Czech and Slovak fighters kept competing and the promotion kept its audience."
+      },
+      "cs": {
+        "short": "Když covid v roce 2020 zastavil sport, Oktagon zápasil dál za zavřenými dveřmi v sérii Underground",
+        "full": "Během lockdownů v roce 2020 spustil Oktagon sérii Oktagon Underground — televizní turnaje bez diváků z prázdné tělocvičny. Zatímco většina evropského sportu stála, čeští a slovenští bojovníci zápasili dál a organizace si udržela publikum."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon Underground 2020 series"
+    },
+    {
+      "id": "mma-020",
+      "slug": "rousey-prvni-zena",
+      "category": "history",
+      "promotion": "ufc",
+      "en": {
+        "short": "Dana White said women would 'never' fight in the UFC — a year later he signed Ronda Rousey",
+        "full": "In 2011 Dana White said women would 'never' fight in the UFC. In late 2012 he signed Ronda Rousey, and at UFC 157 in February 2013 she beat Liz Carmouche in the promotion's first women's bout — launching divisions that produced some of its biggest stars."
+      },
+      "cs": {
+        "short": "Dana White prohlásil, že ženy v UFC 'nikdy' zápasit nebudou — o rok později podepsal Rondu Rousey",
+        "full": "V roce 2011 Dana White prohlásil, že ženy v UFC 'nikdy' zápasit nebudou. Koncem roku 2012 podepsal Rondu Rousey a na UFC 157 v únoru 2013 porazila Liz Carmouche v prvním ženském zápase organizace — a odstartovala divize, které daly UFC některé z jeho největších hvězd."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 157 and Rousey signing coverage"
+    },
+    {
+      "id": "mma-021",
+      "slug": "prochazka-vzdal-se-titulu",
+      "category": "fighters",
+      "promotion": "cross",
+      "en": {
+        "short": "Procházka vacated the UFC belt undefeated in 2022 with a shoulder injury doctors called among the worst they'd seen",
+        "full": "In November 2022, Jiří Procházka vacated the UFC light heavyweight title without ever losing it, after wrecking his shoulder in training — an injury UFC officials described as among the most severe doctors had seen in the sport. A year later he was back fighting for the same belt."
+      },
+      "cs": {
+        "short": "Procházka se v roce 2022 vzdal titulu UFC neporažen — s ramenem, které lékaři popsali jako jedno z nejhorších zranění, jaké viděli",
+        "full": "V listopadu 2022 se Jiří Procházka vzdal titulu polotěžké váhy UFC, aniž by ho kdy prohrál — v tréninku si zničil rameno a zástupci UFC zranění popsali jako jedno z nejtěžších, jaké lékaři ve sportu viděli. O rok později už znovu boxoval o stejný opasek."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC title vacation announcement, Nov 2022; UFC 295"
+    },
+    {
+      "id": "mma-022",
+      "slug": "zapas-ktery-zachranil-ufc",
+      "category": "history",
+      "promotion": "ufc",
+      "en": {
+        "short": "Griffin vs. Bonnar in 2005 is 'the most important fight in UFC history' — it saved the company",
+        "full": "The Ultimate Fighter finale on 9 April 2005 saw Forrest Griffin and Stephan Bonnar trade blows for three wild rounds on live TV. Dana White calls it the most important fight in UFC history: it convinced Spike TV to keep the show, both men got contracts, and the near-bankrupt UFC turned around."
+      },
+      "cs": {
+        "short": "Griffin vs. Bonnar z roku 2005 je 'nejdůležitější zápas historie UFC' — zachránil celou firmu",
+        "full": "Ve finále reality show The Ultimate Fighter 9. dubna 2005 se Forrest Griffin a Stephan Bonnar tři divoká kola přetahovali v přímém přenosu. Dana White ho označuje za nejdůležitější zápas historie UFC: přesvědčil stanici Spike TV, oba muži dostali smlouvu a UFC na pokraji bankrotu se odrazilo ode dna."
+      },
+      "verified": "2026-08-07",
+      "source": "TUF 1 Finale, Dana White interviews"
+    },
+    {
+      "id": "mma-023",
+      "slug": "chochlikova-prvni-sampionka",
+      "category": "fighters",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Monika Chochlíková became Oktagon's first women's champion in 2023",
+        "full": "In 2023, Slovak striker Monika Chochlíková beat Lucia Szabová in an all-Slovak headline fight to become the first women's champion in Oktagon history — a milestone for women's MMA in the region."
+      },
+      "cs": {
+        "short": "Monika Chochlíková se v roce 2023 stala první šampionkou v historii Oktagonu",
+        "full": "Slovenská úderkářka Monika Chochlíková v roce 2023 porazila Luciu Szabovou v čistě slovenském hlavním zápase a stala se první šampionkou v historii Oktagonu — milník pro ženské MMA v regionu."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon women's title fight coverage, 2023"
+    },
+    {
+      "id": "mma-024",
+      "slug": "jones-nejmladsi-sampion",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Jon Jones became the youngest UFC champion ever at 23",
+        "full": "At UFC 128 in March 2011, Jon Jones beat Maurício 'Shogun' Rua to become UFC light heavyweight champion at 23 years old — still the youngest champion in the promotion's history."
+      },
+      "cs": {
+        "short": "Jon Jones se stal nejmladším šampionem UFC v historii — ve 23 letech",
+        "full": "Na UFC 128 v březnu 2011 porazil Jon Jones Maurícia 'Shoguna' Ruu a ve 23 letech se stal šampionem polotěžké váhy — dodnes nejmladším šampionem v historii UFC."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 128 official results"
+    },
+    {
+      "id": "mma-025",
+      "slug": "nejdelsi-zapas-36-minut",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "The longest fight in UFC history ran 36 minutes without a winner: Gracie vs. Shamrock in 1995",
+        "full": "The UFC 5 'Superfight' between Royce Gracie and Ken Shamrock in April 1995 ran 36 minutes and 6 seconds — with no rounds and no judges, it simply ended as a draw when time expired. It remains the longest fight in UFC history and helped force the introduction of time limits."
+      },
+      "cs": {
+        "short": "Nejdelší zápas historie UFC trval 36 minut a nikdo nevyhrál: Gracie vs. Shamrock v roce 1995",
+        "full": "'Superfight' Royce Gracie vs. Ken Shamrock na UFC 5 v dubnu 1995 trval 36 minut a 6 sekund — bez kol a bez rozhodčích skončil po vypršení času prostě remízou. Dodnes je to nejdelší zápas historie UFC a přispěl k zavedení časových limitů."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 5 official results"
+    },
+    {
+      "id": "mma-026",
+      "slug": "odveta-po-triech-rokoch",
+      "category": "events",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Vémola avenged the 'Fight of the Century' — winning the rematch with Végh at a packed O2 Arena in 2022",
+        "full": "On 30 December 2022, Oktagon 35 brought Karlos Vémola and Attila Végh back to Prague's O2 Arena for the rematch of the biggest Czech-Slovak fight ever. Three years after his round-one loss, Vémola won — closing the rivalry that built modern Czech MMA's popularity."
+      },
+      "cs": {
+        "short": "Vémola odčinil 'Souboj století' — odvetu s Véghem v zaplněné O2 areně v roce 2022 vyhrál",
+        "full": "30. prosince 2022 přivedl Oktagon 35 Karlose Vémolu a Attilu Végha zpět do pražské O2 areny k odvetě největšího česko-slovenského zápasu historie. Tři roky po porážce v prvním kole Vémola vyhrál — a uzavřel rivalitu, která vybudovala popularitu moderního českého MMA."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon 35 official results"
+    },
+    {
+      "id": "mma-027",
+      "slug": "nunes-51-sekund",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Amanda Nunes knocked out the 'most dangerous woman on the planet' in 51 seconds to hold two belts at once",
+        "full": "At UFC 232 in December 2018, Amanda Nunes knocked out Cris Cyborg — unbeaten for 13 years — in 51 seconds, becoming the first woman to hold two UFC titles simultaneously, at bantamweight and featherweight."
+      },
+      "cs": {
+        "short": "Amanda Nunes knockoutovala 'nejnebezpečnější ženu planety' za 51 sekund a držela dva tituly najednou",
+        "full": "Na UFC 232 v prosinci 2018 Amanda Nunes za 51 sekund knockoutovala Cris Cyborg, která neprohrála 13 let — a stala se první ženou se dvěma tituly UFC současně, v bantamové a pérové váze."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 232 official results"
+    },
+    {
+      "id": "mma-028",
+      "slug": "muradov-mayweather",
+      "category": "fighters",
+      "promotion": "cross",
+      "en": {
+        "short": "Prague-based Makhmud Muradov was promoted by Floyd Mayweather's team — and won his first three UFC fights",
+        "full": "Makhmud Muradov, the Uzbek middleweight who built his career out of Prague, signed a promotional deal with Floyd Mayweather's 'The Money Team' before joining the UFC in 2019 — where he won his first three fights in the organization."
+      },
+      "cs": {
+        "short": "Machmud Muradov z Prahy měl za zády tým Floyda Mayweathera — a první tři zápasy v UFC vyhrál",
+        "full": "Machmud Muradov, uzbecký zápasník střední váhy, který kariéru vybudoval v Praze, podepsal před vstupem do UFC v roce 2019 smlouvu s 'The Money Team' Floyda Mayweathera — a první tři zápasy v organizaci vyhrál."
+      },
+      "verified": "2026-08-07",
+      "source": "Muradov UFC record 2019-2021"
+    },
+    {
+      "id": "mma-029",
+      "slug": "ngannou-nejtvrdsi-uder",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Francis Ngannou holds the hardest punch ever measured by the UFC — 'like getting hit by a Ford Escort'",
+        "full": "Francis Ngannou's punch measured 129,161 units on the PowerKube — the hardest ever recorded by the UFC. Dana White compared it to being hit by a Ford Escort at full speed; the record stands more than a decade later."
+      },
+      "cs": {
+        "short": "Francis Ngannou drží nejtvrdší úder, jaký kdy UFC naměřilo — 'jako když vás srazí Ford Escort'",
+        "full": "Úder Francise Ngannoua naměřil na zařízení PowerKube 129 161 jednotek — nejvíc, co kdy UFC zaznamenalo. Dana White ho přirovnal ke srážce s Fordem Escort v plné rychlosti; rekord platí i po více než dekádě."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC Performance Institute PowerKube measurement, 2017"
+    },
+    {
+      "id": "mma-030",
+      "slug": "novotny-survivor",
+      "category": "history",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Oktagon's co-founder calls the fights himself — and hosted the Czech-Slovak Survivor on the side",
+        "full": "Ondřej Novotný is a rare promoter who is also his organization's voice: Oktagon's co-founder works as its lead commentator and public face, and mainstream Czech-Slovak audiences also know him as the host of the TV show Survivor — reach few fight promoters anywhere can match."
+      },
+      "cs": {
+        "short": "Spoluzakladatel Oktagonu si zápasy sám komentuje — a vedle toho moderoval česko-slovenský Survivor",
+        "full": "Ondřej Novotný je vzácný případ promotéra, který je zároveň hlasem své organizace: spoluzakladatel Oktagonu dělá hlavního komentátora i tvář promotion a mainstreamové česko-slovenské publikum ho zná také jako moderátora show Survivor — dosah, jaký má málokterý promotér na světě."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon broadcasts; Survivor Česko & Slovensko"
+    },
+    {
+      "id": "mma-031",
+      "slug": "mcgregor-dva-tituly",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "McGregor became the first fighter to hold two UFC titles at once — at the first UFC event in New York",
+        "full": "At UFC 205 in November 2016 — the first UFC event at Madison Square Garden after New York finally legalized MMA — Conor McGregor knocked out Eddie Alvarez to add the lightweight belt to his featherweight title, becoming the first simultaneous two-division champion in UFC history."
+      },
+      "cs": {
+        "short": "McGregor jako první v historii držel dva tituly UFC najednou — na prvním turnaji UFC v New Yorku",
+        "full": "Na UFC 205 v listopadu 2016 — prvním turnaji UFC v Madison Square Garden poté, co New York konečně legalizoval MMA — knockoutoval Conor McGregor Eddieho Alvareze a k titulu pérové váhy přidal opasek lehké váhy. Stal se prvním šampionem dvou divizí současně v historii UFC."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 205 official results"
+    },
+    {
+      "id": "mma-032",
+      "slug": "dvorak-tri-vyhry",
+      "category": "fighters",
+      "promotion": "cross",
+      "en": {
+        "short": "Czech flyweight David Dvořák won his first three UFC fights",
+        "full": "David Dvořák entered the UFC in 2020 riding a years-long win streak and beat his first three opponents in the organization — for a stretch, the quiet man from Hradec Králové was ranked among the world's top flyweights."
+      },
+      "cs": {
+        "short": "Český mušák David Dvořák vyhrál své první tři zápasy v UFC",
+        "full": "David Dvořák vstoupil do UFC v roce 2020 na několikaleté vítězné vlně a první tři soupeře v organizaci porazil — tichý zápasník z Hradce Králové se na čas zařadil mezi nejlepší mušáky světového žebříčku."
+      },
+      "verified": "2026-08-07",
+      "source": "Dvořák UFC record 2020-2021"
+    },
+    {
+      "id": "mma-033",
+      "slug": "holloway-445-uderu",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Max Holloway landed 445 significant strikes in one fight — while chatting to the commentary desk mid-round",
+        "full": "In January 2021, Max Holloway landed a UFC-record 445 significant strikes on Calvin Kattar over five rounds. At one point he turned to the commentary desk mid-round, told them he was the best boxer in the UFC — and kept slipping punches while looking away from his opponent."
+      },
+      "cs": {
+        "short": "Max Holloway trefil v jednom zápase 445 přesných úderů — a mezitím se bavil s komentátory",
+        "full": "V lednu 2021 Max Holloway zasáhl Calvina Kattara rekordními 445 přesnými údery za pět kol. V jednu chvíli se uprostřed kola otočil ke komentátorskému stolku, oznámil jim, že je nejlepší boxer v UFC — a dál uhýbal úderům, aniž by se na soupeře díval."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC Fight Island 7 statistics"
+    },
+    {
+      "id": "mma-034",
+      "slug": "oktagon-vyzva",
+      "category": "history",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Oktagon runs its own reality show: the winner of Oktagon Výzva earns a contract with the promotion",
+        "full": "Oktagon Výzva (Challenge) is the promotion's own reality competition, putting prospects through a fight-camp show format with an Oktagon contract for the winner — the same TV-first playbook that once saved the UFC, applied to the Czech-Slovak scene."
+      },
+      "cs": {
+        "short": "Oktagon má vlastní reality show: vítěz Oktagon Výzvy získává smlouvu s organizací",
+        "full": "Oktagon Výzva je vlastní reality soutěž organizace: talenty prověřuje formátem zápasnického kempu a vítěz získává smlouvu s Oktagonem — stejný televizní recept, který kdysi zachránil UFC, přenesený na česko-slovenskou scénu."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon Výzva series"
+    },
+    {
+      "id": "mma-035",
+      "slug": "teixeira-nejstarsi-prvosampion",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Glover Teixeira won his first UFC title at 42 — nineteen years into his professional career",
+        "full": "At UFC 267 in October 2021, Glover Teixeira submitted Jan Błachowicz to become UFC light heavyweight champion at age 42 — the oldest first-time champion in UFC history, nineteen years after his professional debut."
+      },
+      "cs": {
+        "short": "Glover Teixeira získal svůj první titul UFC ve 42 letech — devatenáct let po startu kariéry",
+        "full": "Na UFC 267 v říjnu 2021 uškrtil Glover Teixeira Jana Błachowicze a ve 42 letech se stal šampionem polotěžké váhy — nejstarším prvošampionem v historii UFC, devatenáct let po svém profesionálním debutu."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 267 official results"
+    },
+    {
+      "id": "mma-036",
+      "slug": "rekordni-navsteva-melbourne",
+      "category": "events",
+      "promotion": "ufc",
+      "en": {
+        "short": "The UFC's attendance record is 57,127 — set in Melbourne in 2019",
+        "full": "UFC 243 at Melbourne's Marvel Stadium in October 2019, headlined by Robert Whittaker vs. Israel Adesanya, drew 57,127 fans — the largest attendance in UFC history. Europe's Oktagon 55 later matched that scale on its own continent."
+      },
+      "cs": {
+        "short": "Rekordní návštěva UFC je 57 127 diváků — z Melbourne 2019",
+        "full": "UFC 243 na stadionu Marvel Stadium v Melbourne v říjnu 2019 s hlavním zápasem Robert Whittaker vs. Israel Adesanya přilákalo 57 127 diváků — nejvíc v historii UFC. Evropský Oktagon 55 později dosáhl stejného měřítka na vlastním kontinentu."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 243 attendance figures"
+    },
+    {
+      "id": "mma-037",
+      "slug": "oktagon-pres-70-turnaju",
+      "category": "business",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Oktagon passed 70 numbered events by 2025 — running at a near-monthly pace across three countries",
+        "full": "By 2025, less than a decade after its founding, Oktagon had staged more than seventy numbered events at a near-monthly cadence across Czechia, Slovakia and Germany — one of the busiest MMA schedules of any promotion in Europe."
+      },
+      "cs": {
+        "short": "Oktagon do roku 2025 překonal 70 očíslovaných turnajů — v téměř měsíčním tempu ve třech zemích",
+        "full": "Do roku 2025, ani ne dekádu od založení, uspořádal Oktagon přes sedmdesát očíslovaných turnajů v téměř měsíčním tempu napříč Českem, Slovenskem a Německem — jeden z nejnabitějších kalendářů ze všech MMA organizací v Evropě."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon event numbering through 2025"
+    },
+    {
+      "id": "mma-038",
+      "slug": "cejudo-olympijske-zlato",
+      "category": "fighters",
+      "promotion": "ufc",
+      "en": {
+        "short": "Henry Cejudo is the only Olympic gold medalist to also win a UFC title",
+        "full": "Henry Cejudo won Olympic gold in freestyle wrestling in 2008 and later became UFC flyweight and bantamweight champion — the only athlete in history to hold both an Olympic gold medal and a UFC belt."
+      },
+      "cs": {
+        "short": "Henry Cejudo je jediný olympijský vítěz, který získal i titul UFC",
+        "full": "Henry Cejudo vybojoval v roce 2008 olympijské zlato ve volném stylu a později se stal šampionem UFC v muší i bantamové váze — jediný sportovec v historii, který drží olympijské zlato i opasek UFC."
+      },
+      "verified": "2026-08-07",
+      "source": "2008 Olympics; UFC 227, UFC 238"
+    },
+    {
+      "id": "mma-039",
+      "slug": "pudilova-prvni-ceska",
+      "category": "fighters",
+      "promotion": "cross",
+      "en": {
+        "short": "Lucie Pudilová became the first Czech woman to fight in the UFC in 2017",
+        "full": "Lucie Pudilová debuted in the UFC in February 2017 as the first Czech woman to fight in the organization, and went on to face top-ranked opposition across two stints — opening the door other Czech women's MMA prospects now walk through."
+      },
+      "cs": {
+        "short": "Lucie Pudilová se v roce 2017 stala první Češkou v UFC",
+        "full": "Lucie Pudilová debutovala v UFC v únoru 2017 jako první česká zápasnice v organizaci a během dvou angažmá se postavila i soupeřkám z čela žebříčku — otevřela dveře, kterými dnes procházejí další české naděje ženského MMA."
+      },
+      "verified": "2026-08-07",
+      "source": "Pudilová UFC debut, Feb 2017"
+    },
+    {
+      "id": "mma-040",
+      "slug": "zuffa-44-milionu-ztraty",
+      "category": "business",
+      "promotion": "ufc",
+      "en": {
+        "short": "The UFC's owners burned through $44 million before the company ever turned a profit",
+        "full": "Before The Ultimate Fighter turned the business around in 2005, the Fertitta brothers had sunk roughly $44 million of casino money into a UFC that kept losing — Dana White has said they came within a conversation of selling it all."
+      },
+      "cs": {
+        "short": "Majitelé UFC prodělali 44 milionů dolarů, než firma poprvé vydělala",
+        "full": "Než reality show The Ultimate Fighter v roce 2005 obrátila byznys, nasypali bratři Fertittové do ztrátového UFC zhruba 44 milionů dolarů z kasinových peněz — Dana White přiznal, že od prodeje celé firmy je dělil jediný rozhovor."
+      },
+      "verified": "2026-08-07",
+      "source": "Zuffa pre-2005 financials as reported by Dana White"
+    },
+    {
+      "id": "mma-041",
+      "slug": "pereira-dva-sporty",
+      "category": "fighters",
+      "promotion": "ufc",
+      "en": {
+        "short": "Alex Pereira won world titles in two divisions in kickboxing AND two divisions in the UFC — nobody else has",
+        "full": "Alex Pereira held Glory kickboxing world titles in two weight classes, then won the UFC middleweight and light heavyweight titles as well — the only athlete to be a two-division world champion in both sports. He also beat Israel Adesanya in kickboxing and MMA alike."
+      },
+      "cs": {
+        "short": "Alex Pereira získal světové tituly ve dvou vahách v kickboxu I ve dvou divizích UFC — jako jediný v historii",
+        "full": "Alex Pereira držel světové tituly organizace Glory ve dvou váhových kategoriích kickboxu a poté vybojoval i tituly UFC ve střední a polotěžké váze — jediný sportovec, který je dvojnásobným šampionem dvou divizí v obou sportech. Israele Adesanyu navíc porazil v kickboxu i v MMA."
+      },
+      "verified": "2026-08-07",
+      "source": "Glory and UFC title histories"
+    },
+    {
+      "id": "mma-042",
+      "slug": "oktagon-stvanice",
+      "category": "events",
+      "promotion": "oktagon",
+      "en": {
+        "short": "Oktagon fights under the open sky: the promotion staged summer events at Prague's Štvanice island stadium",
+        "full": "In the summer of 2023, Oktagon brought MMA to the historic open-air tennis stadium on Prague's Štvanice island — cage, floodlights and river air in a venue built for Davis Cup tennis, and the format returned in following seasons."
+      },
+      "cs": {
+        "short": "Oktagon zápasí pod širým nebem: letní turnaje uspořádal na pražském ostrově Štvanice",
+        "full": "V létě 2023 přivedl Oktagon MMA do historického otevřeného tenisového stadionu na pražské Štvanici — klec, reflektory a vzduch od řeky v aréně postavené pro daviscupový tenis. Formát se vracel i v dalších sezónách."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon Štvanice open-air events, 2023-2024"
+    },
+    {
+      "id": "mma-043",
+      "slug": "rousey-14-sekund",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Ronda Rousey once defended her title in 14 seconds — the fastest submission in UFC title-fight history",
+        "full": "At UFC 184 in February 2015, Ronda Rousey armbarred the undefeated Cat Zingano in 14 seconds — still the fastest submission in a UFC title fight. Three of her title defenses ended in 14, 16 and 34 seconds."
+      },
+      "cs": {
+        "short": "Ronda Rousey jednou obhájila titul za 14 sekund — nejrychlejší submise v titulovém zápase UFC",
+        "full": "Na UFC 184 v únoru 2015 nasadila Ronda Rousey do té doby neporažené Cat Zingano páku na loket po 14 sekundách — dodnes nejrychlejší submise v titulovém zápase UFC. Tři její obhajoby skončily do 34 sekund: za 14, 16 a 34 sekund."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 184 official results"
+    },
+    {
+      "id": "mma-044",
+      "slug": "ufc-vratilo-sport-2020",
+      "category": "history",
+      "promotion": "ufc",
+      "en": {
+        "short": "In May 2020 the UFC was the first major US sports organization back during the pandemic — then built 'Fight Island'",
+        "full": "UFC 249 on 9 May 2020 made the UFC the first major American sports organization to return during the COVID shutdown, in an empty arena in Jacksonville. Weeks later it stood up 'Fight Island' in Abu Dhabi so international fighters could keep competing."
+      },
+      "cs": {
+        "short": "V květnu 2020 se UFC vrátilo jako první velká americká sportovní liga — a pak postavilo 'Fight Island'",
+        "full": "Turnajem UFC 249 z 9. května 2020 se UFC stalo první velkou americkou sportovní organizací, která se vrátila během covidové uzávěry — v prázdné aréně v Jacksonville. O pár týdnů později postavilo v Abú Zabí 'Fight Island', aby mohli zápasit i bojovníci ze zahraničí."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 249; UFC Fight Island, 2020"
+    },
+    {
+      "id": "mma-045",
+      "slug": "zhang-weili-42-sekund",
+      "category": "fighters",
+      "promotion": "ufc",
+      "en": {
+        "short": "Zhang Weili became the first Chinese UFC champion — winning the belt in 42 seconds at home",
+        "full": "In August 2019 in Shenzhen, Zhang Weili stopped Jéssica Andrade in 42 seconds to take the strawweight title — the first UFC champion from China, crowned in front of a home crowd in one of the fastest title wins ever."
+      },
+      "cs": {
+        "short": "Zhang Weili se stala první čínskou šampionkou UFC — titul doma získala za 42 sekund",
+        "full": "V srpnu 2019 v Šen-čenu zastavila Zhang Weili Jéssicu Andrade za 42 sekund a vzala jí titul slámové váhy — první šampionka UFC z Číny, korunovaná před domácím publikem v jednom z nejrychlejších titulových vítězství historie."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC Fight Night Shenzhen official results"
+    },
+    {
+      "id": "mma-046",
+      "slug": "oktagon-dobyl-nemecko",
+      "category": "business",
+      "promotion": "oktagon",
+      "en": {
+        "short": "A Czech-Slovak league exporting fights westward: Oktagon has run events in Germany since 2019",
+        "full": "Oktagon expanded into Germany in 2019 and grew into one of the country's leading MMA promotions, filling arenas in Frankfurt, Munich and beyond — a Czech-Slovak organization exporting a sports product to Western Europe, capped by the record-breaking stadium show at Oktagon 55."
+      },
+      "cs": {
+        "short": "Česko-slovenská liga vyváží zápasy na západ: Oktagon pořádá turnaje v Německu od roku 2019",
+        "full": "Oktagon expandoval do Německa v roce 2019 a vyrostl v jednu z tamních vedoucích MMA organizací — plní arény ve Frankfurtu, Mnichově a dalších městech. Česko-slovenská firma vyváží sportovní produkt do západní Evropy; vrcholem byla rekordní stadionová show Oktagon 55."
+      },
+      "verified": "2026-08-07",
+      "source": "Oktagon Germany expansion since 2019"
+    },
+    {
+      "id": "mma-047",
+      "slug": "holloway-ko-v-posledni-sekunde",
+      "category": "events",
+      "promotion": "ufc",
+      "en": {
+        "short": "At UFC 300, Holloway pointed at the canvas with 10 seconds left — and knocked Gaethje out with one second on the clock",
+        "full": "Winning the BMF title fight on every scorecard at UFC 300 in April 2024, Max Holloway pointed at the canvas with ten seconds remaining, inviting Justin Gaethje to trade in the center — and knocked him out cold with one second left in the final round."
+      },
+      "cs": {
+        "short": "Na UFC 300 ukázal Holloway 10 sekund před koncem na zem — a knockoutoval Gaethjeho sekundu před sirénou",
+        "full": "Ačkoli na UFC 300 v dubnu 2024 vedl titulový zápas o pás BMF na všech kartách, ukázal Max Holloway deset sekund před koncem na zem a vyzval Justina Gaethjeho k přestřelce uprostřed klece — a sekundu před závěrečnou sirénou ho poslal do tvrdého KO."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 300 official results"
+    },
+    {
+      "id": "mma-048",
+      "slug": "couture-titul-ve-43",
+      "category": "fighters",
+      "promotion": "ufc",
+      "en": {
+        "short": "Randy Couture came out of retirement at 43 to win the UFC heavyweight title",
+        "full": "In March 2007, 43-year-old Randy Couture came out of a year-long retirement to dominate heavyweight champion Tim Sylvia at UFC 68 — winning a UFC title at an age when most fighters are long done, and competing until he was 47."
+      },
+      "cs": {
+        "short": "Randy Couture se ve 43 letech vrátil z důchodu a získal titul těžké váhy UFC",
+        "full": "V březnu 2007 se třiačtyřicetiletý Randy Couture vrátil po roce v důchodu a na UFC 68 jasně přehrál šampiona těžké váhy Tima Sylviu — titul UFC vybojoval ve věku, kdy většina zápasníků dávno končí, a zápasil až do 47 let."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 68 official results"
+    },
+    {
+      "id": "mma-049",
+      "slug": "ufc-306-sphere",
+      "category": "events",
+      "promotion": "ufc",
+      "en": {
+        "short": "UFC 306 was the first combat-sports event inside the Las Vegas Sphere — the most expensive show the UFC ever produced",
+        "full": "In September 2024, UFC 306 became the first combat-sports event held inside the Las Vegas Sphere, its giant interior screen turned into chapters of a film celebrating Mexican fighting history. Dana White called it the most expensive event the UFC had ever produced."
+      },
+      "cs": {
+        "short": "UFC 306 bylo první bojovou akcí uvnitř Sphere v Las Vegas — nejdražší show, jakou kdy UFC vyrobilo",
+        "full": "V září 2024 se UFC 306 stalo první bojovou akcí uvnitř lasvegaské Sphere; obří vnitřní obrazovka se proměnila v kapitoly filmu oslavujícího mexickou zápasnickou historii. Dana White akci označil za nejdražší, jakou kdy UFC vyprodukovalo."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 306 at Sphere coverage"
+    },
+    {
+      "id": "mma-050",
+      "slug": "topuria-dve-divize-bez-porazky",
+      "category": "records",
+      "promotion": "ufc",
+      "en": {
+        "short": "Ilia Topuria knocked out champions in two divisions without a single career loss",
+        "full": "Ilia Topuria knocked out Alexander Volkanovski at UFC 298 in February 2024 for the featherweight title, then knocked out Charles Oliveira at UFC 317 in June 2025 to take the lightweight belt — titles in two divisions with an unbeaten record (17-0 at the time)."
+      },
+      "cs": {
+        "short": "Ilia Topuria knockoutem sebral tituly ve dvou divizích — bez jediné porážky v kariéře",
+        "full": "Ilia Topuria knockoutoval Alexandera Volkanovského na UFC 298 v únoru 2024 a vzal mu titul pérové váhy; v červnu 2025 na UFC 317 knockoutoval Charlese Oliveiru a získal i opasek lehké váhy — tituly ve dvou divizích s neporaženou bilancí (tehdy 17-0)."
+      },
+      "verified": "2026-08-07",
+      "source": "UFC 298, UFC 317 official results"
+    }
+  ]
+}
