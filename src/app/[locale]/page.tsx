@@ -4,6 +4,7 @@ import { LeadStory } from "@/components/article/LeadStory";
 import { EventCard } from "@/components/event/EventCard";
 import { ResultsBoard } from "@/components/event/ResultsBoard";
 import { RandomRoster } from "@/components/fighter/RandomRoster";
+import { DidYouKnow } from "@/components/site/DidYouKnow";
 import { DataDeskModule } from "@/components/site/HomeModules";
 import { NewsletterModule } from "@/components/site/NewsletterModule";
 import { ActionLink, Container, SectionHeading } from "@/components/ui/primitives";
@@ -44,6 +45,10 @@ export default async function HomePage({
   return (
     <>
       {lead?.packageHash ? <meta name="boardless-content-hash" content={lead.packageHash} /> : null}
+      {/* Above the hero: on a phone the lead fills the first screen, so a belt
+          underneath it would never be seen. The date comes from the lead
+          article, mirroring how every other section is handed its data. */}
+      <DidYouKnow dateKey={lead?.publishAt.slice(0, 10)} locale={locale} />
       {lead ? (
         <LeadStory article={lead} locale={locale} />
       ) : (

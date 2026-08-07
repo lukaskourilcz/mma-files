@@ -257,6 +257,12 @@ export const cs = {
     noStories: "Zatím nevyšel žádný text.",
   },
 
+  didYouKnow: {
+    kicker: "Víte, že…",
+    verified: "Ověřeno",
+    ariaLabel: "Zajímavost dne",
+  },
+
   countdown: {
     days: "Dny",
     hrs: "Hod",
