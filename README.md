@@ -468,8 +468,9 @@ components as well as the copy:
 If a future story does cite a deterministic aggregate, it must carry a
 `modelDisclosure`: the exact version, its input references, a plain-language
 uncertainty statement and the responsible-play line. The
-`ModelDisclosureBlock` component renders all four together — see
-`forty-two-tracked-fields` in the seed data for a worked example.
+`ModelDisclosureBlock` component in `src/components/article/ArticleFile.tsx`
+renders all four together — see
+`twenty-eight-tracked-fields` in the seed data for a worked example.
 
 ---
 
