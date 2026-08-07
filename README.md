@@ -35,7 +35,7 @@ npm run dev
 | `npm run build` | Production build; prerenders every route in both locales |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint |
-| `npm run test` | Content-delivery boundary tests |
+| `npm run test` | Content-delivery boundary, dataset and daily-pick tests |
 | `npm run check` | Typecheck, lint and delivery tests |
 | `npm run consume:boardless -- <package.json> [repository-root]` | Validate and store one BoardlessAI package |
 
@@ -66,6 +66,8 @@ src/
 ├── components/            article/ event/ fighter/ hero/ media/ site/ ui/ pages/
 ├── config/site.ts         Brand, engine attribution, indexing switches
 ├── content/               Fictional seed data used only until delivery exists
+├── data/                  Verified fact dataset for the "Víte, že…" belt, plus
+│                          its append contract in README.md
 ├── i18n/                  en.ts is the structural source of truth; cs.ts is
 │                          typed against it, so a missing key fails the build
 ├── lib/
@@ -75,7 +77,11 @@ src/
 │   ├── format.ts          Dates, relative times, records, reading time
 │   ├── metadata.ts        Canonical + hreflang + robots for a route
 │   ├── paths.ts           Route builders — never hand-write a URL
-│   └── promotion.ts       Per-promotion accents, exhaustive over the union
+│   ├── promotion.ts       Per-promotion accents, exhaustive over the union
+│   ├── daily-index.mjs    The deterministic daily pick, plain ESM so the
+│   │                      node --test suite can import it (.d.mts types it)
+│   ├── daily.ts           Typed re-export of the above, plus dataset types
+│   └── facts.ts           Reads src/data/mma-facts.json once at build time
 └── middleware.ts          Redirects unprefixed paths, negotiates the locale
 data/boardless/             Hash-checked article and FightAIQ delivery stores
 scripts/                    Content-only BoardlessAI consumer
@@ -399,6 +405,29 @@ Once real content is in place and `NEXT_PUBLIC_ALLOW_INDEXING=true`, these stay
 Organization-level JSON-LD (`NewsMediaOrganization`, with `publishingPrinciples`
 and `correctionsPolicy` pointing at the real pages) is emitted always, because
 it is true regardless of what content is loaded.
+
+---
+
+## The "Víte, že…" belt
+
+A slim belt above the lead story carries one verified MMA fact a day, from
+[`src/data/mma-facts.json`](src/data/mma-facts.json). It is a Server Component:
+no client JavaScript, no request, no runtime cost.
+
+The pick is deterministic. `daysBetween(anchor, dateKey) % length` in
+`src/lib/daily-index.mjs` turns a date into an index, and the date is the lead
+article's published day — not a clock, because the site is static and rebuilds
+when content lands. The same content therefore always builds the same page, and
+a day without a new article honestly keeps the previous fact.
+
+These facts are real and checkable, so they carry no `isDemo` flag and render in
+demo and live mode alike. Each entry holds its own receipt: `verified` is the
+date somebody last checked it, `source` is where a reader could check it again.
+
+The file is append-only and arrives through the same delivery channel as
+articles. [`src/data/README.md`](src/data/README.md) is the contract and
+`tests/facts.test.mjs` is the gate; the count assertion is a minimum, so an
+append needs no test edit.
 
 ---
 

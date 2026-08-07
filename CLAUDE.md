@@ -45,6 +45,12 @@ is done. Do not wait for the user to ask for a commit.
 ## Layout
 
 - `src/content/` — fictional seed data used until a real delivery exists.
+- `src/data/` — the verified fact dataset behind the "Víte, že…" belt. Real,
+  checkable content, so it carries no `isDemo` and renders in demo and live mode
+  alike. Append-only; `src/data/README.md` is the contract and
+  `tests/facts.test.mjs` is the gate. The daily pick in `src/lib/daily-index.mjs`
+  reads the lead article's date, never a clock — no `new Date()`, `Date.now()` or
+  `Math.random()` may enter that path or the build stops being reproducible.
 - `data/boardless/` — the only canonical write target for BoardlessAI article
   and FightAIQ delivery packages. `npm run consume:boardless` is the only path
   that writes it; nothing in this repository authors content.

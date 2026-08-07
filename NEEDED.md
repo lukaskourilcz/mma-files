@@ -56,3 +56,7 @@ this repository or its Vercel environment.
   fighter and Data Desk routes from the delivered files.
 - BoardlessAI refuses an MMA Files delivery-only run unless
   `MMA_FILES_LIVE_ENABLED=true`; a retry does not call a model.
+- The "Víte, že…" belt ships complete and needs no owner action: the 50 facts
+  are committed, the daily pick is deterministic from the lead article's date,
+  and later facts append through the existing delivery channel
+  (`src/data/README.md`).
