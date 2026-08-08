@@ -141,6 +141,18 @@ async function validateArticle(value) {
   }
   article.fighterRefs.forEach((reference, index) => scopedReference(reference, `fighterRefs[${index}]`));
   if (article.eventRef !== undefined) scopedReference(article.eventRef, "eventRef");
+  if (article.correction !== undefined) {
+    const correction = object(article.correction);
+    if (!correction || correction.schemaVersion !== "article-image-correction/1") {
+      throw new DeliveryError("schema_invalid", "correction must use article-image-correction/1");
+    }
+    const supersedes = requiredString(correction.supersedesPackageHash, "correction.supersedesPackageHash", 64);
+    if (!/^[a-f0-9]{64}$/u.test(supersedes)) {
+      throw new DeliveryError("schema_invalid", "correction.supersedesPackageHash must be a sha256");
+    }
+    requiredString(correction.reason, "correction.reason", 300);
+    isoDateTime(correction.correctedAt, "correction.correctedAt");
+  }
   const expected = packageHash(article);
   if (article.packageHash !== expected) {
     throw new DeliveryError("content_invalid", "article packageHash does not match its canonical bytes");
@@ -301,6 +313,34 @@ function articleIdentity(article) {
   return `${article.publishAt.slice(0, 10)}:${article.slot}`;
 }
 
+/**
+ * What a correction may change: the picture, the block declaring the correction, and the hash.
+ *
+ * A delivered article is immutable by date and slot, and that is what stops a published piece
+ * being quietly swapped. It also made it impossible to fix a hero that showed the wrong thing —
+ * two of the first week's articles did, and both stayed wrong. A correction is the one door
+ * through, and it is narrow: the incoming package must name the stored one's hash, and every
+ * other field must be byte-identical. The words a reader read cannot change here.
+ *
+ * BoardlessAI checks the same thing before it sends. This side checks it again rather than
+ * trusting that, because a producer that got it wrong would otherwise rewrite an article through
+ * a door meant for photographs.
+ */
+const CORRECTABLE_FIELDS = ["image", "correction", "packageHash"];
+
+function withoutCorrectableFields(article) {
+  return Object.fromEntries(Object.entries(article).filter(([key]) => !CORRECTABLE_FIELDS.includes(key)));
+}
+
+export function isImageOnlyCorrection(current, replacement) {
+  const correction = object(replacement.correction);
+  if (!correction) return false;
+  if (correction.supersedesPackageHash !== current.packageHash) return false;
+  if (articleIdentity(current) !== articleIdentity(replacement)) return false;
+  if (current.packageHash === replacement.packageHash) return false;
+  return canonical(withoutCorrectableFields(current)) === canonical(withoutCorrectableFields(replacement));
+}
+
 export async function materializeBoardlessPackage(value, root = process.cwd()) {
   const candidate = object(value);
   if (candidate?.schemaVersion === "article/1") {
@@ -323,7 +363,25 @@ export async function materializeBoardlessPackage(value, root = process.cwd()) {
         }
         throw new DeliveryError("hash_conflict", `${articleIdentity(article)} image assets are missing or changed`);
       }
-      throw new DeliveryError("hash_conflict", `${articleIdentity(article)} already contains different immutable bytes`);
+      if (!isImageOnlyCorrection(current, article)) {
+        throw new DeliveryError("hash_conflict", `${articleIdentity(article)} already contains different immutable bytes`);
+      }
+      // A correction replaces the stored package and overwrites its two image files in place, so
+      // the article keeps its URL and its assets keep their paths. Nothing else on disk moves.
+      const heroFile = path.join(root, article.image.hero_path);
+      const thumbFile = path.join(root, article.image.thumb_path);
+      await atomicBytes(heroFile, Buffer.from(article.image.hero_bytes_base64, "base64"));
+      await atomicBytes(thumbFile, Buffer.from(article.image.thumb_bytes_base64, "base64"));
+      const corrected = store.packages
+        .map((entry) => (articleIdentity(entry) === articleIdentity(article) ? article : entry));
+      await atomicJson(file, { schemaVersion: "mma-files-article-store/1", packages: corrected });
+      return {
+        status: "corrected",
+        kind: "article",
+        packageHash: article.packageHash,
+        supersedes: current.packageHash,
+        paths: ["data/boardless/articles.json", article.image.hero_path, article.image.thumb_path]
+      };
     }
     const packages = [...store.packages, article].sort((left, right) =>
       left.publishAt.localeCompare(right.publishAt) || left.slot.localeCompare(right.slot));

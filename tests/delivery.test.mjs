@@ -140,6 +140,88 @@ test("stores a bilingual article once and rejects a changed same-slot replay", a
   }
 });
 
+test("replaces a delivered hero when the correction proves nothing else changed", async () => {
+  const target = await root();
+  try {
+    const pkg = article();
+    assert.equal((await materializeBoardlessPackage(pkg, target)).status, "written");
+
+    // A different picture, and nothing else. The bytes differ, so the assets on disk have to be
+    // replaced rather than left alone: the hero path is stable and the file under it is not.
+    const plate = (width, height) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" fill="#222"/></svg>`);
+    const replacementHero = plate(1600, 900);
+    const replacementThumb = plate(640, 360);
+    const corrected = article({
+      image: {
+        ...pkg.image,
+        alt_cs: "Ilustrační fotografie ze zápasů MMA: prázdná klec. Nejde o snímek osoby, o níž článek pojednává.",
+        hero_bytes_base64: replacementHero.toString("base64"),
+        thumb_bytes_base64: replacementThumb.toString("base64"),
+      },
+      correction: {
+        schemaVersion: "article-image-correction/1",
+        supersedesPackageHash: pkg.packageHash,
+        reason: "The delivered hero showed the wrong subject.",
+        correctedAt: "2026-08-09T06:00:00.000Z",
+      },
+    });
+    const result = await materializeBoardlessPackage(corrected, target);
+    assert.equal(result.status, "corrected");
+    assert.equal(result.supersedes, pkg.packageHash);
+
+    const stored = JSON.parse(await readFile(path.join(target, "data/boardless/articles.json"), "utf8"));
+    assert.equal(stored.packages.length, 1);
+    assert.equal(stored.packages[0].packageHash, corrected.packageHash);
+    assert.equal((await readFile(path.join(target, corrected.image.hero_path))).equals(replacementHero), true);
+    assert.equal((await readFile(path.join(target, corrected.image.thumb_path))).equals(replacementThumb), true);
+    // The words are untouched, which is the whole of what the correction promises.
+    assert.deepEqual(stored.packages[0].localizations, pkg.localizations);
+
+    // Replaying the same correction is a no-op, not a second write.
+    assert.equal((await materializeBoardlessPackage(corrected, target)).status, "noop");
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
+test("refuses a correction that changes anything but the picture", async () => {
+  const target = await root();
+  try {
+    const pkg = article();
+    await materializeBoardlessPackage(pkg, target);
+    const smuggled = article({
+      localizations: {
+        ...pkg.localizations,
+        cs: { ...pkg.localizations.cs, title: "Přepsaný titulek" },
+      },
+      correction: {
+        schemaVersion: "article-image-correction/1",
+        supersedesPackageHash: pkg.packageHash,
+        reason: "Claims to be an image correction.",
+        correctedAt: "2026-08-09T06:00:00.000Z",
+      },
+    });
+    await assert.rejects(materializeBoardlessPackage(smuggled, target), /different immutable bytes/);
+
+    // And one that names a package this repository does not hold.
+    const wrongParent = article({
+      image: { ...pkg.image, alt_cs: "Jiný popis obrázku." },
+      correction: {
+        schemaVersion: "article-image-correction/1",
+        supersedesPackageHash: "f".repeat(64),
+        reason: "Supersedes something else.",
+        correctedAt: "2026-08-09T06:00:00.000Z",
+      },
+    });
+    await assert.rejects(materializeBoardlessPackage(wrongParent, target), /different immutable bytes/);
+
+    const stored = JSON.parse(await readFile(path.join(target, "data/boardless/articles.json"), "utf8"));
+    assert.equal(stored.packages[0].packageHash, pkg.packageHash);
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
 test("stores the newest FightAIQ snapshot and rejects stale replacement", async () => {
   const target = await root();
   try {
