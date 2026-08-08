@@ -113,15 +113,26 @@ async function validateArticle(value) {
   if (image.alt_en !== undefined) requiredString(image.alt_en, "image.alt_en", 300);
   const license = object(image.license);
   const licenseName = requiredString(license?.name, "image.license.name", 80);
-  if (!["CC0", "CC BY", "CC BY-SA", "Pexels License", "Pixabay Content License", "BoardlessAI deterministic"].includes(licenseName)) {
+  if (!["CC0", "CC BY", "CC BY-SA", "Pexels License", "Pixabay Content License", "BoardlessAI deterministic", "BoardlessAI illustration"].includes(licenseName)) {
     throw new DeliveryError("schema_invalid", "image license is not allowed");
   }
   requiredString(license?.author, "image.license.author", 200);
   const sourceUrl = requiredString(license?.source_url, "image.license.source_url", 600);
   if (!sourceUrl.startsWith("https://")) throw new DeliveryError("schema_invalid", "image license source must use HTTPS");
   requiredString(license?.attribution_html, "image.license.attribution_html", 2_000);
-  if (!["photo", "svg"].includes(image.origin)) throw new DeliveryError("schema_invalid", "image.origin must be photo or svg");
-  if ((image.origin === "svg") !== (licenseName === "BoardlessAI deterministic")) throw new DeliveryError("schema_invalid", "image origin and license disagree");
+  // Three origins, one licence each, checked in both directions. A reader told a picture is a
+  // photograph has to be right, and an illustration BoardlessAI rendered says so in its own alt
+  // text — so it may not arrive wearing a photographer's licence, and a photograph may not
+  // arrive wearing BoardlessAI's.
+  const licenseForOrigin = { svg: "BoardlessAI deterministic", illustration: "BoardlessAI illustration" };
+  if (!["photo", "svg", "illustration"].includes(image.origin)) {
+    throw new DeliveryError("schema_invalid", "image.origin must be photo, svg or illustration");
+  }
+  const requiredLicense = licenseForOrigin[image.origin];
+  const disagrees = requiredLicense
+    ? licenseName !== requiredLicense
+    : Object.values(licenseForOrigin).includes(licenseName);
+  if (disagrees) throw new DeliveryError("schema_invalid", "image origin and license disagree");
   const heroBytes = base64Bytes(image.hero_bytes_base64, "image.hero_bytes_base64", 800_000);
   const thumbBytes = base64Bytes(image.thumb_bytes_base64, "image.thumb_bytes_base64", 300_000);
   try {
@@ -129,7 +140,7 @@ async function validateArticle(value) {
     if (heroMetadata.width !== width || heroMetadata.height !== height) throw new Error("hero dimensions differ from image metadata");
     if (thumbMetadata.width !== 640 || thumbMetadata.height !== 360) throw new Error("thumbnail must be 640x360");
     if (image.origin === "svg" && heroMetadata.format !== "svg") throw new Error("FRAME fallback must contain SVG bytes");
-    if (image.origin === "photo" && !["webp", "png", "jpeg"].includes(heroMetadata.format ?? "")) throw new Error("licensed photo must be a supported raster image");
+    if (["photo", "illustration"].includes(image.origin) && !["webp", "png", "jpeg"].includes(heroMetadata.format ?? "")) throw new Error("a photograph or illustration must be a supported raster image");
   } catch (error) {
     throw new DeliveryError("content_invalid", error instanceof Error ? error.message : "image bytes are invalid");
   }

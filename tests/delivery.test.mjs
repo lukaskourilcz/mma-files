@@ -222,6 +222,58 @@ test("refuses a correction that changes anything but the picture", async () => {
   }
 });
 
+test("accepts a generated illustration, and holds it to its own licence", async () => {
+  const target = await root();
+  try {
+    // BoardlessAI renders one when no licensed photograph fits and the curated set has nothing
+    // left to offer. It is labelled as an illustration in the alt text a reader hears, so the
+    // one thing this side must never allow is a rendering arriving under a photographer's
+    // licence, or a photograph arriving under BoardlessAI's.
+    const sharp = (await import("sharp")).default;
+    const raster = async (width, height) => (await sharp({ create: { width, height, channels: 3, background: { r: 12, g: 14, b: 22 } } }).webp().toBuffer()).toString("base64");
+    const image = {
+      hero_path: "public/images/articles/verified-fight-preview/hero.webp",
+      thumb_path: "public/images/articles/verified-fight-preview/thumb.webp",
+      width: 1600,
+      height: 900,
+      alt_cs: "Ilustrace k tématu: světlo haly v oparu. Nejde o fotografii.",
+      license: {
+        name: "BoardlessAI illustration",
+        author: "BoardlessAI FRAME",
+        source_url: "https://boardless-ai.vercel.app/",
+        attribution_html: "Ilustrace: BoardlessAI FRAME",
+      },
+      origin: "illustration",
+      hero_bytes_base64: await raster(1600, 900),
+      thumb_bytes_base64: await raster(640, 360),
+    };
+    const pkg = article({ image });
+    assert.equal((await materializeBoardlessPackage(pkg, target)).status, "written");
+
+    // A rendering that claims to be a photograph, and a photograph that claims to be a
+    // rendering. Both are the same lie about what the reader is looking at.
+    const claimsPhotograph = article({
+      image: { ...image, origin: "photo" },
+      publishAt: "2026-08-02T08:00:00.000Z",
+    });
+    await assert.rejects(materializeBoardlessPackage(claimsPhotograph, target), /origin and license disagree/);
+
+    const claimsIllustration = article({
+      image: { ...image, license: { ...image.license, name: "CC BY", author: "A photographer", source_url: "https://example.com/photo", attribution_html: "A photographer · CC BY" } },
+      publishAt: "2026-08-04T08:00:00.000Z",
+    });
+    await assert.rejects(materializeBoardlessPackage(claimsIllustration, target), /origin and license disagree/);
+
+    const wrongBytes = article({
+      image: { ...image, hero_bytes_base64: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"><rect width="100%" height="100%" fill="#111"/></svg>').toString("base64") },
+      publishAt: "2026-08-03T08:00:00.000Z",
+    });
+    await assert.rejects(materializeBoardlessPackage(wrongBytes, target), /supported raster image|dimensions/);
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
 test("stores the newest FightAIQ snapshot and rejects stale replacement", async () => {
   const target = await root();
   try {
