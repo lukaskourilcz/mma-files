@@ -5,6 +5,7 @@
   "description": "MMA Files — Czech public fighting magazine powered by the BoardlessAI editorial engine.",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "tsx scripts/emit-week-chunks.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,13 +22,14 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^22.10.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "@tailwindcss/postcss": "^4.3.3",
     "eslint": "^9.18.0",
     "eslint-config-next": "15.5.22",
     "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.11",
     "typescript": "^5.7.0"
   },
   "engines": {
