@@ -69,6 +69,7 @@ export function PhotoSlot({
           fill
           sizes={sizes}
           priority={priority}
+          fetchPriority={priority ? "high" : undefined}
           style={image.focalPoint ? { objectPosition: image.focalPoint } : undefined}
           className="object-cover"
         />

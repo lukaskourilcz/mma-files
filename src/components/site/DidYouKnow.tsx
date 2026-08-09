@@ -29,7 +29,7 @@ export function DidYouKnow({
           {copy.kicker}
         </p>
         <p className="max-w-[72ch] text-[17px] font-medium leading-[1.5]">{entry.cs.short}</p>
-        <div className="font-mono text-[11px] leading-relaxed opacity-80 md:text-right">
+        <div className="font-mono text-[11px] leading-relaxed text-paper md:text-right">
           <p className="flex items-center gap-2 md:justify-end">
             <span aria-hidden="true" className="h-[5px] w-[5px] bg-paper" />
             {copy.verified}{" "}

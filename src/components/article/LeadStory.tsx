@@ -43,7 +43,6 @@ export function LeadStory({
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 xl:grid-cols-[7fr_5fr]">
           <Link
             href={routes.article(locale, article.slug)}
-            aria-label={`${dict.actions.readMore}: ${local.title}`}
             className="relative block aspect-[3/2] overflow-hidden bg-chrome-raised"
           >
             <PhotoSlot

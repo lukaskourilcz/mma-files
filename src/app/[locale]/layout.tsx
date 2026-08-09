@@ -32,6 +32,9 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600"],
   variable: "--font-plex-mono",
   display: "swap",
+  // Metadata is below the LCP. Do not make six mono subsets compete with
+  // Anton, Archivo and the lead image in the critical preload queue.
+  preload: false,
   fallback: ["ui-monospace", "monospace"],
 });
 

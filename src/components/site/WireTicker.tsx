@@ -108,7 +108,7 @@ export function WireTicker({ locale }: { locale: Locale }) {
       aria-label={dict.wire.label}
       className="flex h-[var(--layout-ticker-h)] items-stretch overflow-hidden bg-chrome"
     >
-      <p className="relative z-10 flex shrink-0 items-center gap-[7px] bg-accent px-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-chrome">
+      <p className="relative z-10 flex shrink-0 items-center gap-[7px] bg-accent px-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-paper">
         <span
           aria-hidden="true"
           className="block h-1.5 w-1.5 animate-livedot bg-chrome"
