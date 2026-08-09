@@ -117,9 +117,7 @@ export function HeroVisual({
   const label =
     article.heroAlt?.[locale] ?? articleTitle(article, locale);
 
-  const fileTag = article.fileNumber
-    ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")}`
-    : dict.formats[article.format];
+  const fileTag = dict.formats[article.format];
 
   if (article.image) {
     return (

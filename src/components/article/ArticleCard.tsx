@@ -6,18 +6,9 @@ import { routes } from "@/lib/paths";
 import { accentFor } from "@/lib/promotion";
 import type { Article, Locale } from "@/lib/types";
 
-export function FileNumber({ article }: { article: Article }) {
-  if (!article.fileNumber) return null;
-  return (
-    <span className="label-mono-sm text-ink-meta">
-      {String(article.fileNumber).padStart(3, "0")}
-    </span>
-  );
-}
-
 /**
  * A file card: 16:9 photo slot with the promotion rule and badge, then the
- * headline, the dek, and a footer of date, read time and source count.
+ * headline, the dek, and a footer of date and read time.
  */
 export function ArticleCard({
   article,
@@ -72,14 +63,6 @@ export function ArticleCard({
           <span className="label-mono-sm font-semibold tracking-[0.16em] text-ink-muted">
             {dict.formats[article.format]}
           </span>
-          {article.fileNumber ? (
-            <>
-              <span aria-hidden="true" className="h-2.5 w-px bg-rule-strong" />
-              <span className="label-mono-sm tracking-[0.16em] text-ink-meta">
-                {dict.labels.file} {String(article.fileNumber).padStart(3, "0")}
-              </span>
-            </>
-          ) : null}
         </div>
 
         <Heading
@@ -115,10 +98,6 @@ export function ArticleCard({
           <span aria-hidden="true" className="h-2.5 w-px bg-rule-strong" />
           <span className="label-mono-sm tracking-[0.14em] text-ink-meta">
             {minutes} {dict.labels.readingTime}
-          </span>
-          <span className="label-mono-sm ml-auto flex items-center gap-1.5 tracking-[0.14em] text-ink-meta">
-            <span aria-hidden="true" className="block h-1 w-1 bg-verified" />
-            {dict.labels.sourceCount(article.sources.length)}
           </span>
         </div>
       </div>

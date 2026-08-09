@@ -28,7 +28,7 @@ function SourceItem({ source, locale }: { source: Source; locale: Locale }) {
           {isInternal ? dict.labels.internal : dict.labels.external}
         </Chip>
         {source.classification ? (
-          <Chip tone={source.classification === "primary" ? "ember" : "muted"}>
+          <Chip tone={source.classification === "primary" ? "default" : "muted"}>
             {source.classification === "primary"
               ? dict.labels.primary
               : dict.labels.secondary}
@@ -122,30 +122,10 @@ export function SourceList({
 /* The file                                                                   */
 /* -------------------------------------------------------------------------- */
 
-function BulletList({ items, tone }: { items: string[]; tone: "ember" | "muted" }) {
-  return (
-    <ul className="space-y-2">
-      {items.map((item) => (
-        <li key={item} className="relative pl-4 text-sm leading-relaxed text-ink-muted">
-          <span
-            aria-hidden="true"
-            className={`absolute left-0 top-[0.6em] block h-[1px] w-2.5 ${
-              tone === "ember" ? "bg-ember" : "bg-muted"
-            }`}
-          />
-          {item}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 export function TheFile({ article, locale }: { article: Article; locale: Locale }) {
   const dict = getDictionary(locale);
   const event = article.eventRef ? getEventById(article.eventRef) : undefined;
   const fighters = resolveFighters(article.fighterRefs);
-  const confirmed = article.confirmed?.[locale] ?? [];
-  const unconfirmed = article.unconfirmed?.[locale] ?? [];
 
   return (
     <section aria-labelledby="the-file" className="sheet p-5 md:p-6">
@@ -195,27 +175,6 @@ export function TheFile({ article, locale }: { article: Article; locale: Locale 
         ) : null}
       </dl>
 
-      {confirmed.length > 0 ? (
-        <div className="mt-6">
-          <h3 className="label-mono-sm text-ink">{dict.labels.confirmed}</h3>
-          <div className="mt-3">
-            <BulletList items={confirmed} tone="ember" />
-          </div>
-        </div>
-      ) : null}
-
-      <div className="mt-6">
-        <h3 className="label-mono-sm text-ink">{dict.labels.unconfirmed}</h3>
-        <div className="mt-3">
-          {unconfirmed.length > 0 ? (
-            <BulletList items={unconfirmed} tone="muted" />
-          ) : (
-            <p className="text-sm leading-relaxed text-ink-muted">
-              {dict.labels.noneUnconfirmed}
-            </p>
-          )}
-        </div>
-      </div>
     </section>
   );
 }
@@ -237,16 +196,16 @@ export function CorrectionHistory({
   return (
     <section
       aria-labelledby="corrections"
-      className="rounded-[10px] border border-warning/30 bg-warning/8 p-5 md:p-6"
+      className="border border-correction-rule bg-correction p-5 md:p-6"
     >
-      <h2 id="corrections" className="label-mono text-warning">
+      <h2 id="corrections" className="label-mono text-text">
         {dict.footer.corrections}
       </h2>
       <ol className="mt-4 space-y-4">
         {corrections.map((correction) => (
-          <li key={correction.at} className="border-t border-warning/20 pt-4 first:border-t-0 first:pt-0">
+          <li key={correction.at} className="border-t border-correction-rule pt-4 first:border-t-0 first:pt-0">
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-              <Chip tone="warning">
+              <Chip className="border-correction-rule bg-correction text-text">
                 {correction.kind === "correction"
                   ? dict.labels.correction
                   : dict.labels.update}

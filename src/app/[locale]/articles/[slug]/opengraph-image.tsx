@@ -30,9 +30,6 @@ export default async function Image({
 
   const title = article ? articleTitle(article, locale) : siteConfig.name;
   const format = article ? dict.formats[article.format] : "";
-  const fileTag = article?.fileNumber
-    ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")}`
-    : "";
 
   return new ImageResponse(
     (
@@ -59,11 +56,6 @@ export default async function Image({
           >
             {format}
           </span>
-          {fileTag ? (
-            <span style={{ fontSize: 22, letterSpacing: 4, color: "#94949C" }}>
-              {fileTag}
-            </span>
-          ) : null}
         </div>
 
         <div

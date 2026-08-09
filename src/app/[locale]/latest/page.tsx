@@ -47,7 +47,7 @@ export default async function LatestPage({
           { href: routes.home(locale), label: dict.nav.home },
           { label: dict.latest.title },
         ]}
-        kicker={`${dict.labels.file} · ${articles.length}`}
+        kicker={`${dict.latest.title} · ${articles.length}`}
         title={dict.latest.title}
         dek={dict.latest.dek}
       />

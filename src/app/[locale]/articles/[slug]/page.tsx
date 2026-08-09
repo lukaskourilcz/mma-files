@@ -135,14 +135,9 @@ export default async function ArticlePage({
           <Breadcrumbs items={crumbs} />
 
           <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
-            <Chip tone="ember">{dict.formats[article.format]}</Chip>
+            <Chip tone="dark">{dict.formats[article.format]}</Chip>
             {article.organization ? (
               <Chip tone="muted">{dict.organizations[article.organization]}</Chip>
-            ) : null}
-            {article.fileNumber ? (
-              <span className="label-mono-sm text-muted">
-                {dict.labels.file} {String(article.fileNumber).padStart(3, "0")}
-              </span>
             ) : null}
           </div>
 

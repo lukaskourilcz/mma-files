@@ -39,18 +39,11 @@ export function LeadStory({
   const mainBout = event?.bouts.find((bout) => bout.billing === "main");
   const isFightWeek = article.format === "fight-week-preview";
 
-  const stamp = [
-    article.fileNumber
-      ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")}`
-      : null,
-    formatDate(article.publishAt, locale, {
-      day: "2-digit",
-      month: "2-digit",
-      year: "2-digit",
-    }),
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  const stamp = formatDate(article.publishAt, locale, {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+  });
 
   const boutLine = [
     mainBout ? dict.divisions[mainBout.division] : null,
@@ -182,9 +175,6 @@ export function LeadStory({
             >
               <span className="block min-w-0">
                 <span className="label-mono-sm block tracking-[0.18em] text-signal">
-                  {article.fileNumber
-                    ? `${dict.labels.file} ${String(article.fileNumber).padStart(3, "0")} · `
-                    : ""}
                   {dict.formats[article.format]}
                 </span>
                 {mainBout ? (
