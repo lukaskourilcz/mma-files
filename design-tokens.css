@@ -1,0 +1,148 @@
+/* =========================================================================
+   MMA Files — design tokens
+   Single theme. The mix of dark chrome and light wells IS the identity;
+   there is no light/dark mode switch.
+
+   Tailwind v4: paste the @theme block into src/app/globals.css.
+   Plain CSS consumers: the same declarations work inside :root.
+   ========================================================================= */
+
+@theme {
+  /* ---------------------------------------------------------------- surfaces */
+  --color-chrome: #0b0b0c;        /* ticker, masthead, hero band, Predikce board, footer */
+  --color-chrome-raised: #141416;  /* rows and cells inside a chrome block */
+  --color-paper: #f7f7f5;          /* reading surface */
+  --color-card: #ffffff;           /* cards, wells, tables */
+  --color-well: #efefec;           /* ad placeholders, skeleton fills, inert panels */
+
+  /* -------------------------------------------------------------------- text */
+  --color-text: #0b0b0c;           /* body on paper/card        — 18.3:1 on paper */
+  --color-text-muted: #55555c;     /* deks, secondary body      —  7.4:1 on paper */
+  --color-text-meta: #6b6b66;      /* mono metadata, min size 10px — 4.6:1 on white. Do not lighten. */
+  --color-text-inverse: #f7f7f5;   /* body on chrome            — 16.6:1 on chrome */
+  --color-text-inverse-muted: #b8b8be; /* deks on chrome        —  8.4:1 */
+  --color-text-inverse-meta: #8e8e96;  /* mono metadata on chrome — 4.9:1. Floor. */
+
+  /* ------------------------------------------------------------------- rules */
+  --color-rule: #e4e4e0;           /* hairline inside a light well */
+  --color-rule-strong: #cfcfc9;    /* hairline between sections */
+  --color-rule-dark: #26262c;      /* hairline inside a chrome block */
+  --color-rule-dashed: #b9b9b2;    /* ad-slot dashed hairline */
+
+  /* ------------------------------------------------------------------ accent */
+  /* One accent. Two lightnesses because no single red clears AA on both
+     #F7F7F5 and #0B0B0C. Pick by background, never by taste. */
+  --color-accent: oklch(0.52 0.22 27);          /* on paper/card — 6.2:1. Kickers, links, active nav. */
+  --color-accent-on-dark: oklch(0.68 0.19 27);  /* on chrome     — 5.8:1. Kickers and live markers on black. */
+  --color-accent-press: oklch(0.44 0.2 27);     /* pressed/hover fill for solid buttons */
+  --color-accent-wash: oklch(0.52 0.22 27 / 8%); /* 8% tint behind a live row */
+
+  /* ------------------------------------------------------------------ badges */
+  /* Organisation identity is a badge fill only — never small text, never a logo. */
+  --color-badge-ufc: oklch(0.5 0.21 27);        /* white on it — 6.9:1 */
+  --color-badge-oktagon: oklch(0.5 0.16 55);    /* white on it — 5.6:1 */
+  --color-badge-ufc-on-dark: oklch(0.68 0.19 27);
+  --color-badge-oktagon-on-dark: oklch(0.75 0.15 65); /* amber text on chrome — 8.0:1 */
+
+  /* ------------------------------------------------------------------ status */
+  --color-live: oklch(0.62 0.23 27);            /* live dot; pairs with a text label, never alone */
+  --color-note: oklch(0.72 0.15 75);            /* „Ukázkový obsah" chip fill (amber), ink text on it */
+  --color-note-ink: #3a2c05;                    /* text on --color-note — 7.9:1 */
+  --color-correction: #f3ede2;                  /* „Oprava" block fill */
+  --color-correction-rule: #a98a4a;
+
+  /* -------------------------------------------------------------------- type */
+  --font-display: var(--font-barlow-condensed), "Barlow Condensed",
+    "Arial Narrow", sans-serif;                 /* 700 / 800, uppercase */
+  --font-sans: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Display steps — clamp() pairs are mobile 390 → desktop 1440 */
+  --text-d1: clamp(2.75rem, 1.1rem + 7.4vw, 5.5rem);   /*  44 → 88  hero headline */
+  --text-d2: clamp(2.25rem, 1.2rem + 4.6vw, 4rem);     /*  36 → 64  page title */
+  --text-d3: clamp(1.75rem, 1.1rem + 2.9vw, 3rem);     /*  28 → 48  lead secondary, 404 */
+  --text-d4: clamp(1.5rem, 1.1rem + 1.7vw, 2.25rem);   /*  24 → 36  section heading */
+  --text-d5: 1.75rem;                                   /*  28      board column heading */
+  --text-d6: 1.375rem;                                  /*  22      card headline, bout row name */
+
+  /* Text steps — fixed, no fluid body copy */
+  --text-lg: 1.25rem;      /* 20  dek on hero */
+  --text-md: 1.125rem;     /* 18  article body (desktop) */
+  --text-base: 1.0625rem;  /* 17  article body (mobile), dek */
+  --text-sm: 0.9375rem;    /* 15  list headline, UI */
+  --text-xs: 0.8125rem;    /* 13  captions, credits */
+
+  /* Mono steps — tabular numerals always on */
+  --text-mono-lg: 1rem;      /* 16  probability numerals */
+  --text-mono-md: 0.8125rem; /* 13  records, times, table data */
+  --text-mono-sm: 0.75rem;   /* 12  kickers, timestamps */
+  --text-mono-xs: 0.6875rem; /* 11  kickers (min), ad-slot dimensions */
+
+  --tracking-kicker: 0.14em;
+  --tracking-mono: 0.06em;
+  --leading-display: 0.94;   /* Barlow Condensed clears Czech carons at 0.94 */
+  --leading-display-tight: 0.9; /* single-line only (board headings, wordmark) */
+  --leading-body: 1.65;
+  --leading-ui: 1.35;
+
+  /* ----------------------------------------------------------------- spacing */
+  --space-1: 0.25rem;  /*  4 */
+  --space-2: 0.5rem;   /*  8 */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.25rem;  /* 20 */
+  --space-6: 1.5rem;   /* 24 */
+  --space-8: 2rem;     /* 32 */
+  --space-10: 2.5rem;  /* 40 */
+  --space-12: 3rem;    /* 48 */
+  --space-16: 4rem;    /* 64 */
+  --space-20: 5rem;    /* 80 */
+  --space-24: 6rem;    /* 96 */
+  --space-30: 7.5rem;  /* 120 */
+
+  /* ------------------------------------------------------------------ layout */
+  --layout-max: 90rem;          /* 1440 */
+  --layout-gutter: 1.25rem;     /* 20 — mobile */
+  --layout-gutter-lg: 2.5rem;   /* 40 — ≥768px */
+  --layout-rail: 300px;         /* article right rail */
+  --layout-measure: 34rem;      /* 544px ≈ 68 characters at 18px Archivo */
+  --layout-chrome-h: 64px;      /* masthead height, ≥768px */
+  --layout-chrome-h-sm: 52px;   /* masthead height, mobile */
+  --layout-ticker-h: 34px;
+  --hit-min: 44px;              /* every interactive target */
+
+  /* ---------------------------------------------------------------- geometry */
+  --border-hairline: 1px;
+  --border-underline: 3px;      /* the red hover/active idiom */
+  --radius: 0;                  /* the only radius on the site */
+
+  /* ------------------------------------------------------------------ motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur: 180ms;
+  --animate-ticker: ticker 48s linear infinite;
+  --animate-livedot: livedot 1.6s ease-in-out infinite;
+  --animate-skeleton: skeleton 1.4s ease-in-out infinite;
+}
+
+@keyframes ticker {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes livedot {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+@keyframes skeleton {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* The ticker becomes a static, horizontally scrollable strip. */
+}
