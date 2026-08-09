@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/primitives";
+import { getPrimaryNavigation } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
@@ -20,7 +21,7 @@ function FooterLink({ href, children }: { href: string; children: string }) {
 
 export function SiteFooter({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
-  const year = new Date().getFullYear();
+  const sections = getPrimaryNavigation(locale, dict);
 
   return (
     <footer className="mt-20 bg-ink text-white">
@@ -30,7 +31,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         className="h-1"
         style={{
           background:
-            "linear-gradient(90deg, var(--color-ufc) 0 50%, var(--color-oktagon) 50% 100%)",
+            "linear-gradient(90deg, var(--color-badge-ufc) 0 50%, var(--color-badge-oktagon) 50% 100%)",
         }}
       />
       <Container className="py-12 md:py-14">
@@ -46,7 +47,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               </span>
             </div>
             <p className="mt-4 max-w-[38ch] text-sm leading-relaxed text-paper-meta">
-              {siteConfig.tagline[locale]} {dict.footer.blurb}
+              {dict.footer.blurb}
             </p>
           </div>
 
@@ -58,26 +59,17 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               {dict.footer.sections}
             </h2>
             <ul className="mt-3.5 space-y-2.5">
-              <FooterLink href={routes.latest(locale)}>{dict.nav.latest}</FooterLink>
-              <FooterLink href={routes.organization(locale, "ufc")}>
-                {dict.nav.ufc}
-              </FooterLink>
-              <FooterLink href={routes.organization(locale, "oktagon")}>
-                {dict.nav.oktagon}
-              </FooterLink>
-              <FooterLink href={routes.fightWeek(locale)}>
-                {dict.nav.fightWeek}
-              </FooterLink>
-              <FooterLink href={routes.results(locale)}>{dict.nav.results}</FooterLink>
-              <FooterLink href={routes.fighters(locale)}>
-                {dict.nav.fighters}
-              </FooterLink>
+              {sections.map((item) => (
+                <FooterLink key={item.href} href={item.href}>
+                  {item.label}
+                </FooterLink>
+              ))}
             </ul>
           </nav>
 
           <nav className="md:col-span-3" aria-labelledby="footer-desk">
             <h2 id="footer-desk" className="label-mono-sm font-semibold text-paper-meta">
-              {dict.footer.theDesk}
+              {dict.footer.desk}
             </h2>
             <ul className="mt-3.5 space-y-2.5">
               <FooterLink href={routes.about(locale)}>{dict.footer.about}</FooterLink>
@@ -92,8 +84,9 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               </FooterLink>
               <FooterLink href={routes.privacy(locale)}>{dict.footer.privacy}</FooterLink>
               <FooterLink href={routes.newsletter(locale)}>
-                {dict.newsletter.pageTitle}
+                {dict.footer.newsletter}
               </FooterLink>
+              <FooterLink href={routes.dataDesk(locale)}>{dict.footer.numbers}</FooterLink>
             </ul>
           </nav>
 
@@ -143,21 +136,8 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <div className="grid gap-8 pt-7 md:grid-cols-12">
-          <p className="max-w-[70ch] text-[13px] leading-relaxed text-paper-meta md:col-span-7">
-            {dict.footer.transparency}
-          </p>
-          <div className="md:col-span-5 md:text-right">
-            <p className="label-mono-sm text-paper-meta">
-              {dict.footer.poweredBy(
-                siteConfig.engine.name,
-                siteConfig.engine.descriptor[locale],
-              )}
-            </p>
-            <p className="label-mono-sm mt-2.5 text-paper-meta">
-              © {year} {siteConfig.name}. {dict.footer.rights}
-            </p>
-          </div>
+        <div className="pt-7">
+          <p className="label-mono-sm text-paper-meta">{dict.footer.legal}</p>
         </div>
       </Container>
     </footer>

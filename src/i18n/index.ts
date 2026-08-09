@@ -12,9 +12,4 @@ export function resolveLocale(segment: string): Locale {
   return isLocale(segment) ? segment : DEFAULT_LOCALE;
 }
 
-/** One published locale, so there is no other one to switch to. */
-export function otherLocale(): Locale {
-  return "cs";
-}
-
 export type { Dictionary };

@@ -63,7 +63,7 @@ export default async function AboutPage({
           { href: routes.home(locale), label: dict.nav.home },
           { label: dict.about.title },
         ]}
-        kicker={siteConfig.tagline[locale]}
+        kicker={siteConfig.utilityLine[locale]}
         title={dict.about.title}
         dek={dict.about.dek}
       />

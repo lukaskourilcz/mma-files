@@ -51,7 +51,7 @@ export async function generateMetadata({
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: `${siteConfig.name} — ${siteConfig.tagline[locale]}`,
+      default: siteConfig.name,
       template: `%s — ${siteConfig.name}`,
     },
     description: siteConfig.description[locale],
@@ -76,7 +76,7 @@ export async function generateMetadata({
       type: "website",
       siteName: siteConfig.name,
       locale: "cs_CZ",
-      title: `${siteConfig.name} — ${siteConfig.tagline[locale]}`,
+      title: siteConfig.name,
       description: siteConfig.description[locale],
       url: routes.home(locale),
     },
@@ -105,7 +105,6 @@ export default async function LocaleLayout({
     "@type": "NewsMediaOrganization",
     name: siteConfig.name,
     url: absoluteUrl(routes.home(locale)),
-    slogan: siteConfig.tagline[locale],
     description: siteConfig.description[locale],
     knowsLanguage: ["cs"],
     publishingPrinciples: absoluteUrl(routes.standards(locale)),

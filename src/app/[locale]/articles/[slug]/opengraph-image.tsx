@@ -92,7 +92,7 @@ export default async function Image({
             {siteConfig.wordmark}
           </span>
           <span style={{ fontSize: 20, letterSpacing: 3, color: "#94949C" }}>
-            {article?.isDemo ? dict.demo.articleBadge : siteConfig.tagline[locale]}
+            {article?.isDemo ? dict.demo.articleBadge : dict.footer.blurb}
           </span>
         </div>
       </div>

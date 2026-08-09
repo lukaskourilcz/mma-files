@@ -1,9 +1,8 @@
 import type { Locale } from "@/lib/types";
 
 /**
- * Single place to change brand wording, the engine attribution and the
- * indexing switches. The BoardlessAI name stays configurable because the final
- * name and domain are not cleared yet.
+ * Single place to change brand wording, infrastructure labels and indexing
+ * switches.
  */
 
 function envFlag(value: string | undefined, fallback: boolean): boolean {
@@ -17,10 +16,6 @@ export const siteConfig = {
   wordmark: "MMA FILES",
   utilityLine: {
     cs: "Zápasová žurnalistika / Data / Česky",
-  } satisfies Record<Locale, string>,
-
-  tagline: {
-    cs: "Zápas je zpráva. Složka je důkaz.",
   } satisfies Record<Locale, string>,
 
   description: {
