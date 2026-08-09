@@ -1,32 +1,16 @@
 import Link from "next/link";
-import { PrimaryNav, type NavItem } from "@/components/site/PrimaryNav";
+import { PrimaryNav } from "@/components/site/PrimaryNav";
 import { WireTicker } from "@/components/site/WireTicker";
+import { getPrimaryNavigation } from "@/config/navigation";
 import { demoMode, siteConfig } from "@/config/site";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
-import { PROMOTION_ACCENT } from "@/lib/promotion";
 import type { Locale } from "@/lib/types";
 
 export function Masthead({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
 
-  const items: NavItem[] = [
-    { href: routes.latest(locale), label: dict.nav.latest },
-    {
-      href: routes.organization(locale, "ufc"),
-      label: dict.nav.ufc,
-      accent: PROMOTION_ACCENT.ufc,
-    },
-    {
-      href: routes.organization(locale, "oktagon"),
-      label: dict.nav.oktagon,
-      accent: PROMOTION_ACCENT.oktagon,
-    },
-    { href: routes.fightWeek(locale), label: dict.nav.fightWeek },
-    { href: routes.results(locale), label: dict.nav.results },
-    { href: routes.fighters(locale), label: dict.nav.fighters },
-    { href: routes.dataDesk(locale), label: dict.nav.numbers },
-  ];
+  const items = getPrimaryNavigation(locale, dict);
 
   return (
     <header>

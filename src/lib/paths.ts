@@ -5,6 +5,7 @@ export const routes = {
   home: (l: Locale) => `/${l}`,
   latest: (l: Locale) => `/${l}/latest`,
   organization: (l: Locale, org: Organization) => `/${l}/${org}`,
+  predictions: (l: Locale) => `/${l}/predikce`,
   fightWeek: (l: Locale) => `/${l}/fight-week`,
   results: (l: Locale) => `/${l}/results`,
   fighters: (l: Locale) => `/${l}/fighters`,
@@ -22,15 +23,3 @@ export const routes = {
   newsletter: (l: Locale) => `/${l}/newsletter`,
   rss: (l: Locale) => `/${l}/rss.xml`,
 } as const;
-
-/**
- * Swap the locale segment of the current path, keeping the reader where they
- * are. Every route on this site exists in both locales, so the target is always
- * valid.
- */
-export function withLocale(pathname: string, locale: Locale): string {
-  const segments = pathname.split("/").filter(Boolean);
-  if (segments.length === 0) return `/${locale}`;
-  segments[0] = locale;
-  return `/${segments.join("/")}`;
-}

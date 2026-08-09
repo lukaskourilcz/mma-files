@@ -10,11 +10,11 @@ import type { Organization } from "@/lib/types";
  * colour.
  */
 export const PROMOTION_ACCENT: Record<Organization, string> = {
-  ufc: "var(--color-ufc)",
-  oktagon: "var(--color-oktagon)",
+  ufc: "var(--color-badge-ufc)",
+  oktagon: "var(--color-badge-oktagon)",
 };
 
 /** Desk-authored files carry no promotion, so they take the ink accent. */
 export function accentFor(organization?: Organization): string {
-  return organization ? PROMOTION_ACCENT[organization] : "var(--color-ink)";
+  return organization ? PROMOTION_ACCENT[organization] : "var(--color-accent)";
 }

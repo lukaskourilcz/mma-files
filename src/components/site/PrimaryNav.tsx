@@ -2,13 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-export interface NavItem {
-  href: string;
-  label: string;
-  /** Promotion accent for the hover and active rule. Defaults to ink. */
-  accent?: string;
-}
+import type { NavItem } from "@/config/navigation";
 
 /**
  * The section rail. Desktop and mobile are the same row; below the container
@@ -29,7 +23,7 @@ export function PrimaryNav({ items, label }: { items: NavItem[]; label: string }
       {items.map((item) => {
         const active =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
-        const accent = item.accent ?? "var(--color-ink)";
+        const accent = item.accent ?? "var(--color-accent)";
 
         return (
           <Link
