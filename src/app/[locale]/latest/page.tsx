@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { AdSlot } from "@/components/ads/AdSlot";
 import { ArticleGrid } from "@/components/article/ArticleCard";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Container } from "@/components/ui/primitives";
@@ -42,6 +43,7 @@ export default async function LatestPage({
 
   return (
     <>
+      <AdSlot name="masthead-billboard" locale={locale} />
       <PageHeader
         crumbs={[
           { href: routes.home(locale), label: dict.nav.home },

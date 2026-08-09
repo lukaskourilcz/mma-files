@@ -1,3 +1,4 @@
+import { AdSlot } from "@/components/ads/AdSlot";
 import { ArticleGrid } from "@/components/article/ArticleCard";
 import { EventCard } from "@/components/event/EventCard";
 import { FighterCard } from "@/components/fighter/FighterCard";
@@ -31,6 +32,7 @@ export function OrganizationPage({
 
   return (
     <>
+      <AdSlot name="masthead-billboard" locale={locale} />
       <PageHeader
         crumbs={[
           { href: routes.home(locale), label: dict.nav.home },

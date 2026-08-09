@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { AdSlot } from "@/components/ads/AdSlot";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { LeadStory } from "@/components/article/LeadStory";
 import { EventCard } from "@/components/event/EventCard";
@@ -37,6 +38,7 @@ export default async function HomePage({
   return (
     <>
       {lead?.packageHash ? <meta name="boardless-content-hash" content={lead.packageHash} /> : null}
+      <AdSlot name="masthead-billboard" locale={locale} />
       {/* Above the hero: on a phone the lead fills the first screen, so a belt
           underneath it would never be seen. The date comes from the lead
           article, mirroring how every other section is handed its data. */}
@@ -130,6 +132,7 @@ export default async function HomePage({
       </section>
 
       <NewsletterModule copy={dict.newsletter} />
+      <AdSlot name="footer-billboard" locale={locale} />
     </>
   );
 }
