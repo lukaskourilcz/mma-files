@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Chip, DataRow, MissingValue } from "@/components/ui/primitives";
+import { DataRow } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import {
   ageFrom,
@@ -9,26 +9,8 @@ import {
 } from "@/lib/format";
 import { routes } from "@/lib/paths";
 import { PROMOTION_ACCENT } from "@/lib/promotion";
-import type { FieldState, Fighter, FighterField, Locale } from "@/lib/types";
+import type { Fighter, FighterField, Locale } from "@/lib/types";
 import { FIGHTER_FIELDS } from "@/lib/types";
-
-const STATE_TONE: Record<FieldState, "success" | "warning" | "danger" | "muted"> = {
-  verified: "success",
-  provisional: "warning",
-  disputed: "danger",
-  unavailable: "muted",
-};
-
-export function FieldStateChip({
-  state,
-  locale,
-}: {
-  state: FieldState;
-  locale: Locale;
-}) {
-  const dict = getDictionary(locale);
-  return <Chip tone={STATE_TONE[state]}>{dict.fieldStates[state]}</Chip>;
-}
 
 /**
  * A roster card: the name in display type, the record underneath, and nothing else.
@@ -39,8 +21,6 @@ export function FieldStateChip({
  * what the files actually support. A named slot holding a placeholder is a promise the venture
  * cannot keep; a card of verified data is one it can.
  *
- * A disputed record renders as the word, in the disputed colour, never as one of the two numbers
- * the registries disagree about.
  */
 export function FighterCard({
   fighter,
@@ -51,7 +31,6 @@ export function FighterCard({
 }) {
   const dict = getDictionary(locale);
   const accent = PROMOTION_ACCENT[fighter.organization];
-  const recordState = fighter.fieldStates.record ?? "unavailable";
 
   return (
     <article className="sheet sheet-hover flex h-full flex-col">
@@ -74,15 +53,11 @@ export function FighterCard({
           </Link>
         </h3>
 
-        <p className="mt-2 font-mono text-sm font-semibold">
-          {recordState === "disputed" ? (
-            <span className="text-disputed">{dict.fieldStates.disputed}</span>
-          ) : fighter.record && recordState !== "unavailable" ? (
-            <span className="text-ink">{formatRecord(fighter.record)}</span>
-          ) : (
-            <MissingValue label={dict.fighters.recordUnavailable} />
-          )}
-        </p>
+        {fighter.record ? (
+          <p className="mt-2 font-mono text-sm font-semibold text-ink">
+            {formatRecord(fighter.record)}
+          </p>
+        ) : null}
 
         <p className="label-mono-sm mt-1.5 tracking-[0.13em] text-ink-meta">
           {dict.divisions[fighter.division]}
@@ -93,7 +68,7 @@ export function FighterCard({
   );
 }
 
-/** The tape, with every field carrying the evidence state it actually has. */
+/** The tape omits fields that have no delivered value. */
 export function TaleOfTheTape({
   fighter,
   locale,
@@ -104,18 +79,9 @@ export function TaleOfTheTape({
   const dict = getDictionary(locale);
 
   const valueFor = (field: FighterField): React.ReactNode => {
-    const state = fighter.fieldStates[field] ?? "unavailable";
-    if (state === "unavailable") {
-      return <MissingValue label={dict.fieldStates.unavailable} />;
-    }
-
     switch (field) {
       case "record":
-        return fighter.record ? (
-          <span className="font-mono">{formatRecord(fighter.record)}</span>
-        ) : (
-          <MissingValue label={dict.fieldStates.unavailable} />
-        );
+        return fighter.record ? <span className="font-mono">{formatRecord(fighter.record)}</span> : null;
       case "stance":
         return fighter.stance ? dict.stances[fighter.stance] : null;
       case "heightCm":
@@ -140,62 +106,15 @@ export function TaleOfTheTape({
 
       <dl className="mt-4">
         {FIGHTER_FIELDS.map((field) => {
-          const state = fighter.fieldStates[field] ?? "unavailable";
+          const value = valueFor(field);
+          if (value == null) return null;
           return (
             <DataRow key={field} label={dict.fighterFields[field]}>
-              <span className="inline-flex flex-wrap items-center justify-end gap-2">
-                {valueFor(field) ?? (
-                  <MissingValue label={dict.fieldStates.unavailable} />
-                )}
-                {state !== "verified" ? (
-                  <FieldStateChip state={state} locale={locale} />
-                ) : null}
-              </span>
+              {value}
             </DataRow>
           );
         })}
       </dl>
-    </section>
-  );
-}
-
-/** A per-file summary of how well evidenced it is. */
-export function EvidenceCoverage({
-  fighter,
-  locale,
-}: {
-  fighter: Fighter;
-  locale: Locale;
-}) {
-  const dict = getDictionary(locale);
-  const counts = FIGHTER_FIELDS.reduce<Record<FieldState, number>>(
-    (acc, field) => {
-      const state = fighter.fieldStates[field] ?? "unavailable";
-      acc[state] += 1;
-      return acc;
-    },
-    { verified: 0, provisional: 0, disputed: 0, unavailable: 0 },
-  );
-
-  const states: FieldState[] = ["verified", "provisional", "disputed", "unavailable"];
-
-  return (
-    <section aria-labelledby="coverage" className="sheet p-5">
-      <h2 id="coverage" className="label-mono text-ink">
-        {dict.fighters.coverage}
-      </h2>
-      <ul className="mt-4 space-y-2.5">
-        {states
-          .filter((state) => counts[state] > 0)
-          .map((state) => (
-            <li key={state} className="flex items-center justify-between gap-3">
-              <FieldStateChip state={state} locale={locale} />
-              <span className="font-mono text-sm text-ink">
-                {counts[state]}/{FIGHTER_FIELDS.length}
-              </span>
-            </li>
-          ))}
-      </ul>
     </section>
   );
 }

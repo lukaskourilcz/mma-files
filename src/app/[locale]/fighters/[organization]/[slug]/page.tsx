@@ -4,10 +4,7 @@ import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { SourceList } from "@/components/article/ArticleFile";
 import { BoutRow } from "@/components/event/EventCard";
-import {
-  EvidenceCoverage,
-  TaleOfTheTape,
-} from "@/components/fighter/FighterCard";
+import { TaleOfTheTape } from "@/components/fighter/FighterCard";
 import { DemoNotice } from "@/components/site/HomeModules";
 import { Breadcrumbs } from "@/components/ui/PageHeader";
 import { Chip, Container, Kicker, SectionHeading } from "@/components/ui/primitives";
@@ -223,7 +220,6 @@ export default async function FighterPage({
           <aside className="space-y-6 lg:col-span-5 xl:col-span-4">
             <div className="sheet p-5"><Kicker>{locale === "cs" ? "Glicko stav" : "Glicko state"}</Kicker>{file ? <dl className="mt-4 grid grid-cols-2 gap-3"><div><dt className="label-mono-sm text-ink-meta">{locale === "cs" ? "Hodnocení" : "Rating"}</dt><dd className="mt-1 font-mono text-2xl text-ink">{Math.round(file.rating.rating)}</dd></div><div><dt className="label-mono-sm text-ink-meta">{locale === "cs" ? "Nejistota" : "Deviation"}</dt><dd className="mt-1 font-mono text-2xl text-ink">±{Math.round(file.rating.deviation)}</dd></div></dl> : <p className="mt-3 text-sm text-ink-muted">{locale === "cs" ? "Nedostupné" : "Unavailable"}</p>}<p className="mt-4 text-xs leading-relaxed text-ink-muted">{locale === "cs" ? "Jde o interní stav modelu z doložených výsledků, ne o oficiální žebříček." : "This is an internal model state built from sourced results, not an official ranking."}</p></div>
             {file?.gaps.length ? <div className="sheet p-5"><Kicker>{locale === "cs" ? "Chybějící podklady" : "Evidence gaps"}</Kicker><ul className="mt-3 space-y-2 text-sm text-ink-muted">{file.gaps.map((gap) => <li key={gap}>• {gapLabels[gap]?.[locale] ?? gap.replaceAll("-", " ")}</li>)}</ul></div> : null}
-            <EvidenceCoverage fighter={fighter} locale={locale} />
             <SourceList sources={fighter.sources} locale={locale} />
             <div className="sheet p-5">
               <Kicker>{dict.fighters.relatedStories}</Kicker>
