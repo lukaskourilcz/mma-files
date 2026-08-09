@@ -19,11 +19,14 @@ export const cs = {
     latest: "Nejnovější",
     ufc: "UFC",
     oktagon: "Oktagon",
+    predictions: "Predikce",
     fightWeek: "Zápasový týden",
+    results: "Výsledky",
     fighters: "Bojovníci",
+    menu: "Menu",
+    closeMenu: "Zavřít menu",
     dataDesk: "Datová redakce",
     numbers: "Čísla",
-    results: "Výsledky",
     events: "Turnaje",
     skipToContent: "Přejít na obsah",
     home: "Úvod",
@@ -83,6 +86,17 @@ export const cs = {
     methodology: "Jak text vznikl",
     methodologyBody:
       "Podklady dodala důkazní vrstva FightAIQ. Text vznikl a prošel kontrolou na anglické a české redakci a vydal ho člověk.",
+  },
+
+  article: {
+    byline: "Redakce MMA Files",
+    sources: "Zdroje",
+    related: "Související texty",
+    moreFromSection: "Další z rubriky",
+    correction: "Oprava",
+    demoBadge: "Ukázkový obsah",
+    photoCredit: (author: string, licence: string) =>
+      `Foto: ${author} · ${licence}`,
   },
 
   formats: {
@@ -214,8 +228,11 @@ export const cs = {
     leadKicker: "Hlavní složka",
     fightWeekTag: "Zápasový týden",
     firstBell: "První gong",
-    latestTitle: "Složky",
+    latestTitle: "Nejnovější",
     latestDek: "Všechno, co redakce vydala",
+    loadPreviousWeek: "Objevit předchozí týden",
+    weekDivider: (from: string, to: string) => `Týden ${from}–${to}`,
+    predictionsTitle: "Predikce",
     fightWeekTitle: "Co je dál",
     fightWeekDek: "Co je nasmlouvané a co je zatím jen věta",
     resultsTitle: "Výsledky",
@@ -229,7 +246,11 @@ export const cs = {
       `Žádná odjetá karta ${promotion} v záznamu není`,
     noCompletedCardBody:
       "Tenhle sloupec se naplní ve chvíli, kdy tu vyjde odjetá karta. Do té doby zůstane prázdný, místo aby ho vyplnila karta, kterou redakce nemá podloženou.",
-    nextCard: "Další",
+    lastCard: "Poslední karta",
+    nextCard: "Další karta",
+    noArchivedCard: "Žádná odjetá karta v archivu",
+    fightersTitle: "Bojovníci",
+    emptyWeek: "V tomto týdnu nevyšel žádný text.",
     noCardCompleted: "Žádná odjetá karta",
     dataTitle: "Data za textem",
     dataDek: "Každá složka začíná v důkazní vrstvě, ne v konceptu.",
@@ -239,8 +260,9 @@ export const cs = {
 
   didYouKnow: {
     kicker: "Víte, že…",
-    verified: "Ověřeno",
-    ariaLabel: "Zajímavost dne",
+    verified: "ověřeno",
+    source: "Zdroj",
+    ariaLabel: "Ověřený fakt dne",
   },
 
   countdown: {
@@ -254,6 +276,11 @@ export const cs = {
     label: "Drát",
     booked: "Nasmlouváno",
     open: "Otevřené",
+  },
+
+  ads: {
+    placeholder: "Místo pro reklamu",
+    slotLabel: (w: number, h: number) => `${w} × ${h}`,
   },
 
   latest: {
@@ -282,18 +309,25 @@ export const cs = {
   },
 
   results: {
-    defeated: "porazil(a)",
+    defeated: "por.",
     versus: "vs",
     title: "Výsledky",
     dek: "Odjeté karty po pořadí zápasů, se způsobem a časem ukončení tam, kde to záznam dovoluje.",
-    empty: "Zatím nemáme složku k žádnému odjetému turnaji.",
+    round: (n: number) => `${n}. kolo`,
+    empty: "Žádná odjetá karta v archivu",
+    monthGroup: (month: string) => month,
+    expand: "Rozbalit kartu",
+    collapse: "Sbalit kartu",
     noResult: "Výsledek není v záznamu",
   },
 
   fighters: {
     title: "Bojovníci",
     dek: "Složky bojovníků se zdroji. Co není doložené, zůstává prázdné.",
-    empty: "Zatím nevyšla žádná složka bojovníka.",
+    filterAll: "Vše",
+    filterUfc: "UFC",
+    filterOktagon: "OKTAGON",
+    empty: "Žádný bojovník neodpovídá filtru.",
     tape: "Porovnání parametrů",
     style: "Jak vyhrává",
     coverage: "Pokrytí zdroji",
@@ -345,6 +379,25 @@ export const cs = {
     modelUncertainty: "Nejistota",
     responsiblePlay:
       "Jde o výzkumná data. Nic na této stránce není slib ani osobní doporučení vsadit peníze.",
+  },
+
+  predictions: {
+    title: "Predikce",
+    intro:
+      "Predikce vytváří náš vlastní model FightAIQ. Jsou experimentální: popisují, co model spočítal z dohledatelných dat, ne co se stane.",
+    disclaimer: "Žádné sázkové doporučení. Predikce jsou experimentální.",
+    earlyModel: "Raný model",
+    modelVersion: "Verze modelu",
+    captured: (stamp: string) => `zachyceno ${stamp}`,
+    noModel: "Model zatím neběžel",
+    rounds: (n: number) => `${n} × 5:00`,
+    oddsSource: "Kurz: agregovaný průměr trhu",
+    tableHeadings: {
+      bout: "Zápas",
+      division: "Váha",
+      rounds: "Kola",
+      model: "Model",
+    },
   },
 
   howItWorks: {
@@ -527,9 +580,9 @@ export const cs = {
   },
 
   newsletter: {
-    title: "Zápasy týdne bez šumu.",
-    dek: "Jeden krátký přehled pro UFC a Oktagon.",
-    placeholder: "vy@example.com",
+    title: "Zápasový týden v jednom e-mailu.",
+    dek: "Jednou týdně, česky. Karty, výsledky a co k nim redakce vydala.",
+    placeholder: "vas@email.cz",
     localeQuestion: "V jakém jazyce?",
     submit: "Odebírat",
     notWired:
@@ -548,19 +601,23 @@ export const cs = {
   },
 
   footer: {
-    blurb: "UFC a Oktagon — česky a anglicky, se zdroji u každého tvrzení.",
+    blurb: "Zpravodajství o UFC a Oktagonu. Každý text má u sebe zdroje.",
+    sections: "Rubriky",
+    desk: "Redakce",
+    follow: "Sledujte nás",
     about: "O MMA Files",
     howItWorks: "Jak to funguje",
     standards: "Redakční standardy",
     corrections: "Opravy",
     privacy: "Soukromí",
-    sections: "Rubriky",
     theDesk: "Redakce",
-    follow: "Sledovat",
+    newsletter: "Newsletter",
+    numbers: "Čísla",
     instagram: "Instagram",
     threads: "Threads",
     socialPending: "Účty zatím neběží",
     rss: "RSS",
+    legal: "© 2026 MMA Files · Vydává BoardlessAI",
     transparency:
       "MMA Files vychází česky a anglicky. Každý text má u sebe zdroje, nechává neznámé údaje vidět a opravy ukazuje přímo na stránce. Sázková data jsou časově označená a jasně oddělená od doporučení.",
     poweredBy: (engine: string, descriptor: string) =>
@@ -575,8 +632,14 @@ export const cs = {
   },
 
   notFound: {
-    title: "Tady žádná složka není",
+    title: "Stránka nenalezena",
+    back: "Zpět na Nejnovější",
     body: "Taková stránka neexistuje, nebo zatím nevyšla. Nejnovější věci najdete na titulní straně.",
+  },
+
+  states: {
+    loading: "Načítáme…",
+    loadingMore: "Načítáme předchozí týden…",
   },
 
   time: {
