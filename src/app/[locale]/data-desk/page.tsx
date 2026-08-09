@@ -8,7 +8,7 @@ import { getDictionary } from "@/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/paths";
 import { getCoverageStats, getFightAiQDelivery } from "@/lib/repository";
-import { FIGHTER_FIELDS, LOCALES, isLocale, type FieldState, type Locale } from "@/lib/types";
+import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
@@ -29,8 +29,6 @@ export async function generateMetadata({
     description: dict.dataDesk.dek,
   });
 }
-
-const STATES: FieldState[] = ["verified", "provisional", "disputed", "unavailable"];
 
 export default async function DataDeskPage({
   params,
@@ -65,7 +63,7 @@ export default async function DataDeskPage({
 
       <section
         aria-labelledby="coverage"
-        className="grid-rules border-b border-rule-dark bg-ink py-12 text-white md:py-16"
+        className="border-b border-rule-dark bg-ink py-12 text-white md:py-16"
       >
         <Container>
           <SectionHeading
@@ -89,77 +87,40 @@ export default async function DataDeskPage({
       <FightAiQFeed locale={locale} snapshot={fightAiQ} />
 
       <Container className="py-12 md:py-16">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-          <section aria-labelledby="states" className="lg:col-span-7">
-            <SectionHeading
-              title={dict.dataDesk.statesTitle}
-              dek={dict.dataDesk.statesDek}
-            />
-            <ul className="mt-8 space-y-4">
-              {STATES.map((state) => (
-                <li key={state} className="sheet p-5">
-                  <div className="flex flex-wrap items-baseline justify-between gap-3">
-                    <h3 className="label-mono text-ink">{dict.fieldStates[state]}</h3>
-                    <span className="font-mono text-sm text-ink-muted">
-                      {stats.byState[state]}/{stats.fieldsTracked}
-                    </span>
-                  </div>
-                  <p className="mt-2.5 text-sm leading-relaxed text-ink-muted">
-                    {dict.dataDesk.stateHelp[state]}
-                  </p>
+        <section aria-labelledby="boundaries" className="max-w-3xl">
+          <div className="border border-correction-rule bg-correction p-5 md:p-6">
+            <h2 id="boundaries" className="label-mono text-text">
+              {dict.dataDesk.boundaryTitle}
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-ink">
+              {dict.dataDesk.boundaryLead}
+            </p>
+            <ul className="mt-4 space-y-2.5">
+              {dict.dataDesk.boundaries.map((item) => (
+                <li key={item} className="relative pl-4 text-sm leading-relaxed text-ink-muted">
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-0 top-[0.62em] block h-[1px] w-2.5 bg-accent"
+                  />
+                  {item}
                 </li>
               ))}
             </ul>
-
-            <p className="mt-6 text-sm leading-relaxed text-ink-muted">
-              {dict.dataDesk.fieldsTracked}:{" "}
-              <span className="font-mono">
-                {FIGHTER_FIELDS.map((field) => dict.fighterFields[field]).join(" · ")}
-              </span>
+            <p className="mt-5 border-t border-correction-rule pt-4 text-xs leading-relaxed text-ink-muted">
+              {dict.dataDesk.boundaryFooter}
             </p>
+          </div>
 
-            <div className="mt-8">
-              <ActionLink href={routes.fighters(locale)}>
-                {dict.actions.exploreFighters}
-              </ActionLink>
-            </div>
-          </section>
+          <p className="mt-6 text-sm leading-relaxed text-ink-muted">
+            {dict.dataDesk.responsiblePlay}
+          </p>
 
-          <section aria-labelledby="boundaries" className="lg:col-span-5">
-            <div className="rounded-[10px] border border-danger/25 bg-danger/6 p-5 md:p-6">
-              <h2 id="boundaries" className="label-mono text-danger">
-                {dict.dataDesk.boundaryTitle}
-              </h2>
-              <p className="mt-4 text-sm leading-relaxed text-ink">
-                {dict.dataDesk.boundaryLead}
-              </p>
-              <ul className="mt-4 space-y-2.5">
-                {dict.dataDesk.boundaries.map((item) => (
-                  <li key={item} className="relative pl-4 text-sm leading-relaxed text-ink-muted">
-                    <span
-                      aria-hidden="true"
-                      className="absolute left-0 top-[0.62em] block h-[1px] w-2.5 bg-danger"
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 border-t border-danger/20 pt-4 text-xs leading-relaxed text-ink-muted">
-                {dict.dataDesk.boundaryFooter}
-              </p>
-            </div>
-
-            <p className="mt-6 text-sm leading-relaxed text-ink-muted">
-              {dict.dataDesk.responsiblePlay}
-            </p>
-
-            <div className="mt-6">
-              <ActionLink href={routes.howItWorks(locale)}>
-                {dict.actions.howChecked}
-              </ActionLink>
-            </div>
-          </section>
-        </div>
+          <div className="mt-6">
+            <ActionLink href={routes.howItWorks(locale)}>
+              {dict.actions.howChecked}
+            </ActionLink>
+          </div>
+        </section>
       </Container>
     </>
   );

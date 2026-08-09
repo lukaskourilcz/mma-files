@@ -179,13 +179,10 @@ function PromotionColumn({
          * No completed card exists for this promotion. The column says so and
          * stays empty rather than being padded with a card nobody has sourced;
          * it fills itself the moment a completed event lands in the content.
-         */
+          */
         <>
           <div className="mt-4.5 border border-dashed border-rule-strong bg-card px-6 py-6">
-            <p className="label-mono-sm font-semibold tracking-[0.18em] text-ink-meta">
-              {dict.home.visibleGap}
-            </p>
-            <p className="display mt-3 text-[22px] leading-[1.05] text-ink md:text-[26px]">
+            <p className="display text-[22px] leading-[1.05] text-ink md:text-[26px]">
               {dict.home.noCompletedCard(heading)}
             </p>
             <p className="mt-3 max-w-[46ch] text-sm leading-relaxed text-ink-muted">
