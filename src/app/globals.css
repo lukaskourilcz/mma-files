@@ -6,64 +6,113 @@
 
 @theme {
   /* Surfaces */
-  --color-paper: #f7f7f5; /* page */
-  --color-card: #ffffff; /* panels, cards */
-  --color-ink: #0b0b0c; /* text, inverted blocks */
+  --color-chrome: #0b0b0c;
+  --color-chrome-raised: #141416;
+  --color-paper: #f7f7f5;
+  --color-card: #ffffff;
+  --color-well: #efefec;
 
   /* Text */
-  --color-ink-muted: #5e5e66; /* deks, secondary body */
-  --color-ink-meta: #6b6b66; /* small mono metadata — 4.6:1 on white, do not lighten */
+  --color-text: #0b0b0c;
+  --color-text-muted: #55555c;
+  --color-text-meta: #6b6b66;
+  --color-text-inverse: #f7f7f5;
+  --color-text-inverse-muted: #b8b8be;
+  --color-text-inverse-meta: #8e8e96;
 
   /* Rules */
   --color-rule: #e4e4e0;
-  --color-rule-strong: #d0d0ca;
-
-  /* Promotions. A fill, a top rule or a section rule — never body text. */
-  --color-ufc: oklch(0.52 0.22 27); /* red */
-  --color-oktagon: oklch(0.56 0.17 55); /* amber */
-
-  /* Signal — always a FILL behind ink text, never a text colour. */
-  --color-signal: oklch(0.88 0.19 108); /* lime */
-
-  /* Evidence states — bar and dot fills on the Numbers module. */
-  --color-verified: oklch(0.55 0.15 150);
-  --color-provisional: oklch(0.68 0.14 75);
-  --color-disputed: oklch(0.55 0.2 25);
-  --color-gap: #7a7a73;
-
-  /* On the inverted (black) blocks. #8E8E96 is the floor there. */
-  --color-paper-muted: #b8b8be;
-  --color-paper-meta: #8e8e96;
+  --color-rule-strong: #cfcfc9;
   --color-rule-dark: #26262c;
+  --color-rule-dashed: #b9b9b2;
 
-  /*
-   * Legacy aliases. The article, event and fighter pages have not been
-   * redesigned yet, so their utilities still resolve — but they resolve into
-   * the new palette rather than the old orange one, which keeps the whole site
-   * on one colour system. Retire these as each interior page is redrawn.
-   */
-  --color-ember: var(--color-ink);
-  --color-ember-soft: #ededE8;
-  --color-graphite: var(--color-ink);
-  --color-muted: var(--color-ink-meta);
-  --color-rule-dark-strong: #3a3a42;
-  --color-success: #166534;
-  --color-warning: #854d0e;
-  --color-danger: #b91c1c;
+  /* Accent */
+  --color-accent: oklch(0.52 0.22 27);
+  --color-accent-on-dark: oklch(0.68 0.19 27);
+  --color-accent-press: oklch(0.44 0.2 27);
+  --color-accent-wash: oklch(0.52 0.22 27 / 8%);
 
-  --font-display: var(--font-anton), "Impact", ui-sans-serif, sans-serif;
-  --font-sans:
-    var(--font-archivo), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    sans-serif;
-  --font-mono:
-    var(--font-plex-mono), ui-monospace, "SFMono-Regular", "Menlo", monospace;
+  /* Organisation badges */
+  --color-badge-ufc: oklch(0.5 0.21 27);
+  --color-badge-oktagon: oklch(0.5 0.16 55);
+  --color-badge-ufc-on-dark: oklch(0.68 0.19 27);
+  --color-badge-oktagon-on-dark: oklch(0.75 0.15 65);
 
-  /* Broadcast furniture. Every one of these is muted by reduced-motion below. */
-  --animate-ticker: ticker 44s linear infinite;
-  --animate-rise: rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
-  --animate-wipe: wipe 0.7s 0.25s cubic-bezier(0.2, 0.7, 0.3, 1) both;
-  --animate-wipe-slow: wipe 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
-  --animate-livedot: livedot 1.4s ease-in-out infinite;
+  /* Status */
+  --color-live: oklch(0.62 0.23 27);
+  --color-note: oklch(0.72 0.15 75);
+  --color-note-ink: #3a2c05;
+  --color-correction: #f3ede2;
+  --color-correction-rule: #a98a4a;
+
+  /* Type */
+  --font-display: var(--font-anton), "Anton", "Arial Narrow", sans-serif;
+  --font-sans: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+
+  --text-d1: clamp(2.75rem, 1.1rem + 7.4vw, 5.5rem);
+  --text-d2: clamp(2.25rem, 1.2rem + 4.6vw, 4rem);
+  --text-d3: clamp(1.75rem, 1.1rem + 2.9vw, 3rem);
+  --text-d4: clamp(1.5rem, 1.1rem + 1.7vw, 2.25rem);
+  --text-d5: 1.75rem;
+  --text-d6: 1.375rem;
+
+  --text-lg: 1.25rem;
+  --text-md: 1.125rem;
+  --text-base: 1.0625rem;
+  --text-sm: 0.9375rem;
+  --text-xs: 0.8125rem;
+
+  --text-mono-lg: 1rem;
+  --text-mono-md: 0.8125rem;
+  --text-mono-sm: 0.75rem;
+  --text-mono-xs: 0.6875rem;
+
+  --tracking-kicker: 0.14em;
+  --tracking-mono: 0.06em;
+  --leading-display: 1.16;
+  --leading-display-tight: 1.05;
+  --leading-body: 1.65;
+  --leading-ui: 1.35;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-30: 7.5rem;
+
+  /* Layout */
+  --layout-max: 90rem;
+  --layout-gutter: 1.25rem;
+  --layout-gutter-lg: 2.5rem;
+  --layout-rail: 300px;
+  --layout-measure: 34rem;
+  --layout-chrome-h: 64px;
+  --layout-chrome-h-sm: 52px;
+  --layout-ticker-h: 34px;
+  --hit-min: 44px;
+
+  /* Geometry */
+  --border-hairline: 1px;
+  --border-underline: 3px;
+  --radius: 0;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur: 180ms;
+  --animate-ticker: ticker 48s linear infinite;
+  --animate-livedot: livedot 1.6s ease-in-out infinite;
+  --animate-skeleton: skeleton 1.4s ease-in-out infinite;
 }
 
 @keyframes ticker {
@@ -75,33 +124,23 @@
   }
 }
 
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 22px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes wipe {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
 @keyframes livedot {
   0%,
   100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.25;
+    opacity: 0.3;
+  }
+}
+
+@keyframes skeleton {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
   }
 }
 
@@ -117,7 +156,7 @@
 
   body {
     background-color: var(--color-paper);
-    color: var(--color-ink);
+    color: var(--color-text);
     font-family: var(--font-sans);
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
@@ -125,13 +164,13 @@
   }
 
   ::selection {
-    background-color: var(--color-signal);
-    color: var(--color-ink);
+    background-color: var(--color-accent);
+    color: var(--color-paper);
   }
 
   /* Square, like every other border on the site. */
   :focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid currentColor;
     outline-offset: 3px;
   }
 
@@ -177,22 +216,25 @@
    * reach 1.108em from the baseline, so every .display heading on the site overlapped the line
    * above — "VÝSLEDKY", "SLOŽKY" and "ČÍSLA" each by about three pixels at 30px. 1.16 clears the
    * marks with a little air and still reads as poster type. */
-  .display {
+  .display,
+  .display-700 {
     font-family: var(--font-display);
+    /* Anton has one weight; hierarchy comes from the display size scale. */
     font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 0.005em;
-    line-height: 1.16;
+    letter-spacing: 0.002em;
+    line-height: var(--leading-display);
   }
 
   /* Uppercase mono label: file numbers, formats, timestamps, source kinds. */
   .label-mono {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    line-height: 1.2;
-    letter-spacing: 0.14em;
+    font-size: var(--text-mono-xs);
+    line-height: var(--leading-ui);
+    letter-spacing: var(--tracking-kicker);
     text-transform: uppercase;
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
 
   .label-mono-sm {
@@ -202,6 +244,7 @@
     letter-spacing: 0.16em;
     text-transform: uppercase;
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
 
   /* Square hairline panel on white. No shadow, no radius. */
@@ -212,17 +255,17 @@
   }
 
   .sheet-hover:hover {
-    border-color: var(--color-ink);
+    border-color: var(--color-text);
   }
 
   .sheet-dark {
-    background-color: var(--color-ink);
+    background-color: var(--color-chrome);
     border: 1px solid var(--color-rule-dark);
     transition: border-color 160ms ease;
   }
 
   .sheet-dark.sheet-hover:hover {
-    border-color: var(--color-rule-dark-strong);
+    border-color: var(--color-text-inverse-meta);
   }
 
   /* Headline link: the rule slides in, and stays put for reduced motion. */
@@ -242,7 +285,7 @@
   .grid-rules {
     background-image: repeating-linear-gradient(
       to right,
-      color-mix(in srgb, var(--color-ink) 4.5%, transparent) 0 1px,
+      color-mix(in srgb, var(--color-text) 4.5%, transparent) 0 1px,
       transparent 1px 120px
     );
   }
