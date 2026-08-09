@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { DeskLinks } from "@/components/site/HomeModules";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ActionLink, Container, Kicker } from "@/components/ui/primitives";
 import { siteConfig } from "@/config/site";
@@ -127,12 +126,6 @@ export default async function AboutPage({
               </div>
             </section>
 
-            <div className="sheet p-5">
-              <Kicker>{dict.footer.theDesk}</Kicker>
-              <div className="mt-4">
-                <DeskLinks locale={locale} />
-              </div>
-            </div>
           </aside>
         </div>
       </Container>

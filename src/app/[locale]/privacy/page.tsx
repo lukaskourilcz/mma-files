@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { DeskLinks } from "@/components/site/HomeModules";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
@@ -69,9 +68,6 @@ export default async function PrivacyPage({
             ))}
           </div>
 
-          <div className="mt-14 border-t border-rule-strong pt-6">
-            <DeskLinks locale={locale} />
-          </div>
         </div>
       </Container>
     </>
