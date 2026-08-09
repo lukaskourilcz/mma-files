@@ -23,7 +23,7 @@ Reader-facing language is **Czech only**. Every string quoted in this document w
 
 | # | Decision | Why |
 |---|---|---|
-| 1 | **Display face is Barlow Condensed 700/800, not Anton.** | Anton ships one weight, so headline, kicker, section title and board figure would all sit at the same weight and the hierarchy would have to be carried by size alone. Barlow Condensed gives 700 for section headings and board data, 800 for headlines and the wordmark, keeps the condensed poster proportions, and covers Latin Extended. Loaded via `next/font/google` exactly like Anton was. |
+| 1 | **Display face is Anton 400.** | Anton keeps the established condensed poster proportions and covers Latin Extended. It ships one weight, so the `--text-d1`–`--text-d6` size scale carries the display hierarchy. |
 | 2 | **The accent red is two tokens, not one.** | `oklch(0.52 0.22 27)` is 6.2:1 on `#F7F7F5` but only 2.9:1 on `#0B0B0C` — it fails AA as text on the chrome, and the brief puts red kickers on a black hero band. `--color-accent-on-dark: oklch(0.68 0.19 27)` is 5.8:1 on chrome. Same hue, same red; pick by background. |
 | 3 | **The evidence system is removed.** | Per your answer: no `Složka NNN` file numbers, no source counts on cards, no `Ověřeno / Předběžné / Sporné / Nedostupné` field-state chips, no `Čísla` homepage module. `„Zdroje"` on the article page stays (it is in the brief), and honest empty states stay. |
 | 4 | **`Čísla` / Datová redakce survives as a footer-only page.** | Removed from the primary nav; added as the last item of the footer `Redakce` column. Its route does not change, so no redirects. |
@@ -37,17 +37,17 @@ Reader-facing language is **Czech only**. Every string quoted in this document w
 
 ## 2. Fonts
 
-`src/app/[locale]/layout.tsx` — replace the Anton import:
+`src/app/[locale]/layout.tsx` — keep the existing Anton import:
 
 ```ts
-import { Archivo, Barlow_Condensed, IBM_Plex_Mono } from "next/font/google";
+import { Anton, Archivo, IBM_Plex_Mono } from "next/font/google";
 
-const display = Barlow_Condensed({
+const anton = Anton({
   subsets: ["latin", "latin-ext"],   // latin-ext is required: Č Ř Š Ť Ž Ů Ě Á Í Ý Ú Ň Ď
-  weight: ["700", "800"],
-  variable: "--font-barlow-condensed",
+  weight: ["400"],
+  variable: "--font-anton",
   display: "swap",
-  fallback: ["Arial Narrow", "sans-serif"],
+  fallback: ["Impact", "sans-serif"],
 });
 
 const archivo = Archivo({
@@ -66,12 +66,12 @@ const plexMono = IBM_Plex_Mono({
 });
 ```
 
-Apply `${display.variable} ${archivo.variable} ${plexMono.variable}` to `<html>` as today. Delete `--font-anton`.
+Apply `${anton.variable} ${archivo.variable} ${plexMono.variable}` to `<html>` as today.
 
 **Rendering rules**
 
-- `.display` — `font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: 0.002em; line-height: var(--leading-display)` (0.94). Barlow Condensed's caron and acute marks clear the line above at 0.94; **do not go below 0.9**, and 0.9 only on guaranteed single lines. The old 1.16 was an Anton workaround and is no longer needed — it will look loose here.
-- `.display-700` — same, weight 700. Section headings, board column headings, table headings.
+- `.display` — `font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.002em; line-height: var(--leading-display)` (1.16). Anton's Czech carons and acute marks must remain unclipped.
+- `.display-700` — same, weight 400. The class name stays for traceability; section headings, board column headings and table headings use smaller display steps for hierarchy.
 - `.label-mono` — `font-family: var(--font-mono); font-size: var(--text-mono-xs); font-weight: 500; letter-spacing: var(--tracking-kicker); text-transform: uppercase; font-variant-numeric: tabular-nums`.
 - Every date, time, record, probability, score and dimension is `--font-mono` with `font-variant-numeric: tabular-nums`. No exceptions — columns of numbers must align.
 - Body copy is Archivo 400; `strong` is 600. Never synthesise weights (`font-synthesis-weight: none`, already in the base layer).
@@ -613,7 +613,7 @@ The existing skewed-bar mark, evolved: two bars instead of one, the second half-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 60" role="img" aria-label="MMA Files">
   <rect x="0" y="6" width="7" height="48" transform="skewX(-12)" fill="#0B0B0C"/>
   <rect x="13" y="26" width="7" height="28" transform="skewX(-12)" fill="oklch(0.52 0.22 27)"/>
-  <text x="42" y="49" font-family="Barlow Condensed" font-weight="800" font-size="54"
+  <text x="42" y="49" font-family="Anton" font-weight="400" font-size="54"
         letter-spacing="0.5" fill="#0B0B0C">MMA FILES</text>
 </svg>
 ```

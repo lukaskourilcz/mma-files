@@ -175,8 +175,8 @@ datasets (the staged-payload precedent already exists in quorum at
   "MMA Files red"; Oktagon amber demoted to a promotion badge color only; the
   lime "signal" accent retired.
 - Type stays Anton (display) + Archivo (text) + IBM Plex Mono (data) — all
-  already subset with `latin-ext`. Claude Design may swap Anton for Barlow
-  Condensed 700/800 if one display weight proves limiting.
+  already subset with `latin-ext`. Display hierarchy comes from the size
+  scale because Anton has one weight.
 - Square corners, hairline rules, uppercase kickers, mono numerals for odds.
   Ranked cross-checked against the ui-ux-pro-max database ("Editorial Grid /
   Magazine" + "Bold Typography" entries) — dark-poster editorial with AA+

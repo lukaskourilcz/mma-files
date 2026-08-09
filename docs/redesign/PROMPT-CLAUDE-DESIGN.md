@@ -131,8 +131,8 @@ no completed card, model not run); the demo badge; the correction notice.
 - **Type**: display **Anton** (uppercase headlines, tight leading), text
   **Archivo**, data **IBM Plex Mono** (odds, records, timestamps, tabular
   numerals). All three support Czech diacritics and are already licensed via
-  Google Fonts. If Anton's single weight limits the hierarchy, substitute
-  **Barlow Condensed 700/800** for display and say so in the handoff.
+  Google Fonts. Anton has one weight, so carry display hierarchy with the
+  type-size scale.
 - **Geometry**: square corners everywhere, hairline rules (`1px`), high
   density in lists, generous space around display type. Red 3px underline as
   the hover/active idiom. Uppercase letterspaced kickers (11–12px).

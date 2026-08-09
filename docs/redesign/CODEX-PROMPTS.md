@@ -6,7 +6,7 @@ Run in order. Each assumes `MMA-FILES-RELAUNCH-CODEX.md` and `design-tokens.css`
 
 ## Prompt 1 — Fonts and tokens
 
-Read `MMA-FILES-RELAUNCH-CODEX.md` §1–§3 and `design-tokens.css`. Replace the `@theme` block in `src/app/globals.css` with the one from `design-tokens.css`, keeping the `@layer base` block below it. In `src/app/[locale]/layout.tsx` swap the Anton import for Barlow Condensed 700/800 with `subsets: ["latin","latin-ext"]` and the `--font-barlow-condensed` variable; keep Archivo and IBM Plex Mono. Add the `.display`, `.display-700` and `.label-mono` component classes per §2. Run `npm run check`.
+Read `MMA-FILES-RELAUNCH-CODEX.md` §1–§3 and `design-tokens.css`. Replace the `@theme` block in `src/app/globals.css` with the one from `design-tokens.css`, keeping the `@layer base` block below it. Keep the existing Anton import in `src/app/[locale]/layout.tsx` with `subsets: ["latin","latin-ext"]` and the `--font-anton` variable; keep Archivo and IBM Plex Mono. Add the `.display`, `.display-700` and `.label-mono` component classes per §2. Both display classes use Anton 400. Run `npm run check`.
 
 ---
 

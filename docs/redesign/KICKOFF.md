@@ -19,8 +19,8 @@ order:
 
 1. `mma-files/CLAUDE.md` and `quorum/CLAUDE.md` — binding rules for each repo.
 2. `mma-files/docs/redesign/AMENDMENTS.md` — owner amendments, the
-   **highest-precedence** spec layer. Amendment 1: **keep Anton, drop Barlow
-   Condensed** — no `Barlow` reference may exist anywhere in the tree.
+   **highest-precedence** spec layer. Amendment 1: **keep Anton** — no
+   superseded display-face reference may exist anywhere in the tree.
 3. `mma-files/MMA-FILES-RELAUNCH-CODEX.md` + `mma-files/design-tokens.css` —
    the design truth (tokens already amended for Anton).
 4. `mma-files/docs/redesign/PROMPT-CODEX.md` — the engineering spec: the
