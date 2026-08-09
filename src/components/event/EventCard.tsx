@@ -25,7 +25,7 @@ export function FighterName({
   return (
     <Link
       href={routes.fighter(locale, fighter.organization, fighter.slug)}
-      className={`${className} underline decoration-ink decoration-[1.5px] underline-offset-[3px] hover:bg-signal`}
+      className={`${className} underline decoration-transparent decoration-[3px] underline-offset-4 hover:decoration-accent`}
     >
       {name}
     </Link>
@@ -92,13 +92,6 @@ export function BoutRow({ bout, locale }: { bout: Bout; locale: Locale }) {
           </>
         ) : null}
       </div>
-      {bout.prediction && !result ? (
-        <p className="mt-2 border-l-2 border-signal pl-2.5 text-xs leading-relaxed text-ink-muted">
-          <span className="font-semibold text-ink">{locale === "cs" ? "Raný model" : "Early model"}</span>
-          {` · ${bout.red.name} ${Math.round(bout.prediction.redWin * 100)}% · ${bout.blue.name} ${Math.round(bout.prediction.blueWin * 100)}%. `}
-          {locale === "cs" ? "Výstup modelu, ne sázkové doporučení." : "Model output, not betting advice."}
-        </p>
-      ) : null}
     </div>
   );
 }
@@ -123,16 +116,9 @@ function CardBout({ bout, locale }: { bout: Bout; locale: Locale }) {
         <p className="label-mono-sm mt-[3px] tracking-[0.13em] text-ink-meta">
           {dict.divisions[bout.division]} · {bout.scheduledRounds} × 5:00
         </p>
-        {bout.prediction ? (
-          <p className="mt-1.5 text-[11px] leading-snug text-ink-muted">
-            <span className="font-semibold text-ink">{locale === "cs" ? "Raný model" : "Early model"}</span>
-            {` · ${bout.red.name} ${Math.round(bout.prediction.redWin * 100)}% · ${bout.blue.name} ${Math.round(bout.prediction.blueWin * 100)}%`}
-            <span className="block">{locale === "cs" ? "Výstup modelu, ne sázkové doporučení." : "Model output, not betting advice."}</span>
-          </p>
-        ) : null}
       </div>
       {bout.titleFight ? (
-        <span className="label-mono-sm shrink-0 bg-signal px-[7px] py-[3px] font-semibold text-ink">
+        <span className="label-mono-sm shrink-0 bg-accent px-[7px] py-[3px] font-semibold text-paper">
           {dict.labels.titleFight}
         </span>
       ) : null}
@@ -172,7 +158,7 @@ export function EventCard({
         <span className="label-mono-sm tracking-[0.14em] text-ink-meta">
           {dict.eventStatus[event.status]}
         </span>
-        <span className="label-mono-sm ml-auto bg-signal px-2 py-1 font-semibold tracking-[0.12em] text-ink">
+        <span className="label-mono-sm ml-auto bg-note px-2 py-1 font-semibold tracking-[0.12em] text-note-ink">
           {isPast
             ? dict.fightWeek.countdownPast
             : formatCountdown(event.startsAt, locale)}

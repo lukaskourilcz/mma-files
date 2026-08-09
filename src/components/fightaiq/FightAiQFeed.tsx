@@ -59,7 +59,7 @@ export function FightAiQFeed({ snapshot, locale }: { snapshot: FightAiQDelivery;
           <p className="label-mono-sm text-ink-meta">{text.updated}: {timestamp(snapshot.generatedAt)}</p>
         </div>
 
-        <p className="mt-6 max-w-4xl border-l-2 border-signal pl-4 text-sm leading-relaxed text-ink-muted">{text.warning}</p>
+        <p className="mt-6 max-w-4xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink-muted">{text.warning}</p>
 
         <section className="mt-10" aria-labelledby="fightaiq-models">
           <h3 className="label-mono text-ink" id="fightaiq-models">{text.models} · {currentStats.length}</h3>
@@ -74,11 +74,13 @@ export function FightAiQFeed({ snapshot, locale }: { snapshot: FightAiQDelivery;
                 <article className="border border-rule bg-paper p-4" key={entry.id}>
                   <div className="flex flex-wrap justify-between gap-3">
                     <h4 className="font-semibold text-ink">{name(red, entry.fighterRefs[0])} <span className="font-normal text-ink-meta">vs</span> {name(blue, entry.fighterRefs[1])}</h4>
-                    <span className="label-mono-sm text-ink-meta">{entry.modelVersion}</span>
+                    <span className="label-mono-sm text-ink-meta">
+                      {entry.modelVersion} · zachyceno {timestamp(entry.generatedAt)}
+                    </span>
                   </div>
                   <dl className="mt-4 grid grid-cols-3 gap-3 text-sm">
-                    <div><dt className="text-ink-meta">{locale === "cs" ? "Červený roh" : "Red corner"}</dt><dd className="mt-1 font-mono text-ink">{percent(entry.redWin)}</dd></div>
-                    <div><dt className="text-ink-meta">{locale === "cs" ? "Modrý roh" : "Blue corner"}</dt><dd className="mt-1 font-mono text-ink">{percent(entry.blueWin)}</dd></div>
+                    <div><dt className="text-ink-meta">Červený roh</dt><dd className="mt-1 font-mono tabular-nums text-ink">{percent(entry.redWin)}</dd></div>
+                    <div><dt className="text-ink-meta">Modrý roh</dt><dd className="mt-1 font-mono tabular-nums text-ink">{percent(entry.blueWin)}</dd></div>
                     <div><dt className="text-ink-meta">{text.model}</dt><dd className="mt-1 font-mono text-ink">{entry.uncertainty.replaceAll("-", " ")}</dd></div>
                   </dl>
                   <p className="mt-3 text-xs text-ink-muted"><span className="font-semibold text-ink">{text.early}</span> · {text.notAdvice}</p>
