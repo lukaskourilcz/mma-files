@@ -5,7 +5,7 @@
   "description": "MMA Files — Czech public fighting magazine powered by the BoardlessAI editorial engine.",
   "scripts": {
     "dev": "next dev",
-    "prebuild": "tsx scripts/emit-week-chunks.ts",
+    "prebuild": "tsx scripts/emit-week-chunks.ts && node scripts/emit-fightaiq-chunks.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -1,5 +1,5 @@
 import { FighterCard } from "@/components/fighter/FighterCard";
-import { getFightAiQDelivery } from "@/lib/boardless";
+import { getFightAiQPredictionDelivery } from "@/lib/boardless";
 import { getEvents, getFightersByOrganization } from "@/lib/repository";
 import { ORGANIZATIONS, type Fighter, type Locale, type Organization } from "@/lib/types";
 
@@ -13,7 +13,7 @@ function ranked(organization: Organization): Fighter[] {
 
 /** Two sourced card fighters per promotion, then rating-backed fallbacks. */
 export function getHomepageFighters(): Fighter[] {
-  const snapshot = getFightAiQDelivery();
+  const snapshot = getFightAiQPredictionDelivery();
   const anchor = snapshot.generatedAt;
   const events = getEvents();
   const selected: Fighter[] = [];

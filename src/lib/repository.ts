@@ -1,7 +1,7 @@
 import { demoMode } from "@/config/site";
 import { articles as seedArticles } from "@/content/articles";
 import { socialVariants as seedSocial } from "@/content/social";
-import { getDeliveredArticles, getDeliveredEvents, getDeliveredFighters, getFightAiQDelivery } from "@/lib/boardless";
+import { getDeliveredArticles, getDeliveredEvents, getDeliveredFighters, getFightAiQPredictionDelivery } from "@/lib/boardless";
 import {
   FIGHTER_FIELDS,
   type Article,
@@ -67,10 +67,10 @@ const publishedArticles: Article[] = (deliveredArticles.length > 0 ? deliveredAr
   .filter(isRenderable)
   .sort(byNewest);
 
-const deliveredFighters = getDeliveredFighters();
-const availableFighters: Fighter[] = deliveredFighters;
-const deliveredEvents = getDeliveredEvents();
-const availableEvents: FightEvent[] = deliveredEvents;
+// FightAIQ is emitted as three surface files. Resolve each only when a route actually needs
+// that surface so an article page never pays to parse the fighter or event archives.
+const availableFighters = (): Fighter[] => getDeliveredFighters();
+const availableEvents = (): FightEvent[] => getDeliveredEvents();
 
 /* -------------------------------------------------------------------------- */
 /* Articles                                                                   */
@@ -167,7 +167,7 @@ export function getCorrectionLog(): CorrectionEntry[] {
 /* -------------------------------------------------------------------------- */
 
 export function getFighters(): Fighter[] {
-  return [...availableFighters].sort((a, b) => a.name.localeCompare(b.name, "cs"));
+  return [...availableFighters()].sort((a, b) => a.name.localeCompare(b.name, "cs"));
 }
 
 export function getFightersByOrganization(organization: Organization): Fighter[] {
@@ -175,14 +175,14 @@ export function getFightersByOrganization(organization: Organization): Fighter[]
 }
 
 export function getFighterById(id: string): Fighter | undefined {
-  return availableFighters.find((f) => f.id === id);
+  return availableFighters().find((f) => f.id === id);
 }
 
 export function getFighterBySlug(
   organization: Organization,
   slug: string,
 ): Fighter | undefined {
-  return availableFighters.find(
+  return availableFighters().find(
     (f) => f.organization === organization && f.slug === slug,
   );
 }
@@ -201,15 +201,15 @@ const byStartAsc = (a: FightEvent, b: FightEvent) =>
   new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
 
 export function getEvents(): FightEvent[] {
-  return [...availableEvents].sort(byStartAsc);
+  return [...availableEvents()].sort(byStartAsc);
 }
 
 export function getEventById(id: string): FightEvent | undefined {
-  return availableEvents.find((e) => e.id === id);
+  return availableEvents().find((e) => e.id === id);
 }
 
 export function getEventBySlug(slug: string): FightEvent | undefined {
-  return availableEvents.find((e) => e.slug === slug);
+  return availableEvents().find((e) => e.slug === slug);
 }
 
 export function getEventsByOrganization(organization: Organization): FightEvent[] {
@@ -217,9 +217,13 @@ export function getEventsByOrganization(organization: Organization): FightEvent[
 }
 
 /** Booked cards, soonest first. */
-export function getUpcomingEvents(now = new Date()): FightEvent[] {
+export function getUpcomingEvents(asOf?: Date | string): FightEvent[] {
+  const deliveredAnchor = getFightAiQPredictionDelivery().generatedAt;
+  const anchor = asOf instanceof Date
+    ? asOf.getTime()
+    : Date.parse(asOf ?? deliveredAnchor ?? "");
   return getEvents().filter(
-    (e) => e.status !== "completed" && new Date(e.startsAt).getTime() >= now.getTime(),
+    (e) => e.status !== "completed" && (!Number.isFinite(anchor) || Date.parse(e.startsAt) >= anchor),
   );
 }
 
@@ -270,6 +274,8 @@ export interface CoverageStats {
  * `unavailable` — absence is a state, not a blank.
  */
 export function getCoverageStats(): CoverageStats {
+  const fighters = availableFighters();
+  const events = availableEvents();
   const byState: Record<FieldState, number> = {
     verified: 0,
     provisional: 0,
@@ -277,30 +283,28 @@ export function getCoverageStats(): CoverageStats {
     unavailable: 0,
   };
 
-  for (const fighter of availableFighters) {
+  for (const fighter of fighters) {
     for (const field of FIGHTER_FIELDS) {
       byState[fighter.fieldStates[field] ?? "unavailable"] += 1;
     }
   }
 
   const sourceRefs =
-    availableFighters.reduce((n, f) => n + f.sources.length, 0) +
-    availableEvents.reduce((n, e) => n + e.sources.length, 0) +
+    fighters.reduce((n, f) => n + f.sources.length, 0) +
+    events.reduce((n, e) => n + e.sources.length, 0) +
     publishedArticles.reduce((n, a) => n + a.sources.length, 0);
 
   return {
-    fighterFiles: availableFighters.length,
-    eventFiles: availableEvents.length,
+    fighterFiles: fighters.length,
+    eventFiles: events.length,
     articleFiles: publishedArticles.length,
     sourceRefs,
-    fieldsTracked: availableFighters.length * FIGHTER_FIELDS.length,
+    fieldsTracked: fighters.length * FIGHTER_FIELDS.length,
     byState,
     storiesWithSocialTreatments: new Set(seedSocial.map((v) => v.articleId)).size,
     socialTreatments: seedSocial.length,
   };
 }
-
-export { getFightAiQDelivery };
 
 /* -------------------------------------------------------------------------- */
 /* Locale helpers                                                             */

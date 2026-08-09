@@ -1,5 +1,6 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import articleStore from "../../data/boardless/articles.json";
-import fightAiQStore from "../../data/boardless/fightaiq.json";
 import {
   DIVISIONS,
   type Article,
@@ -144,6 +145,25 @@ export interface FightAiQDelivery {
   packageHash: string | null;
 }
 
+interface FightAiQSurfaceBase {
+  schemaVersion: "fightaiq-surface/1";
+  generatedAt: string | null;
+  sourcePackageHash: string | null;
+  fighterNames: Record<string, string>;
+}
+
+export interface FightAiQEventSurface extends FightAiQSurfaceBase {
+  surface: "predictions" | "results";
+  events: FightAiQEvent[];
+  bouts: FightAiQBout[];
+  statsEntries: FightAiQStatsEntry[];
+}
+
+export interface FightAiQFighterSurface extends FightAiQSurfaceBase {
+  surface: "fighters";
+  fighters: FightAiQFighterRecord[];
+}
+
 const heroTemplates = new Set<HeroTemplate>([
   "tale-of-the-tape",
   "type-led-result",
@@ -218,12 +238,90 @@ export function getDeliveredArticles(): Article[] {
   return store.packages.map(deliveredArticle).filter((article): article is Article => Boolean(article));
 }
 
-export function getFightAiQDelivery(): FightAiQDelivery {
-  const value = fightAiQStore as unknown as FightAiQDelivery;
-  if (value.schemaVersion !== "fightaiq-delivery/2" || !Array.isArray(value.fighters) || !Array.isArray(value.events) || !Array.isArray(value.bouts) || !Array.isArray(value.statsEntries)) {
-    return { schemaVersion: "fightaiq-delivery/2", generatedAt: null, fighters: [], events: [], bouts: [], statsEntries: [], packageHash: null };
+const surfaceCache = new Map<string, unknown>();
+
+function readFightAiQSurface(name: "predictions" | "results"): FightAiQEventSurface;
+function readFightAiQSurface(name: "fighters"): FightAiQFighterSurface;
+function readFightAiQSurface(name: "predictions" | "results" | "fighters"): FightAiQEventSurface | FightAiQFighterSurface {
+  const cached = surfaceCache.get(name);
+  if (cached) return cached as FightAiQEventSurface | FightAiQFighterSurface;
+  const emptyBase = {
+    schemaVersion: "fightaiq-surface/1" as const,
+    generatedAt: null,
+    sourcePackageHash: null,
+    fighterNames: {},
+  };
+  try {
+    const value = JSON.parse(readFileSync(path.join(process.cwd(), "public", "data", "fightaiq", `${name}.json`), "utf8")) as {
+      schemaVersion?: string;
+      surface?: string;
+      generatedAt?: string | null;
+      sourcePackageHash?: string | null;
+      fighterNames?: Record<string, string>;
+      fighters?: FightAiQFighterRecord[];
+      events?: FightAiQEvent[];
+      bouts?: FightAiQBout[];
+      statsEntries?: FightAiQStatsEntry[];
+    };
+    if (value.schemaVersion === "fightaiq-surface/1" && value.surface === name) {
+      const shared = {
+        ...emptyBase,
+        generatedAt: value.generatedAt ?? null,
+        sourcePackageHash: value.sourcePackageHash ?? null,
+        fighterNames: value.fighterNames ?? {},
+      };
+      if (name === "fighters" && Array.isArray(value.fighters)) {
+        const surface: FightAiQFighterSurface = { ...shared, surface: "fighters", fighters: value.fighters };
+        surfaceCache.set(name, surface);
+        return surface;
+      }
+      if (name !== "fighters" && Array.isArray(value.events) && Array.isArray(value.bouts) && Array.isArray(value.statsEntries)) {
+        const surface: FightAiQEventSurface = { ...shared, surface: name, events: value.events, bouts: value.bouts, statsEntries: value.statsEntries };
+        surfaceCache.set(name, surface);
+        return surface;
+      }
+    }
+  } catch {
+    // Missing or malformed generated data fails closed into the reader-facing empty states.
   }
-  return value;
+  const empty = name === "fighters"
+    ? { ...emptyBase, surface: "fighters" as const, fighters: [] }
+    : { ...emptyBase, surface: name, events: [], bouts: [], statsEntries: [] };
+  surfaceCache.set(name, empty);
+  return empty;
+}
+
+export function getFightAiQPredictionDelivery(): FightAiQEventSurface {
+  return readFightAiQSurface("predictions");
+}
+
+export function getFightAiQResultDelivery(): FightAiQEventSurface {
+  return readFightAiQSurface("results");
+}
+
+export function getFightAiQFighterDelivery(): FightAiQFighterSurface {
+  return readFightAiQSurface("fighters");
+}
+
+function uniqueById<T extends { id: string }>(values: readonly T[]): T[] {
+  return [...new Map(values.map((value) => [value.id, value])).values()];
+}
+
+export function getFightAiQDelivery(): FightAiQDelivery {
+  const predictions = getFightAiQPredictionDelivery();
+  const results = getFightAiQResultDelivery();
+  const fighters = getFightAiQFighterDelivery();
+  const generatedAt = predictions.generatedAt ?? results.generatedAt ?? fighters.generatedAt;
+  const hashes = [predictions.sourcePackageHash, results.sourcePackageHash, fighters.sourcePackageHash].filter(Boolean);
+  return {
+    schemaVersion: "fightaiq-delivery/2",
+    generatedAt,
+    fighters: fighters.fighters,
+    events: uniqueById([...results.events, ...predictions.events]),
+    bouts: uniqueById([...results.bouts, ...predictions.bouts]),
+    statsEntries: uniqueById([...results.statsEntries, ...predictions.statsEntries]),
+    packageHash: hashes.length === 3 && new Set(hashes).size === 1 ? hashes[0]! : null,
+  };
 }
 
 type DeliveredField = FightAiQFighterRecord["fields"][string];
@@ -358,9 +456,11 @@ function deliveredFighter(value: FightAiQFighterRecord): Fighter | null {
   };
 }
 
-function fighterName(reference: string, records: readonly FightAiQFighterRecord[]): string {
+function fighterName(reference: string, records: readonly FightAiQFighterRecord[], names: Readonly<Record<string, string>> = {}): string {
   const match = records.find((candidate) => candidate.id === reference);
-  return match ? fieldText(match, "name") ?? match.slug.replaceAll("-", " ") : reference.split(":").at(-1)?.replaceAll("-", " ") ?? reference;
+  return match
+    ? fieldText(match, "name") ?? match.slug.replaceAll("-", " ")
+    : names[reference] ?? reference.split(":").at(-1)?.replaceAll("-", " ") ?? reference;
 }
 
 function eventSource(reference: string, retrievedAt: string): Source {
@@ -369,7 +469,7 @@ function eventSource(reference: string, retrievedAt: string): Source {
     : { kind: "internal", ref: reference, retrievedAt, classification: "primary" };
 }
 
-function deliveredEvent(value: FightAiQEvent, fighters: readonly FightAiQFighterRecord[]): FightEvent | null {
+function deliveredEvent(value: FightAiQEvent, fighters: readonly FightAiQFighterRecord[], names: Readonly<Record<string, string>> = {}): FightEvent | null {
   const slug = value.id.replace(`${value.org}:event:`, "");
   if (!slug || value.sourceRefs.length === 0 || value.bouts.length === 0) return null;
   const completed = value.bouts.every((bout) => bout.status === "complete" || bout.status === "cancelled");
@@ -389,8 +489,8 @@ function deliveredEvent(value: FightAiQEvent, fighters: readonly FightAiQFighter
     bouts: value.bouts.map((bout, index) => ({
       id: bout.id,
       division: normalizeDeliveredDivision(bout.division) ?? "catchweight",
-      red: { name: fighterName(bout.red, fighters), fighterRef: `fighter:${bout.red.replace(":", "/")}` },
-      blue: { name: fighterName(bout.blue, fighters), fighterRef: `fighter:${bout.blue.replace(":", "/")}` },
+      red: { name: fighterName(bout.red, fighters, names), fighterRef: `fighter:${bout.red.replace(":", "/")}` },
+      blue: { name: fighterName(bout.blue, fighters, names), fighterRef: `fighter:${bout.blue.replace(":", "/")}` },
       scheduledRounds: bout.scheduledRounds,
       billing: index === 0 ? "main" : index === 1 ? "co-main" : "main-card",
     })),
@@ -433,7 +533,7 @@ function deliveredResult(bout: FightAiQBout): BoutResult | undefined {
   };
 }
 
-function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly FightAiQFighterRecord[], statsEntries: readonly FightAiQStatsEntry[]): FightEvent[] {
+function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly FightAiQFighterRecord[], statsEntries: readonly FightAiQStatsEntry[], names: Readonly<Record<string, string>> = {}): FightEvent[] {
   const active = values.filter((bout) => bout.status !== "cancelled" && bout.status !== "postponed");
   const predictions = new Map(statsEntries.filter((entry) => entry.status === "active").map((entry) => [entry.boutRef, entry]));
   const groups = new Map<string, FightAiQBout[]>();
@@ -459,8 +559,8 @@ function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly
       bouts: bouts.sort((left, right) => left.id.localeCompare(right.id)).map((bout, index) => ({
         id: bout.id,
         division: normalizeDeliveredDivision(bout.division ?? undefined) ?? "catchweight",
-        red: { name: fighterName(bout.fighters.red, fighters), fighterRef: `fighter:${bout.fighters.red.replace(":", "/")}` },
-        blue: { name: fighterName(bout.fighters.blue, fighters), fighterRef: `fighter:${bout.fighters.blue.replace(":", "/")}` },
+        red: { name: fighterName(bout.fighters.red, fighters, names), fighterRef: `fighter:${bout.fighters.red.replace(":", "/")}` },
+        blue: { name: fighterName(bout.fighters.blue, fighters, names), fighterRef: `fighter:${bout.fighters.blue.replace(":", "/")}` },
         scheduledRounds: bout.scheduledRounds ?? 3,
         billing: index === 0 ? "main" as const : index === 1 ? "co-main" as const : "main-card" as const,
         ...(predictions.get(bout.id) ? { prediction: {
@@ -483,18 +583,24 @@ function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly
 }
 
 export function getDeliveredFighters(): Fighter[] {
-  return getFightAiQDelivery().fighters.map(deliveredFighter).filter((value): value is Fighter => Boolean(value));
+  return getFightAiQFighterDelivery().fighters.map(deliveredFighter).filter((value): value is Fighter => Boolean(value));
 }
 
 export function getDeliveredEvents(): FightEvent[] {
-  const snapshot = getFightAiQDelivery();
-  const delivered = snapshot.events
-    .map((value) => deliveredEvent(value, snapshot.fighters))
+  const predictions = getFightAiQPredictionDelivery();
+  const results = getFightAiQResultDelivery();
+  const events = uniqueById([...results.events, ...predictions.events]);
+  const bouts = uniqueById([...results.bouts, ...predictions.bouts]);
+  const statsEntries = uniqueById([...results.statsEntries, ...predictions.statsEntries]);
+  const names = { ...results.fighterNames, ...predictions.fighterNames };
+  const delivered = events
+    .map((value) => deliveredEvent(value, [], names))
     .filter((event): event is FightEvent => Boolean(event));
-  const authoritativeRefs = new Set(snapshot.events.map((event) => event.id));
-  const anchor = snapshot.generatedAt ? Date.parse(snapshot.generatedAt) : Number.NaN;
+  const authoritativeRefs = new Set(events.map((event) => event.id));
+  const anchorText = predictions.generatedAt ?? results.generatedAt;
+  const anchor = anchorText ? Date.parse(anchorText) : Number.NaN;
   const recentBoundary = anchor - (365 * 86_400_000);
-  const eventBouts = snapshot.bouts.filter((bout) => {
+  const eventBouts = bouts.filter((bout) => {
     if (authoritativeRefs.has(bout.event.ref)) return false;
     if (bout.status === "cancelled" || bout.status === "postponed") return false;
     if (!bout.event.ref.includes(":event:history-")) return true;
@@ -507,6 +613,6 @@ export function getDeliveredEvents(): FightEvent[] {
   });
   return [
     ...delivered,
-    ...deliveredBoutEvents(eventBouts, snapshot.fighters, snapshot.statsEntries),
+    ...deliveredBoutEvents(eventBouts, [], statsEntries, names),
   ];
 }

@@ -5,9 +5,10 @@ import { FightAiQFeed } from "@/components/fightaiq/FightAiQFeed";
 import { ActionLink, Container, SectionHeading } from "@/components/ui/primitives";
 import { siteConfig } from "@/config/site";
 import { getDictionary } from "@/i18n";
+import { getFightAiQPredictionDelivery } from "@/lib/boardless";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/paths";
-import { getCoverageStats, getFightAiQDelivery } from "@/lib/repository";
+import { getCoverageStats } from "@/lib/repository";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -40,7 +41,7 @@ export default async function DataDeskPage({
   const locale: Locale = raw;
   const dict = getDictionary(locale);
   const stats = getCoverageStats();
-  const fightAiQ = getFightAiQDelivery();
+  const fightAiQ = getFightAiQPredictionDelivery();
 
   const figures = [
     { label: dict.dataDesk.fighterFiles, value: stats.fighterFiles },

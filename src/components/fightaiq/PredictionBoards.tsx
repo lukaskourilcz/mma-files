@@ -2,9 +2,9 @@ import { PredictionBoard, type PredictionBout } from "@/components/fightaiq/Bout
 import { EmptyState } from "@/components/ui/Feedback";
 import { getDictionary } from "@/i18n";
 import {
-  getFightAiQDelivery,
+  getFightAiQPredictionDelivery,
   type FightAiQBout,
-  type FightAiQDelivery,
+  type FightAiQEventSurface,
   type FightAiQStatsEntry,
 } from "@/lib/boardless";
 import { ORGANIZATIONS, type Locale, type Organization } from "@/lib/types";
@@ -18,17 +18,17 @@ export interface PredictionCard {
   provenance?: { version: string; capturedAt: string };
 }
 
-function fighterName(snapshot: FightAiQDelivery, reference: string): string {
-  return snapshot.fighters.find((fighter) => fighter.id === reference)?.canonicalName
+function fighterName(snapshot: FightAiQEventSurface, reference: string): string {
+  return snapshot.fighterNames[reference]
     ?? reference.split(":").at(-1)?.replaceAll("-", " ")
     ?? reference;
 }
 
 function modelFor(
   models: ReadonlyMap<string, FightAiQStatsEntry>,
-  bout: FightAiQBout,
+  boutId: string,
 ) {
-  const model = models.get(bout.id);
+  const model = models.get(boutId);
   if (!model || model.status !== "active") return undefined;
   return {
     redWin: model.redWin,
@@ -68,7 +68,7 @@ function deduplicate(
 }
 
 export function getPredictionCards(locale: Locale, limit?: number): PredictionCard[] {
-  const snapshot = getFightAiQDelivery();
+  const snapshot = getFightAiQPredictionDelivery();
   const dict = getDictionary(locale);
   const anchor = snapshot.generatedAt;
   const models = new Map(
@@ -78,6 +78,40 @@ export function getPredictionCards(locale: Locale, limit?: number): PredictionCa
   );
 
   return ORGANIZATIONS.flatMap((organization) => {
+    const authoritative = snapshot.events
+      .filter((event) => event.org === organization)
+      .filter((event) => event.bouts.some((bout) => bout.status !== "complete" && bout.status !== "cancelled"))
+      .filter((event) => anchor ? event.startsAtUtc >= anchor : true)
+      .sort((left, right) => left.startsAtUtc.localeCompare(right.startsAtUtc))[0];
+    if (authoritative) {
+      const selected = limit ? authoritative.bouts.slice(0, limit) : authoritative.bouts;
+      const activeModels = selected
+        .map((bout) => models.get(bout.id))
+        .filter((entry): entry is FightAiQStatsEntry => Boolean(entry));
+      const newestModel = [...activeModels].sort((left, right) => right.generatedAt.localeCompare(left.generatedAt))[0];
+      const eventDate = new Intl.DateTimeFormat("cs-CZ", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        timeZone: "UTC",
+      }).format(new Date(authoritative.startsAtUtc));
+      return [{
+        organization,
+        eventName: authoritative.name,
+        eventStamp: authoritative.venue ? `${eventDate} · ${authoritative.venue}` : eventDate,
+        ...(authoritative.venue ? { venue: authoritative.venue } : {}),
+        bouts: selected.map((bout) => ({
+          id: bout.id,
+          redName: fighterName(snapshot, bout.red),
+          blueName: fighterName(snapshot, bout.blue),
+          division: (dict.divisions as Record<string, string>)[bout.division] ?? bout.division,
+          rounds: bout.scheduledRounds,
+          ...(modelFor(models, bout.id) ? { model: modelFor(models, bout.id) } : {}),
+        })),
+        ...(newestModel ? { provenance: { version: newestModel.modelVersion, capturedAt: newestModel.generatedAt } } : {}),
+      }];
+    }
+
     const available = snapshot.bouts.filter((bout) => {
       if (bout.org !== organization) return false;
       if (bout.event.ref.includes(":event:history-")) return false;
@@ -117,7 +151,7 @@ export function getPredictionCards(locale: Locale, limit?: number): PredictionCa
           ? (dict.divisions as Record<string, string>)[bout.division] ?? bout.division
           : "—",
         rounds: bout.scheduledRounds ?? 3,
-        ...(modelFor(models, bout) ? { model: modelFor(models, bout) } : {}),
+        ...(modelFor(models, bout.id) ? { model: modelFor(models, bout.id) } : {}),
       })),
       ...(newestModel ? {
         provenance: {

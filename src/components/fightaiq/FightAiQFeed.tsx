@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { FightAiQDelivery } from "@/lib/boardless";
+import type { FightAiQStatsEntry } from "@/lib/boardless";
 import { getFighterById } from "@/lib/repository";
 import { routes } from "@/lib/paths";
 import type { Locale } from "@/lib/types";
@@ -33,7 +33,10 @@ function timestamp(value: string): string {
   }).format(date);
 }
 
-export function FightAiQFeed({ snapshot, locale }: { snapshot: FightAiQDelivery; locale: Locale }) {
+export function FightAiQFeed({ snapshot, locale }: {
+  snapshot: { generatedAt: string | null; statsEntries: FightAiQStatsEntry[] };
+  locale: Locale;
+}) {
   const text = copy[locale];
   const currentStats = snapshot.statsEntries.filter((entry) => entry.status === "active");
   if (!snapshot.generatedAt) {
