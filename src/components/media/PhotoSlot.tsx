@@ -10,8 +10,15 @@ function readerCredit(image: StoryImage): string | null {
   return /boardlessai/iu.test(image.credit) ? null : image.credit;
 }
 
-export function PhotoCredit({ image }: { image: StoryImage }) {
-  const credit = readerCredit(image);
+export function PhotoCredit({
+  image,
+  displayCredit,
+}: {
+  image: StoryImage;
+  /** Reader-safe override for internally produced artwork. */
+  displayCredit?: string;
+}) {
+  const credit = displayCredit ?? readerCredit(image);
   if (!credit) return null;
   return image.creditUrl ? (
     <a

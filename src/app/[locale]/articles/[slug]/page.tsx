@@ -1,27 +1,26 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { AdSlot } from "@/components/ads/AdSlot";
 import { ArticleCard } from "@/components/article/ArticleCard";
-import {
-  CorrectionHistory,
-  MethodologyNote,
-  ModelDisclosureBlock,
-  TheFile,
-} from "@/components/article/ArticleFile";
-import { HeroVisual } from "@/components/hero/HeroVisual";
-import { Breadcrumbs } from "@/components/ui/PageHeader";
-import { Chip, Container, SectionHeading } from "@/components/ui/primitives";
-import { absoluteUrl, allowIndexing, siteConfig } from "@/config/site";
+import { CorrectionNotice } from "@/components/article/CorrectionNotice";
+import { ArticleSources } from "@/components/article/ArticleSources";
+import { PhotoCredit, PhotoSlot } from "@/components/media/PhotoSlot";
+import { Container, Kicker, NoteChip } from "@/components/ui/primitives";
+import { absoluteUrl, allowIndexing, siteConfig, siteUrl } from "@/config/site";
 import { getDictionary } from "@/i18n";
-import { formatDateTime, formatStamp, readingTimeMinutes } from "@/lib/format";
+import { formatDate } from "@/lib/format";
 import { Prose } from "@/lib/markdown";
 import { routes } from "@/lib/paths";
-import { articleCopy, getArticleBySlug, getArticlesIn, getRelatedArticles } from "@/lib/repository";
-import { LOCALES, isLocale, type Locale } from "@/lib/types";
+import {
+  articleCopy,
+  getArticleBySlug,
+  getArticles,
+  getArticlesByOrganization,
+  getArticlesIn,
+} from "@/lib/repository";
+import { LOCALES, isLocale, type Article, type Locale } from "@/lib/types";
 
 export function generateStaticParams() {
-  // Only the locales an article was actually written in. English is optional and on its way
-  // out; prerendering /en for an article that has no English half would build a page whose
-  // only honest content is a 404.
   return LOCALES.flatMap((locale) =>
     getArticlesIn(locale).map((article) => ({ locale, slug: article.slug })),
   );
@@ -37,20 +36,15 @@ export async function generateMetadata({
   const locale: Locale = raw;
   const article = getArticleBySlug(slug);
   if (!article) return {};
-
   const local = articleCopy(article, locale) ?? article.localizations.cs!;
-  // Demo stories are never indexable, regardless of the global switch.
   const indexable = allowIndexing && !article.isDemo;
-
   return {
+    metadataBase: new URL(siteUrl),
     title: local.title,
     description: local.dek,
     alternates: {
       canonical: routes.article(locale, slug),
-      languages: {
-        cs: routes.article("cs", slug),
-        "x-default": routes.article("cs", slug),
-      },
+      languages: { cs: routes.article("cs", slug), "x-default": routes.article("cs", slug) },
     },
     robots: indexable
       ? { index: true, follow: true }
@@ -63,10 +57,17 @@ export async function generateMetadata({
       publishedTime: article.publishAt,
       modifiedTime: article.updatedAt ?? article.publishAt,
       authors: [siteConfig.byline[locale]],
-      locale: locale === "cs" ? "cs_CZ" : "en_GB",
+      locale: "cs_CZ",
       ...(article.image ? { images: [{ url: article.image.src, alt: article.image.alt[locale] }] } : {}),
     },
   };
+}
+
+function sectionArticles(article: Article): Article[] {
+  const candidates = article.organization
+    ? getArticlesByOrganization(article.organization)
+    : getArticles();
+  return candidates.filter((item) => item.slug !== article.slug);
 }
 
 export default async function ArticlePage({
@@ -78,30 +79,15 @@ export default async function ArticlePage({
   if (!isLocale(raw)) notFound();
   const locale: Locale = raw;
   const dict = getDictionary(locale);
-
   const article = getArticleBySlug(slug);
   if (!article) notFound();
-
-  // An article that was never written in this language does not exist at this URL. Serving the
-  // Czech body under lang="en" would be worse than a 404: it reads as an English edition.
   const local = articleCopy(article, locale);
   if (!local) notFound();
-  const related = getRelatedArticles(article);
-  const minutes = readingTimeMinutes(local.body);
+  const section = sectionArticles(article);
+  const related = section.slice(0, 3);
+  const rail = section.slice(0, 5);
+  const internalArtwork = Boolean(article.image && /boardlessai/iu.test(article.image.credit));
 
-  const crumbs = [
-    { href: routes.home(locale), label: dict.nav.home },
-    article.organization
-      ? {
-          href: routes.organization(locale, article.organization),
-          label: dict.organizationsShort[article.organization],
-        }
-      : { href: routes.latest(locale), label: dict.nav.latest },
-    { label: dict.formats[article.format] },
-  ];
-
-  // Structured data is only emitted for real reporting. Marking fictional demo
-  // content up as a NewsArticle would be a lie told to a machine.
   const articleLd = article.isDemo
     ? null
     : {
@@ -129,97 +115,101 @@ export default async function ArticlePage({
         />
       ) : null}
 
-      <header className="border-b border-rule-strong bg-white">
-        <Container className="py-8 md:py-12">
-          <Breadcrumbs items={crumbs} />
-
-          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
-            <Chip tone="dark">{dict.formats[article.format]}</Chip>
-            {article.organization ? (
-              <Chip tone="muted">{dict.organizations[article.organization]}</Chip>
-            ) : null}
+      <header className="border-b border-rule-strong bg-paper">
+        <Container className="py-10 md:py-14">
+          <div className="flex flex-wrap items-center gap-2">
+            <Kicker>
+              {article.organization
+                ? dict.organizationsShort[article.organization]
+                : dict.labels.desk}
+            </Kicker>
+            {article.isDemo ? <NoteChip>{dict.article.demoBadge}</NoteChip> : null}
           </div>
-
-          <h1 className="mt-5 max-w-4xl text-[2rem] leading-[1.06] tracking-[-0.04em] text-ink sm:text-[2.5rem] lg:text-[3.25rem]">
+          <h1 className="display mt-5 max-w-[18ch] text-[length:var(--text-d3)] text-text md:text-[length:var(--text-d2)]">
             {local.title}
           </h1>
-
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted md:text-xl">
+          <p className="mt-5 max-w-[60ch] text-[18px] leading-[1.5] text-text-muted md:text-[20px]">
             {local.dek}
           </p>
-
-          <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-rule pt-5">
-            <span className="label-mono text-ink">{siteConfig.byline[locale]}</span>
-            <span aria-hidden="true" className="h-3 w-px bg-rule-strong" />
-            <time dateTime={article.publishAt} className="label-mono-sm text-ink-muted">
-              {dict.labels.published} {formatDateTime(article.publishAt, locale)}
-            </time>
-            {article.updatedAt ? (
-              <>
-                <span aria-hidden="true" className="h-3 w-px bg-rule-strong" />
-                <time dateTime={article.updatedAt} className="label-mono-sm text-ember">
-                  {dict.labels.updated} {formatStamp(article.updatedAt)}
-                </time>
-              </>
-            ) : null}
-            <span aria-hidden="true" className="h-3 w-px bg-rule-strong" />
-            <span className="label-mono-sm text-muted">
-              {minutes} {dict.labels.readingTime}
-            </span>
-          </div>
-
-          {article.isDemo ? (
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <Chip tone="signal">{dict.demo.articleBadge}</Chip>
-              <p className="text-xs leading-relaxed text-ink-muted">
-                {dict.demo.articleNotice}
-              </p>
-            </div>
-          ) : null}
+          <p className="mt-6 font-mono text-[12px] tabular-nums text-text-meta">
+            <time dateTime={article.publishAt}>{formatDate(article.publishAt, locale)}</time>
+            <span aria-hidden="true"> · </span>
+            {dict.article.byline}
+          </p>
         </Container>
       </header>
 
-      <Container className="py-10 md:py-14">
-        <HeroVisual
-          article={article}
-          locale={locale}
-          className="aspect-[4/3] sm:aspect-[2/1] lg:aspect-[2.4/1]"
-        />
+      <AdSlot name="article-top" locale={locale} />
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-14">
-          <div className="lg:col-span-7 xl:col-span-8">
-            <Prose body={local.body} locale={locale} />
+      <Container className="py-8 md:py-12">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
+          <div className="min-w-0">
+            <figure>
+              <div className="relative aspect-video overflow-hidden border border-rule-strong bg-well">
+                <PhotoSlot
+                  image={article.image}
+                  locale={locale}
+                  note={dict.labels.photoSlots.story}
+                  sizes="(min-width: 1024px) 900px, 100vw"
+                  priority
+                />
+              </div>
+              {article.image ? (
+                internalArtwork ? (
+                  <figcaption className="border-t border-rule bg-paper px-3 py-2 font-mono text-[11px] text-text-meta">
+                    Redakční vizuál · datová ilustrace
+                  </figcaption>
+                ) : (
+                  <PhotoCredit image={article.image} displayCredit={`Foto: ${article.image.credit}`} />
+                )
+              ) : null}
+            </figure>
 
-            {article.corrections && article.corrections.length > 0 ? (
-              <div className="mt-12">
-                <CorrectionHistory corrections={article.corrections} locale={locale} />
+            {article.corrections?.length ? (
+              <div className="mt-7">
+                <CorrectionNotice corrections={article.corrections} locale={locale} />
               </div>
             ) : null}
+
+            <Prose
+              body={local.body}
+              locale={locale}
+              className="prose-file mt-10 max-w-[var(--layout-measure)]"
+              afterThirdBlock={<AdSlot name="article-mid" locale={locale} />}
+            />
+
+            <ArticleSources sources={article.sources} locale={locale} />
           </div>
 
-          <aside className="space-y-6 lg:col-span-5 xl:col-span-4">
-            <TheFile article={article} locale={locale} />
-            {article.modelDisclosure ? (
-              <ModelDisclosureBlock
-                disclosure={article.modelDisclosure}
-                locale={locale}
-              />
+          <aside className="hidden lg:block" aria-label={dict.article.moreFromSection}>
+            <AdSlot name="article-rail" locale={locale} />
+            {rail.length > 0 ? (
+              <section className="mt-10 border-t border-rule-strong pt-6">
+                <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-text-meta">
+                  {dict.article.moreFromSection}
+                </h2>
+                <ul className="mt-5 space-y-4">
+                  {rail.map((item) => (
+                    <li key={item.id}>
+                      <ArticleCard article={item} locale={locale} size="compact" />
+                    </li>
+                  ))}
+                </ul>
+              </section>
             ) : null}
-            <MethodologyNote locale={locale} />
           </aside>
         </div>
       </Container>
 
       {related.length > 0 ? (
-        <section
-          aria-labelledby="related"
-          className="border-t border-rule-strong bg-white py-14 md:py-20"
-        >
+        <section aria-labelledby="related" className="border-t border-rule-strong bg-card py-12 md:py-16">
           <Container>
-            <SectionHeading title={dict.labels.relatedStories} />
-            <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <h2 id="related" className="display text-[length:var(--text-d4)] text-text">
+              {dict.article.related}
+            </h2>
+            <ul className="mt-7 grid gap-5 md:grid-cols-3">
               {related.map((item) => (
-                <li key={item.id} className="relative">
+                <li key={item.id}>
                   <ArticleCard article={item} locale={locale} />
                 </li>
               ))}

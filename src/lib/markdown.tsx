@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { getEventBySlug, getFighters } from "@/lib/repository";
 import { routes } from "@/lib/paths";
 import type { Locale } from "@/lib/types";
@@ -139,10 +139,12 @@ export function Prose({
   body,
   locale,
   className,
+  afterThirdBlock,
 }: {
   body: string;
   locale: Locale;
   className?: string;
+  afterThirdBlock?: ReactNode;
 }) {
   const blocks = withoutSourceMarkers(body)
     .split(/\n{2,}/)
@@ -151,7 +153,12 @@ export function Prose({
 
   return (
     <div className={className ?? "prose-file"}>
-      {blocks.map((block, i) => renderBlock(block, locale, `b${i}`))}
+      {blocks.map((block, i) => (
+        <Fragment key={`b${i}`}>
+          {renderBlock(block, locale, `b${i}-content`)}
+          {i === 2 ? afterThirdBlock : null}
+        </Fragment>
+      ))}
     </div>
   );
 }
