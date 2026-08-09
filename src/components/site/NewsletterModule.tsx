@@ -51,13 +51,13 @@ export function NewsletterModule({
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         aria-describedby={`${inputId}-note`}
-        className="min-w-0 flex-1 border border-rule-strong bg-card px-4 py-[15px] text-[15px] text-ink placeholder:text-ink-meta focus:border-ink focus:outline-none"
+        className="h-12 min-w-0 flex-1 border border-rule-strong bg-paper px-4 text-[15px] text-text placeholder:text-text-meta focus:border-text focus:outline-none"
       />
       <button
         type="submit"
         disabled
         aria-disabled="true"
-        className="shrink-0 cursor-not-allowed border border-rule-strong bg-ember-soft px-[22px] py-[15px] text-[12px] font-extrabold uppercase tracking-[0.13em] text-ink-meta"
+        className="min-h-12 shrink-0 cursor-not-allowed bg-accent px-6 py-4 text-[13px] font-extrabold uppercase tracking-[0.1em] text-paper opacity-70 sm:opacity-100"
       >
         {copy.submit}
       </button>
@@ -87,12 +87,12 @@ export function NewsletterModule({
   }
 
   return (
-    <section aria-labelledby="newsletter" className="border-b border-rule-strong">
-      <Container className="grid items-center gap-10 py-12 md:py-13 lg:grid-cols-2 lg:gap-14">
+    <section aria-labelledby="newsletter" className="border-b border-rule-strong bg-card">
+      <Container className="grid items-center gap-10 py-16 lg:grid-cols-2 lg:gap-14">
         <div>
           <h2
             id="newsletter"
-            className="display text-[34px] leading-[0.95] text-ink sm:text-[44px] lg:text-[52px]"
+            className="display text-[length:var(--text-d4)] leading-none text-text"
           >
             {copy.title}
           </h2>

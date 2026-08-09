@@ -1,21 +1,51 @@
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/ads/AdSlot";
-import { ArticleCard } from "@/components/article/ArticleCard";
+import { ArticleFeed } from "@/components/article/ArticleFeed";
 import { LeadStory } from "@/components/article/LeadStory";
-import { EventCard } from "@/components/event/EventCard";
 import { ResultsBoard } from "@/components/event/ResultsBoard";
+import { PredictionBoardList } from "@/components/fightaiq/PredictionBoards";
+import { FighterRail } from "@/components/fighter/FighterRail";
 import { DidYouKnow } from "@/components/site/DidYouKnow";
 import { NewsletterModule } from "@/components/site/NewsletterModule";
-import { ActionLink, Container, SectionHeading } from "@/components/ui/primitives";
+import { ActionLink, ButtonLink, Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
-import {
-  getArticles,
-  getCompletedEvents,
-  getLeadArticle,
-  getUpcomingEvents,
-} from "@/lib/repository";
+import { getArticles, getLeadArticle } from "@/lib/repository";
 import { isLocale, type Locale } from "@/lib/types";
+
+function HomeHeading({
+  id,
+  title,
+  note,
+  action,
+  tone = "paper",
+}: {
+  id: string;
+  title: string;
+  note?: string;
+  action?: React.ReactNode;
+  tone?: "paper" | "chrome";
+}) {
+  const chrome = tone === "chrome";
+  return (
+    <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h2
+          id={id}
+          className={`display inline-block border-b-[3px] border-accent pb-2 text-[length:var(--text-d4)] ${chrome ? "text-text-inverse" : "text-text"}`}
+        >
+          {title}
+        </h2>
+        {note ? (
+          <p className={`mt-3 font-mono text-[11px] ${chrome ? "text-text-inverse-meta" : "text-text-meta"}`}>
+            {note}
+          </p>
+        ) : null}
+      </div>
+      {action}
+    </header>
+  );
+}
 
 export default async function HomePage({
   params,
@@ -26,108 +56,82 @@ export default async function HomePage({
   if (!isLocale(raw)) notFound();
   const locale: Locale = raw;
   const dict = getDictionary(locale);
-
+  const articles = getArticles();
   const lead = getLeadArticle();
-  const files = getArticles().filter((a) => a.slug !== lead?.slug).slice(0, 6);
-
-  // If no card is booked, show the most recent completed one rather than an
-  // empty strip — the section is about what is real, not about being full.
-  const upcoming = getUpcomingEvents();
-  const cards = upcoming.length > 0 ? upcoming.slice(0, 2) : getCompletedEvents().slice(0, 1);
+  const latest = articles.filter((article) => article.slug !== lead?.slug).slice(0, 7);
 
   return (
     <>
       {lead?.packageHash ? <meta name="boardless-content-hash" content={lead.packageHash} /> : null}
       <AdSlot name="masthead-billboard" locale={locale} />
-      {/* Above the hero: on a phone the lead fills the first screen, so a belt
-          underneath it would never be seen. The date comes from the lead
-          article, mirroring how every other section is handed its data. */}
-      <DidYouKnow dateKey={lead?.publishAt.slice(0, 10)} locale={locale} />
+
       {lead ? (
-        <LeadStory article={lead} locale={locale} />
+        <LeadStory article={lead} locale={locale} secondary={articles.slice(1, 3)} />
       ) : (
         <Container className="py-20">
-          <p className="text-lg text-ink-muted">{dict.home.noLead}</p>
+          <p className="text-lg text-text-muted">{dict.home.noLead}</p>
         </Container>
       )}
 
-      <section
-        aria-labelledby="results"
-        className="border-b border-rule-strong bg-card"
-      >
-        <Container className="py-10 md:py-12">
-          <SectionHeading
-            id="results"
+      <section aria-labelledby="latest-home" className="border-b border-rule-strong py-12 md:py-16">
+        <Container>
+          <HomeHeading
+            id="latest-home"
+            title={dict.home.latestTitle}
+            note={dict.home.latestDek}
+            action={<ActionLink href={routes.latest(locale)}>{dict.actions.allStories}</ActionLink>}
+          />
+          <div className="mt-6">
+            <ArticleFeed
+              articles={latest}
+              locale={locale}
+              emptyLabel={dict.home.noStories}
+            />
+          </div>
+        </Container>
+      </section>
+
+      <section aria-labelledby="predictions-home" className="bg-chrome py-12 text-text-inverse md:py-16">
+        <Container>
+          <HomeHeading
+            id="predictions-home"
+            title={dict.home.predictionsTitle}
+            note={dict.predictions.disclaimer}
+            tone="chrome"
+          />
+          <div className="mt-9">
+            <PredictionBoardList locale={locale} limit={4} />
+          </div>
+          <div className="mt-10">
+            <ButtonLink href={routes.predictions(locale)} variant="secondary" tone="chrome">
+              {dict.actions.openPredictions}
+            </ButtonLink>
+          </div>
+        </Container>
+      </section>
+
+      <section aria-labelledby="results-home" className="border-b border-rule-strong bg-paper py-12 md:py-16">
+        <Container>
+          <HomeHeading
+            id="results-home"
             title={dict.home.resultsTitle}
             note={dict.home.resultsDek}
-            action={
-              <ActionLink href={routes.results(locale)}>
-                {dict.actions.allResults}
-              </ActionLink>
-            }
+            action={<ActionLink href={routes.results(locale)}>{dict.actions.allResults}</ActionLink>}
           />
           <ResultsBoard locale={locale} />
         </Container>
       </section>
 
-      <section aria-labelledby="next-up" className="border-b border-rule-strong">
-        <Container className="py-11 md:py-13">
-          <SectionHeading
-            id="next-up"
-            title={dict.home.fightWeekTitle}
-            note={dict.home.fightWeekDek}
-            action={
-              <ActionLink href={routes.fightWeek(locale)}>
-                {dict.nav.fightWeek}
-              </ActionLink>
-            }
+      <DidYouKnow dateKey={lead?.publishAt.slice(0, 10)} locale={locale} />
+
+      <section aria-labelledby="fighters-home" className="border-b border-rule-strong py-12 md:py-16">
+        <Container>
+          <HomeHeading
+            id="fighters-home"
+            title={dict.home.fightersTitle}
+            action={<ActionLink href={routes.fighters(locale)}>{dict.actions.allFighters}</ActionLink>}
           />
-
-          {upcoming.length === 0 ? (
-            <p className="mt-6 text-sm leading-relaxed text-ink-muted">
-              {dict.fightWeek.noUpcoming}
-            </p>
-          ) : null}
-
-          <ul className="mt-5 grid gap-5 lg:grid-cols-2">
-            {cards.map((event) => (
-              <li key={event.id} className="relative">
-                <EventCard event={event} locale={locale} />
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      <section
-        aria-labelledby="files"
-        className="border-b border-rule-strong bg-card"
-      >
-        <Container className="py-11 md:py-13">
-          <SectionHeading
-            id="files"
-            title={dict.home.latestTitle}
-            note={dict.home.latestDek}
-            action={
-              <ActionLink href={routes.latest(locale)}>
-                {dict.actions.allStories}
-              </ActionLink>
-            }
-          />
-
-          {files.length === 0 ? (
-            <p className="mt-6 text-sm leading-relaxed text-ink-muted">
-              {dict.home.noStories}
-            </p>
-          ) : (
-            <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {files.map((article) => (
-                <li key={article.id} className="relative">
-                  <ArticleCard article={article} locale={locale} />
-                </li>
-              ))}
-            </ul>
-          )}
+          <FighterRail locale={locale} />
         </Container>
       </section>
 

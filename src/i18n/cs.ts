@@ -45,6 +45,7 @@ export const cs = {
     viewEvent: "Otevřít složku turnaje",
     viewFighter: "Otevřít složku bojovníka",
     viewResults: "Zobrazit výsledky",
+    openPredictions: "Otevřít Predikce",
     subscribe: "Odebírat",
     backHome: "Zpět na titulní stranu",
   },
