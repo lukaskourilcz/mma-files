@@ -14,7 +14,7 @@ export function PrimaryNav({ items, label }: { items: NavItem[]; label: string }
   return (
     <nav
       aria-label={label}
-      className="-mx-1 flex min-w-0 flex-1 items-stretch self-stretch overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="flex min-w-0 flex-1 items-stretch self-stretch overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {items.map((item) => {
         const active =
