@@ -233,6 +233,7 @@ export const cs = {
     latestDek: "Všechno, co redakce vydala",
     loadPreviousWeek: "Objevit předchozí týden",
     weekDivider: (from: string, to: string) => `Týden ${from}–${to}`,
+    endOfFeed: "To je zatím vše.",
     predictionsTitle: "Predikce",
     fightWeekTitle: "Co je dál",
     fightWeekDek: "Co je nasmlouvané a co je zatím jen věta",
@@ -643,6 +644,7 @@ export const cs = {
   states: {
     loading: "Načítáme…",
     loadingMore: "Načítáme předchozí týden…",
+    loadPreviousFailed: "Předchozí týden se nepodařilo načíst.",
   },
 
   time: {

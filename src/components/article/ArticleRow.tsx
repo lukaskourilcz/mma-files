@@ -4,20 +4,37 @@ import { NoteChip } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { formatDate, formatRelative } from "@/lib/format";
 import { routes } from "@/lib/paths";
-import type { Article, Locale } from "@/lib/types";
+import type { Article, Locale, StoryImage } from "@/lib/types";
+import type { WeekArticleCard } from "@/lib/week-chunks";
 
 export function ArticleRow({
   article,
   locale,
   referenceTime,
 }: {
-  article: Article;
+  article: Article | WeekArticleCard;
   locale: Locale;
   /** Stable snapshot time used for reproducible relative timestamps. */
   referenceTime: string;
 }) {
   const dict = getDictionary(locale);
-  const local = article.localizations[locale] ?? article.localizations.cs!;
+  const delivered = "localizations" in article;
+  const local = delivered
+    ? article.localizations[locale] ?? article.localizations.cs!
+    : { title: article.title, dek: article.dek };
+  const organization = delivered ? article.organization : article.org ?? undefined;
+  const isDemo = article.isDemo === true;
+  const image: StoryImage | undefined = delivered
+    ? article.image
+    : article.thumbPath
+      ? {
+          src: article.thumbPath,
+          thumbnailSrc: article.thumbPath,
+          alt: { cs: article.thumbAlt ?? article.title },
+          credit: article.thumbCredit ?? "Redakční vizuál",
+          ...(article.thumbCreditUrl ? { creditUrl: article.thumbCreditUrl } : {}),
+        }
+      : undefined;
   const delta = new Date(referenceTime).getTime() - new Date(article.publishAt).getTime();
   const timestamp =
     delta >= 0 && delta < 86_400_000
@@ -36,7 +53,7 @@ export function ArticleRow({
       >
         <span className="relative aspect-video self-start overflow-hidden bg-well">
           <PhotoSlot
-            image={article.image}
+            image={image}
             locale={locale}
             note={dict.labels.photoSlots.story}
             sizes="(min-width: 768px) 160px, 96px"
@@ -46,14 +63,14 @@ export function ArticleRow({
         </span>
         <span className="min-w-0">
           <span className="block font-mono text-[11px] font-medium uppercase tracking-[var(--tracking-kicker)] text-accent">
-            {article.organization
-              ? dict.organizationsShort[article.organization]
+            {organization
+              ? dict.organizationsShort[organization]
               : dict.labels.desk}
           </span>
           <span className="mt-1.5 block text-[17px] font-bold leading-[1.3] text-text underline decoration-transparent decoration-[3px] underline-offset-4 group-hover:decoration-accent">
             {local.title}
           </span>
-          {article.isDemo ? (
+          {isDemo ? (
             <NoteChip className="mt-2">{dict.article.demoBadge}</NoteChip>
           ) : null}
           <time

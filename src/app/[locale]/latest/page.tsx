@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/ads/AdSlot";
-import { ArticleFeed, FeedPageHeader } from "@/components/article/ArticleFeed";
+import { FeedPageHeader } from "@/components/article/ArticleFeed";
+import { WeeklyArticleFeed } from "@/components/article/WeeklyArticleFeed";
 import { Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/paths";
-import { getArticles } from "@/lib/repository";
+import { getArticles, getLeadArticle } from "@/lib/repository";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -39,16 +40,19 @@ export default async function LatestPage({
   const locale: Locale = raw;
   const dict = getDictionary(locale);
   const articles = getArticles();
+  const lead = getLeadArticle();
 
   return (
     <>
       <AdSlot name="masthead-billboard" locale={locale} />
       <FeedPageHeader title={dict.latest.title} dek={dict.latest.dek} />
       <Container className="py-10 md:py-14">
-        <ArticleFeed
-          articles={articles.slice(0, 12)}
+        <WeeklyArticleFeed
+          articles={articles}
           locale={locale}
           emptyLabel={dict.latest.empty}
+          anchor={lead?.publishAt}
+          blockLimit={12}
         />
       </Container>
       <AdSlot name="footer-billboard" locale={locale} />

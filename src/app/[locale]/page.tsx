@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/ads/AdSlot";
-import { ArticleFeed } from "@/components/article/ArticleFeed";
 import { LeadStory } from "@/components/article/LeadStory";
+import { WeeklyArticleFeed } from "@/components/article/WeeklyArticleFeed";
 import { ResultsBoard } from "@/components/event/ResultsBoard";
 import { PredictionBoardList } from "@/components/fightaiq/PredictionBoards";
 import { FighterRail } from "@/components/fighter/FighterRail";
@@ -58,7 +58,7 @@ export default async function HomePage({
   const dict = getDictionary(locale);
   const articles = getArticles();
   const lead = getLeadArticle();
-  const latest = articles.filter((article) => article.slug !== lead?.slug).slice(0, 7);
+  const latest = articles.filter((article) => article.slug !== lead?.slug);
 
   return (
     <>
@@ -82,10 +82,12 @@ export default async function HomePage({
             action={<ActionLink href={routes.latest(locale)}>{dict.actions.allStories}</ActionLink>}
           />
           <div className="mt-6">
-            <ArticleFeed
+            <WeeklyArticleFeed
               articles={latest}
               locale={locale}
               emptyLabel={dict.home.noStories}
+              anchor={lead?.publishAt}
+              blockLimit={7}
             />
           </div>
         </Container>

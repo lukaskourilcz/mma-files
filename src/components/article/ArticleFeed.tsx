@@ -9,14 +9,17 @@ export function ArticleFeed({
   locale,
   emptyLabel,
   includeInfeed = true,
+  referenceTime: stableReferenceTime,
 }: {
   articles: Article[];
   locale: Locale;
   emptyLabel: string;
   includeInfeed?: boolean;
+  /** Lead publication timestamp; keeps relative copy stable across every week. */
+  referenceTime?: string;
 }) {
   if (articles.length === 0) return <EmptyState>{emptyLabel}</EmptyState>;
-  const referenceTime = articles[0]?.publishAt;
+  const referenceTime = stableReferenceTime ?? articles[0]?.publishAt;
   if (!referenceTime) return <EmptyState>{emptyLabel}</EmptyState>;
 
   return (
