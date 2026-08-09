@@ -13,6 +13,15 @@ interface LoadedWeek {
   articles: WeekArticleCard[];
 }
 
+export interface WeekHistoryProps {
+  locale: Locale;
+  initialWeekKey: string;
+  availableWeekKeys: string[];
+  referenceTime: string;
+  organization?: Organization;
+  blockLimit: number;
+}
+
 async function json(url: string): Promise<unknown> {
   const response = await fetch(url, { cache: "force-cache" });
   if (!response.ok) throw new Error(`week fetch failed: ${response.status}`);
@@ -26,14 +35,7 @@ export function WeekHistory({
   referenceTime,
   organization,
   blockLimit,
-}: {
-  locale: Locale;
-  initialWeekKey: string;
-  availableWeekKeys: string[];
-  referenceTime: string;
-  organization?: Organization;
-  blockLimit: number;
-}) {
+}: WeekHistoryProps) {
   const dict = getDictionary(locale);
   const indexRef = useRef<string[] | null>(null);
   const [loaded, setLoaded] = useState<LoadedWeek[]>([]);

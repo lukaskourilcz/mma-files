@@ -1,17 +1,25 @@
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { LeadStory } from "@/components/article/LeadStory";
 import { WeeklyArticleFeed } from "@/components/article/WeeklyArticleFeed";
-import { ResultsBoard } from "@/components/event/ResultsBoard";
-import { PredictionBoardList } from "@/components/fightaiq/PredictionBoards";
-import { FighterRail } from "@/components/fighter/FighterRail";
-import { DidYouKnow } from "@/components/site/DidYouKnow";
-import { NewsletterModule } from "@/components/site/NewsletterModule";
 import { ActionLink, ButtonLink, Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
+import { getPredictionCopy } from "@/lib/prediction-copy";
 import { getArticles, getLeadArticle } from "@/lib/repository";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
+
+const HomepagePredictions = dynamic(() =>
+  import("@/components/fightaiq/HomepagePredictions").then((module) => module.HomepagePredictions));
+const ResultsBoard = dynamic(() =>
+  import("@/components/event/ResultsBoard").then((module) => module.ResultsBoard));
+const FighterRail = dynamic(() =>
+  import("@/components/fighter/FighterRail").then((module) => module.FighterRail));
+const DidYouKnow = dynamic(() =>
+  import("@/components/site/DidYouKnow").then((module) => module.DidYouKnow));
+const NewsletterModule = dynamic(() =>
+  import("@/components/site/DeferredNewsletter").then((module) => module.DeferredNewsletter));
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
@@ -106,7 +114,11 @@ export default async function HomePage({
             tone="chrome"
           />
           <div className="mt-9">
-            <PredictionBoardList locale={locale} limit={4} />
+            <HomepagePredictions
+              limit={4}
+              copy={getPredictionCopy(locale)}
+              loadingLabel={dict.states.loading}
+            />
           </div>
           <div className="mt-10">
             <ButtonLink href={routes.predictions(locale)} variant="secondary" tone="chrome">

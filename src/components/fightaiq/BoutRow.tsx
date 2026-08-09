@@ -1,5 +1,5 @@
-import { getDictionary } from "@/i18n";
-import type { Locale, Organization } from "@/lib/types";
+import type { PredictionCopy } from "@/lib/prediction-copy";
+import type { Organization } from "@/lib/types";
 
 export interface BoutModelLine {
   redWin: number;
@@ -18,7 +18,7 @@ export interface PredictionBout {
   redName: string;
   blueName: string;
   division: string;
-  rounds: number;
+  rounds?: number;
   model?: BoutModelLine;
   odds?: BoutOddsLine;
 }
@@ -74,8 +74,11 @@ function ProbabilityLine({
   );
 }
 
-export function BoutRow({ bout, locale }: { bout: PredictionBout; locale: Locale }) {
-  const dict = getDictionary(locale);
+function fromPattern(pattern: string, key: string, value: string): string {
+  return pattern.replace(`{${key}}`, value);
+}
+
+export function BoutRow({ bout, copy }: { bout: PredictionBout; copy: PredictionCopy }) {
   const model = usableModel(bout.model) ? bout.model : undefined;
   return (
     <tr className="block border-b border-rule-dark py-5 last:border-b-0 md:table-row md:py-0">
@@ -91,7 +94,7 @@ export function BoutRow({ bout, locale }: { bout: PredictionBout; locale: Locale
         <span className="mx-2 md:hidden">·</span>
       </td>
       <td className="inline font-mono text-[13px] tabular-nums text-text-inverse-muted md:table-cell md:w-16 md:py-5 md:pr-5">
-        {dict.predictions.rounds(bout.rounds)}
+        {bout.rounds ? fromPattern(copy.roundsPattern, "rounds", String(bout.rounds)) : "—"}
       </td>
       <td className="block pt-4 md:table-cell md:w-[280px] md:py-5">
         {model ? (
@@ -107,17 +110,17 @@ export function BoutRow({ bout, locale }: { bout: PredictionBout; locale: Locale
               higher={model.blueWin > model.redWin}
             />
             <p className="font-mono text-[11px] leading-relaxed text-text-inverse-meta">
-              {dict.predictions.earlyModel} · {model.version} · {dict.predictions.captured(captured(model.capturedAt))}
+              {copy.earlyModel} · {model.version} · {fromPattern(copy.capturedPattern, "stamp", captured(model.capturedAt))}
             </p>
             {bout.odds ? (
               <p className="font-mono text-[11px] leading-relaxed text-text-inverse-meta">
-                {dict.predictions.oddsSource} · {bout.odds.value} · {dict.predictions.captured(captured(bout.odds.capturedAt))}
+                {copy.oddsSource} · {bout.odds.value} · {fromPattern(copy.capturedPattern, "stamp", captured(bout.odds.capturedAt))}
               </p>
             ) : null}
           </div>
         ) : (
           <p className="font-mono text-[12px] text-text-inverse-meta">
-            {dict.predictions.noModel}
+            {copy.noModel}
           </p>
         )}
       </td>
@@ -130,15 +133,14 @@ export function PredictionBoard({
   eventName,
   eventStamp,
   bouts,
-  locale,
+  copy,
 }: {
   organization: Organization;
   eventName: string;
   eventStamp: string;
   bouts: PredictionBout[];
-  locale: Locale;
+  copy: PredictionCopy;
 }) {
-  const dict = getDictionary(locale);
   const accent =
     organization === "ufc"
       ? "var(--color-badge-ufc-on-dark)"
@@ -150,7 +152,7 @@ export function PredictionBoard({
         style={{ borderColor: accent }}
       >
         <h2 className="display text-[length:var(--text-d5)]" style={{ color: accent }}>
-          {dict.organizationsShort[organization]}
+          {copy.organizations[organization]}
         </h2>
         <p className="font-mono text-[12px] tabular-nums text-text-inverse-meta">
           {eventName} · {eventStamp}
@@ -165,15 +167,15 @@ export function PredictionBoard({
         </colgroup>
         <thead className="hidden md:table-header-group">
           <tr className="border-b border-rule-dark text-left font-mono text-[11px] uppercase tracking-[0.16em] text-text-inverse-meta">
-            <th className="py-3 pr-5 font-medium">{dict.predictions.tableHeadings.bout}</th>
-            <th className="py-3 pr-5 font-medium">{dict.predictions.tableHeadings.division}</th>
-            <th className="py-3 pr-5 font-medium">{dict.predictions.tableHeadings.rounds}</th>
-            <th className="py-3 font-medium">{dict.predictions.tableHeadings.model}</th>
+            <th className="py-3 pr-5 font-medium">{copy.tableHeadings.bout}</th>
+            <th className="py-3 pr-5 font-medium">{copy.tableHeadings.division}</th>
+            <th className="py-3 pr-5 font-medium">{copy.tableHeadings.rounds}</th>
+            <th className="py-3 font-medium">{copy.tableHeadings.model}</th>
           </tr>
         </thead>
         <tbody className="block md:table-row-group">
           {bouts.map((bout) => (
-            <BoutRow key={bout.id} bout={bout} locale={locale} />
+            <BoutRow key={bout.id} bout={bout} copy={copy} />
           ))}
         </tbody>
       </table>

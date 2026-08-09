@@ -1,5 +1,5 @@
 import { ArticleFeed } from "@/components/article/ArticleFeed";
-import { WeekHistory } from "@/components/article/WeekHistory";
+import { DeferredWeekHistory } from "@/components/article/DeferredWeekHistory";
 import { bucketIsoWeeks } from "@/lib/week-windows.mjs";
 import type { Article, Locale, Organization } from "@/lib/types";
 
@@ -38,7 +38,7 @@ export function WeeklyArticleFeed({
         includeInfeed={includeInfeed}
         referenceTime={anchor}
       />
-      <WeekHistory
+      <DeferredWeekHistory
         locale={locale}
         initialWeekKey={first.key}
         availableWeekKeys={weeks.map((week) => week.key)}
