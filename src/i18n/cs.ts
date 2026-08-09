@@ -10,8 +10,6 @@ export const cs = {
   meta: {
     localeName: "Čeština",
     localeShort: "CZ",
-    switchLabel: "English",
-    switchShort: "EN",
     htmlLang: "cs",
     dateLocale: "cs-CZ",
   },
@@ -28,7 +26,6 @@ export const cs = {
     results: "Výsledky",
     events: "Turnaje",
     skipToContent: "Přejít na obsah",
-    localeSwitch: "Přepnout jazyk",
     home: "Úvod",
   },
 
@@ -50,13 +47,10 @@ export const cs = {
   },
 
   labels: {
-    file: "Složka",
     updated: "Aktualizováno",
     published: "Publikováno",
     readingTime: "min čtení",
     sources: "Zdroje",
-    sourceCount: (n: number) =>
-      `${n} ${n === 1 ? "zdroj" : n < 5 ? "zdroje" : "zdrojů"}`,
     photoPending: "Fotografie zatím není",
     desk: "Redakce",
     photoSlots: {
@@ -79,9 +73,6 @@ export const cs = {
     promotion: "Organizace",
     event: "Turnaj",
     fighters: "Bojovníci",
-    confirmed: "Co je potvrzené",
-    unconfirmed: "Co potvrzené není",
-    noneUnconfirmed: "U tohoto textu nezůstává otevřené nic podstatného.",
     primary: "Primární",
     secondary: "Sekundární",
     internal: "Interní důkaz",
@@ -191,13 +182,6 @@ export const cs = {
     completed: "Proběhlo",
   },
 
-  fieldStates: {
-    verified: "Ověřeno",
-    provisional: "Předběžné",
-    disputed: "Sporné",
-    unavailable: "Nedostupné",
-  },
-
   fighterFields: {
     record: "Bilance",
     stance: "Postoj",
@@ -241,10 +225,6 @@ export const cs = {
     rosterTitle: "Soupiska",
     rosterDek: (files: number) =>
       `${files} ${files === 1 ? "složka" : files < 5 ? "složky" : "složek"}. U každého pole je uvedeno, odkud pochází.`,
-    markingTitle: "Jak je každé pole označené",
-    markingNote: (open: number, total: number) =>
-      `${open} z ${total} polí není uzavřených a zůstávají na stránce jako mezery. Tohle číslo popisuje důkazní složky; kurzy a výstupy modelu jsou označené zvlášť.`,
-    visibleGap: "Viditelná mezera",
     noCompletedCard: (promotion: string) =>
       `Žádná odjetá karta ${promotion} v záznamu není`,
     noCompletedCardBody:
@@ -359,15 +339,6 @@ export const cs = {
     ],
     boundaryFooter:
       "Pokud text cituje deterministický výstup, přímo na stránce uvádí přesnou verzi modelu, vstupy a srozumitelně popsanou nejistotu.",
-    statesTitle: "Jak se pole označuje",
-    statesDek:
-      "Pole u bojovníků a turnajů mají jeden ze čtyř stavů. Nic se nedoplňuje jen proto, aby složka vypadala kompletně.",
-    stateHelp: {
-      verified: "Dva nezávislé zdroje se shodují.",
-      provisional: "Jediný zdroj. Použitelné, označené, neuzavřené.",
-      disputed: "Zdroje si odporují. Rozpor zaznamenáme, neprůměrujeme ho.",
-      unavailable: "Není doložené. Ukazuje se jako mezera.",
-    },
     modelTitle: "Popis modelu",
     modelVersion: "Verze",
     modelInputs: "Vstupy",
@@ -598,15 +569,9 @@ export const cs = {
   },
 
   demo: {
-    bannerLabel: "Ukázková verze",
-    bannerBody:
-      "Ukázkový obsah. Bojovníci, turnaje, výsledky i citace na tomhle webu jsou smyšlené a web je vyloučený z vyhledávačů.",
-    articleBadge: "Ukázkový text",
+    articleBadge: "Ukázkový obsah",
     articleNotice:
       "Tohle je ukázkový text postavený na smyšlených datech. Není to zpravodajství a stránka je vyloučená z vyhledávačů.",
-    dataBadge: "Ukázková data",
-    dataNotice:
-      "Smyšlený ukázkový záznam. Nepopisuje žádného skutečného bojovníka, výsledek ani nasmlouvaný zápas.",
   },
 
   notFound: {
