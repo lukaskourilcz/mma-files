@@ -58,7 +58,9 @@ export function PhotoSlot({
   const dict = getDictionary(locale);
 
   if (image) {
-    const credit = creditMode === "overlay" ? readerCredit(image) : null;
+    const credit = creditMode === "overlay"
+      ? readerCredit(image) ?? "Redakční vizuál"
+      : null;
     return (
       <>
         <Image

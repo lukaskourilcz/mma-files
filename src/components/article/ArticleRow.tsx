@@ -41,6 +41,7 @@ export function ArticleRow({
             note={dict.labels.photoSlots.story}
             sizes="(min-width: 768px) 160px, 96px"
             useThumbnail
+            creditMode="overlay"
           />
         </span>
         <span className="min-w-0">
