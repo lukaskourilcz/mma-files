@@ -1,12 +1,15 @@
 import { ImageResponse } from "next/og";
+import { OgCard } from "@/components/brand/OgCard";
 import { siteConfig } from "@/config/site";
 import { getDictionary } from "@/i18n";
+import { formatDate } from "@/lib/format";
+import { getOgFonts } from "@/lib/og-fonts";
 import { articleTitle, getArticleBySlug, getArticles } from "@/lib/repository";
 import { DEFAULT_LOCALE, LOCALES, isLocale } from "@/lib/types";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = `${siteConfig.name} — story card`;
+export const alt = `${siteConfig.name} — karta článku`;
 
 export function generateStaticParams() {
   return LOCALES.flatMap((locale) =>
@@ -29,74 +32,19 @@ export default async function Image({
   const article = getArticleBySlug(slug);
 
   const title = article ? articleTitle(article, locale) : siteConfig.name;
-  const format = article ? dict.formats[article.format] : "";
+  const organization = article?.organization
+    ? dict.organizationsShort[article.organization]
+    : undefined;
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          backgroundColor: "#09090B",
-          padding: "64px 72px",
-          borderTop: "10px solid #FF5A00",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <span
-            style={{
-              fontSize: 22,
-              letterSpacing: 4,
-              color: "#FF5A00",
-              textTransform: "uppercase",
-            }}
-          >
-            {format}
-          </span>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            fontSize: title.length > 70 ? 60 : 74,
-            lineHeight: 1.08,
-            letterSpacing: -2.5,
-            color: "#FFFFFF",
-            fontWeight: 700,
-            maxWidth: 1000,
-          }}
-        >
-          {title}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-            borderTop: "1px solid #27272A",
-            paddingTop: 28,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 34,
-              fontWeight: 700,
-              letterSpacing: -1.4,
-              color: "#FFFFFF",
-            }}
-          >
-            {siteConfig.wordmark}
-          </span>
-          <span style={{ fontSize: 20, letterSpacing: 3, color: "#94949C" }}>
-            {article?.isDemo ? dict.demo.articleBadge : dict.footer.blurb}
-          </span>
-        </div>
-      </div>
+      <OgCard
+        date={article ? formatDate(article.publishAt, locale) : undefined}
+        headline={title}
+        kicker={organization}
+        variant="article"
+      />
     ),
-    size,
+    { ...size, fonts: await getOgFonts() },
   );
 }
