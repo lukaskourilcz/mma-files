@@ -3,6 +3,16 @@
 Code and the content-only delivery boundary are complete. These are the remaining
 account or editorial decisions that cannot be made inside the repository.
 
+## Relaunch (start here)
+
+- [ ] Run the redesign prompt sequence in `docs/redesign/`: `BRAINSTORM.md`
+  explains the plan, `PROMPT-CLAUDE-DESIGN.md` goes to Claude Design first, and
+  `PROMPT-CODEX.md` (with the design handoff attached) implements it across
+  this repo and quorum. The FightAIQ empty-cards diagnosis and the ad-banner
+  plan live in the brainstorm.
+- Note: the "First FightAIQ check" list below predates the 2026-08-08 snapshot
+  delivery; the relaunch's cleanup sweep rewrites this file.
+
 ## Before the first delivery
 
 - [ ] In the GitHub App installation already used for Caught Up, add
