@@ -67,11 +67,16 @@ function renderInline(text: string, locale: Locale, keyPrefix: string): ReactNod
         ),
       );
     } else if (linkLabel && linkHref) {
-      nodes.push(
-        <a key={key} href={linkHref} rel="noopener noreferrer nofollow" target="_blank">
-          {linkLabel}
-        </a>,
-      );
+      if (linkHref.startsWith("/")) {
+        const href = linkHref.startsWith(`/${locale}/`) ? linkHref : `/${locale}${linkHref}`;
+        nodes.push(<Link key={key} href={href}>{linkLabel}</Link>);
+      } else {
+        nodes.push(
+          <a key={key} href={linkHref} rel="noopener noreferrer nofollow" target="_blank">
+            {linkLabel}
+          </a>,
+        );
+      }
     } else if (bold) {
       nodes.push(<strong key={key}>{bold}</strong>);
     }
