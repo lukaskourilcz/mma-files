@@ -38,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...localised(routes.home, { priority: 1 }),
     ...localised(routes.latest, { priority: 0.9 }),
     ...localised(routes.fightWeek, { priority: 0.8 }),
+    ...localised(routes.predictions, { priority: 0.8 }),
     ...localised(routes.results, { priority: 0.8 }),
     ...localised(routes.fighters, { priority: 0.7 }),
     ...localised(routes.events, { priority: 0.7 }),

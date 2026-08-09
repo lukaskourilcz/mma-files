@@ -131,7 +131,7 @@ export function MobileMenu({
             <Link
               href={routes.home(locale)}
               onClick={() => setOpen(false)}
-              className="justify-self-center"
+              className="inline-flex min-h-11 items-center justify-self-center"
             >
               <BrandLockup compact />
             </Link>

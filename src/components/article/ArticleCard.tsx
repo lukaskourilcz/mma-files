@@ -91,7 +91,7 @@ export function ArticleGrid({
   return (
     <ul className={`grid gap-5 sm:grid-cols-2 ${columns === 3 ? "lg:grid-cols-3" : ""}`}>
       {articles.map((article) => (
-        <li key={article.id}>
+        <li key={article.id} className="content-auto">
           <ArticleCard article={article} locale={locale} />
         </li>
       ))}

@@ -66,7 +66,7 @@ export default async function EventsPage({
             <SectionHeading title={dict.fightWeek.upcoming} />
             <ul className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {upcoming.map((event) => (
-                <li key={event.id} className="relative">
+                <li key={event.id} className="content-auto relative">
                   <EventCard event={event} locale={locale} />
                 </li>
               ))}
@@ -79,7 +79,7 @@ export default async function EventsPage({
             <SectionHeading title={dict.eventStatus.completed} />
             <ul className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {completed.map((event) => (
-                <li key={event.id} className="relative">
+                <li key={event.id} className="content-auto relative">
                   <EventCard event={event} locale={locale} />
                 </li>
               ))}

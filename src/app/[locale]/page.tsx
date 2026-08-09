@@ -11,7 +11,11 @@ import { ActionLink, ButtonLink, Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
 import { getArticles, getLeadArticle } from "@/lib/repository";
-import { isLocale, type Locale } from "@/lib/types";
+import { LOCALES, isLocale, type Locale } from "@/lib/types";
+
+export function generateStaticParams() {
+  return LOCALES.map((locale) => ({ locale }));
+}
 
 function HomeHeading({
   id,

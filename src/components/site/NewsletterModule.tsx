@@ -51,7 +51,7 @@ export function NewsletterModule({
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         aria-describedby={`${inputId}-note`}
-        className="h-12 min-w-0 flex-1 border border-rule-strong bg-paper px-4 text-[15px] text-text placeholder:text-text-meta focus:border-text focus:outline-none"
+        className="h-12 min-w-0 flex-1 border border-rule-strong bg-paper px-4 text-[15px] text-text placeholder:text-text-meta focus:border-text"
       />
       <button
         type="submit"

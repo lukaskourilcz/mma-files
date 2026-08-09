@@ -63,6 +63,7 @@ export async function GET(
     <description>${escapeXml(description)}</description>
     <language>${raw}</language>
     <atom:link href="${escapeXml(self)}" rel="self" type="application/rss+xml" />
+    <atom:link href="${escapeXml(absoluteUrl(routes.predictions(raw)))}" rel="related" type="text/html" title="${escapeXml(dict.predictions.title)}" />
 ${items}
   </channel>
 </rss>

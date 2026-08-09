@@ -12,7 +12,7 @@ function FooterLink({ href, children }: { href: string; children: string }) {
     <li>
       <Link
         href={href}
-        className="flex min-h-10 items-center text-[15px] text-text-inverse-muted underline decoration-transparent decoration-1 underline-offset-4 hover:text-text-inverse hover:decoration-current"
+        className="flex min-h-11 items-center text-[15px] text-text-inverse-muted underline decoration-transparent decoration-1 underline-offset-4 hover:text-text-inverse hover:decoration-current"
       >
         {children}
       </Link>
@@ -29,7 +29,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       <Container className="pb-10 pt-16">
         <div className="grid gap-10 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-5">
-            <Link href={routes.home(locale)} className="inline-flex">
+            <Link href={routes.home(locale)} className="inline-flex min-h-11 items-center">
               <BrandLockup />
             </Link>
             <p className="mt-4 max-w-[40ch] text-[15px] leading-relaxed text-text-inverse-muted">
@@ -88,7 +88,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             </div>
             <Link
               href={routes.rss(locale)}
-              className="mt-4 flex min-h-10 items-center text-[15px] text-text-inverse-muted underline decoration-transparent decoration-1 underline-offset-4 hover:text-text-inverse hover:decoration-current"
+              className="mt-4 flex min-h-11 items-center text-[15px] text-text-inverse-muted underline decoration-transparent decoration-1 underline-offset-4 hover:text-text-inverse hover:decoration-current"
             >
               {dict.footer.rss}
             </Link>

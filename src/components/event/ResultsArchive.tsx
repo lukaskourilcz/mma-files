@@ -69,7 +69,7 @@ function ArchiveCard({ event, locale }: { event: FightEvent; locale: Locale }) {
     timeZone: event.timeZone,
   });
   return (
-    <details className="group border-b border-rule-strong">
+    <details className="content-auto group border-b border-rule-strong">
       <summary
         aria-label={dict.results.expand}
         className="flex min-h-14 cursor-pointer list-none items-center gap-3 py-3 marker:hidden"

@@ -17,7 +17,7 @@ export function Masthead({ locale }: { locale: Locale }) {
     <header>
       <a
         href="#main"
-        className="label-mono sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-accent focus:px-4 focus:py-2.5 focus:text-text-inverse"
+        className="label-mono sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:inline-flex focus:min-h-11 focus:items-center focus:bg-accent focus:px-4 focus:py-2.5 focus:text-text-inverse"
       >
         {dict.nav.skipToContent}
       </a>
@@ -35,7 +35,7 @@ export function Masthead({ locale }: { locale: Locale }) {
           />
           <Link
             href={routes.home(locale)}
-            className="justify-self-center"
+            className="inline-flex min-h-11 items-center justify-self-center"
           >
             <BrandLockup compact />
           </Link>

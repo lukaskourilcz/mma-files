@@ -175,7 +175,7 @@ export function ActionLink({
   return (
     <Link
       href={href}
-      className={`inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] underline decoration-transparent decoration-[3px] underline-offset-4 hover:decoration-accent ${
+      className={`inline-flex min-h-11 items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] underline decoration-transparent decoration-[3px] underline-offset-4 hover:decoration-accent ${
         tone === "paper" ? "text-text-inverse-muted" : "text-text-muted"
       } ${className}`}
     >

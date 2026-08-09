@@ -46,7 +46,7 @@ export function ArticleRow({
         });
 
   return (
-    <li className="border-b border-rule last:border-b-0">
+    <li className="content-auto border-b border-rule last:border-b-0">
       <Link
         href={routes.article(locale, article.slug)}
         className="group grid grid-cols-[96px_minmax(0,1fr)] gap-3 py-4 hover:bg-card md:grid-cols-[160px_minmax(0,1fr)_auto] md:gap-x-5"

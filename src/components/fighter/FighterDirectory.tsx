@@ -38,7 +38,7 @@ export function FighterDirectory({ fighters, locale }: { fighters: Fighter[]; lo
       {visible.length > 0 ? (
         <ul className="mt-8 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
           {visible.map((fighter) => (
-            <li key={fighter.id} className="relative">
+            <li key={fighter.id} className="content-auto relative">
               <FighterCard fighter={fighter} locale={locale} />
             </li>
           ))}

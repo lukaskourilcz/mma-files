@@ -43,7 +43,7 @@ export function Countdown({
 
   if (now === null || target - now <= 0) {
     return (
-      <p className="border border-rule bg-paper px-4 py-5 text-center font-mono text-[13px] tabular-nums text-text">
+      <p role="timer" aria-live="polite" aria-atomic="true" className="border border-rule bg-paper px-4 py-5 text-center font-mono text-[13px] tabular-nums text-text">
         {fallback}
       </p>
     );
@@ -66,7 +66,7 @@ export function Countdown({
   ];
 
   return (
-    <div className="border border-rule bg-paper px-3 py-4">
+    <div role="timer" aria-live="polite" aria-atomic="true" className="border border-rule bg-paper px-3 py-4">
       <ul className="grid grid-cols-4 divide-x divide-rule">
         {cells.map((cell) => (
           <li
