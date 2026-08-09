@@ -1,9 +1,9 @@
 import Link from "next/link";
+import { PhotoSlot } from "@/components/media/PhotoSlot";
 import { DataRow } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import {
   ageFrom,
-  countryName,
   formatHeight,
   formatRecord,
 } from "@/lib/format";
@@ -13,14 +13,8 @@ import type { Fighter, FighterField, Locale } from "@/lib/types";
 import { FIGHTER_FIELDS } from "@/lib/types";
 
 /**
- * A roster card: the name in display type, the record underneath, and nothing else.
- *
- * There is no portrait. A fighter photograph that is both accurate and licensed for a magazine
- * to publish is not something this desk can obtain — the free photo sources return whatever
- * matches a name string, and an unlicensed press image is not an option — so the card carries
- * what the files actually support. A named slot holding a placeholder is a promise the venture
- * cannot keep; a card of verified data is one it can.
- *
+ * Portrait slots never substitute a likeness. The labelled treatment is the
+ * honest state until a licensed fighter image arrives in the delivery contract.
  */
 export function FighterCard({
   fighter,
@@ -33,36 +27,40 @@ export function FighterCard({
   const accent = PROMOTION_ACCENT[fighter.organization];
 
   return (
-    <article className="sheet sheet-hover flex h-full flex-col">
-      <div className="border-b border-rule px-4 py-3">
+    <article className="group relative flex h-full flex-col border border-rule-strong bg-card">
+      <div className="relative aspect-[4/5] overflow-hidden">
+        <PhotoSlot
+          locale={locale}
+          note={dict.labels.photoSlots.portrait}
+          sizes="(min-width: 1024px) 25vw, 50vw"
+        />
         <span
-          style={{ backgroundColor: `color-mix(in oklch, ${accent} 88%, black)` }}
-          className="label-mono-sm inline-block px-2 py-1 font-semibold tracking-[0.14em] text-white"
+          style={{ backgroundColor: accent }}
+          className="absolute bottom-3 left-3 z-10 inline-flex px-2 py-[5px] font-mono text-[10px] font-semibold uppercase leading-none tracking-[0.16em] text-white"
         >
           {dict.organizationsShort[fighter.organization]}
         </span>
       </div>
 
-      <div className="px-4 pb-4 pt-3.5">
-        <h3 className="display text-[22px] leading-tight text-ink md:text-[26px]">
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="display text-[length:var(--text-d6)] leading-tight text-text underline decoration-transparent decoration-[3px] underline-offset-4 group-hover:decoration-accent">
           <Link
             href={routes.fighter(locale, fighter.organization, fighter.slug)}
-            className="headline-link after:absolute after:inset-0"
+            className="after:absolute after:inset-0"
           >
             {fighter.name}
           </Link>
         </h3>
 
+        <p className="mt-1 text-[13px] text-text-muted">
+          {dict.divisions[fighter.division]}
+        </p>
+
         {fighter.record ? (
-          <p className="mt-2 font-mono text-sm font-semibold text-ink">
+          <p className="mt-3 font-mono text-[13px] tabular-nums text-text">
             {formatRecord(fighter.record)}
           </p>
         ) : null}
-
-        <p className="label-mono-sm mt-1.5 tracking-[0.13em] text-ink-meta">
-          {dict.divisions[fighter.division]}
-          {fighter.country ? <> ·{" "}<abbr title={countryName(fighter.country, dict)} className="no-underline">{fighter.country}</abbr></> : null}
-        </p>
       </div>
     </article>
   );

@@ -17,7 +17,7 @@ export function FeedRowSkeleton({ locale }: { locale: Locale }) {
         <SkeletonBlock className="aspect-video w-24 md:h-[90px] md:w-40" />
         <div className="space-y-3 py-1">
           <SkeletonBlock className="h-3.5 w-3/5" />
-          <SkeletonBlock className="h-2.5 w-9/10" />
+          <SkeletonBlock className="h-2.5 w-[90%]" />
         </div>
         <SkeletonBlock className="hidden h-3 w-16 md:block" />
       </div>

@@ -101,7 +101,7 @@ export function formatRecord(record: {
   draws: number;
   noContests?: number;
 }): string {
-  const base = `${record.wins}-${record.losses}-${record.draws}`;
+  const base = `${record.wins}–${record.losses}–${record.draws}`;
   return record.noContests ? `${base} (${record.noContests} NC)` : base;
 }
 

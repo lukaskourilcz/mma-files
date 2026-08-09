@@ -1,15 +1,11 @@
 import { Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { factOfTheDay } from "@/lib/facts";
+import { formatDate } from "@/lib/format";
 import type { Locale } from "@/lib/types";
 
 /**
- * A slim belt above the lead story: one checkable fact, picked from the lead
- * article's published date so the same content always builds the same page.
- *
- * It sits before LeadStory because on a phone the hero fills the first screen,
- * and a belt underneath it would never be seen. Self-contained by design — no
- * link, no tooltip, nothing to tap.
+ * One checkable fact, deterministically picked from the lead publication date.
  */
 export function DidYouKnow({
   dateKey,
@@ -26,16 +22,21 @@ export function DidYouKnow({
   return (
     <aside
       aria-label={copy.ariaLabel}
-      className="border-b border-rule-strong bg-card"
+      className="bg-accent py-6 text-paper"
     >
-      <Container className="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-3 md:py-4">
-        <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink-muted">
+      <Container className="grid gap-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:gap-8">
+        <p className="display text-[22px] leading-none">
           {copy.kicker}
         </p>
-        <p className="min-w-0 flex-1 text-sm leading-relaxed">{entry.cs.short}</p>
-        <p className="hidden shrink-0 text-[0.6875rem] uppercase tracking-[0.08em] tabular-nums text-ink-muted md:block">
-          {copy.verified} <time dateTime={entry.verified}>{entry.verified}</time>
-        </p>
+        <p className="max-w-[72ch] text-[17px] font-medium leading-[1.5]">{entry.cs.short}</p>
+        <div className="font-mono text-[11px] leading-relaxed opacity-80 md:text-right">
+          <p className="flex items-center gap-2 md:justify-end">
+            <span aria-hidden="true" className="h-[5px] w-[5px] bg-paper" />
+            {copy.verified}{" "}
+            <time dateTime={entry.verified}>{formatDate(entry.verified, locale)}</time>
+          </p>
+          <p>{copy.source}: {entry.source}</p>
+        </div>
       </Container>
     </aside>
   );
