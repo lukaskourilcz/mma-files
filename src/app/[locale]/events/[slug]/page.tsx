@@ -74,7 +74,7 @@ export default async function EventPage({
           />
 
           <div className="mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-2">
-            <Chip tone="ember">{dict.organizations[event.organization]}</Chip>
+            <Chip tone="dark">{dict.organizations[event.organization]}</Chip>
             <Chip tone="dark">{dict.eventStatus[event.status]}</Chip>
             <span className="label-mono-sm text-muted">
               {isPast

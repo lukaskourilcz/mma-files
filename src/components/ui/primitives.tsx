@@ -20,23 +20,14 @@ type ChipTone =
   | "ink"
   | "signal"
   | "muted"
-  | "dark"
-  | "ember"
-  | "success"
-  | "warning"
-  | "danger";
+  | "dark";
 
 const CHIP_TONE: Record<ChipTone, string> = {
-  default: "border-rule-strong text-ink bg-white",
-  ink: "border-ink text-white bg-ink",
-  // Lime is a fill only; the text on it is always ink.
-  signal: "border-signal text-ink bg-signal",
-  muted: "border-rule-strong text-ink-muted bg-transparent",
-  dark: "border-rule-dark text-paper bg-ink",
-  ember: "border-ink text-white bg-ink",
-  success: "border-success/30 text-success bg-success/8",
-  warning: "border-warning/30 text-warning bg-warning/8",
-  danger: "border-danger/30 text-danger bg-danger/8",
+  default: "border-rule-strong text-text bg-card",
+  ink: "border-text text-paper bg-text",
+  signal: "border-accent text-paper bg-accent",
+  muted: "border-rule-strong text-text-muted bg-transparent",
+  dark: "border-rule-dark text-text-inverse bg-chrome",
 };
 
 /** Small mono label with a hairline box — the site's unit of metadata. */
@@ -260,15 +251,5 @@ export function DataRow({
         {children}
       </dd>
     </div>
-  );
-}
-
-/** Explicit gap. Never a zero, never an em dash pretending to be data. */
-export function MissingValue({ label }: { label: string }) {
-  return (
-    <span className="label-mono-sm inline-flex items-center gap-1.5 text-gap">
-      <span aria-hidden="true" className="block h-px w-3 bg-gap" />
-      {label}
-    </span>
   );
 }

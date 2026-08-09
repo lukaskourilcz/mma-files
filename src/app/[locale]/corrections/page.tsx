@@ -71,7 +71,7 @@ export default async function CorrectionsPage({
                 {log.map(({ correction, article }) => (
                   <li key={`${article.id}-${correction.at}`} className="sheet p-5">
                     <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2">
-                      <Chip tone="warning">
+                      <Chip className="border-correction-rule bg-correction text-text">
                         {correction.kind === "correction"
                           ? dict.labels.correction
                           : dict.labels.update}

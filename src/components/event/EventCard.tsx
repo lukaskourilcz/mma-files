@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Chip, MissingValue } from "@/components/ui/primitives";
+import { Chip } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { countryName, formatCountdown, formatDateTime } from "@/lib/format";
 import { routes } from "@/lib/paths";
@@ -201,8 +201,8 @@ export function EventCard({
             ))}
           </ul>
         ) : (
-          <p className="mt-4.5">
-            <MissingValue label={dict.events.noBouts} />
+          <p className="label-mono-sm mt-4.5 text-text-meta">
+            {dict.events.noBouts}
           </p>
         )}
 
