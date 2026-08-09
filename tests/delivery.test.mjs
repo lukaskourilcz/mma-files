@@ -237,6 +237,27 @@ test("stores a Czech-only article, and still refuses one with no Czech", async (
   }
 });
 
+test("accepts an explicit article organization and rejects invalid or contradictory values", async () => {
+  const target = await root();
+  try {
+    const explicit = article({ organization: "ufc" });
+    assert.equal((await materializeBoardlessPackage(explicit, target)).status, "written");
+    const stored = JSON.parse(await readFile(path.join(target, "data/boardless/articles.json"), "utf8"));
+    assert.equal(stored.packages[0].organization, "ufc");
+
+    await assert.rejects(
+      materializeBoardlessPackage(article({ organization: "pfl", slot: "pm" }), target),
+      /organization must be ufc or oktagon/,
+    );
+    await assert.rejects(
+      materializeBoardlessPackage(article({ organization: "oktagon", slot: "pm" }), target),
+      /organization contradicts the package references/,
+    );
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
 test("materializes a verified ad manifest and creative atomically", async () => {
   const target = await root();
   try {

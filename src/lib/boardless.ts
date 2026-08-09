@@ -45,6 +45,7 @@ interface DeliveredArticlePackage {
   heroSpec: { template: string; bindings: Record<string, string | number | boolean> };
   fighterRefs: string[];
   eventRef?: string;
+  organization?: Organization;
   modelVersion?: string;
   publishAt: string;
   slot: "am" | "pm";
@@ -150,6 +151,9 @@ const heroTemplates = new Set<HeroTemplate>([
 ]);
 
 function organization(article: DeliveredArticlePackage): Organization | undefined {
+  if (article.organization === "ufc" || article.organization === "oktagon") {
+    return article.organization;
+  }
   const reference = article.eventRef ?? article.fighterRefs[0];
   return reference?.startsWith("ufc:") ? "ufc" : reference?.startsWith("oktagon:") ? "oktagon" : undefined;
 }

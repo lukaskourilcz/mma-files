@@ -58,6 +58,10 @@ function scopedReference(value, field) {
   return text;
 }
 
+function referenceOrganization(reference) {
+  return reference.split(":", 1)[0];
+}
+
 function independentSourceCount(sourceRefs) {
   return new Set(sourceRefs.map((reference) => {
     if (reference.startsWith("source:cito-ufc:")) return "provider:cito-ufc";
@@ -141,6 +145,15 @@ async function validateArticle(value) {
   }
   article.fighterRefs.forEach((reference, index) => scopedReference(reference, `fighterRefs[${index}]`));
   if (article.eventRef !== undefined) scopedReference(article.eventRef, "eventRef");
+  if (article.organization !== undefined && article.organization !== "ufc" && article.organization !== "oktagon") {
+    throw new DeliveryError("schema_invalid", "organization must be ufc or oktagon");
+  }
+  if (article.organization) {
+    const references = [...article.fighterRefs, ...(article.eventRef ? [article.eventRef] : [])];
+    if (references.some((reference) => referenceOrganization(reference) !== article.organization)) {
+      throw new DeliveryError("schema_invalid", "organization contradicts the package references");
+    }
+  }
   const expected = packageHash(article);
   if (article.packageHash !== expected) {
     throw new DeliveryError("content_invalid", "article packageHash does not match its canonical bytes");
