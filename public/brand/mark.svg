@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MMA Files">
+  <rect width="64" height="64" fill="#0B0B0C"/>
+  <rect x="18" y="10" width="8" height="44" transform="skewX(-12)" fill="#F7F7F5"/>
+  <rect x="33" y="28" width="8" height="26" transform="skewX(-12)" fill="oklch(0.68 0.19 27)"/>
+</svg>

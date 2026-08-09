@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 60" role="img" aria-label="MMA Files">
+  <!-- Editable source only. Ship mma-files-wordmark.svg, whose lettering is outlined. -->
+  <rect x="0" y="6" width="7" height="48" transform="skewX(-12)" fill="#0B0B0C"/>
+  <rect x="13" y="26" width="7" height="28" transform="skewX(-12)" fill="oklch(0.52 0.22 27)"/>
+  <text x="42" y="49" font-family="Anton" font-weight="400" font-size="54"
+        letter-spacing="0.5" fill="#0B0B0C">MMA FILES</text>
+</svg>
