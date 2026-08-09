@@ -175,7 +175,7 @@ export default async function ArticlePage({
               body={local.body}
               locale={locale}
               className="prose-file mt-10 max-w-[var(--layout-measure)]"
-              afterThirdBlock={<AdSlot name="article-mid" locale={locale} />}
+              afterThirdBlock={<AdSlot name="article-mid" locale={locale} className="max-w-none" />}
             />
 
             <ArticleSources sources={article.sources} locale={locale} />
