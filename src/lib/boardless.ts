@@ -4,6 +4,7 @@ import {
   DIVISIONS,
   type Article,
   type ArticleFormat,
+  type BoutResult,
   type Division,
   type FieldState,
   type FightEvent,
@@ -248,14 +249,30 @@ function fieldState(record: FightAiQFighterRecord, name: FighterField): FieldSta
   return value.status;
 }
 
-function division(value: string | undefined): Division | undefined {
+export function normalizeDeliveredDivision(value: string | undefined): Division | undefined {
   if (!value) return undefined;
   const normalized = value
     .toLowerCase()
+    .replace(/<br\s*\/?\s*>|<be\s*>/giu, " ")
+    .replace(/\{\{\s*(?:plainlist|hlist)\s*\|/giu, " ")
+    .replace(/[{}\[\]]/gu, " ")
+    .replace(/\|/gu, " ")
+    .replace(/(?:^|\s)\*+\s*/gu, " ")
     .replaceAll("women's", "womens")
     .replaceAll("women’s", "womens")
-    .replace(/\s+/gu, "-");
-  return DIVISIONS.find((candidate) => candidate === normalized);
+    .replace(/[-–—]+/gu, " ")
+    .replace(/\s+/gu, " ")
+    .trim();
+  const labels = [...DIVISIONS]
+    .map((candidate) => [candidate, candidate.replaceAll("-", " ")] as const)
+    .sort((left, right) => right[1].length - left[1].length);
+  const labelPattern = labels.map(([, label]) => label.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")).join("|");
+  const matches = [...normalized.matchAll(new RegExp(`(?:^|\\s)(${labelPattern})(?=$|\\s)`, "gu"))]
+    .map((match) => labels.find(([, label]) => label === match[1])?.[0])
+    .filter((candidate): candidate is Division => Boolean(candidate));
+  // MediaWiki tables sometimes concatenate a previous and current division. The current
+  // value is the last one in the cell; keeping that ordering avoids manufacturing a choice.
+  return matches.at(-1);
 }
 
 function stance(value: string | undefined): Stance | undefined {
@@ -294,7 +311,7 @@ function sourcesFor(record: FightAiQFighterRecord): Source[] {
 
 function deliveredFighter(value: FightAiQFighterRecord): Fighter | null {
   const name = fieldText(value, "name");
-  const weightClass = division(fieldText(value, "division"));
+  const weightClass = normalizeDeliveredDivision(fieldText(value, "division"));
   if (!name || !weightClass) return null;
   const fighterRecord = record(fieldText(value, "record"));
   const sourceList = sourcesFor(value);
@@ -371,7 +388,7 @@ function deliveredEvent(value: FightAiQEvent, fighters: readonly FightAiQFighter
     status: completed ? "completed" : confirmed ? "confirmed" : "announced",
     bouts: value.bouts.map((bout, index) => ({
       id: bout.id,
-      division: division(bout.division) ?? "catchweight",
+      division: normalizeDeliveredDivision(bout.division) ?? "catchweight",
       red: { name: fighterName(bout.red, fighters), fighterRef: `fighter:${bout.red.replace(":", "/")}` },
       blue: { name: fighterName(bout.blue, fighters), fighterRef: `fighter:${bout.blue.replace(":", "/")}` },
       scheduledRounds: bout.scheduledRounds,
@@ -385,8 +402,9 @@ function deliveredEvent(value: FightAiQEvent, fighters: readonly FightAiQFighter
   };
 }
 
-function resultMethod(value: FightAiQBout["result"]): import("@/lib/types").ResultMethod {
-  if (!value || value.winner === "draw") return "draw";
+function resultMethod(value: FightAiQBout["result"]): import("@/lib/types").ResultMethod | undefined {
+  if (!value) return undefined;
+  if (value.winner === "draw") return "draw";
   if (value.winner === "no-contest") return "no-contest";
   const method = value.method?.toLowerCase() ?? "";
   if (method.includes("submission") || method.includes("sub")) return "submission";
@@ -394,12 +412,25 @@ function resultMethod(value: FightAiQBout["result"]): import("@/lib/types").Resu
   if (method.includes("majority")) return "decision-majority";
   if (method.includes("decision")) return "decision-unanimous";
   if (method.includes("tko")) return "tko";
-  return "ko";
+  if (method.includes("ko")) return "ko";
+  return undefined;
 }
 
 function resultTime(seconds: number | null): string | undefined {
   if (seconds === null) return undefined;
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function deliveredResult(bout: FightAiQBout): BoutResult | undefined {
+  const method = resultMethod(bout.result);
+  if (!bout.result || !method) return undefined;
+  return {
+    ...(bout.result.winner === "red" ? { winnerRef: `fighter:${bout.fighters.red.replace(":", "/")}` } : bout.result.winner === "blue" ? { winnerRef: `fighter:${bout.fighters.blue.replace(":", "/")}` } : {}),
+    method,
+    ...(bout.result.method ? { finish: bout.result.method.toLowerCase().replace(/[^a-z0-9]+/gu, "-").replace(/^-+|-+$/gu, "") } : {}),
+    ...(bout.result.round ? { round: bout.result.round } : {}),
+    ...(resultTime(bout.result.elapsedSeconds) ? { time: resultTime(bout.result.elapsedSeconds) } : {}),
+  };
 }
 
 function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly FightAiQFighterRecord[], statsEntries: readonly FightAiQStatsEntry[]): FightEvent[] {
@@ -411,7 +442,7 @@ function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly
     const first = bouts[0];
     if (!first) return [];
     const slug = first.event.ref.replace(`${first.org}:event:`, "");
-    const complete = bouts.every((bout) => bout.status === "completed");
+    const complete = bouts.every((bout) => bout.status === "completed" && bout.result);
     const confirmed = bouts.some((bout) => bout.status === "confirmed" || bout.status === "weigh-in");
     const sources = [...new Set(bouts.flatMap((bout) => bout.sourceRefs))];
     return [{
@@ -427,7 +458,7 @@ function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly
       status: complete ? "completed" as const : confirmed ? "confirmed" as const : "card-forming" as const,
       bouts: bouts.sort((left, right) => left.id.localeCompare(right.id)).map((bout, index) => ({
         id: bout.id,
-        division: division(bout.division ?? undefined) ?? "catchweight",
+        division: normalizeDeliveredDivision(bout.division ?? undefined) ?? "catchweight",
         red: { name: fighterName(bout.fighters.red, fighters), fighterRef: `fighter:${bout.fighters.red.replace(":", "/")}` },
         blue: { name: fighterName(bout.fighters.blue, fighters), fighterRef: `fighter:${bout.fighters.blue.replace(":", "/")}` },
         scheduledRounds: bout.scheduledRounds ?? 3,
@@ -439,13 +470,7 @@ function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly
           modelVersion: predictions.get(bout.id)!.modelVersion,
           calibrationLabel: predictions.get(bout.id)!.calibrationLabel
         } } : {}),
-        ...(bout.result ? { result: {
-          ...(bout.result.winner === "red" ? { winnerRef: `fighter:${bout.fighters.red.replace(":", "/")}` } : bout.result.winner === "blue" ? { winnerRef: `fighter:${bout.fighters.blue.replace(":", "/")}` } : {}),
-          method: resultMethod(bout.result),
-          ...(bout.result.method ? { finish: bout.result.method.toLowerCase().replace(/[^a-z0-9]+/gu, "-").replace(/^-+|-+$/gu, "") } : {}),
-          ...(bout.result.round ? { round: bout.result.round } : {}),
-          ...(resultTime(bout.result.elapsedSeconds) ? { time: resultTime(bout.result.elapsedSeconds) } : {})
-        } } : {})
+        ...(deliveredResult(bout) ? { result: deliveredResult(bout) } : {})
       })),
       localizations: {
         en: { summary: `${first.event.name} has ${bouts.length} sourced fight${bouts.length === 1 ? "" : "s"} on file.` },
@@ -463,7 +488,25 @@ export function getDeliveredFighters(): Fighter[] {
 
 export function getDeliveredEvents(): FightEvent[] {
   const snapshot = getFightAiQDelivery();
-  const eventBouts = snapshot.bouts.filter((bout) => !bout.event.ref.includes(":event:history-"));
-  if (eventBouts.length) return deliveredBoutEvents(eventBouts, snapshot.fighters, snapshot.statsEntries);
-  return snapshot.events.map((value) => deliveredEvent(value, snapshot.fighters)).filter((event): event is FightEvent => Boolean(event));
+  const delivered = snapshot.events
+    .map((value) => deliveredEvent(value, snapshot.fighters))
+    .filter((event): event is FightEvent => Boolean(event));
+  const authoritativeRefs = new Set(snapshot.events.map((event) => event.id));
+  const anchor = snapshot.generatedAt ? Date.parse(snapshot.generatedAt) : Number.NaN;
+  const recentBoundary = anchor - (365 * 86_400_000);
+  const eventBouts = snapshot.bouts.filter((bout) => {
+    if (authoritativeRefs.has(bout.event.ref)) return false;
+    if (bout.status === "cancelled" || bout.status === "postponed") return false;
+    if (!bout.event.ref.includes(":event:history-")) return true;
+    const startsAt = Date.parse(bout.event.startsAtUtc);
+    return bout.status === "completed"
+      && Boolean(bout.result)
+      && Number.isFinite(anchor)
+      && startsAt >= recentBoundary
+      && startsAt <= anchor;
+  });
+  return [
+    ...delivered,
+    ...deliveredBoutEvents(eventBouts, snapshot.fighters, snapshot.statsEntries),
+  ];
 }
