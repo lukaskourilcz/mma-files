@@ -67,15 +67,15 @@ export function PromotionBadge({
 }) {
   return (
     <span
-      style={{ backgroundColor: `color-mix(in oklch, ${accent} 88%, black)` }}
-      className={`inline-flex items-center px-2.5 py-1.5 text-[11px] font-extrabold uppercase leading-none tracking-[0.16em] text-white ${className}`}
+      style={{ backgroundColor: accent }}
+      className={`inline-flex items-center px-2 py-[5px] font-mono text-[10px] font-semibold uppercase leading-none tracking-[0.16em] text-white ${className}`}
     >
       {label}
     </span>
   );
 }
 
-/** Uppercase mono kicker with an ink tick. Used above headlines and sections. */
+/** Uppercase mono kicker. Organisation identity stays typographic here. */
 export function Kicker({
   children,
   tone = "ink",
@@ -87,14 +87,10 @@ export function Kicker({
 }) {
   return (
     <span
-      className={`label-mono inline-flex items-center gap-2 ${
-        tone === "paper" ? "text-paper-meta" : "text-ink-meta"
+      className={`inline-flex font-mono text-[11px] font-medium uppercase tracking-[var(--tracking-kicker)] ${
+        tone === "paper" ? "text-accent-on-dark" : "text-accent"
       } ${className}`}
     >
-      <span
-        aria-hidden="true"
-        className={`block h-[2px] w-4 ${tone === "paper" ? "bg-paper-meta" : "bg-ink"}`}
-      />
       {children}
     </span>
   );
@@ -179,14 +175,14 @@ export function ActionLink({
   return (
     <Link
       href={href}
-      className={`group inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] ${
-        tone === "paper" ? "text-paper-muted hover:text-white" : "text-ink-muted hover:text-ink"
+      className={`inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] underline decoration-transparent decoration-[3px] underline-offset-4 hover:decoration-accent ${
+        tone === "paper" ? "text-text-inverse-muted" : "text-text-muted"
       } ${className}`}
     >
       {children}
       <span
         aria-hidden="true"
-        className="inline-block transition-transform duration-150 group-hover:translate-x-0.5"
+        className="inline-block"
       >
         →
       </span>
@@ -198,25 +194,46 @@ export function ActionLink({
 export function ButtonLink({
   href,
   children,
-  variant = "solid",
+  variant = "primary",
+  tone = "paper",
   className = "",
 }: {
   href: string;
   children: ReactNode;
-  variant?: "solid" | "outline";
+  variant?: "primary" | "secondary" | "solid" | "outline";
+  tone?: "paper" | "chrome";
   className?: string;
 }) {
+  const primary = variant === "primary" || variant === "solid";
   const base =
-    "inline-flex items-center gap-2.5 text-[13px] uppercase tracking-[0.12em] transition-colors";
+    "inline-flex min-h-12 items-center justify-center gap-2.5 px-6 py-4 text-[13px] font-extrabold uppercase tracking-[0.1em] transition-colors";
   const styles =
-    variant === "solid"
-      ? "bg-ink px-6 py-4 font-extrabold text-white hover:bg-ufc"
-      : "border border-ink px-[1.375rem] py-[0.875rem] font-bold text-ink hover:bg-ink hover:text-white";
+    primary
+      ? "bg-accent text-paper hover:bg-accent-press"
+      : tone === "chrome"
+        ? "border border-text-inverse text-text-inverse hover:bg-text-inverse hover:text-chrome"
+        : "border border-text text-text hover:bg-text hover:text-paper";
 
   return (
     <Link href={href} className={`${base} ${styles} ${className}`}>
       {children}
     </Link>
+  );
+}
+
+export function NoteChip({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-flex bg-note px-2 py-1 font-mono text-[10px] font-semibold uppercase leading-none tracking-[0.16em] text-note-ink ${className}`}
+    >
+      {children}
+    </span>
   );
 }
 
