@@ -5,12 +5,8 @@ import { usePathname } from "next/navigation";
 import type { NavItem } from "@/config/navigation";
 
 /**
- * The section rail. Desktop and mobile are the same row; below the container
- * width it scrolls horizontally rather than collapsing into a hamburger that
- * hides the paper's structure.
- *
- * `min-w-0` plus `overflow-x-auto` matter: without them the rail refuses to
- * shrink and pushes the locale switcher off the right edge under 1440px.
+ * Desktop section rail. It stays one line and can scroll at narrower desktop
+ * widths; mobile uses the full-height sheet menu.
  */
 export function PrimaryNav({ items, label }: { items: NavItem[]; label: string }) {
   const pathname = usePathname() ?? "";
@@ -23,24 +19,20 @@ export function PrimaryNav({ items, label }: { items: NavItem[]; label: string }
       {items.map((item) => {
         const active =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
-        const accent = item.accent ?? "var(--color-accent)";
-
         return (
           <Link
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            style={{ "--nav-accent": accent } as React.CSSProperties}
-            className={`group relative flex shrink-0 items-center whitespace-nowrap px-3.5 text-[12px] font-bold uppercase tracking-[0.11em] transition-colors hover:text-[var(--nav-accent)] ${
-              active ? "text-ink" : "text-ink-muted"
+            className={`group relative flex min-h-11 shrink-0 items-center whitespace-nowrap px-5 text-[13px] font-bold uppercase tracking-[0.09em] ${
+              active ? "text-text-inverse" : "text-text-inverse-muted"
             }`}
           >
             {item.label}
             <span
               aria-hidden="true"
-              style={active ? { backgroundColor: accent } : undefined}
-              className={`absolute inset-x-0 bottom-0 h-[2px] ${
-                active ? "" : "bg-transparent group-hover:bg-[var(--nav-accent)]"
+              className={`absolute inset-x-5 bottom-0 h-[3px] ${
+                active ? "bg-accent" : "bg-transparent group-hover:bg-accent"
               }`}
             />
           </Link>

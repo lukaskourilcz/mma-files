@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { BrandLockup } from "@/components/site/BrandLockup";
+import { MobileMenu } from "@/components/site/MobileMenu";
 import { PrimaryNav } from "@/components/site/PrimaryNav";
 import { WireTicker } from "@/components/site/WireTicker";
 import { getPrimaryNavigation } from "@/config/navigation";
-import { demoMode, siteConfig } from "@/config/site";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
 import type { Locale } from "@/lib/types";
@@ -16,48 +17,38 @@ export function Masthead({ locale }: { locale: Locale }) {
     <header>
       <a
         href="#main"
-        className="label-mono sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-ink focus:px-4 focus:py-2.5 focus:text-paper"
+        className="label-mono sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-accent focus:px-4 focus:py-2.5 focus:text-text-inverse"
       >
         {dict.nav.skipToContent}
       </a>
 
       <WireTicker locale={locale} />
 
-      <div className="sticky top-0 z-40 border-b border-rule-strong bg-paper/95 backdrop-blur-[10px]">
-        <div className="mx-auto flex h-[68px] w-full max-w-[90rem] items-center gap-5 px-5 md:gap-9 md:px-10">
+      <div className="sticky top-0 z-40 border-b border-rule-dark bg-chrome">
+        <div className="grid h-[var(--layout-chrome-h-sm)] grid-cols-[44px_1fr_44px] items-center px-1 md:hidden">
+          <MobileMenu
+            locale={locale}
+            items={items}
+            primaryLabel={dict.nav.primary}
+            menuLabel={dict.nav.menu}
+            closeLabel={dict.nav.closeMenu}
+          />
           <Link
             href={routes.home(locale)}
-            className="flex shrink-0 items-center gap-[11px]"
+            className="justify-self-center"
           >
-            <span
-              aria-hidden="true"
-              className="block h-[30px] w-[5px] -skew-x-12 bg-ink"
-            />
-            <span className="display text-[22px] leading-none text-ink md:text-[27px]">
-              {siteConfig.wordmark}
-            </span>
+            <BrandLockup compact />
           </Link>
+          <span aria-hidden="true" />
+        </div>
 
+        <div className="mx-auto hidden h-[var(--layout-chrome-h)] w-full max-w-[var(--layout-max)] grid-cols-[240px_minmax(0,1fr)] items-stretch gap-10 px-10 md:grid">
+          <Link href={routes.home(locale)} className="flex items-center">
+            <BrandLockup />
+          </Link>
           <PrimaryNav items={items} label={dict.nav.primary} />
-
-          <div className="ml-auto flex shrink-0 items-center gap-3.5">
-            {demoMode ? (
-              <span className="label-mono-sm hidden text-ink-meta lg:inline">
-                {dict.demo.articleBadge}
-              </span>
-            ) : null}
-          </div>
         </div>
       </div>
-
-      {demoMode ? (
-        <p className="border-b border-rule-strong bg-card px-5 py-2 text-center text-xs leading-relaxed text-ink-muted md:px-10">
-          <span className="label-mono-sm mr-2.5 bg-signal px-1.5 py-0.5 text-ink">
-            {dict.demo.articleBadge}
-          </span>
-          {dict.demo.articleNotice}
-        </p>
-      ) : null}
     </header>
   );
 }
