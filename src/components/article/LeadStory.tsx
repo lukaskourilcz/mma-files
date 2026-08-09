@@ -153,6 +153,8 @@ export function LeadStory({
               note={dict.labels.photoSlots.lead}
               sizes="(min-width: 1024px) 48vw, 100vw"
               priority
+              tone="chrome"
+              creditMode="overlay"
             />
             <span
               aria-hidden="true"

@@ -1,6 +1,6 @@
 import { getDictionary } from "@/i18n";
 import type { Article, Locale } from "@/lib/types";
-import { PhotoSlot } from "@/components/media/PhotoSlot";
+import { PhotoCredit, PhotoSlot } from "@/components/media/PhotoSlot";
 import { articleDek, articleTitle } from "@/lib/repository";
 
 /**
@@ -121,8 +121,18 @@ export function HeroVisual({
 
   if (article.image) {
     return (
-      <figure className={`relative overflow-hidden rounded-[10px] border border-rule-strong bg-ink ${className}`}>
-        <PhotoSlot image={article.image} locale={locale} sizes="(min-width: 1024px) 80vw, 100vw" priority />
+      <figure>
+        <div
+          className={`relative overflow-hidden border border-rule-strong bg-chrome ${className}`}
+        >
+          <PhotoSlot
+            image={article.image}
+            locale={locale}
+            sizes="(min-width: 1024px) 80vw, 100vw"
+            priority
+          />
+        </div>
+        <PhotoCredit image={article.image} />
       </figure>
     );
   }

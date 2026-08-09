@@ -57,9 +57,9 @@ export const cs = {
     photoPending: "Fotografie zatím není",
     desk: "Redakce",
     photoSlots: {
-      lead: "Hlavní fotka — příchod nebo staredown, 4:5",
+      lead: "Hlavní fotka — 3:2",
       story: "Fotka k textu — 16:9",
-      portrait: "Portrét bojovníka — 4:5",
+      portrait: "Portrét — 4:5",
     },
     theFile: "Složka k textu",
     relatedStories: "Související texty",
