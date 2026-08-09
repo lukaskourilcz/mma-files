@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "mma-ad-slots/1",
+  "slots": [
+    {
+      "id": "masthead-billboard",
+      "desktop": {
+        "width": 970,
+        "height": 250,
+        "variants": [{ "width": 728, "height": 90 }]
+      },
+      "mobile": { "width": 320, "height": 100 },
+      "pages": ["home", "sections"]
+    },
+    {
+      "id": "infeed-rectangle",
+      "desktop": { "width": 300, "height": 250, "variants": [] },
+      "mobile": { "width": 300, "height": 250 },
+      "pages": ["home", "section-feeds"]
+    },
+    {
+      "id": "article-top",
+      "desktop": { "width": 728, "height": 90, "variants": [] },
+      "mobile": { "width": 320, "height": 100 },
+      "pages": ["article"]
+    },
+    {
+      "id": "article-mid",
+      "desktop": { "width": 728, "height": 90, "variants": [] },
+      "mobile": { "width": 300, "height": 250 },
+      "pages": ["article"]
+    },
+    {
+      "id": "article-rail",
+      "desktop": { "width": 300, "height": 600, "variants": [] },
+      "mobile": null,
+      "pages": ["article"]
+    },
+    {
+      "id": "footer-billboard",
+      "desktop": { "width": 970, "height": 250, "variants": [] },
+      "mobile": { "width": 320, "height": 100 },
+      "pages": ["home"]
+    }
+  ]
+}
