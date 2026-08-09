@@ -84,9 +84,9 @@ function buildWire(locale: Locale): WireItem[] {
 
 function WireLine({ item }: { item: WireItem }) {
   return (
-    <span className="flex h-[34px] items-center gap-2.5 whitespace-nowrap px-5 font-mono text-[11px] tracking-[0.05em] text-paper-meta">
-      <span aria-hidden="true" className="block h-1 w-1 shrink-0 bg-signal" />
-      <span className="font-semibold uppercase text-paper">{item.tag}</span>
+    <span className="flex h-[var(--layout-ticker-h)] items-center gap-2.5 whitespace-nowrap px-5 font-mono text-[11px] tracking-[var(--tracking-mono)] text-text-inverse-meta">
+      <span aria-hidden="true" className="block h-1 w-1 shrink-0 bg-accent" />
+      <span className="font-semibold uppercase text-text-inverse">{item.tag}</span>
       {item.text}
     </span>
   );
@@ -106,18 +106,18 @@ export function WireTicker({ locale }: { locale: Locale }) {
   return (
     <aside
       aria-label={dict.wire.label}
-      className="relative z-50 flex h-[34px] items-stretch overflow-hidden bg-ink"
+      className="flex h-[var(--layout-ticker-h)] items-stretch overflow-hidden bg-chrome"
     >
-      <p className="flex shrink-0 items-center gap-[7px] bg-signal px-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-ink">
+      <p className="relative z-10 flex shrink-0 items-center gap-[7px] bg-accent px-3.5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-chrome">
         <span
           aria-hidden="true"
-          className="block h-1.5 w-1.5 animate-livedot rounded-full bg-ink"
+          className="block h-1.5 w-1.5 animate-livedot bg-chrome"
         />
         {dict.wire.label}
       </p>
 
-      <div className="relative min-w-0 flex-1 overflow-hidden">
-        <div className="flex w-max animate-ticker">
+      <div className="ticker-viewport relative min-w-0 flex-1 overflow-hidden">
+        <div className="ticker-track flex w-max animate-ticker">
           <ul className="flex">
             {items.map((item) => (
               <li key={item.key}>
@@ -125,7 +125,7 @@ export function WireTicker({ locale }: { locale: Locale }) {
               </li>
             ))}
           </ul>
-          <ul className="flex" aria-hidden="true">
+          <ul className="ticker-echo flex" aria-hidden="true">
             {items.map((item) => (
               <li key={`echo:${item.key}`}>
                 <WireLine item={item} />
