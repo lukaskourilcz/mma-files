@@ -47,7 +47,7 @@ export default async function HowItWorksPage({
           { href: routes.home(locale), label: dict.nav.home },
           { label: dict.howItWorks.title },
         ]}
-        kicker={siteConfig.engine.name}
+        kicker={siteConfig.utilityLine[locale]}
         title={dict.howItWorks.title}
         dek={dict.howItWorks.dek}
       />

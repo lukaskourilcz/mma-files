@@ -113,7 +113,6 @@ export default async function LocaleLayout({
     publishingPrinciples: absoluteUrl(routes.standards(locale)),
     correctionsPolicy: absoluteUrl(routes.corrections(locale)),
     actionableFeedbackPolicy: absoluteUrl(routes.corrections(locale)),
-    parentOrganization: { "@type": "Organization", name: siteConfig.engine.name },
   };
 
   return (

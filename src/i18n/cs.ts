@@ -86,7 +86,7 @@ export const cs = {
     noLink: "Bez veřejného odkazu — ukázková důkazní složka",
     methodology: "Jak text vznikl",
     methodologyBody:
-      "Podklady dodala důkazní vrstva FightAIQ. Text vznikl a prošel kontrolou na anglické a české redakci a vydal ho člověk.",
+      "Text vychází z uvedených zdrojů. Redakce zkontrolovala fakta, sporné údaje nechala viditelné a před vydáním ověřila české znění.",
   },
 
   article: {
@@ -406,44 +406,38 @@ export const cs = {
 
   howItWorks: {
     title: "Jak to funguje",
-    dek: "Od doloženého faktu k vydané složce v sedmi krocích.",
+    dek: "Jak redakce ověřuje podklady, připravuje text a opravuje chyby.",
     pipelineTitle: "Cesta textu",
     steps: [
-      { title: "Ověřená data a zdroje", body: "Bilance, karty a nasmlouvané zápasy vstupují do důkazní vrstvy i s odkazy a časem stažení." },
-      { title: "Důkazní složky FightAIQ", body: "Fakta se drží po jednotlivých polích a každé má svůj stav. Rozpory se zapisují, neřeší se potichu." },
-      { title: "Redakční porada MMA Files", body: "Na pražský den se plánují nejvýš dva sloty. Slot bez podkladu se zabije." },
-      { title: "Anglická a česká redakce", body: "Anglický text vzniká jako první. Česká verze se píše česky, nepřekládá se." },
-      { title: "Kontrola zdrojů, jazyka a kvality", body: "Tvrzení se párují zpět na odkazy a obě jazykové verze projdou kontrolou srozumitelnosti a původnosti." },
-      { title: "Kontrolované doručení přes Git", body: "Text, který projde oběma redakcemi a kontrolami, se zapíše do webu a automaticky nasadí." },
-      { title: "Zpětná vazba a měření na sítích", body: "Sociální varianty se připraví, publikují ručně a měří po 48 hodinách a po sedmi dnech." },
+      { title: "Výběr tématu", body: "Redakce vybírá událost, která má pro českého čtenáře význam a zároveň k ní existují dohledatelné podklady." },
+      { title: "Sběr zdrojů", body: "Karta turnaje, bilance, výsledky a další fakta se ukládají spolu s odkazem a časem získání." },
+      { title: "Ověření", body: "Citlivé údaje se porovnávají nejméně ve dvou nezávislých zdrojích. Rozpor se přizná, neskrývá." },
+      { title: "Český text", body: "Článek vzniká přímo pro českého čtenáře. Nejasnosti se popisují jako nejasnosti a chybějící údaj se nedoplňuje odhadem." },
+      { title: "Redakční kontrola", body: "Před vydáním se kontrolují tvrzení, odkazy, jazyk, práva k fotografiím i jasné označení ukázkového obsahu." },
+      { title: "Vydání a opravy", body: "U vydaného textu zůstávají zdroje. Podstatná oprava dostane datum a popis přímo na stránce." },
     ],
-    cadenceTitle: "Denní rytmus",
-    cadenceDek: "Pražský čas. Slot se nikdy neplní jen proto, aby se udržel rytmus.",
+    cadenceTitle: "Kontrolní body",
+    cadenceDek: "Text nevychází jen proto, aby se zaplnilo místo.",
     cadence: [
-      { time: "09:00", body: "Porada: oba sloty se přidělí, nebo zabijí." },
-      { time: "10:00", body: "Ranní výroba textu." },
-      { time: "18:00", body: "Večerní výroba textu." },
-      { time: "20:00", body: "Kontrola redakce, koncepty pro sítě, zpětná vazba majitele, poznámky na zítřek." },
+      { time: "01", body: "Máme veřejné a dostatečně silné zdroje." },
+      { time: "02", body: "Každé důležité tvrzení lze dohledat." },
+      { time: "03", body: "Fotografie má známý původ a povolené užití." },
+      { time: "04", body: "Nejistota, oprava i ukázkový obsah jsou jasně označené." },
     ],
-    rolesTitle: "Uvnitř systému",
-    rolesDek:
-      "Pojmenované odpovědnosti uvnitř redakčního systému. Jsou to funkce se schvalovacími body, ne postavy.",
+    rolesTitle: "Redakční zásady",
+    rolesDek: "Čtyři pravidla, která platí pro každou rubriku.",
     roles: [
-      { name: "CANVAS", body: "Šéfredaktor. Přidělí slot, nebo ho zabije." },
-      { name: "JAB", body: "Anglická redakce MMA." },
-      { name: "Česká redakce", body: "Přepisuje text pro českého čtenáře jako původní češtinu, nikdy jako doslovný překlad." },
-      { name: "QUILL", body: "Hlídá srozumitelnost, původnost a to, jestli je tvrzení opravdu doložené." },
-      { name: "REACH", body: "Připravuje dvojjazyčné koncepty pro sítě." },
-      { name: "SPLIT", body: "Měří pokusy na sítích. Opatrně a bez přeceňování malých vzorků." },
-      { name: "AUDIT", body: "Kontroluje důkazy, bezpečnost a kvalitu vydání." },
-      { name: "FightAIQ", body: "Zdrojová a datová vrstva: složky bojovníků, karty turnajů, deterministické výpočty." },
+      { name: "Dohledatelnost", body: "Čtenář se ze stránky dostane ke zdroji, na kterém tvrzení stojí." },
+      { name: "Přiznaná mezera", body: "Neznámý údaj zůstane neznámý. Nulu, odhad ani jistotu si nevymýšlíme." },
+      { name: "Oddělený model", body: "Predikce má verzi a čas výpočtu a nikdy se nevydává za sázkové doporučení." },
+      { name: "Viditelná oprava", body: "Významnou chybu neopravujeme potichu; změna zůstane u článku." },
     ],
     humanTitle: "Co zůstává na člověku",
     humanBody:
-      "Oprávnění, rozpočty, účty a opravy má na starosti majitel. Schválené články se mohou nasadit automaticky; publikování na sítě zůstává ruční.",
+      "Zakladatel rozhoduje o směru magazínu, rozpočtech, právech k obsahu a citlivých opravách. Vydání musí projít nastavenými kontrolami.",
     socialTitle: "Varianty pro sítě",
     socialBody: (treatments: number, stories: number) =>
-      `Připraveno ${treatments} lokalizovaných variant k ${stories} textům — dvě grafické varianty na text, každá v obou jazycích. Žádná zveřejněná není. Publikuje se ručně a je k tomu potřeba samostatné schválení.`,
+      `Připraveno ${treatments} variant k ${stories} textům. Žádná zveřejněná není; účty ani plán publikace zatím neběží.`,
     killTitle: "Když se slot zabije",
     killBody:
       "Když podklad chybí, je tenký, už byl jinde nebo je nespolehlivý, slot padá a důvod se zapíše. Nic se nepíše jen proto, aby bylo místo zaplněné.",
@@ -451,11 +445,11 @@ export const cs = {
 
   about: {
     title: "O MMA Files",
-    dek: "Redakce, která staví na zdrojích. UFC a Oktagon, česky a anglicky.",
+    dek: "Český magazín o UFC a Oktagonu, který ukazuje své zdroje.",
     whatTitle: "Co to je",
     whatBody: [
-      "MMA Files píše o UFC a Oktagonu. Pozvánky na turnaje, reporty po akci, vážení, profily bojovníků, datové rozbory a poznámky redakce — všechno vychází česky i anglicky a všechno se dá dohledat zpátky k podkladu, ze kterého to vzniklo.",
-      "Magazín stojí na redakčním systému řízeném důkazy a na důkazní vrstvě FightAIQ. Texty v něm vznikají a procházejí kontrolou; o vydání rozhoduje člověk.",
+      "MMA Files je český magazín zakladatele Lukáše Kouřila a malé redakce. Píše o UFC, Oktagonu a bojovnících, kteří zajímají české publikum.",
+      "Vedle článků vede vlastní datové složky zápasů, turnajů a bojovníků. Každý text má na stránce zdroje a neověřený nebo chybějící údaj zůstává přiznaný.",
     ],
     coversTitle: "Co pokrýváme",
     coversList: [
@@ -470,17 +464,17 @@ export const cs = {
       "Žádné sázkové tipy, kurzy, odkazy na sázkovky ani affiliate obsah k hazardu",
       "Žádné vymyšlené citace, bilance, zranění, reakce ani statistiky",
       "Žádnou anonymní jistotu a žádné nejmenované pozorovatele",
-      "Žádné obrázky bojovníků z AI vydávané za fotografie",
+      "Žádné uměle vytvořené obrázky bojovníků vydávané za fotografie",
       "Žádná loga organizací, grafiky turnajů ani licencované fotografie bez svolení",
     ],
     statusTitle: "Aktuální stav",
     statusBody:
-      "Tohle je web připravený ke spuštění, ne zavedený titul. Všechno, co na něm teď je, je zřetelně označený ukázkový obsah a je vyloučené z vyhledávačů. Skutečné zpravodajství se tu objeví, až bude připojený zdrojový feed a schválený publikační postup.",
-    engineTitle: "Systém za tím",
-    engineBody: (engine: string) =>
-      `${engine} je operační systém řízený důkazy, který provozuje ohraničená rada softwarových agentů se schvalovacími body u člověka. Plánuje sloty, drží důkazy, píše a kontroluje obě jazykové verze a zastaví se před vydáním. MMA Files je titul pro čtenáře; ${engine} je infrastruktura pod ním.`,
+      "Magazín je před veřejným spuštěním. Doručené články a datové složky už web umí zobrazit; ukázkové texty zůstávají označené a vyhledávání zůstane vypnuté do závěrečné kontroly.",
+    engineTitle: "Jak pracujeme",
+    engineBody:
+      "Redakce kombinuje běžnou novinářskou práci s vlastními nástroji pro evidenci zdrojů a zápasových dat. Článek se nevydá bez českého textu a alespoň jednoho veřejného zdroje.",
     engineNote:
-      "Vydání, oprávnění, rozpočty a opravy zůstávají na člověku. Nic na tomhle webu se nepublikuje samo.",
+      "O směru magazínu, právech k obsahu a podstatných opravách rozhoduje zakladatel.",
   },
 
   standards: {
@@ -496,11 +490,11 @@ export const cs = {
         ],
       },
       {
-        title: "Dva jazyky, jeden standard",
+        title: "Čeština pro českého čtenáře",
         body: [
-          "Žádný text nevychází jen v jednom jazyce.",
-          "Česká verze se píše pro českého čtenáře — přirozený slovosled, správné skloňování jmen a slovník, který se u nás v tomhle sportu opravdu používá. Není to překlad anglické větné stavby.",
-          "Nejistotu píšeme otevřeně v obou jazycích.",
+          "Každý text vzniká česky a pro českého čtenáře.",
+          "Používáme přirozený slovosled, správné skloňování jmen a slovník, který se u nás v tomhle sportu opravdu používá.",
+          "Nejistotu píšeme otevřeně a stejným pravidlem pro všechny rubriky.",
         ],
       },
       {
@@ -587,12 +581,12 @@ export const cs = {
     title: "Zápasový týden v jednom e-mailu.",
     dek: "Jednou týdně, česky. Karty, výsledky a co k nim redakce vydala.",
     placeholder: "vas@email.cz",
-    localeQuestion: "V jakém jazyce?",
+    localeQuestion: "Jazyk newsletteru",
     submit: "Odebírat",
     notWired:
       "Nepřipojeno. Tenhle formulář je jen ukázka rozvržení — žádná e-mailová služba za ním neběží a nic z toho, co napíšete, se neodesílá ani neukládá.",
     pageTitle: "Newsletter",
-    pageDek: "Jeden přehled týdně. Česky, nebo anglicky — podle vás.",
+    pageDek: "Jeden přehled týdně, vždy česky.",
     whatTitle: "Co v něm přijde",
     whatList: [
       "Karty nasmlouvané na nadcházející týden a u nich, co je hotové a co ne",
@@ -623,9 +617,7 @@ export const cs = {
     rss: "RSS",
     legal: "© 2026 MMA Files · Vydává BoardlessAI",
     transparency:
-      "MMA Files vychází česky a anglicky. Každý text má u sebe zdroje, nechává neznámé údaje vidět a opravy ukazuje přímo na stránce. Sázková data jsou časově označená a jasně oddělená od doporučení.",
-    poweredBy: (engine: string, descriptor: string) =>
-      `MMA Files pohání ${engine} — ${descriptor}.`,
+      "MMA Files vychází česky. Každý text má u sebe zdroje, nechává neznámé údaje vidět a opravy ukazuje přímo na stránce. Sázková data jsou časově označená a jasně oddělená od doporučení.",
     rights: "Všechna práva vyhrazena.",
   },
 

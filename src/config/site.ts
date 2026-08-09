@@ -1,9 +1,6 @@
 import type { Locale } from "@/lib/types";
 
-/**
- * Single place to change brand wording, infrastructure labels and indexing
- * switches.
- */
+/** Single place to change brand wording and indexing switches. */
 
 function envFlag(value: string | undefined, fallback: boolean): boolean {
   if (value === undefined) return fallback;
@@ -21,19 +18,6 @@ export const siteConfig = {
   description: {
     cs: "Zpravodajství o UFC a Oktagonu se zdroji u každého tvrzení.",
   } satisfies Record<Locale, string>,
-
-  /**
-   * Infrastructure and editorial engine behind the magazine. Name pending final
-   * clearance — change it here and every surface follows.
-   */
-  engine: {
-    name: "BoardlessAI",
-    descriptor: {
-      cs: "redakční systém řízený důkazy",
-    } satisfies Record<Locale, string>,
-    /** Set once a public BoardlessAI page exists. `null` renders plain text. */
-    url: null as string | null,
-  },
 
   /** Sourced fight data, captured market prices and versioned model layer. */
   dataLayer: {

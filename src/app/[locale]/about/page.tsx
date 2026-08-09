@@ -109,12 +109,12 @@ export default async function AboutPage({
               </p>
             </section>
 
-            <section aria-labelledby="engine" className="sheet-dark p-5 text-white md:p-6">
-              <h2 id="engine" className="label-mono text-ember">
+            <section aria-labelledby="practice" className="sheet-dark p-5 text-white md:p-6">
+              <h2 id="practice" className="label-mono text-ember">
                 {dict.about.engineTitle}
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-paper">
-                {dict.about.engineBody(siteConfig.engine.name)}
+                {dict.about.engineBody}
               </p>
               <p className="mt-4 border-t border-rule-dark pt-4 text-xs leading-relaxed text-muted">
                 {dict.about.engineNote}
