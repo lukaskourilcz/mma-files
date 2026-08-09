@@ -5,7 +5,6 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 import { SourceList } from "@/components/article/ArticleFile";
 import { BoutRow } from "@/components/event/EventCard";
 import { TaleOfTheTape } from "@/components/fighter/FighterCard";
-import { DemoNotice } from "@/components/site/HomeModules";
 import { Breadcrumbs } from "@/components/ui/PageHeader";
 import { Chip, Container, Kicker, SectionHeading } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
@@ -153,7 +152,7 @@ export default async function FighterPage({
       <Container className="py-10 md:py-14">
         {fighter.isDemo ? (
           <div className="mb-8">
-            <DemoNotice locale={locale} variant="data" />
+            <Chip tone="signal">{dict.demo.articleBadge}</Chip>
           </div>
         ) : null}
 

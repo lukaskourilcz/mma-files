@@ -8,7 +8,6 @@ import {
   TheFile,
 } from "@/components/article/ArticleFile";
 import { HeroVisual } from "@/components/hero/HeroVisual";
-import { DemoNotice } from "@/components/site/HomeModules";
 import { Breadcrumbs } from "@/components/ui/PageHeader";
 import { Chip, Container, SectionHeading } from "@/components/ui/primitives";
 import { absoluteUrl, allowIndexing, siteConfig } from "@/config/site";
@@ -170,8 +169,11 @@ export default async function ArticlePage({
           </div>
 
           {article.isDemo ? (
-            <div className="mt-5">
-              <DemoNotice locale={locale} />
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <Chip tone="signal">{dict.demo.articleBadge}</Chip>
+              <p className="text-xs leading-relaxed text-ink-muted">
+                {dict.demo.articleNotice}
+              </p>
             </div>
           ) : null}
         </Container>

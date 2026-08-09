@@ -1,17 +1,14 @@
 import Link from "next/link";
-import { LocaleSwitcher } from "@/components/site/LocaleSwitcher";
 import { PrimaryNav, type NavItem } from "@/components/site/PrimaryNav";
 import { WireTicker } from "@/components/site/WireTicker";
 import { demoMode, siteConfig } from "@/config/site";
-import { getDictionary, otherLocale } from "@/i18n";
+import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
 import { PROMOTION_ACCENT } from "@/lib/promotion";
 import type { Locale } from "@/lib/types";
 
 export function Masthead({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
-  const alternate = otherLocale();
-  const alternateDict = getDictionary(alternate);
 
   const items: NavItem[] = [
     { href: routes.latest(locale), label: dict.nav.latest },
@@ -62,16 +59,9 @@ export function Masthead({ locale }: { locale: Locale }) {
           <div className="ml-auto flex shrink-0 items-center gap-3.5">
             {demoMode ? (
               <span className="label-mono-sm hidden text-ink-meta lg:inline">
-                {dict.demo.bannerLabel}
+                {dict.demo.articleBadge}
               </span>
             ) : null}
-            <LocaleSwitcher
-              locale={locale}
-              other={alternate}
-              currentLabel={dict.meta.localeShort}
-              otherLabel={alternateDict.meta.localeShort}
-              switchLabel={dict.nav.localeSwitch}
-            />
           </div>
         </div>
       </div>
@@ -79,9 +69,9 @@ export function Masthead({ locale }: { locale: Locale }) {
       {demoMode ? (
         <p className="border-b border-rule-strong bg-card px-5 py-2 text-center text-xs leading-relaxed text-ink-muted md:px-10">
           <span className="label-mono-sm mr-2.5 bg-signal px-1.5 py-0.5 text-ink">
-            {dict.demo.bannerLabel}
+            {dict.demo.articleBadge}
           </span>
-          {dict.demo.bannerBody}
+          {dict.demo.articleNotice}
         </p>
       ) : null}
     </header>

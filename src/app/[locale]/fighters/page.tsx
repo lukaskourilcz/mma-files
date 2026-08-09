@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FighterCard } from "@/components/fighter/FighterCard";
-import { DemoNotice } from "@/components/site/HomeModules";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { ActionLink, Container, SectionHeading } from "@/components/ui/primitives";
+import { ActionLink, Chip, Container, SectionHeading } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/paths";
@@ -63,7 +62,7 @@ export default async function FightersPage({
       <Container className="py-10 md:py-14">
         {hasDemo ? (
           <div className="mb-8">
-            <DemoNotice locale={locale} variant="data" />
+            <Chip tone="signal">{dict.demo.articleBadge}</Chip>
           </div>
         ) : null}
 

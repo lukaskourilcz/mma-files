@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { SourceList } from "@/components/article/ArticleFile";
 import { BoutRow } from "@/components/event/EventCard";
-import { DemoNotice } from "@/components/site/HomeModules";
 import { Breadcrumbs } from "@/components/ui/PageHeader";
 import {
   Chip,
@@ -108,7 +107,7 @@ export default async function EventPage({
       <Container className="py-10 md:py-14">
         {event.isDemo ? (
           <div className="mb-8">
-            <DemoNotice locale={locale} variant="data" />
+            <Chip tone="signal">{dict.demo.articleBadge}</Chip>
           </div>
         ) : null}
 

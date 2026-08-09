@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BoutRow } from "@/components/event/EventCard";
-import { DemoNotice } from "@/components/site/HomeModules";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ActionLink, Chip, Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
@@ -59,7 +58,7 @@ export default async function ResultsPage({
       <Container className="py-10 md:py-14">
         {hasDemo ? (
           <div className="mb-8">
-            <DemoNotice locale={locale} variant="data" />
+            <Chip tone="signal">{dict.demo.articleBadge}</Chip>
           </div>
         ) : null}
 
