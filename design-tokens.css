@@ -52,8 +52,9 @@
   --color-correction-rule: #a98a4a;
 
   /* -------------------------------------------------------------------- type */
-  --font-display: var(--font-barlow-condensed), "Barlow Condensed",
-    "Arial Narrow", sans-serif;                 /* 700 / 800, uppercase */
+  --font-display: var(--font-anton), "Anton", "Arial Narrow", sans-serif;
+    /* Owner amendment 1: Anton stays. Single weight (400), uppercase;
+       display hierarchy is carried by the size scale, not by weight. */
   --font-sans: var(--font-archivo), "Archivo", system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
 
@@ -80,8 +81,8 @@
 
   --tracking-kicker: 0.14em;
   --tracking-mono: 0.06em;
-  --leading-display: 0.94;   /* Barlow Condensed clears Czech carons at 0.94 */
-  --leading-display-tight: 0.9; /* single-line only (board headings, wordmark) */
+  --leading-display: 1.16;   /* Anton needs 1.16 to clear Czech carons across lines (proven in the current tree) */
+  --leading-display-tight: 1.05; /* single-line only (board headings, wordmark); verify caron clearance visually */
   --leading-body: 1.65;
   --leading-ui: 1.35;
 
