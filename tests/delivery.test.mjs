@@ -3,6 +3,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import sharp from "sharp";
 import { materializeBoardlessPackage, packageHash } from "../scripts/consume-boardless-package.mjs";
 
 async function root() {
@@ -119,6 +120,46 @@ function fightFeed(overrides = {}) {
   return { ...value, packageHash: packageHash(value) };
 }
 
+async function adImage(width, height) {
+  return sharp({
+    create: {
+      width,
+      height,
+      channels: 4,
+      background: "#0b0b0c",
+    },
+  })
+    .webp()
+    .toBuffer();
+}
+
+async function adsPackage({
+  slotId = "infeed-rectangle",
+  width = 300,
+  height = 250,
+  pixelWidth = width,
+  pixelHeight = height,
+} = {}) {
+  const bytes = await adImage(pixelWidth, pixelHeight);
+  return {
+    schemaVersion: "mma-ads/1",
+    updatedAt: "2026-08-09T12:00:00.000Z",
+    slots: {
+      [slotId]: {
+        enabled: true,
+        image: {
+          src: `/ads/${slotId}-${width}x${height}.webp`,
+          width,
+          height,
+          bytes_base64: bytes.toString("base64"),
+        },
+        alt: "Reklamní sdělení",
+        href: null,
+      },
+    },
+  };
+}
+
 test("matches BoardlessAI locale-aware canonical key ordering", () => {
   assert.equal(packageHash({ Z: 1, a: 2 }), "904baf6c3b55f398cb3d7d18b7b2a5ff2b3e2cef2e9b0b2761fd3c6de6f6882d");
 });
@@ -191,6 +232,66 @@ test("stores a Czech-only article, and still refuses one with no Czech", async (
     const englishOnly = article();
     delete englishOnly.localizations.cs;
     await assert.rejects(materializeBoardlessPackage(sign(englishOnly), target), /cs\.title/);
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
+test("materializes a verified ad manifest and creative atomically", async () => {
+  const target = await root();
+  try {
+    const pkg = await adsPackage();
+    const first = await materializeBoardlessPackage(pkg, target);
+    assert.equal(first.status, "written");
+    assert.deepEqual(first.paths, [
+      "data/boardless/ads.json",
+      "public/ads/infeed-rectangle-300x250.webp",
+    ]);
+    assert.equal((await materializeBoardlessPackage(pkg, target)).status, "noop");
+
+    const stored = JSON.parse(
+      await readFile(path.join(target, "data/boardless/ads.json"), "utf8"),
+    );
+    assert.equal(stored.schemaVersion, "mma-ads/1");
+    assert.equal(stored.slots["infeed-rectangle"].image.bytes_base64, undefined);
+    const metadata = await sharp(
+      await readFile(path.join(target, "public/ads/infeed-rectangle-300x250.webp")),
+    ).metadata();
+    assert.deepEqual([metadata.width, metadata.height], [300, 250]);
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
+test("rejects unknown ad slots and off-contract dimensions", async () => {
+  const target = await root();
+  try {
+    await assert.rejects(
+      materializeBoardlessPackage(await adsPackage({ slotId: "unknown-slot" }), target),
+      /unknown ad slot id/,
+    );
+    await assert.rejects(
+      materializeBoardlessPackage(
+        await adsPackage({ width: 301, height: 250 }),
+        target,
+      ),
+      /do not match the slot specification/,
+    );
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
+test("rejects ad bytes whose real pixels differ from the manifest", async () => {
+  const target = await root();
+  try {
+    await assert.rejects(
+      materializeBoardlessPackage(
+        await adsPackage({ pixelWidth: 299, pixelHeight: 250 }),
+        target,
+      ),
+      /ad creative pixels must be 300x250/,
+    );
   } finally {
     await rm(target, { recursive: true, force: true });
   }

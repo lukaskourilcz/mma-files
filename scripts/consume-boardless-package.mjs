@@ -257,6 +257,129 @@ function validateFightAiQ(value) {
   return feed;
 }
 
+let adSlotDefinitions;
+
+async function getAdSlotDefinitions() {
+  if (adSlotDefinitions) return adSlotDefinitions;
+  const specificationFile = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "../src/data/ad-slots.json",
+  );
+  const specification = JSON.parse(await readFile(specificationFile, "utf8"));
+  if (specification?.schemaVersion !== "mma-ad-slots/1" || !Array.isArray(specification.slots)) {
+    throw new DeliveryError("schema_invalid", "ad slot specification is malformed");
+  }
+  adSlotDefinitions = new Map(specification.slots.map((slot) => [slot.id, slot]));
+  return adSlotDefinitions;
+}
+
+function adHref(value, field) {
+  if (value === null) return null;
+  const href = requiredString(value, field, 1_000);
+  let parsed;
+  try {
+    parsed = new URL(href);
+  } catch {
+    throw new DeliveryError("schema_invalid", `${field} must be a valid URL`);
+  }
+  if (parsed.protocol !== "https:") {
+    throw new DeliveryError("schema_invalid", `${field} must use HTTPS`);
+  }
+  return href;
+}
+
+async function validateAds(value) {
+  const delivery = object(value);
+  if (!delivery || delivery.schemaVersion !== "mma-ads/1") {
+    throw new DeliveryError("schema_invalid", "ad payload must use mma-ads/1");
+  }
+  const updatedAt = isoDateTime(delivery.updatedAt, "updatedAt");
+  const slots = object(delivery.slots);
+  if (!slots) throw new DeliveryError("schema_invalid", "slots must be an object");
+
+  const definitions = await getAdSlotDefinitions();
+  const runtimeSlots = {};
+  const assets = [];
+  for (const [slotId, rawSlot] of Object.entries(slots)) {
+    const definition = definitions.get(slotId);
+    if (!definition) throw new DeliveryError("schema_invalid", `unknown ad slot id: ${slotId}`);
+    const slot = object(rawSlot);
+    if (!slot || typeof slot.enabled !== "boolean") {
+      throw new DeliveryError("schema_invalid", `slots.${slotId}.enabled must be boolean`);
+    }
+    if (slot.image !== null && !object(slot.image)) {
+      throw new DeliveryError("schema_invalid", `slots.${slotId}.image must be an object or null`);
+    }
+    const href = adHref(slot.href, `slots.${slotId}.href`);
+    const image = object(slot.image);
+    if (!image) {
+      runtimeSlots[slotId] = {
+        enabled: slot.enabled,
+        image: null,
+        alt: typeof slot.alt === "string" ? slot.alt : "",
+        href,
+      };
+      continue;
+    }
+
+    const width = Number(image.width);
+    const height = Number(image.height);
+    if (!Number.isInteger(width) || !Number.isInteger(height)) {
+      throw new DeliveryError("schema_invalid", `slots.${slotId}.image dimensions must be integers`);
+    }
+    const allowed = [
+      definition.desktop,
+      ...(definition.desktop.variants ?? []),
+      ...(definition.mobile ? [definition.mobile] : []),
+    ];
+    if (!allowed.some((size) => size.width === width && size.height === height)) {
+      throw new DeliveryError(
+        "schema_invalid",
+        `slots.${slotId}.image dimensions ${width}x${height} do not match the slot specification`,
+      );
+    }
+    const expectedSrc = `/ads/${slotId}-${width}x${height}.webp`;
+    const src = requiredString(image.src, `slots.${slotId}.image.src`, 260);
+    if (src !== expectedSrc) {
+      throw new DeliveryError(
+        "schema_invalid",
+        `slots.${slotId}.image.src must be ${expectedSrc}`,
+      );
+    }
+    const alt = requiredString(slot.alt, `slots.${slotId}.alt`, 300);
+    const bytes = base64Bytes(
+      image.bytes_base64,
+      `slots.${slotId}.image.bytes_base64`,
+      3_000_000,
+    );
+    try {
+      const metadata = await sharp(bytes).metadata();
+      if (metadata.format !== "webp") throw new Error("ad creative must contain WebP bytes");
+      if (metadata.width !== width || metadata.height !== height) {
+        throw new Error(`ad creative pixels must be ${width}x${height}`);
+      }
+    } catch (error) {
+      throw new DeliveryError(
+        "content_invalid",
+        error instanceof Error ? error.message : "ad creative bytes are invalid",
+      );
+    }
+
+    runtimeSlots[slotId] = {
+      enabled: slot.enabled,
+      image: { src, width, height },
+      alt,
+      href,
+    };
+    assets.push({ relative: `public${src}`, bytes });
+  }
+
+  return {
+    manifest: { schemaVersion: "mma-ads/1", updatedAt, slots: runtimeSlots },
+    assets,
+  };
+}
+
 async function readJson(file, fallback) {
   try {
     return JSON.parse(await readFile(file, "utf8"));
@@ -355,6 +478,33 @@ export async function materializeBoardlessPackage(value, root = process.cwd()) {
     }
     await atomicJson(file, feed);
     return { status: "written", kind: "fightaiq", packageHash: feed.packageHash, paths: ["data/boardless/fightaiq.json"] };
+  }
+
+  if (candidate?.schemaVersion === "mma-ads/1") {
+    const delivery = await validateAds(candidate);
+    const file = path.join(root, "data", "boardless", "ads.json");
+    const current = await readJson(file, null);
+    if (current?.updatedAt && Date.parse(current.updatedAt) > Date.parse(delivery.manifest.updatedAt)) {
+      throw new DeliveryError("hash_conflict", "a newer ad manifest is already stored");
+    }
+    const existingAssets = await Promise.all(
+      delivery.assets.map((asset) => readBytes(path.join(root, asset.relative))),
+    );
+    if (
+      canonical(current) === canonical(delivery.manifest) &&
+      existingAssets.every((bytes, index) => bytes?.equals(delivery.assets[index].bytes))
+    ) {
+      return { status: "noop", kind: "ads", paths: [] };
+    }
+    for (const asset of delivery.assets) {
+      await atomicBytes(path.join(root, asset.relative), asset.bytes);
+    }
+    await atomicJson(file, delivery.manifest);
+    return {
+      status: "written",
+      kind: "ads",
+      paths: ["data/boardless/ads.json", ...delivery.assets.map((asset) => asset.relative)],
+    };
   }
 
   throw new DeliveryError("schema_invalid", "unsupported BoardlessAI package schema");
