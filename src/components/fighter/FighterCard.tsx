@@ -46,7 +46,7 @@ export function FighterCard({
         <h3 className="display text-[length:var(--text-d6)] leading-tight text-text underline decoration-transparent decoration-[3px] underline-offset-4 group-hover:decoration-accent">
           <Link
             href={routes.fighter(locale, fighter.organization, fighter.slug)}
-            className="after:absolute after:inset-0"
+            className="inline-flex min-h-11 items-center after:absolute after:inset-0"
           >
             {fighter.name}
           </Link>

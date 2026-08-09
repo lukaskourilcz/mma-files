@@ -115,7 +115,7 @@ function PromotionColumn({
           <CardLabel>{dict.home.nextCard}</CardLabel>
           <Link
             href={routes.event(locale, next.slug)}
-            className="group mb-3 flex flex-wrap items-baseline justify-between gap-2"
+            className="group mb-3 flex min-h-11 flex-wrap items-center justify-between gap-2"
           >
             <span className="text-[17px] font-bold text-text underline decoration-transparent decoration-[3px] underline-offset-4 group-hover:decoration-accent">
               {next.name}
