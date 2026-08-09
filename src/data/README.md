@@ -32,8 +32,8 @@ exactly this reason.
 
 ## Who may append
 
-BoardlessAI agents, through the same content-only GitHub App commit channel that
-delivers articles. Never a runtime write, never a human-invoked side door.
+The upstream publisher, through the same content-only GitHub App commit channel
+that delivers articles. Never a runtime write, never a human-invoked side door.
 
 An append commit touches only the dataset file and carries the standard delivery
 attribution. Each new entry ships with its own receipt: `verified` records when

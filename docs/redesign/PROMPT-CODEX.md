@@ -67,12 +67,11 @@ where it is silent, use the defaults in §A2 below.
   `src/i18n/cs.ts:19-33` and routes from `src/lib/paths.ts` — extract a
   single nav config so masthead, mobile sheet and footer render one list.
 - **Remove „Čísla"**: drop the nav item and the homepage `DataDeskModule`
-  (`src/components/site/HomeModules.tsx:23-108`). Create `/cs/predictions`
-  (label „Predikce") as the FightAIQ surface; permanently redirect
-  `/cs/data-desk` to it (`next.config.ts` `redirects()`). Fold the
-  evidence-state legend and betting-boundary explainer from the old page into
-  the Predikce page footer and `/cs/editorial-standards`. Route segments stay
-  English; labels Czech.
+  (`src/components/site/HomeModules.tsx:23-108`). Create `/cs/predikce`
+  (label „Predikce") as the FightAIQ surface. Keep `/cs/data-desk` as a
+  footer-only page with no redirect. Reuse its evidence-state legend and
+  betting-boundary explainer on the Predikce page and
+  `/cs/editorial-standards` where useful. Labels and the new route are Czech.
 - Remove the `LocaleSwitcher` (renders CZ→CZ, `Masthead.tsx:68-74`) and its
   dictionary entries.
 
@@ -170,7 +169,7 @@ components the default; client islands only where interaction demands
 
 ### A7. Predikce page + FightAIQ rendering (with C, which fixes the data)
 
-- Build `/cs/predictions` per the design: per-organization next card as bout
+- Build `/cs/predikce` per the design: per-organization next card as bout
   rows; model lines only where `statsEntries`/`bout.prediction` exist —
   p(win) both corners in mono, thin bar, „Raný model", model version, capture
   timestamp; otherwise „Model zatím neběžel." Standing disclaimer: „Žádné
@@ -238,7 +237,7 @@ stand):
   `NewsArticle` JSON-LD stays; sitemap/robots/RSS keep their
   `allowIndexing` gates; RSS gains the new Predikce page link in channel
   metadata only if trivial. Redirect map covers every removed/renamed route
-  (`/cs/data-desk` → `/cs/predictions`).
+  while `/cs/data-desk` remains a footer-only destination with no redirect.
 - A11y: skip link stays; sheet menu focus-trapped with Escape close; AA
   contrast; focus-visible styles from the handoff; `aria-current="page"` on
   active nav; Czech `lang` already set.
@@ -421,7 +420,7 @@ The venture admin already exists (`site/src/app/admin/`, tabs declared in
 
 - mma-files: `npm run check` (typecheck + lint + test) and `npm run build`
   with `NEXT_PUBLIC_DEMO_MODE=false`; confirm every route in the new nav
-  renders; confirm `/cs/data-desk` redirects; confirm the ads placeholders
+  renders; confirm `/cs/data-desk` remains a footer-only page; confirm the ads placeholders
   render at exact reserved sizes; confirm the week loader works with JS
   disabled (first window server-rendered) and enabled (previous weeks
   append).

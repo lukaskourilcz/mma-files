@@ -7,8 +7,9 @@ No external services are required to run it.
 
 **Invoke the `commit-discipline` skill before your first edit.** It is the
 repository's commit and push contract: commit every self-contained unit of work,
-never batch a whole session into one commit, and push to `main` when the session
-is done. Do not wait for the user to ask for a commit.
+never batch a whole session into one commit, and push the verified session
+branch. Merge to `main` only when the task explicitly authorizes it. Do not wait
+for the user to ask for a commit.
 
 ## Editorial guardrails (these are product requirements, not preferences)
 
@@ -31,11 +32,11 @@ is done. Do not wait for the user to ask for a commit.
   includes one rehosted, attributed allowlisted photo or a deterministic
   typographic fallback.
 - Do not claim the publication is live, established, independent, or fully
-  automated. BoardlessAI wording is configurable in `src/config/site.ts`.
+  automated. Reader pages mention the publisher only in the fixed legal line.
 - The style gate lives upstream: quorum's STYLEBOOK review runs over the Czech
   article before the package is ever delivered here. There is no
   `src/lib/style-guard.ts` in this repository and adding a second, divergent
-  banned-phrase list would put two desks in disagreement about the same copy.
+  banned-phrase list would create two conflicting gates for the same copy.
 - A delivered package may carry `localizations.cs.altHeadline`, the short Czech
   line the desk writes for a carousel cover. The reader pages use `title`; the
   consumer picks the fields it needs and ignores the rest, so a package with the
@@ -59,7 +60,7 @@ is done. Do not wait for the user to ask for a commit.
 - `src/i18n/` — the Czech UI dictionary. `Dictionary` is derived from `cs.ts`,
   so the published locale defines the structure rather than being checked
   against a locale nobody reads.
-- `src/config/site.ts` — brand, engine wording, indexing switches. `demoMode`
+- `src/config/site.ts` — brand wording and indexing switches. `demoMode`
   defaults to **true** when `NEXT_PUBLIC_DEMO_MODE` is unset, so production must
   set `NEXT_PUBLIC_DEMO_MODE=false`; without it a delivery the reader cannot
   parse silently hands the magazine back to the seven fictional demo stories.

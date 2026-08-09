@@ -1,6 +1,6 @@
 ---
 name: commit-discipline
-description: Commit and push conventions for the mma-files repository. Use at the START of every session in this repo, before making any edits, and again when the session is wrapping up. Covers when to commit, how to phrase messages, and the end-of-session push to main.
+description: Commit and push conventions for the mma-files repository. Use at the START of every session in this repo, before making any edits, and again when the session is wrapping up. Covers when to commit, how to phrase messages, and how to publish a verified session branch.
 ---
 
 # Commit discipline — mma-files
@@ -49,8 +49,8 @@ Use Conventional Commits. Subject in the imperative, lower case after the type,
 no trailing period, under ~72 characters.
 
 ```
-feat(content): add bilingual seed articles for fight-week format
-fix(i18n): preserve current route when switching locale
+feat(content): add Czech fight-week articles
+fix(routes): preserve the current section in navigation
 chore(deps): pin next to 15.5.22
 docs(readme): explain how to replace demo data with a CMS
 style(homepage): tighten hero lead spacing on mobile
@@ -70,15 +70,19 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 
 ## 4. Branching
 
-Day-to-day work happens on `dev`. Do not commit directly to `main` mid-session.
+Day-to-day work happens on a short-lived session branch created from an
+up-to-date `main`. Use the repository's requested branch when one is supplied;
+otherwise prefix it with `claude/`. Do not commit directly to `main`.
 
-If `dev` does not exist, create it from `main` before the first edit:
+Before the first edit in a new session:
 
 ```bash
-git checkout -b dev
+git checkout main
+git pull --ff-only origin main
+git checkout -b claude/<short-task-name>
 ```
 
-## 5. End of session — push to main
+## 5. End of session — publish the session branch
 
 When the session's work is finished and verified, publish it:
 
@@ -86,28 +90,19 @@ When the session's work is finished and verified, publish it:
 npm run typecheck && npm run build
 ```
 
-Only if that passes:
+Only if that passes, push the current session branch:
 
 ```bash
-git checkout main
-git merge --ff-only dev
-git push origin main
-git checkout dev
-git push origin dev
+git push -u origin HEAD
 ```
 
-If `main` does not exist yet (fresh repository), create it from `dev`:
+Open or update the repository's normal review path. Merge into `main` only when
+the task explicitly authorizes it and every required check is green. If `main`
+moved, do **not** force-push: integrate the new commits into the session branch,
+re-run the checks, and push normally.
 
-```bash
-git branch -M dev main && git push -u origin main
-```
-
-If the fast-forward merge is rejected because `main` moved, do **not** force
-push. Rebase `dev` onto `main`, re-run the build, and try again.
-
-Report the pushed commit range to the user. If the build fails, do not push —
-fix it, or tell the user exactly what is broken and leave the work committed on
-`dev`.
+Report the pushed commit range to the user. If the build fails, do not publish
+an unverified merge; fix it or report exactly what remains broken.
 
 ## 6. What not to commit
 

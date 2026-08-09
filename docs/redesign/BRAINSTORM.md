@@ -104,13 +104,13 @@ own spec rather than a pixel reference.)
 Nav (order): **Nejnovější · UFC · Oktagon · Predikce · Zápasový týden ·
 Výsledky · Bojovníci**
 
-- "Čísla" leaves the nav and the homepage. `/cs/data-desk` redirects to the
-  new Predikce page; its evidence-state and betting-boundary explainers fold
-  into Predikce and the editorial-standards page.
+- "Čísla" leaves the nav and the homepage. `/cs/data-desk` remains available
+  from the footer with no redirect; its evidence-state and betting-boundary
+  explainers can also support Predikce and the editorial-standards page.
 - **Predikce** is new: the FightAIQ surface promoted from a buried module to a
   pillar, since the magazine's identity is UFC + Oktagon + fight predictions.
-- Route segments stay English (`/cs/latest`, `/cs/predictions`, …) to match
-  the existing URL scheme; labels are Czech.
+- The new route is `/cs/predikce`; existing established routes keep their
+  current segments and reader labels remain Czech.
 
 ### Categories and the article feed
 
