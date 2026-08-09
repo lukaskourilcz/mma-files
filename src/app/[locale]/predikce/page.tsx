@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PageHeader } from "@/components/ui/PageHeader";
+import { PredictionBoardList } from "@/components/fightaiq/PredictionBoards";
 import { Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { pageMetadata } from "@/lib/metadata";
@@ -27,6 +27,14 @@ export async function generateMetadata({
   });
 }
 
+function Disclaimer({ children }: { children: string }) {
+  return (
+    <p className="border border-rule-dark p-3 font-mono text-[12px] font-medium uppercase leading-relaxed tracking-[0.12em] text-accent-on-dark">
+      {children}
+    </p>
+  );
+}
+
 export default async function PredictionsPage({
   params,
 }: {
@@ -38,22 +46,28 @@ export default async function PredictionsPage({
   const dict = getDictionary(locale);
 
   return (
-    <>
-      <PageHeader
-        crumbs={[
-          { href: routes.home(locale), label: dict.nav.home },
-          { label: dict.predictions.title },
-        ]}
-        kicker={dict.predictions.earlyModel}
-        title={dict.predictions.title}
-        dek={dict.predictions.intro}
-      />
-      <Container className="py-10 md:py-14">
-        <div className="max-w-3xl border-l-4 border-accent bg-surface-raised p-5 md:p-6">
-          <p className="font-semibold text-ink">{dict.predictions.disclaimer}</p>
-          <p className="mt-3 text-sm text-ink-muted">{dict.predictions.noModel}</p>
+    <div className="bg-chrome text-text-inverse">
+      <Container className="py-12 md:py-16">
+        <header>
+          <h1 className="display text-[length:var(--text-d2)] text-text-inverse">
+            {dict.predictions.title}
+          </h1>
+          <p className="mt-5 max-w-[68ch] text-[17px] leading-[1.6] text-text-inverse-muted">
+            {dict.predictions.intro}
+          </p>
+          <div className="mt-6 max-w-[68ch]">
+            <Disclaimer>{dict.predictions.disclaimer}</Disclaimer>
+          </div>
+        </header>
+
+        <div className="mt-14 md:mt-16">
+          <PredictionBoardList locale={locale} />
+        </div>
+
+        <div className="mt-16">
+          <Disclaimer>{dict.predictions.disclaimer}</Disclaimer>
         </div>
       </Container>
-    </>
+    </div>
   );
 }
