@@ -373,7 +373,7 @@ export const cs = {
       "U každého kurzu je čas a způsob pořízení; nejde o živou nabídku.",
       "U každé pravděpodobnosti je verze modelu a viditelná nejistota.",
       "Rozdíl mezi modelem a trhem je výsledek výzkumu, ne zaručená výhoda.",
-      "Web neobsahuje odkazy na sázkové kanceláře, affiliate odkazy ani automatické sázení.",
+      "Web neobsahuje odkazy na sázkové kanceláře, affiliate odkazy ani nástroje pro podávání sázek.",
     ],
     boundaryFooter:
       "Pokud text cituje deterministický výstup, přímo na stránce uvádí přesnou verzi modelu, vstupy a srozumitelně popsanou nejistotu.",
@@ -515,7 +515,7 @@ export const cs = {
         title: "Sázková data mají pevné hranice",
         body: [
           "Kurzy a modelové výstupy uvádějí čas pořízení, zdroj, verzi a srozumitelně popsanou nejistotu.",
-          "Web nemá affiliate odkazy, propagaci sázkových kanceláří, zaručené výsledky, práci se sázkovým účtem ani automatické sázení.",
+          "Web nemá affiliate odkazy, propagaci sázkových kanceláří, zaručené výsledky, práci se sázkovým účtem ani nástroje pro podávání sázek.",
         ],
       },
       {
