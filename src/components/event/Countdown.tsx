@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 export interface CountdownLabels {
-  heading: string;
   days: string;
   hrs: string;
   min: string;
@@ -44,11 +43,8 @@ export function Countdown({
 
   if (now === null || target - now <= 0) {
     return (
-      <p className="flex items-center gap-3.5 border border-rule-strong bg-card px-4 py-3.5">
-        <span className="label-mono-sm font-semibold text-ink-muted">
-          {labels.heading}
-        </span>
-        <span className="label-mono-sm ml-auto text-ink">{fallback}</span>
+      <p className="border border-rule bg-paper px-4 py-5 text-center font-mono text-[13px] tabular-nums text-text">
+        {fallback}
       </p>
     );
   }
@@ -63,33 +59,24 @@ export function Countdown({
   const s = Math.floor(diff / 1000);
 
   const cells = [
-    { value: pad(d), label: labels.days, lit: false },
-    { value: pad(h), label: labels.hrs, lit: false },
-    { value: pad(m), label: labels.min, lit: false },
-    { value: pad(s), label: labels.sec, lit: true },
+    { value: pad(d), label: labels.days },
+    { value: pad(h), label: labels.hrs },
+    { value: pad(m), label: labels.min },
+    { value: pad(s), label: labels.sec },
   ];
 
   return (
-    <div className="flex items-center gap-3.5 border border-rule-strong bg-card px-4 py-3.5">
-      <span className="label-mono-sm font-semibold text-ink-muted">
-        {labels.heading}
-      </span>
-      <ul className="ml-auto flex gap-1.5">
+    <div className="border border-rule bg-paper px-3 py-4">
+      <ul className="grid grid-cols-4 divide-x divide-rule">
         {cells.map((cell) => (
           <li
             key={cell.label}
-            className={`min-w-[50px] px-1.5 py-[7px] text-center ${
-              cell.lit ? "bg-signal" : "border border-rule"
-            }`}
+            className="min-w-0 px-1 text-center"
           >
-            <p className="font-mono text-[21px] font-semibold leading-none text-ink">
+            <p className="font-mono text-[24px] font-semibold leading-none tabular-nums text-text md:text-[28px]">
               {cell.value}
             </p>
-            <p
-              className={`mt-1.5 font-mono text-[9px] uppercase tracking-[0.16em] ${
-                cell.lit ? "text-ink" : "text-ink-meta"
-              }`}
-            >
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-text-meta">
               {cell.label}
             </p>
           </li>

@@ -318,7 +318,7 @@ export const cs = {
     monthGroup: (month: string) => month,
     expand: "Rozbalit kartu",
     collapse: "Sbalit kartu",
-    noResult: "Výsledek není v záznamu",
+    noResult: "Bez výsledku",
   },
 
   fighters: {
