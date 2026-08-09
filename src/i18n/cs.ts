@@ -328,6 +328,8 @@ export const cs = {
     filterAll: "Vše",
     filterUfc: "UFC",
     filterOktagon: "OKTAGON",
+    resultCount: (count: number) =>
+      `${count} ${count === 1 ? "bojovník" : count > 1 && count < 5 ? "bojovníci" : "bojovníků"}`,
     empty: "Žádný bojovník neodpovídá filtru.",
     tape: "Porovnání parametrů",
     style: "Jak vyhrává",
