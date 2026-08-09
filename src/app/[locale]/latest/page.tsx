@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/ads/AdSlot";
-import { ArticleGrid } from "@/components/article/ArticleCard";
-import { PageHeader } from "@/components/ui/PageHeader";
+import { ArticleFeed, FeedPageHeader } from "@/components/article/ArticleFeed";
 import { Container } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { pageMetadata } from "@/lib/metadata";
@@ -44,22 +43,15 @@ export default async function LatestPage({
   return (
     <>
       <AdSlot name="masthead-billboard" locale={locale} />
-      <PageHeader
-        crumbs={[
-          { href: routes.home(locale), label: dict.nav.home },
-          { label: dict.latest.title },
-        ]}
-        kicker={`${dict.latest.title} · ${articles.length}`}
-        title={dict.latest.title}
-        dek={dict.latest.dek}
-      />
+      <FeedPageHeader title={dict.latest.title} dek={dict.latest.dek} />
       <Container className="py-10 md:py-14">
-        <ArticleGrid
-          articles={articles}
+        <ArticleFeed
+          articles={articles.slice(0, 12)}
           locale={locale}
           emptyLabel={dict.latest.empty}
         />
       </Container>
+      <AdSlot name="footer-billboard" locale={locale} />
     </>
   );
 }
