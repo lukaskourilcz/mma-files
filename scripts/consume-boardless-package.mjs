@@ -524,6 +524,19 @@ export async function materializeBoardlessPackage(value, root = process.cwd()) {
         paths: ["data/boardless/articles.json", article.image.hero_path, article.image.thumb_path]
       };
     }
+    // The slug is the article's URL and the name of its asset directory, so two articles cannot
+    // share one: the reader resolves a slug to the first match and every later article at that
+    // address becomes unreachable. The desk previewed one fight card on three separate days and
+    // gave all three the event's slug — the second was refused only because its hero bytes
+    // differed from the first's, which is an accident of the image check rather than a rule, and
+    // the third would have been stored and then never served.
+    const slugOwner = store.packages.find((entry) => entry.slug === article.slug);
+    if (slugOwner) {
+      throw new DeliveryError(
+        "hash_conflict",
+        `${articleIdentity(article)} reuses the slug of ${articleIdentity(slugOwner)}`,
+      );
+    }
     const packages = [...store.packages, article].sort((left, right) =>
       left.publishAt.localeCompare(right.publishAt) || left.slot.localeCompare(right.slot));
     const heroRelative = article.image.hero_path;

@@ -181,6 +181,41 @@ test("stores a bilingual article once and rejects a changed same-slot replay", a
   }
 });
 
+test("refuses a second article at an address the first one already holds", async () => {
+  // The desk previewed one fight card on three separate days and gave all three the event's
+  // slug. The slug is the URL and the asset directory both: the reader resolves it to the first
+  // match, so the later articles would have been stored and then never served.
+  const target = await root();
+  try {
+    const first = article();
+    assert.equal((await materializeBoardlessPackage(first, target)).status, "written");
+
+    const sameSlugLaterDay = sign({ ...article(), publishAt: "2026-08-02T08:00:00.000Z" });
+    await assert.rejects(
+      materializeBoardlessPackage(sameSlugLaterDay, target),
+      /reuses the slug of 2026-08-01:am/,
+    );
+
+    const ownAddress = sign({
+      ...article(),
+      publishAt: "2026-08-02T08:00:00.000Z",
+      slug: "verified-fight-preview-round-two",
+      image: {
+        ...article().image,
+        hero_path: "public/images/articles/verified-fight-preview-round-two/hero.svg",
+        thumb_path: "public/images/articles/verified-fight-preview-round-two/thumb.svg",
+      },
+    });
+    assert.equal((await materializeBoardlessPackage(ownAddress, target)).status, "written");
+
+    const stored = JSON.parse(await readFile(path.join(target, "data/boardless/articles.json"), "utf8"));
+    assert.equal(stored.packages.length, 2);
+    assert.equal(new Set(stored.packages.map((entry) => entry.slug)).size, 2);
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
 function correctionOf(stored, overrides = {}) {
   const plate = (width, height, fill) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" fill="${fill}"/></svg>`).toString("base64");
   const { packageHash: parent, ...rest } = stored;
