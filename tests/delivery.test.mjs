@@ -181,6 +181,90 @@ test("stores a bilingual article once and rejects a changed same-slot replay", a
   }
 });
 
+function correctionOf(stored, overrides = {}) {
+  const plate = (width, height, fill) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" fill="${fill}"/></svg>`).toString("base64");
+  const { packageHash: parent, ...rest } = stored;
+  return sign({
+    ...rest,
+    image: {
+      ...stored.image,
+      alt_cs: "Ilustrační plát, nikoli fotografie osoby",
+      hero_bytes_base64: plate(1600, 900, "#222"),
+      thumb_bytes_base64: plate(640, 360, "#222"),
+    },
+    correction: {
+      schemaVersion: "article-image-correction/1",
+      supersedesPackageHash: parent,
+      reason: "The delivered hero was not a photograph of the article's subject.",
+      correctedAt: "2026-08-08T22:08:02.960Z",
+    },
+    ...overrides,
+  });
+}
+
+test("replaces the picture through the correction door and leaves the words alone", async () => {
+  const target = await root();
+  try {
+    const pkg = article();
+    await materializeBoardlessPackage(pkg, target);
+    const corrected = correctionOf(pkg);
+
+    const result = await materializeBoardlessPackage(corrected, target);
+    assert.equal(result.status, "corrected");
+    assert.equal(result.supersededPackageHash, pkg.packageHash);
+
+    const stored = JSON.parse(await readFile(path.join(target, "data/boardless/articles.json"), "utf8"));
+    assert.equal(stored.packages.length, 1, "a correction replaces the slot rather than adding one");
+    assert.equal(stored.packages[0].packageHash, corrected.packageHash);
+    assert.equal(stored.packages[0].localizations.cs.bodyMDX, pkg.localizations.cs.bodyMDX);
+    assert.equal(
+      (await readFile(path.join(target, corrected.image.hero_path))).equals(Buffer.from(corrected.image.hero_bytes_base64, "base64")),
+      true,
+      "the delivered picture is overwritten, not preserved",
+    );
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
+test("refuses a correction that changes anything a reader read", async () => {
+  const target = await root();
+  try {
+    const pkg = article();
+    await materializeBoardlessPackage(pkg, target);
+
+    const smuggled = correctionOf(pkg, {
+      localizations: { ...pkg.localizations, cs: { ...pkg.localizations.cs, bodyMDX: "Přepsaný text." } },
+    });
+    await assert.rejects(materializeBoardlessPackage(smuggled, target), /different immutable bytes/);
+
+    const wrongParent = correctionOf(pkg, {
+      correction: {
+        schemaVersion: "article-image-correction/1",
+        supersedesPackageHash: "0".repeat(64),
+        reason: "Names a package this store never held.",
+        correctedAt: "2026-08-08T22:08:02.960Z",
+      },
+    });
+    await assert.rejects(materializeBoardlessPackage(wrongParent, target), /different immutable bytes/);
+
+    const malformed = correctionOf(pkg, {
+      correction: {
+        schemaVersion: "article-image-correction/1",
+        supersedesPackageHash: "not-a-digest",
+        reason: "Carries no openable parent.",
+        correctedAt: "2026-08-08T22:08:02.960Z",
+      },
+    });
+    await assert.rejects(materializeBoardlessPackage(malformed, target), /sha256 digest/);
+
+    const stored = JSON.parse(await readFile(path.join(target, "data/boardless/articles.json"), "utf8"));
+    assert.equal(stored.packages[0].packageHash, pkg.packageHash, "the stored package survives every refused correction");
+  } finally {
+    await rm(target, { recursive: true, force: true });
+  }
+});
+
 test("stores the newest FightAIQ snapshot and rejects stale replacement", async () => {
   const target = await root();
   try {

@@ -154,11 +154,52 @@ async function validateArticle(value) {
       throw new DeliveryError("schema_invalid", "organization contradicts the package references");
     }
   }
+  if (article.correction !== undefined) {
+    const correction = object(article.correction);
+    if (!correction || correction.schemaVersion !== "article-image-correction/1") {
+      throw new DeliveryError("schema_invalid", "correction must use article-image-correction/1");
+    }
+    const supersedes = requiredString(correction.supersedesPackageHash, "correction.supersedesPackageHash", 64);
+    if (!/^[a-f0-9]{64}$/u.test(supersedes)) {
+      throw new DeliveryError("schema_invalid", "correction.supersedesPackageHash must be a sha256 digest");
+    }
+    requiredString(correction.reason, "correction.reason", 300);
+    isoDateTime(correction.correctedAt, "correction.correctedAt");
+  }
   const expected = packageHash(article);
   if (article.packageHash !== expected) {
     throw new DeliveryError("content_invalid", "article packageHash does not match its canonical bytes");
   }
   return article;
+}
+
+/** What a correction is allowed to change. Everything else a reader read stays byte-identical. */
+const CORRECTABLE_FIELDS = ["image", "correction", "packageHash"];
+
+function withoutCorrectableFields(article) {
+  return Object.fromEntries(Object.entries(article).filter(([key]) => !CORRECTABLE_FIELDS.includes(key)));
+}
+
+/**
+ * Whether one package is a legitimate image-only correction of the one already stored.
+ *
+ * The producer runs this same predicate before it ships (quorum's
+ * `orchestrator/src/mma-files/correction.ts`) and this copy exists so that neither end takes the
+ * other's word for it. A producer that got it wrong would otherwise be able to rewrite a
+ * published article through a door that exists only for photographs.
+ *
+ * It is a second, stricter rule beside the immutability guard rather than a hole in it: the
+ * replacement must name the exact package it supersedes, and the sources, the fighter refs, the
+ * publication time, the format and every word of the Czech article must match canonical byte for
+ * canonical byte. Only the picture, the block explaining why it changed, and the hash covering
+ * both may differ.
+ */
+function isImageCorrection(current, replacement) {
+  const correction = object(replacement.correction);
+  if (!correction) return false;
+  if (correction.supersedesPackageHash !== current.packageHash) return false;
+  if (current.packageHash === replacement.packageHash) return false;
+  return canonical(withoutCorrectableFields(current)) === canonical(withoutCorrectableFields(replacement));
 }
 
 const acceptedFightSchemas = {
@@ -459,7 +500,29 @@ export async function materializeBoardlessPackage(value, root = process.cwd()) {
         }
         throw new DeliveryError("hash_conflict", `${articleIdentity(article)} image assets are missing or changed`);
       }
-      throw new DeliveryError("hash_conflict", `${articleIdentity(article)} already contains different immutable bytes`);
+      if (!isImageCorrection(current, article)) {
+        throw new DeliveryError("hash_conflict", `${articleIdentity(article)} already contains different immutable bytes`);
+      }
+      // The one door out of an immutable slot. Two articles shipped in the first week under
+      // photographs of the wrong thing — one of them a firearms range standing in for a fighter —
+      // and until this existed the only way to replace either was to edit this repository by hand.
+      // A correction overwrites the delivered picture, which is the exact opposite of the
+      // first-delivery rule below: there, existing bytes are a conflict; here they are the target.
+      const correctedHeroFile = path.join(root, article.image.hero_path);
+      const correctedThumbFile = path.join(root, article.image.thumb_path);
+      await atomicBytes(correctedHeroFile, Buffer.from(article.image.hero_bytes_base64, "base64"));
+      await atomicBytes(correctedThumbFile, Buffer.from(article.image.thumb_bytes_base64, "base64"));
+      await atomicJson(file, {
+        schemaVersion: "mma-files-article-store/1",
+        packages: store.packages.map((entry) => (entry === current ? article : entry))
+      });
+      return {
+        status: "corrected",
+        kind: "article",
+        packageHash: article.packageHash,
+        supersededPackageHash: current.packageHash,
+        paths: ["data/boardless/articles.json", article.image.hero_path, article.image.thumb_path]
+      };
     }
     const packages = [...store.packages, article].sort((left, right) =>
       left.publishAt.localeCompare(right.publishAt) || left.slot.localeCompare(right.slot));
