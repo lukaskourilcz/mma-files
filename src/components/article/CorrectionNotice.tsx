@@ -12,14 +12,14 @@ export function CorrectionNotice({ corrections, locale }: { corrections: Correct
         {newestFirst.map((correction, index) => (
           <li key={`${correction.at}:${index}`} className="border-t border-correction-rule pt-4 first:border-t-0 first:pt-0">
             <div className="flex flex-wrap items-baseline gap-3">
-              <h2 className="display text-[18px] text-text">
+              <h2 className="display text-[length:var(--text-md)] text-text">
                 {correction.kind === "correction" ? dict.article.correction : dict.labels.update}
               </h2>
-              <time dateTime={correction.at} className="font-mono text-[12px] tabular-nums text-text-meta">
+              <time dateTime={correction.at} className="font-mono text-[length:var(--text-mono-sm)] tabular-nums text-text-meta">
                 {formatDate(correction.at, locale)}
               </time>
             </div>
-            <p className="mt-2 text-[15px] leading-[1.6] text-text">
+            <p className="mt-2 text-[length:var(--text-sm)] leading-[1.6] text-text">
               {correction.note[locale] ?? correction.note.cs}
             </p>
           </li>

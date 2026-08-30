@@ -51,13 +51,13 @@ export function NewsletterModule({
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         aria-describedby={`${inputId}-note`}
-        className="h-12 min-w-0 flex-1 border border-rule-strong bg-paper px-4 text-[15px] text-text placeholder:text-text-meta focus:border-text"
+        className="h-12 min-w-0 flex-1 border border-rule-strong bg-paper px-4 text-[length:var(--text-sm)] text-text placeholder:text-text-meta focus:border-text"
       />
       <button
         type="submit"
         disabled
         aria-disabled="true"
-        className="min-h-12 shrink-0 cursor-not-allowed bg-accent px-6 py-4 text-[13px] font-extrabold uppercase tracking-[0.1em] text-paper opacity-70 sm:opacity-100"
+        className="min-h-12 shrink-0 cursor-not-allowed bg-accent px-6 py-4 text-[length:var(--text-xs)] font-extrabold uppercase tracking-[0.1em] text-paper opacity-70 sm:opacity-100"
       >
         {copy.submit}
       </button>
@@ -76,7 +76,7 @@ export function NewsletterModule({
   if (variant === "panel") {
     return (
       <div className="sheet p-6 md:p-8">
-        <h2 className="display text-[24px] leading-none text-text md:text-[28px]">
+        <h2 className="display text-[length:var(--text-d6)] leading-none text-text md:text-[length:var(--text-d5)]">
           {copy.title}
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-text-muted">{copy.dek}</p>

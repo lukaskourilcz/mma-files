@@ -29,7 +29,7 @@ export async function generateMetadata({
 
 function Disclaimer({ children }: { children: string }) {
   return (
-    <p className="border border-rule-dark p-3 font-mono text-[12px] font-medium uppercase leading-relaxed tracking-[0.12em] text-accent-on-dark">
+    <p className="border border-rule-dark p-3 font-mono text-[length:var(--text-mono-sm)] font-medium uppercase leading-relaxed tracking-[0.12em] text-accent-on-dark">
       {children}
     </p>
   );
@@ -52,7 +52,7 @@ export default async function PredictionsPage({
           <h1 className="display text-[length:var(--text-d2)] text-text-inverse">
             {dict.predictions.title}
           </h1>
-          <p className="mt-5 max-w-[68ch] text-[17px] leading-[1.6] text-text-inverse-muted">
+          <p className="mt-5 max-w-[68ch] text-[length:var(--text-base)] leading-[1.6] text-text-inverse-muted">
             {dict.predictions.intro}
           </p>
           <div className="mt-6 max-w-[68ch]">

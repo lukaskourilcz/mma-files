@@ -1,12 +1,20 @@
 import Link from "next/link";
 import { PhotoSlot } from "@/components/media/PhotoSlot";
-import { NoteChip } from "@/components/ui/primitives";
+import { Chip, NoteChip } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { formatDate, formatRelative } from "@/lib/format";
 import { routes } from "@/lib/paths";
 import type { Article, Locale, StoryImage } from "@/lib/types";
 import type { WeekArticleCard } from "@/lib/week-chunks";
 
+/**
+ * The feed row: the card anatomy at row density.
+ *
+ * Same ladder as `ArticleCard` — kicker line, Anton headline, mono meta —
+ * one step down and without the dek. Its thumbnail carries no credit chip:
+ * at 96px the chip covers the picture it is crediting, and the credit is on
+ * the article the row links to.
+ */
 export function ArticleRow({
   article,
   locale,
@@ -31,7 +39,7 @@ export function ArticleRow({
           src: article.thumbPath,
           thumbnailSrc: article.thumbPath,
           alt: { cs: article.thumbAlt ?? article.title },
-          credit: article.thumbCredit ?? "Redakční vizuál",
+          credit: article.thumbCredit ?? "",
           ...(article.thumbCreditUrl ? { creditUrl: article.thumbCreditUrl } : {}),
         }
       : undefined;
@@ -58,31 +66,29 @@ export function ArticleRow({
             note={dict.labels.photoSlots.story}
             sizes="(min-width: 768px) 160px, 96px"
             useThumbnail
-            creditMode="overlay"
           />
         </span>
         <span className="min-w-0">
-          <span className="block font-mono text-[11px] font-medium uppercase tracking-[var(--tracking-kicker)] text-accent">
-            {organization
-              ? dict.organizationsShort[organization]
-              : dict.labels.desk}
+          <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+            <span className="label-mono text-accent">{dict.formats[article.format]}</span>
+            {organization ? (
+              <Chip tone="muted">{dict.organizationsShort[organization]}</Chip>
+            ) : null}
+            {isDemo ? <NoteChip>{dict.demo.articleBadge}</NoteChip> : null}
           </span>
-          <span className="mt-1.5 block text-[17px] font-bold leading-[1.3] text-text underline decoration-transparent decoration-[3px] underline-offset-4 group-hover:decoration-accent">
+          <span className="display headline-link mt-2 block text-[length:var(--text-d6)] leading-tight text-text">
             {local.title}
           </span>
-          {isDemo ? (
-            <NoteChip className="mt-2">{dict.article.demoBadge}</NoteChip>
-          ) : null}
           <time
             dateTime={article.publishAt}
-            className="mt-2 block font-mono text-[12px] tabular-nums text-text-meta md:hidden"
+            className="label-mono mt-2 block text-text-meta md:hidden"
           >
             {timestamp}
           </time>
         </span>
         <time
           dateTime={article.publishAt}
-          className="hidden self-center text-right font-mono text-[12px] tabular-nums text-text-meta md:block"
+          className="label-mono hidden self-center text-right text-text-meta md:block"
         >
           {timestamp}
         </time>

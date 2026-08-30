@@ -25,11 +25,11 @@ export function DidYouKnow({
       className="bg-accent py-6 text-paper"
     >
       <Container className="grid gap-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:gap-8">
-        <p className="display text-[22px] leading-none">
+        <p className="display text-[length:var(--text-d6)] leading-none">
           {copy.kicker}
         </p>
-        <p className="max-w-[72ch] text-[17px] font-medium leading-[1.5]">{entry.cs.short}</p>
-        <div className="font-mono text-[11px] leading-relaxed text-paper md:text-right">
+        <p className="max-w-[72ch] text-[length:var(--text-base)] font-medium leading-[1.5]">{entry.cs.short}</p>
+        <div className="font-mono text-[length:var(--text-mono-xs)] leading-relaxed text-paper md:text-right">
           <p className="flex items-center gap-2 md:justify-end">
             <span aria-hidden="true" className="h-[5px] w-[5px] bg-paper" />
             {copy.verified}{" "}

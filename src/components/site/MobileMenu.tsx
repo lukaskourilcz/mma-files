@@ -149,7 +149,7 @@ export function MobileMenu({
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       onClick={() => setOpen(false)}
-                      className={`relative flex min-h-[76px] items-center py-5 pl-5 pr-2 display text-[36px] leading-[var(--leading-display)] ${
+                      className={`relative flex min-h-[76px] items-center py-5 pl-5 pr-2 display text-[length:var(--text-d4)] leading-[var(--leading-display)] ${
                         active ? "text-accent-on-dark" : "text-text-inverse"
                       }`}
                     >

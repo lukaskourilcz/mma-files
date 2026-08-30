@@ -9,7 +9,7 @@ export default function LocaleNotFound() {
     <section className="flex min-h-[calc(100dvh-var(--layout-chrome-h-sm)-var(--layout-ticker-h))] items-center bg-chrome py-16 text-text-inverse md:min-h-[calc(100dvh-var(--layout-chrome-h)-var(--layout-ticker-h))]">
       <Container>
         <div className="max-w-xl">
-          <p className="font-mono text-[12px] text-accent-on-dark">404</p>
+          <p className="font-mono text-[length:var(--text-mono-sm)] text-accent-on-dark">404</p>
           <h1 className="display mt-4 max-w-[12ch] text-[length:var(--text-d2)] text-text-inverse">
             {dict.notFound.title}
           </h1>

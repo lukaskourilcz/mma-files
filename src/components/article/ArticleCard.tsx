@@ -1,12 +1,21 @@
 import Link from "next/link";
 import { PhotoSlot } from "@/components/media/PhotoSlot";
 import { EmptyState } from "@/components/ui/Feedback";
-import { NoteChip } from "@/components/ui/primitives";
+import { Chip, NoteChip } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { formatDate } from "@/lib/format";
 import { routes } from "@/lib/paths";
 import type { Article, Locale } from "@/lib/types";
 
+/**
+ * The card anatomy, shared with `ArticleRow`: kicker line, Anton headline,
+ * dek, mono meta.
+ *
+ * Importance is carried by density and by the picture, never by a shadow or a
+ * different border — every panel on this site is one hairline on a flat
+ * surface. `compact` is the rail and in-column variant: same ladder, one step
+ * down, dek dropped.
+ */
 export function ArticleCard({
   article,
   locale,
@@ -21,48 +30,53 @@ export function ArticleCard({
   const dict = getDictionary(locale);
   const local = article.localizations[locale] ?? article.localizations.cs!;
   const Heading = headingLevel;
-  const kicker = article.organization
-    ? dict.organizationsShort[article.organization]
-    : dict.labels.desk;
+  const compact = size === "compact";
+  // A thumbnail renders wherever the delivery has one — the compact card used
+  // to drop the picture even when the file carried it.
+  const thumbnail = article.image?.thumbnailSrc ?? article.image?.src;
 
   return (
     <article className="group relative h-full border border-rule-strong bg-card hover:border-text">
       <Link href={routes.article(locale, article.slug)} className="flex h-full flex-col">
-        {size === "default" ? (
+        {thumbnail ? (
           <span className="relative block aspect-video overflow-hidden bg-well">
             <PhotoSlot
               image={article.image}
               locale={locale}
               note={dict.labels.photoSlots.story}
-              sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+              sizes={compact ? "300px" : "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"}
               useThumbnail
-              creditMode="overlay"
+              {...(compact ? {} : { creditMode: "overlay" as const })}
             />
           </span>
         ) : null}
 
-        <span className="flex flex-1 flex-col p-4">
-          <span className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[11px] font-medium uppercase tracking-[var(--tracking-kicker)] text-accent">
-              {kicker}
-            </span>
-            {article.isDemo ? <NoteChip>{dict.article.demoBadge}</NoteChip> : null}
+        <span className={`flex flex-1 flex-col ${compact ? "p-3.5" : "p-4"}`}>
+          <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+            <span className="label-mono text-accent">{dict.formats[article.format]}</span>
+            {article.organization ? (
+              <Chip tone="muted">{dict.organizationsShort[article.organization]}</Chip>
+            ) : null}
+            {article.isDemo ? <NoteChip>{dict.demo.articleBadge}</NoteChip> : null}
           </span>
+
           <Heading
-            className={`mt-2 block font-bold leading-[1.3] text-text underline decoration-transparent decoration-[3px] underline-offset-4 group-hover:decoration-accent ${
-              size === "compact" ? "text-[15px]" : "text-[length:var(--text-d6)]"
+            className={`display headline-link mt-2.5 block leading-tight text-text ${
+              compact ? "text-[length:var(--text-d6)]" : "text-[length:var(--text-d5)]"
             }`}
           >
             {local.title}
           </Heading>
-          {size === "default" ? (
-            <span className="mt-2 line-clamp-3 text-[15px] leading-[1.5] text-text-muted">
+
+          {compact ? null : (
+            <span className="mt-2 line-clamp-3 text-[length:var(--text-sm)] leading-[1.5] text-text-muted">
               {local.dek}
             </span>
-          ) : null}
+          )}
+
           <time
             dateTime={article.publishAt}
-            className="mt-auto pt-4 font-mono text-[12px] tabular-nums text-text-meta"
+            className="label-mono mt-auto pt-4 text-text-meta"
           >
             {formatDate(article.publishAt, locale, {
               day: "numeric",

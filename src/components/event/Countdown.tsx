@@ -43,7 +43,7 @@ export function Countdown({
 
   if (now === null || target - now <= 0) {
     return (
-      <p role="timer" aria-live="polite" aria-atomic="true" className="border border-rule bg-paper px-4 py-5 text-center font-mono text-[13px] tabular-nums text-text">
+      <p role="timer" aria-live="polite" aria-atomic="true" className="border border-rule bg-paper px-4 py-5 text-center font-mono text-[length:var(--text-mono-md)] tabular-nums text-text">
         {fallback}
       </p>
     );
@@ -73,10 +73,10 @@ export function Countdown({
             key={cell.label}
             className="min-w-0 px-1 text-center"
           >
-            <p className="font-mono text-[24px] font-semibold leading-none tabular-nums text-text md:text-[28px]">
+            <p className="font-mono text-[length:var(--text-d6)] font-semibold leading-none tabular-nums text-text md:text-[length:var(--text-d5)]">
               {cell.value}
             </p>
-            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-text-meta">
+            <p className="label-mono-sm mt-2 text-text-meta">
               {cell.label}
             </p>
           </li>

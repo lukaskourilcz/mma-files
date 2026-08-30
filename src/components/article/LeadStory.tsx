@@ -42,7 +42,7 @@ function StoryKicker({
           <span className="label-mono text-text-inverse-meta">{dict.home.leadKicker}</span>
         </>
       ) : null}
-      {article.isDemo ? <NoteChip>{dict.article.demoBadge}</NoteChip> : null}
+      {article.isDemo ? <NoteChip>{dict.demo.articleBadge}</NoteChip> : null}
     </div>
   );
 }

@@ -33,12 +33,12 @@ function ResultLine({ bout, locale }: { bout: Bout; locale: Locale }) {
 
   if (!hasWinner) {
     return (
-      <li className="border-b border-rule py-3.5 text-[17px] leading-snug last:border-b-0">
+      <li className="border-b border-rule py-3.5 text-[length:var(--text-base)] leading-snug last:border-b-0">
         <span>{bout.red.name}</span>{" "}
-        <span className="font-mono text-[12px] text-text-meta">{dict.results.versus}</span>{" "}
+        <span className="font-mono text-[length:var(--text-mono-sm)] text-text-meta">{dict.results.versus}</span>{" "}
         <span>{bout.blue.name}</span>{" "}
         <span className="text-text-meta">·</span>{" "}
-        <span className="font-mono text-[13px] text-text">{dict.results.noResult}</span>
+        <span className="font-mono text-[length:var(--text-mono-md)] text-text">{dict.results.noResult}</span>
       </li>
     );
   }
@@ -51,19 +51,19 @@ function ResultLine({ bout, locale }: { bout: Bout; locale: Locale }) {
     : method;
 
   return (
-    <li className="border-b border-rule py-3.5 text-[17px] leading-snug last:border-b-0">
+    <li className="border-b border-rule py-3.5 text-[length:var(--text-base)] leading-snug last:border-b-0">
       <span className="font-bold text-text">{winner.name}</span>{" "}
-      <span className="font-mono text-[12px] text-text-meta">{dict.results.defeated}</span>{" "}
+      <span className="font-mono text-[length:var(--text-mono-sm)] text-text-meta">{dict.results.defeated}</span>{" "}
       <span className="text-text-muted">{loser.name}</span>{" "}
       <span className="text-text-meta">·</span>{" "}
-      <span className="font-mono text-[13px] text-text">{finish}</span>
+      <span className="font-mono text-[length:var(--text-mono-md)] text-text">{finish}</span>
     </li>
   );
 }
 
 function CardLabel({ children }: { children: string }) {
   return (
-    <p className="mb-2.5 font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-text-meta">
+    <p className="mb-2.5 font-mono text-[length:var(--text-mono-xs)] font-medium uppercase tracking-[0.16em] text-text-meta">
       {children}
     </p>
   );
@@ -93,7 +93,7 @@ function PromotionColumn({
           {dict.organizationsShort[organization]}
         </h3>
         {completed ? (
-          <p className="font-mono text-[12px] tabular-nums text-text-meta">
+          <p className="font-mono text-[length:var(--text-mono-sm)] tabular-nums text-text-meta">
             {completed.name} · {stamp(completed, locale)}
           </p>
         ) : null}
@@ -117,12 +117,12 @@ function PromotionColumn({
             href={routes.event(locale, next.slug)}
             className="group mb-3 flex min-h-11 flex-wrap items-center justify-between gap-2"
           >
-            <span className="text-[17px] font-bold text-text underline decoration-transparent decoration-[3px] underline-offset-4 group-hover:decoration-accent">
+            <span className="text-[length:var(--text-base)] font-bold text-text underline decoration-transparent decoration-[3px] underline-offset-4 group-hover:decoration-accent">
               {next.name}
             </span>
             <time
               dateTime={next.startsAt}
-              className="font-mono text-[12px] tabular-nums text-text-meta"
+              className="font-mono text-[length:var(--text-mono-sm)] tabular-nums text-text-meta"
             >
               {stamp(next, locale)}
             </time>

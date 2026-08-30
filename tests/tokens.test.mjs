@@ -110,6 +110,49 @@ test("every colour utility in src resolves to a token the theme defines", async 
   assert.deepEqual(offenders, []);
 });
 
+test("every text size comes from the scale, not from a pixel value", async () => {
+  const offenders = [];
+  for (const file of await sourceFiles()) {
+    const text = await readFile(file, "utf8");
+    text.split("\n").forEach((line, index) => {
+      for (const match of line.matchAll(/(?<![\w-])(?:[a-z0-9-]+:)*text-\[[0-9][^\]]*\]/gu)) {
+        offenders.push(`${path.relative(root, file)}:${index + 1} ${match[0]}`);
+      }
+    });
+  }
+  assert.deepEqual(
+    offenders,
+    [],
+    "map the size onto a --text-* token, or add the missing step to @theme",
+  );
+});
+
+test("card and row headlines keep the display face at small sizes", async () => {
+  for (const name of ["ArticleCard", "ArticleRow"]) {
+    const source = await readFile(path.join(root, `src/components/article/${name}.tsx`), "utf8");
+    assert.match(source, /className=\{?[`"][^`"]*\bdisplay\b/u, `${name} headline uses the display face`);
+    assert.match(source, /text-\[length:var\(--text-d[56]\)\]/u, `${name} headline sits on d5 or d6`);
+    assert.match(source, /dict\.formats\[/u, `${name} kicker names the format`);
+    assert.match(source, /thumbnailSrc|useThumbnail/u, `${name} renders a thumbnail`);
+  }
+});
+
+test("one demo wording, and something still reads it", async () => {
+  const dictionary = await readFile(path.join(root, "src/i18n/cs.ts"), "utf8");
+  const wording = "Ukázkový obsah";
+  assert.equal(
+    dictionary.split(wording).length - 1,
+    1,
+    "the demo badge wording is declared exactly once",
+  );
+
+  const readers = [];
+  for (const file of await sourceFiles()) {
+    if ((await readFile(file, "utf8")).includes("dict.demo.articleBadge")) readers.push(file);
+  }
+  assert.ok(readers.length > 0, "the surviving key is the one that renders");
+});
+
 test("the site keeps square corners and one page opening", async () => {
   const offenders = [];
   for (const file of await sourceFiles()) {

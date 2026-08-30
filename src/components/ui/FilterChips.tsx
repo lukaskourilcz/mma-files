@@ -57,7 +57,7 @@ export function FilterChips<T extends string>({
                 move(options.length - 1);
               }
             }}
-            className={`min-h-11 border px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.1em] ${
+            className={`min-h-11 border px-4 py-2.5 text-[length:var(--text-xs)] font-bold uppercase tracking-[0.1em] ${
               selected
                 ? "border-text bg-text text-paper"
                 : "border-rule-strong bg-card text-text hover:border-text"

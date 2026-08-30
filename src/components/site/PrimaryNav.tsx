@@ -24,7 +24,7 @@ export function PrimaryNav({ items, label }: { items: NavItem[]; label: string }
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`group relative flex min-h-11 shrink-0 items-center whitespace-nowrap px-5 text-[13px] font-bold uppercase tracking-[0.09em] ${
+            className={`group relative flex min-h-11 shrink-0 items-center whitespace-nowrap px-5 text-[length:var(--text-xs)] font-bold uppercase tracking-[0.09em] ${
               active ? "text-text-inverse" : "text-text-inverse-muted"
             }`}
           >

@@ -12,7 +12,7 @@ function FooterLink({ href, children }: { href: string; children: string }) {
     <li>
       <Link
         href={href}
-        className="flex min-h-11 items-center text-[15px] text-text-inverse-muted underline decoration-transparent decoration-1 underline-offset-4 hover:text-text-inverse hover:decoration-current"
+        className="flex min-h-11 items-center text-[length:var(--text-sm)] text-text-inverse-muted underline decoration-transparent decoration-1 underline-offset-4 hover:text-text-inverse hover:decoration-current"
       >
         {children}
       </Link>
@@ -32,7 +32,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             <Link href={routes.home(locale)} className="inline-flex min-h-11 items-center">
               <BrandLockup />
             </Link>
-            <p className="mt-4 max-w-[40ch] text-[15px] leading-relaxed text-text-inverse-muted">
+            <p className="mt-4 max-w-[40ch] text-[length:var(--text-sm)] leading-relaxed text-text-inverse-muted">
               {dict.footer.blurb}
             </p>
           </div>
@@ -40,7 +40,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           <nav className="md:col-span-2" aria-labelledby="footer-sections">
             <h2
               id="footer-sections"
-              className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-text-inverse-meta"
+              className="font-mono text-[length:var(--text-mono-xs)] font-medium uppercase tracking-[0.16em] text-text-inverse-meta"
             >
               {dict.footer.sections}
             </h2>
@@ -56,7 +56,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           <nav className="md:col-span-3" aria-labelledby="footer-desk">
             <h2
               id="footer-desk"
-              className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-text-inverse-meta"
+              className="font-mono text-[length:var(--text-mono-xs)] font-medium uppercase tracking-[0.16em] text-text-inverse-meta"
             >
               {dict.footer.desk}
             </h2>
@@ -80,7 +80,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </nav>
 
           <div className="md:col-span-2">
-            <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-text-inverse-meta">
+            <h2 className="font-mono text-[length:var(--text-mono-xs)] font-medium uppercase tracking-[0.16em] text-text-inverse-meta">
               {dict.footer.follow}
             </h2>
             <div className="mt-5">
@@ -88,7 +88,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             </div>
             <Link
               href={routes.rss(locale)}
-              className="mt-4 flex min-h-11 items-center text-[15px] text-text-inverse-muted underline decoration-transparent decoration-1 underline-offset-4 hover:text-text-inverse hover:decoration-current"
+              className="mt-4 flex min-h-11 items-center text-[length:var(--text-sm)] text-text-inverse-muted underline decoration-transparent decoration-1 underline-offset-4 hover:text-text-inverse hover:decoration-current"
             >
               {dict.footer.rss}
             </Link>
@@ -96,7 +96,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         </div>
 
         <div className="mt-10 border-t border-rule-dark pt-6">
-          <p className="font-mono text-[11px] tracking-[var(--tracking-mono)] text-text-inverse-meta">
+          <p className="font-mono text-[length:var(--text-mono-xs)] tracking-[var(--tracking-mono)] text-text-inverse-meta">
             {dict.footer.legal}
           </p>
         </div>

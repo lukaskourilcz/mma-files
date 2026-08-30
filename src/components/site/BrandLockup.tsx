@@ -8,7 +8,7 @@ export function BrandLockup({ compact = false }: { compact?: boolean }) {
         className={`${compact ? "h-[22px]" : "h-[26px]"} block w-[5px] -skew-x-12 bg-accent-on-dark`}
       />
       <span
-        className={`${compact ? "text-[21px]" : "text-[26px]"} display whitespace-nowrap leading-[var(--leading-display-tight)] tracking-[0.01em]`}
+        className={`${compact ? "text-[length:var(--text-d6)]" : "text-[length:var(--text-d5)]"} display whitespace-nowrap leading-[var(--leading-display-tight)] tracking-[0.01em]`}
       >
         {siteConfig.wordmark}
       </span>

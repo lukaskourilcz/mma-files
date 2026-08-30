@@ -23,21 +23,21 @@ function ResultNameLine({ bout, locale }: { bout: Bout; locale: Locale }) {
   const blueWon = Boolean(winnerRef && winnerRef === bout.blue.fighterRef);
   if (!redWon && !blueWon) {
     return (
-      <span className="text-[16px] leading-snug md:text-[17px]">
+      <span className="text-[length:var(--text-sm)] leading-snug md:text-[length:var(--text-base)]">
         {bout.red.name}{" "}
-        <span className="font-mono text-[12px] text-text-meta">{dict.results.versus}</span>{" "}
+        <span className="font-mono text-[length:var(--text-mono-sm)] text-text-meta">{dict.results.versus}</span>{" "}
         {bout.blue.name}{" "}
         <span className="text-text-meta">·</span>{" "}
-        <span className="font-mono text-[13px]">{dict.results.noResult}</span>
+        <span className="font-mono text-[length:var(--text-mono-md)]">{dict.results.noResult}</span>
       </span>
     );
   }
   const winner = redWon ? bout.red : bout.blue;
   const loser = redWon ? bout.blue : bout.red;
   return (
-    <span className="text-[16px] leading-snug md:text-[17px]">
+    <span className="text-[length:var(--text-sm)] leading-snug md:text-[length:var(--text-base)]">
       <strong>{winner.name}</strong>{" "}
-      <span className="font-mono text-[12px] text-text-meta">{dict.results.defeated}</span>{" "}
+      <span className="font-mono text-[length:var(--text-mono-sm)] text-text-meta">{dict.results.defeated}</span>{" "}
       <span className="text-text-muted">{loser.name}</span>
     </span>
   );
@@ -53,7 +53,7 @@ function ResultTiming({ bout, locale }: { bout: Bout; locale: Locale }) {
     result.time ?? null,
   ].filter(Boolean).join(" · ");
   return (
-    <span className="font-mono text-[13px] tabular-nums text-text">
+    <span className="font-mono text-[length:var(--text-mono-md)] tabular-nums text-text">
       {timing}
     </span>
   );
@@ -75,13 +75,13 @@ function ArchiveCard({ event, locale }: { event: FightEvent; locale: Locale }) {
         className="flex min-h-14 cursor-pointer list-none items-center gap-3 py-3 marker:hidden"
       >
         <span
-          className="shrink-0 px-2 py-[5px] font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-white"
+          className="label-mono-sm shrink-0 px-2 py-[5px] font-semibold text-white"
           style={{ backgroundColor: accent }}
         >
           {dict.organizationsShort[event.organization]}
         </span>
-        <span className="min-w-0 flex-1 text-[17px] font-bold text-text">{event.name}</span>
-        <span className="hidden shrink-0 font-mono text-[12px] tabular-nums text-text-meta sm:inline">
+        <span className="min-w-0 flex-1 text-[length:var(--text-base)] font-bold text-text">{event.name}</span>
+        <span className="hidden shrink-0 font-mono text-[length:var(--text-mono-sm)] tabular-nums text-text-meta sm:inline">
           {event.city ? `${event.city} · ` : ""}{date}
         </span>
         <span
@@ -95,7 +95,7 @@ function ArchiveCard({ event, locale }: { event: FightEvent; locale: Locale }) {
             key={bout.id}
             className="grid gap-2 border-b border-rule py-4 last:border-b-0 md:grid-cols-[56px_minmax(0,1fr)_auto] md:items-baseline md:gap-4"
           >
-            <span className="font-mono text-[11px] uppercase text-text-meta">
+            <span className="font-mono text-[length:var(--text-mono-xs)] uppercase text-text-meta">
               {dict.billingShort[bout.billing]}
             </span>
             <ResultNameLine bout={bout} locale={locale} />
