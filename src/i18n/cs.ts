@@ -12,6 +12,9 @@ export const cs = {
     localeShort: "CZ",
     htmlLang: "cs",
     dateLocale: "cs-CZ",
+    /* Alt text for the two share cards. */
+    ogHomeAlt: "titulní karta",
+    ogArticleAlt: "karta článku",
   },
 
   nav: {
@@ -465,6 +468,17 @@ export const cs = {
     modelUncertainty: "Nejistota",
     responsiblePlay:
       "Jde o výzkumná data. Nic na této stránce není slib ani osobní doporučení vsadit peníze.",
+
+    /* The FightAIQ module on this page. These used to be a copy object typed
+     * into the component, which is a second place for Czech to drift. */
+    feedEyebrow: "Data dodává FightAIQ",
+    feedTitle: "Aktuální odhady zápasů",
+    feedEmpty:
+      "Žádný potvrzený zápas zatím nemá ověřený odhad. Stránka zůstává prázdná, místo aby ukazovala vymyšlenou predikci.",
+    feedUpdated: "Data aktualizována",
+    feedModels: "Aktuální predikce",
+    feedWarning:
+      "Jde o rané modelové výstupy s časem vytvoření, ne o slib ani osobní sázkové doporučení. Nezveřejňujeme zde surové kurzy ani interní výzkumné soubory FightAIQ.",
   },
 
   predictions: {

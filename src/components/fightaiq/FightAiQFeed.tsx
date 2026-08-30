@@ -1,28 +1,9 @@
-import Link from "next/link";
-import type { FightAiQStatsEntry } from "@/lib/boardless";
-import { getFighterById } from "@/lib/repository";
-import { routes } from "@/lib/paths";
+import { BoutRow, type PredictionBout } from "@/components/fightaiq/BoutRow";
+import { Container, Kicker, SectionHeading } from "@/components/ui/primitives";
+import { getDictionary } from "@/i18n";
+import type { FightAiQEventSurface, FightAiQStatsEntry } from "@/lib/boardless";
+import { getPredictionCopy } from "@/lib/prediction-copy";
 import type { Locale } from "@/lib/types";
-
-// Czech only, because `Locale` is `"cs"` and nothing can ask for anything else. The English
-// half of this table was unreachable copy that still had to be kept in step with the Czech.
-const copy = {
-  cs: {
-    eyebrow: "Data dodává FightAIQ",
-    title: "Aktuální odhady zápasů",
-    empty: "Žádný potvrzený zápas zatím nemá ověřený odhad. Stránka zůstává prázdná, místo aby ukazovala vymyšlenou predikci.",
-    updated: "Data aktualizována",
-    models: "Aktuální predikce",
-    model: "Model",
-    warning: "Jde o rané modelové výstupy s časem vytvoření, ne o slib ani osobní sázkové doporučení. Nezveřejňujeme zde surové kurzy ani interní výzkumné soubory FightAIQ.",
-    early: "Raný model",
-    notAdvice: "Výstup modelu, ne sázkové doporučení.",
-  },
-} as const satisfies Record<Locale, unknown>;
-
-function percent(value: number): string {
-  return `${(value * 100).toFixed(1)}%`;
-}
 
 function timestamp(value: string): string {
   const date = new Date(value);
@@ -33,67 +14,107 @@ function timestamp(value: string): string {
   }).format(date);
 }
 
+/**
+ * A stats entry is a bout the model has an opinion about; render it as one.
+ *
+ * Division and scheduled rounds come from the bout the entry points at, so a
+ * model line for a bout the surface does not carry simply shows neither.
+ */
+function boutFor(
+  entry: FightAiQStatsEntry,
+  snapshot: FightAiQEventSurface,
+  divisions: Readonly<Record<string, string>>,
+): PredictionBout {
+  const [red, blue] = entry.fighterRefs;
+  const bout = snapshot.bouts.find((candidate) => candidate.id === entry.boutRef);
+  const name = (reference: string) =>
+    snapshot.fighterNames[reference]
+    ?? reference.split(":").at(-1)?.replaceAll("-", " ")
+    ?? reference;
+  const record = (reference: string) => {
+    const value = snapshot.fighterRecords?.[reference];
+    return value?.trim() ? value : undefined;
+  };
+  return {
+    id: entry.id,
+    redName: name(red),
+    blueName: name(blue),
+    ...(record(red) ? { redRecord: record(red) } : {}),
+    ...(record(blue) ? { blueRecord: record(blue) } : {}),
+    division: bout?.division ? divisions[bout.division] ?? bout.division : "",
+    ...(bout?.scheduledRounds ? { rounds: bout.scheduledRounds } : {}),
+    model: {
+      redWin: entry.redWin,
+      blueWin: entry.blueWin,
+      version: entry.modelVersion,
+      capturedAt: entry.generatedAt,
+      uncertainty: entry.uncertainty,
+    },
+  };
+}
+
+/**
+ * The FightAIQ module on the data desk.
+ *
+ * It shows every active model line rather than one event's board, so it keeps
+ * its own selection — but it renders through the same matchup row as
+ * `/cs/predikce`, and every string it prints comes from `cs.ts`.
+ */
 export function FightAiQFeed({ snapshot, locale }: {
-  snapshot: { generatedAt: string | null; statsEntries: FightAiQStatsEntry[] };
+  snapshot: FightAiQEventSurface;
   locale: Locale;
 }) {
-  const text = copy[locale];
-  const currentStats = snapshot.statsEntries.filter((entry) => entry.status === "active");
-  if (!snapshot.generatedAt) {
-    return (
-      <section className="border-b border-rule bg-card py-10 md:py-12" aria-labelledby="fightaiq-feed">
-        <div className="mx-auto w-full max-w-[90rem] px-5 md:px-10">
-          <p className="label-mono-sm text-text-meta">{text.eyebrow}</p>
-          <h2 className="display mt-2 text-3xl text-text" id="fightaiq-feed">{text.title}</h2>
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-text-muted">{text.empty}</p>
-        </div>
-      </section>
-    );
-  }
+  const dict = getDictionary(locale);
+  const copy = getPredictionCopy(locale);
+  const active = snapshot.statsEntries.filter((entry) => entry.status === "active");
 
   return (
-    <section className="border-b border-rule bg-card py-10 md:py-14" aria-labelledby="fightaiq-feed">
-      <div className="mx-auto w-full max-w-[90rem] px-5 md:px-10">
-        <div className="flex flex-wrap items-end justify-between gap-5">
-          <div>
-            <p className="label-mono-sm text-text-meta">{text.eyebrow}</p>
-            <h2 className="display mt-2 text-3xl text-text md:text-4xl" id="fightaiq-feed">{text.title}</h2>
-          </div>
-          <p className="label-mono-sm text-text-meta">{text.updated}: {timestamp(snapshot.generatedAt)}</p>
-        </div>
+    <section
+      className="border-y border-rule-dark bg-chrome py-12 text-text-inverse md:py-16"
+      aria-labelledby="fightaiq-feed"
+    >
+      <Container>
+        <SectionHeading
+          id="fightaiq-feed"
+          kicker={dict.dataDesk.feedEyebrow}
+          title={dict.dataDesk.feedTitle}
+          tone="paper"
+          {...(snapshot.generatedAt
+            ? { note: `${dict.dataDesk.feedUpdated}: ${timestamp(snapshot.generatedAt)}` }
+            : {})}
+        />
 
-        <p className="mt-6 max-w-4xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-text-muted">{text.warning}</p>
+        {snapshot.generatedAt ? (
+          <>
+            <p className="mt-6 max-w-[68ch] border-l-2 border-accent-on-dark pl-4 text-[length:var(--text-sm)] leading-relaxed text-text-inverse-muted">
+              {dict.dataDesk.feedWarning}
+            </p>
 
-        <section className="mt-10" aria-labelledby="fightaiq-models">
-          <h3 className="label-mono text-text" id="fightaiq-models">{text.models} · {currentStats.length}</h3>
-          <div className="mt-4 grid gap-4 lg:grid-cols-2">
-            {currentStats.map((entry) => {
-              const red = getFighterById(`fighter:${entry.fighterRefs[0].replace(":", "/")}`);
-              const blue = getFighterById(`fighter:${entry.fighterRefs[1].replace(":", "/")}`);
-              const name = (fighter: typeof red, fallback: string) => fighter
-                ? <Link className="underline decoration-accent underline-offset-[3px]" href={routes.fighter(locale, fighter.organization, fighter.slug)}>{fighter.name}</Link>
-                : fallback;
-              return (
-                <article className="border border-rule bg-paper p-4" key={entry.id}>
-                  <div className="flex flex-wrap justify-between gap-3">
-                    <h4 className="font-semibold text-text">{name(red, entry.fighterRefs[0])} <span className="font-normal text-text-meta">vs</span> {name(blue, entry.fighterRefs[1])}</h4>
-                    <span className="label-mono-sm text-text-meta">
-                      {entry.modelVersion} · zachyceno {timestamp(entry.generatedAt)}
-                    </span>
-                  </div>
-                  <dl className="mt-4 grid grid-cols-3 gap-3 text-sm">
-                    <div><dt className="text-text-meta">Červený roh</dt><dd className="mt-1 font-mono tabular-nums text-text">{percent(entry.redWin)}</dd></div>
-                    <div><dt className="text-text-meta">Modrý roh</dt><dd className="mt-1 font-mono tabular-nums text-text">{percent(entry.blueWin)}</dd></div>
-                    <div><dt className="text-text-meta">{text.model}</dt><dd className="mt-1 font-mono text-text">{entry.uncertainty.replaceAll("-", " ")}</dd></div>
-                  </dl>
-                  <p className="mt-3 text-xs text-text-muted"><span className="font-semibold text-text">{text.early}</span> · {text.notAdvice}</p>
-                </article>
-              );
-            })}
-            {currentStats.length === 0 ? <p className="text-sm text-text-muted">{text.empty}</p> : null}
-          </div>
-        </section>
-      </div>
+            <div className="mt-10">
+              <Kicker tone="paper">{dict.dataDesk.feedModels} · {active.length}</Kicker>
+              {active.length > 0 ? (
+                <ul className="mt-4 border-t border-rule-dark">
+                  {active.map((entry) => (
+                    <BoutRow
+                      key={entry.id}
+                      bout={boutFor(entry, snapshot, copy.divisions)}
+                      copy={copy}
+                    />
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-4 max-w-[68ch] text-[length:var(--text-sm)] leading-relaxed text-text-inverse-muted">
+                  {dict.dataDesk.feedEmpty}
+                </p>
+              )}
+            </div>
+          </>
+        ) : (
+          <p className="mt-6 max-w-[68ch] text-[length:var(--text-sm)] leading-relaxed text-text-inverse-muted">
+            {dict.dataDesk.feedEmpty}
+          </p>
+        )}
+      </Container>
     </section>
   );
 }

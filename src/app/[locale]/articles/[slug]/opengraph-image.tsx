@@ -9,7 +9,7 @@ import { DEFAULT_LOCALE, LOCALES, isLocale } from "@/lib/types";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = `${siteConfig.name} — karta článku`;
+export const alt = `${siteConfig.name} — ${getDictionary(DEFAULT_LOCALE).meta.ogArticleAlt}`;
 
 export function generateStaticParams() {
   return LOCALES.flatMap((locale) =>

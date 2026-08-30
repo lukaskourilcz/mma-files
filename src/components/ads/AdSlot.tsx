@@ -4,7 +4,6 @@ import { getDictionary } from "@/i18n";
 import {
   getAdCreative,
   getAdSlotDefinition,
-  type AdSize,
   type AdSlotName,
 } from "@/lib/ads";
 import type { Locale } from "@/lib/types";
@@ -25,10 +24,6 @@ type AdStyle = CSSProperties & {
   "--ad-desktop-width": string;
   "--ad-desktop-height": string;
 };
-
-function sizeLabel(size: AdSize): string {
-  return `${size.width} × ${size.height}`;
-}
 
 function Creative({
   children,
@@ -109,15 +104,15 @@ export function AdSlot({
           {mobile ? (
             <>
               <span className="font-mono text-[length:var(--text-mono-xs)] tabular-nums md:hidden">
-                {sizeLabel(mobile)}
+                {dict.ads.slotLabel(mobile.width, mobile.height)}
               </span>
               <span className="hidden font-mono text-[length:var(--text-mono-xs)] tabular-nums md:inline">
-                {sizeLabel(desktop)}
+                {dict.ads.slotLabel(desktop.width, desktop.height)}
               </span>
             </>
           ) : (
             <span className="font-mono text-[length:var(--text-mono-xs)] tabular-nums">
-              {sizeLabel(desktop)}
+              {dict.ads.slotLabel(desktop.width, desktop.height)}
             </span>
           )}
         </div>

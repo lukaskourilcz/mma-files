@@ -9,7 +9,7 @@ import { DEFAULT_LOCALE, isLocale } from "@/lib/types";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = `${siteConfig.name} — titulní karta`;
+export const alt = `${siteConfig.name} — ${getDictionary(DEFAULT_LOCALE).meta.ogHomeAlt}`;
 
 export default async function Image({
   params,
