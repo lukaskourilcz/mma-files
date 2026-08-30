@@ -24,7 +24,10 @@ const ICONS = [
 
 export function SocialIcons({ gap = "gap-5" }: { gap?: string }) {
   return (
-    <div className={`flex items-center ${gap}`}>
+    /* Wraps rather than forcing its grid track wider: at 768 the footer's
+     * two-column track is narrower than four icons plus their gaps, and an
+     * unwrapped row pushed the whole page into a horizontal scroll. */
+    <div className={`flex flex-wrap items-center ${gap}`}>
       {ICONS.map((icon) => (
         <span
           key={icon.name}

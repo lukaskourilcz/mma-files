@@ -37,7 +37,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             </p>
           </div>
 
-          <nav className="md:col-span-2" aria-labelledby="footer-sections">
+          <nav className="min-w-0 md:col-span-2" aria-labelledby="footer-sections">
             <h2
               id="footer-sections"
               className="font-mono text-[length:var(--text-mono-xs)] font-medium uppercase tracking-[0.16em] text-text-inverse-meta"
@@ -79,7 +79,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             </ul>
           </nav>
 
-          <div className="md:col-span-2">
+          <div className="min-w-0 md:col-span-2">
             <h2 className="font-mono text-[length:var(--text-mono-xs)] font-medium uppercase tracking-[0.16em] text-text-inverse-meta">
               {dict.footer.follow}
             </h2>
