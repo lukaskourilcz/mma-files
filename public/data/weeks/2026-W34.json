@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "ufc-alexander-hernandez",
+    "title": "Alexander Hernandez: lehká váha UFC s bilancí 18-9",
+    "dek": "Profil bojovníka, jehož kariéra v lehké váze zahrnuje bleskový knockout i ztrátu technickým knockoutem.",
+    "org": "ufc",
+    "publishAt": "2026-08-23T08:00:32.059Z",
+    "thumbPath": "/images/articles/ufc-alexander-hernandez/thumb.webp",
+    "thumbAlt": "Fotografie, kterou Wikidata uvádí u osoby Alexander Hernandez. Popis souboru na Wikimedia Commons: Alexander Hernandez Jan 19, 2019",
+    "thumbCredit": "MMAnytt · CC BY · Wikimedia Commons",
+    "thumbCreditUrl": "https://commons.wikimedia.org/?curid=93014222",
+    "isDemo": false
+  },
+  {
+    "slug": "ufc-event-ufc-fight-night-hernandez-vs-rodrigues",
+    "title": "Hernandez vs. Rodrigues: UFC Fight Night v Sacramentu se koná 22. srpna",
+    "dek": "Středněváhový souboj na pět kol je hlavní zápas večera. Golden 1 Center hostí i další oznámené duely.",
+    "org": "ufc",
+    "publishAt": "2026-08-19T08:04:36.493Z",
+    "thumbPath": "/images/articles/ufc-event-ufc-fight-night-hernandez-vs-rodrigues/thumb.webp",
+    "thumbAlt": "Článek informuje o UFC Fight Night: Hernandez vs. Rodrigues, které se koná 22. srpna 2026 v Golden 1 Center v Sacramentu.",
+    "thumbCredit": "Photo by BYB  BYB on Pexels",
+    "thumbCreditUrl": "https://www.pexels.com/photo/intense-mma-fight-in-the-octagon-28560751/",
+    "isDemo": false
+  },
+  {
+    "slug": "ufc-alex-perez",
+    "title": "Alex Perez míří do Šanghaje: muší váha UFC dostane další test",
+    "dek": "Bojovník s bilancí 26-10 nastoupí 29. srpna na UFC Fight Night proti Su Mudaerjimu. V muší váze patří k nejzkušenějším jménům, přesto ho poslední dvě porážky vrátily na křižovatku.",
+    "org": "ufc",
+    "publishAt": "2026-08-18T08:03:29.838Z",
+    "thumbPath": "/images/articles/ufc-alex-perez/thumb.webp",
+    "thumbAlt": "Ilustrační fotografie ze zápasů MMA: klec uprostřed haly a publikum kolem ní. Nejde o snímek osoby, o níž článek pojednává.",
+    "thumbCredit": "Coach Lewis · CC BY · Wikimedia Commons",
+    "thumbCreditUrl": "https://commons.wikimedia.org/?curid=40369860",
+    "isDemo": false
+  },
+  {
+    "slug": "ufc-aleksandar-rakic",
+    "title": "Aleksandar Rakić: bilance 15–6 a tři porážky za sebou",
+    "dek": "Srbský zápasník UFC má za sebou těžké období. Naposledy podlehl v říjnu 2025 Murzakanovovi technickým knockoutem v prvním kole.",
+    "org": "ufc",
+    "publishAt": "2026-08-17T08:02:00.352Z",
+    "thumbPath": "/images/articles/ufc-aleksandar-rakic/thumb.svg",
+    "thumbAlt": "Obálka MMA Files k 2026-08-17, témata Fighter Profile, Aleksandar Rakic, Azamat Murzakanov. Generovaný panel barevných sloupců, bez fotografie.",
+    "thumbCredit": null,
+    "thumbCreditUrl": null,
+    "isDemo": false
+  }
+]
