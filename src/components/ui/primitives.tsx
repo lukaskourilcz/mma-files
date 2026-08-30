@@ -97,9 +97,10 @@ export function Kicker({
 }
 
 /**
- * Section rule: an Anton title, an optional mono note beside it, and an
- * optional action on the right. `dek` sits under the title for the interior
- * pages, which have not been redesigned yet.
+ * The site's only section masthead — homepage bands and interior pages alike.
+ *
+ * An Anton title sitting on the 3px accent rule, the section's own dek under
+ * it, an optional mono note, and an optional action on the right.
  */
 export function SectionHeading({
   id,
@@ -118,45 +119,40 @@ export function SectionHeading({
   action?: ReactNode;
   tone?: "ink" | "paper";
 }) {
+  const onDark = tone === "paper";
   return (
-    <div
-      className={`flex flex-col gap-3 border-b pb-3.5 sm:flex-row sm:items-end sm:justify-between sm:gap-6 ${
-        tone === "paper" ? "border-rule-dark" : "border-rule-strong"
-      }`}
-    >
+    <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
       <div className="min-w-0">
-        {kicker ? <Kicker tone={tone}>{kicker}</Kicker> : null}
-        <div className="flex flex-wrap items-baseline gap-x-3.5 gap-y-1.5">
-          <h2
-            id={id}
-            className={`display text-[26px] leading-none md:text-[30px] ${
-              tone === "paper" ? "text-text-inverse" : "text-text"
-            } ${kicker ? "mt-2.5" : ""}`}
-          >
-            {title}
-          </h2>
-          {note ? (
-            <span
-              className={`label-mono-sm ${
-                tone === "paper" ? "text-text-inverse-meta" : "text-text-meta"
-              }`}
-            >
-              {note}
-            </span>
-          ) : null}
-        </div>
+        {kicker ? (
+          <div className="mb-2.5">
+            <Kicker tone={tone}>{kicker}</Kicker>
+          </div>
+        ) : null}
+        <h2
+          id={id}
+          className={`display inline-block border-b-[3px] pb-2 text-[length:var(--text-d4)] ${
+            onDark ? "border-accent-on-dark text-text-inverse" : "border-accent text-text"
+          }`}
+        >
+          {title}
+        </h2>
         {dek ? (
           <p
-            className={`mt-2 max-w-2xl text-[0.9375rem] leading-relaxed ${
-              tone === "paper" ? "text-text-inverse-muted" : "text-text-muted"
+            className={`mt-3 max-w-[60ch] text-[length:var(--text-sm)] leading-relaxed ${
+              onDark ? "text-text-inverse-muted" : "text-text-muted"
             }`}
           >
             {dek}
           </p>
         ) : null}
+        {note ? (
+          <p className={`label-mono mt-3 ${onDark ? "text-text-inverse-meta" : "text-text-meta"}`}>
+            {note}
+          </p>
+        ) : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}
-    </div>
+    </header>
   );
 }
 

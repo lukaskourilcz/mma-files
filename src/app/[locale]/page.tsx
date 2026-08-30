@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { LeadStory } from "@/components/article/LeadStory";
 import { WeeklyArticleFeed } from "@/components/article/WeeklyArticleFeed";
-import { ActionLink, ButtonLink, Container } from "@/components/ui/primitives";
+import { ActionLink, ButtonLink, Container, SectionHeading } from "@/components/ui/primitives";
 import { getDictionary } from "@/i18n";
 import { routes } from "@/lib/paths";
 import { getPredictionCopy } from "@/lib/prediction-copy";
-import { getArticles, getLeadArticle } from "@/lib/repository";
+import { getArticles, getFighters, getLeadArticle, getUpcomingEvents } from "@/lib/repository";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
 const HomepagePredictions = dynamic(() =>
@@ -20,43 +20,11 @@ const DidYouKnow = dynamic(() =>
   import("@/components/site/DidYouKnow").then((module) => module.DidYouKnow));
 const NewsletterModule = dynamic(() =>
   import("@/components/site/DeferredNewsletter").then((module) => module.DeferredNewsletter));
+const EventBelt = dynamic(() =>
+  import("@/components/event/EventBelt").then((module) => module.EventBelt));
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
-}
-
-function HomeHeading({
-  id,
-  title,
-  note,
-  action,
-  tone = "paper",
-}: {
-  id: string;
-  title: string;
-  note?: string;
-  action?: React.ReactNode;
-  tone?: "paper" | "chrome";
-}) {
-  const chrome = tone === "chrome";
-  return (
-    <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div>
-        <h2
-          id={id}
-          className={`display inline-block border-b-[3px] border-accent pb-2 text-[length:var(--text-d4)] ${chrome ? "text-text-inverse" : "text-text"}`}
-        >
-          {title}
-        </h2>
-        {note ? (
-          <p className={`mt-3 font-mono text-[11px] ${chrome ? "text-text-inverse-meta" : "text-text-meta"}`}>
-            {note}
-          </p>
-        ) : null}
-      </div>
-      {action}
-    </header>
-  );
 }
 
 export default async function HomePage({
@@ -71,6 +39,8 @@ export default async function HomePage({
   const articles = getArticles();
   const lead = getLeadArticle();
   const latest = articles.filter((article) => article.slug !== lead?.slug);
+  const upcoming = getUpcomingEvents().slice(0, 6);
+  const fighterFiles = getFighters().length;
 
   return (
     <>
@@ -85,15 +55,17 @@ export default async function HomePage({
         </Container>
       )}
 
-      <section aria-labelledby="latest-home" className="border-b border-rule-strong py-12 md:py-16">
+      <EventBelt events={upcoming} locale={locale} />
+
+      <section aria-labelledby="latest-home" className="border-b border-rule-strong bg-paper py-12 md:py-16">
         <Container>
-          <HomeHeading
+          <SectionHeading
             id="latest-home"
             title={dict.home.latestTitle}
-            note={dict.home.latestDek}
+            dek={dict.home.latestDek}
             action={<ActionLink href={routes.latest(locale)}>{dict.actions.allStories}</ActionLink>}
           />
-          <div className="mt-6">
+          <div className="mt-8">
             <WeeklyArticleFeed
               articles={latest}
               locale={locale}
@@ -105,13 +77,14 @@ export default async function HomePage({
         </Container>
       </section>
 
-      <section aria-labelledby="predictions-home" className="bg-chrome py-12 text-text-inverse md:py-16">
+      <section aria-labelledby="predictions-home" className="bg-chrome py-14 text-text-inverse md:py-20">
         <Container>
-          <HomeHeading
+          <SectionHeading
             id="predictions-home"
+            kicker={dict.home.dataTitle}
             title={dict.home.predictionsTitle}
             note={dict.predictions.disclaimer}
-            tone="chrome"
+            tone="paper"
           />
           <div className="mt-9">
             <HomepagePredictions
@@ -128,12 +101,12 @@ export default async function HomePage({
         </Container>
       </section>
 
-      <section aria-labelledby="results-home" className="border-b border-rule-strong bg-paper py-12 md:py-16">
+      <section aria-labelledby="results-home" className="border-b border-rule-strong bg-card py-10 md:py-14">
         <Container>
-          <HomeHeading
+          <SectionHeading
             id="results-home"
             title={dict.home.resultsTitle}
-            note={dict.home.resultsDek}
+            dek={dict.home.resultsDek}
             action={<ActionLink href={routes.results(locale)}>{dict.actions.allResults}</ActionLink>}
           />
           <ResultsBoard locale={locale} />
@@ -142,11 +115,12 @@ export default async function HomePage({
 
       <DidYouKnow dateKey={lead?.publishAt.slice(0, 10)} locale={locale} />
 
-      <section aria-labelledby="fighters-home" className="border-b border-rule-strong py-12 md:py-16">
+      <section aria-labelledby="fighters-home" className="border-b border-rule-strong bg-well py-10 md:py-12">
         <Container>
-          <HomeHeading
+          <SectionHeading
             id="fighters-home"
             title={dict.home.fightersTitle}
+            dek={dict.home.rosterDek(fighterFiles)}
             action={<ActionLink href={routes.fighters(locale)}>{dict.actions.allFighters}</ActionLink>}
           />
           <FighterRail locale={locale} />
