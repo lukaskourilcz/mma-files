@@ -37,7 +37,10 @@ export function HomepagePredictions(props: HomepagePredictionsLoadedProps) {
   }, []);
 
   return (
-    <div ref={rootRef} className="min-h-[700px] md:min-h-[520px]">
+    /* The reservation matches the collapsed state, not the tallest possible
+     * board: reserving 700px for two honest one-line boards shipped a dark
+     * void down the homepage. */
+    <div ref={rootRef} className="min-h-[180px]">
       {Loaded ? (
         <Loaded {...props} />
       ) : (

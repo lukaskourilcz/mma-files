@@ -5,8 +5,25 @@ import { fileURLToPath } from "node:url";
 
 const RESULT_WINDOW_MS = 365 * 86_400_000;
 
+/* Canonical names arrive as Wikipedia article titles, so a handful carry the
+ * encyclopaedia's disambiguator — "Felipe Lima (fighter)". That is a source
+ * artifact, not the fighter's name, and it is stripped the same way delivered
+ * divisions have their MediaWiki markup stripped. */
+function readerName(canonicalName) {
+  return canonicalName.replace(/\s*\((?:fighter|fighter,[^)]*|mixed martial artist)\)$/iu, "").trim()
+    || canonicalName;
+}
+
 function fighterNames(fighters) {
-  return Object.fromEntries(fighters.map((fighter) => [fighter.id, fighter.canonicalName]));
+  return Object.fromEntries(fighters.map((fighter) => [fighter.id, readerName(fighter.canonicalName)]));
+}
+
+/* Records as the delivery states them. A fighter whose record was never
+ * sourced is simply absent from the map — the surfaces never carry a 0-0-0. */
+function fighterRecords(fighters) {
+  return Object.fromEntries(fighters
+    .map((fighter) => [fighter.id, fighter.fields?.record?.value])
+    .filter(([, value]) => typeof value === "string" && value.trim()));
 }
 
 function surface(source, name, values) {
@@ -16,6 +33,7 @@ function surface(source, name, values) {
     generatedAt: source.generatedAt,
     sourcePackageHash: source.packageHash,
     fighterNames: fighterNames(source.fighters),
+    fighterRecords: fighterRecords(source.fighters),
     ...values,
   };
 }

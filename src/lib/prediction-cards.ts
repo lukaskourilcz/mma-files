@@ -27,6 +27,7 @@ export function isPredictionSurface(value: unknown): value is FightAiQEventSurfa
     || value.surface !== "predictions"
     || !(typeof value.generatedAt === "string" || value.generatedAt === null)
     || !record(value.fighterNames)
+    || !(value.fighterRecords === undefined || record(value.fighterRecords))
     || !Array.isArray(value.events)
     || !Array.isArray(value.bouts)
     || !Array.isArray(value.statsEntries)
@@ -69,7 +70,14 @@ function modelFor(models: ReadonlyMap<string, FightAiQStatsEntry>, boutId: strin
     blueWin: model.blueWin,
     version: model.modelVersion,
     capturedAt: model.generatedAt,
+    uncertainty: model.uncertainty,
   };
+}
+
+/** Delivered record, or nothing. A missing record stays missing. */
+function fighterRecord(snapshot: FightAiQEventSurface, reference: string): string | undefined {
+  const value = snapshot.fighterRecords?.[reference];
+  return value?.trim() ? value : undefined;
 }
 
 /** Prefer a model-backed duplicate, then the newest delivered update. */
@@ -135,6 +143,8 @@ export function predictionCardsFromSurface(
           id: bout.id,
           redName: fighterName(snapshot, bout.red),
           blueName: fighterName(snapshot, bout.blue),
+          ...(fighterRecord(snapshot, bout.red) ? { redRecord: fighterRecord(snapshot, bout.red) } : {}),
+          ...(fighterRecord(snapshot, bout.blue) ? { blueRecord: fighterRecord(snapshot, bout.blue) } : {}),
           division: divisions[bout.division] ?? bout.division,
           rounds: bout.scheduledRounds,
           ...(modelFor(models, bout.id) ? { model: modelFor(models, bout.id) } : {}),
@@ -181,6 +191,8 @@ export function predictionCardsFromSurface(
         id: bout.id,
         redName: fighterName(snapshot, bout.fighters.red),
         blueName: fighterName(snapshot, bout.fighters.blue),
+        ...(fighterRecord(snapshot, bout.fighters.red) ? { redRecord: fighterRecord(snapshot, bout.fighters.red) } : {}),
+        ...(fighterRecord(snapshot, bout.fighters.blue) ? { blueRecord: fighterRecord(snapshot, bout.fighters.blue) } : {}),
         division: bout.division
           ? divisions[bout.division] ?? bout.division
           : "—",

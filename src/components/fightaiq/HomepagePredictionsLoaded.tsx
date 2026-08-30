@@ -44,7 +44,7 @@ export function HomepagePredictionsLoaded({
   }, [copy.divisions, limit]);
 
   return status === "ready" || status === "failed" ? (
-    <PredictionCardsView cards={cards} copy={copy} />
+    <PredictionCardsView cards={cards} copy={copy} compact />
   ) : (
     <p role="status" className="font-mono text-[12px] text-text-inverse-meta">
       {loadingLabel}

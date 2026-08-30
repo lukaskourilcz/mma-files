@@ -150,6 +150,8 @@ interface FightAiQSurfaceBase {
   generatedAt: string | null;
   sourcePackageHash: string | null;
   fighterNames: Record<string, string>;
+  /** Delivered records, keyed by fighter ref. A fighter with no sourced record is absent. */
+  fighterRecords: Record<string, string>;
 }
 
 export interface FightAiQEventSurface extends FightAiQSurfaceBase {
@@ -251,6 +253,7 @@ function readFightAiQSurface(name: "predictions" | "results" | "fighters"): Figh
     generatedAt: null,
     sourcePackageHash: null,
     fighterNames: {},
+    fighterRecords: {},
   };
   try {
     const value = JSON.parse(readFileSync(path.join(process.cwd(), "public", "data", "fightaiq", `${name}.json`), "utf8")) as {
@@ -259,6 +262,7 @@ function readFightAiQSurface(name: "predictions" | "results" | "fighters"): Figh
       generatedAt?: string | null;
       sourcePackageHash?: string | null;
       fighterNames?: Record<string, string>;
+      fighterRecords?: Record<string, string>;
       fighters?: FightAiQFighterRecord[];
       events?: FightAiQEvent[];
       bouts?: FightAiQBout[];
@@ -270,6 +274,7 @@ function readFightAiQSurface(name: "predictions" | "results" | "fighters"): Figh
         generatedAt: value.generatedAt ?? null,
         sourcePackageHash: value.sourcePackageHash ?? null,
         fighterNames: value.fighterNames ?? {},
+        fighterRecords: value.fighterRecords ?? {},
       };
       if (name === "fighters" && Array.isArray(value.fighters)) {
         const surface: FightAiQFighterSurface = { ...shared, surface: "fighters", fighters: value.fighters };
