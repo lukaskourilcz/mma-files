@@ -45,7 +45,6 @@ export default async function HomePage({
   return (
     <>
       {lead?.packageHash ? <meta name="boardless-content-hash" content={lead.packageHash} /> : null}
-      <AdSlot name="masthead-billboard" locale={locale} />
 
       {lead ? (
         <LeadStory article={lead} locale={locale} secondary={articles.slice(1, 3)} />
@@ -54,6 +53,10 @@ export default async function HomePage({
           <p className="text-lg text-text-muted">{dict.home.noLead}</p>
         </Container>
       )}
+
+      {/* The billboard sits under the cover story, not over it: the front page
+        * opens on the magazine rather than on an empty ad frame. */}
+      <AdSlot name="masthead-billboard" locale={locale} />
 
       <EventBelt events={upcoming} locale={locale} />
 
