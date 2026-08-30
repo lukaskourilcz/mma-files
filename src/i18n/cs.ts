@@ -84,6 +84,14 @@ export const cs = {
     retrieved: "Staženo",
     supports: "Doloženo pro",
     noLink: "Bez veřejného odkazu — ukázková důkazní složka",
+    /* One credit system. Licensed photography is credited to its author;
+     * deterministic editorial artwork says what it is instead of pretending
+     * to be a photograph. */
+    photoBy: (credit: string) => `Foto: ${credit}`,
+    editorialArtwork: "Redakční vizuál · datová ilustrace",
+    editorialArtworkShort: "Redakční vizuál",
+    /** The magazine's namesake stamp: `SLOŽKA 024`. */
+    fileStamp: (n: number) => `Složka ${String(n).padStart(3, "0")}`,
     methodology: "Jak text vznikl",
     methodologyBody:
       "Text vychází z uvedených zdrojů. Redakce zkontrolovala fakta, sporné údaje nechala viditelné a před vydáním ověřila české znění.",

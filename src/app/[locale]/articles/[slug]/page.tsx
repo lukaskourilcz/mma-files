@@ -4,11 +4,12 @@ import { AdSlot } from "@/components/ads/AdSlot";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { CorrectionNotice } from "@/components/article/CorrectionNotice";
 import { ArticleSources } from "@/components/article/ArticleSources";
+import { ModelDisclosureBlock } from "@/components/article/ArticleFile";
 import { PhotoCredit, PhotoSlot } from "@/components/media/PhotoSlot";
 import { Container, Kicker, NoteChip } from "@/components/ui/primitives";
 import { absoluteUrl, allowIndexing, siteConfig, siteUrl } from "@/config/site";
 import { getDictionary } from "@/i18n";
-import { formatDate } from "@/lib/format";
+import { formatDate, readingTimeMinutes } from "@/lib/format";
 import { Prose } from "@/lib/markdown";
 import { routes } from "@/lib/paths";
 import {
@@ -63,6 +64,84 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * The opening's kicker row: what kind of file this is, whose promotion it
+ * covers, its file number where it has one, and the demo badge.
+ */
+function ArticleKicker({
+  article,
+  locale,
+  tone = "ink",
+}: {
+  article: Article;
+  locale: Locale;
+  tone?: "ink" | "paper";
+}) {
+  const dict = getDictionary(locale);
+  const onDark = tone === "paper";
+  const meta = onDark ? "text-text-inverse-meta" : "text-text-meta";
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+      <Kicker tone={tone}>{dict.formats[article.format]}</Kicker>
+      <span aria-hidden="true" className={`h-3 w-px ${onDark ? "bg-rule-dark" : "bg-rule-strong"}`} />
+      <span className={`label-mono ${meta}`}>
+        {article.organization
+          ? dict.organizationsShort[article.organization]
+          : dict.labels.desk}
+      </span>
+      {article.fileNumber ? (
+        <>
+          <span aria-hidden="true" className={`h-3 w-px ${onDark ? "bg-rule-dark" : "bg-rule-strong"}`} />
+          <span className={`label-mono tabular-nums ${meta}`}>
+            {dict.labels.fileStamp(article.fileNumber)}
+          </span>
+        </>
+      ) : null}
+      {article.isDemo ? <NoteChip>{dict.article.demoBadge}</NoteChip> : null}
+    </div>
+  );
+}
+
+/**
+ * Byline, publication date, and an update stamp only where the article
+ * carries one. Reading time is measured from the body that is about to be
+ * rendered, so it is a property of the text rather than a claim about it.
+ */
+function ArticleByline({
+  article,
+  locale,
+  body,
+  tone = "ink",
+}: {
+  article: Article;
+  locale: Locale;
+  body: string;
+  tone?: "ink" | "paper";
+}) {
+  const dict = getDictionary(locale);
+  return (
+    <p
+      className={`label-mono mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 ${
+        tone === "paper" ? "text-text-inverse-meta" : "text-text-meta"
+      }`}
+    >
+      <span>{dict.article.byline}</span>
+      <span aria-hidden="true">·</span>
+      <time dateTime={article.publishAt}>{formatDate(article.publishAt, locale)}</time>
+      {article.updatedAt ? (
+        <>
+          <span aria-hidden="true">·</span>
+          <time dateTime={article.updatedAt}>
+            {dict.labels.updated} {formatDate(article.updatedAt, locale)}
+          </time>
+        </>
+      ) : null}
+      <span aria-hidden="true">·</span>
+      <span>{readingTimeMinutes(body)} {dict.labels.readingTime}</span>
+    </p>
+  );
+}
+
 function sectionArticles(article: Article): Article[] {
   const candidates = article.organization
     ? getArticlesByOrganization(article.organization)
@@ -86,7 +165,8 @@ export default async function ArticlePage({
   const section = sectionArticles(article);
   const related = section.slice(0, 3);
   const rail = section.slice(0, 5);
-  const internalArtwork = Boolean(article.image && /boardlessai/iu.test(article.image.credit));
+  /* Display type goes over a photograph and never over a data illustration. */
+  const poster = Boolean(article.image) && article.image?.origin !== "svg";
 
   const articleLd = article.isDemo
     ? null
@@ -115,55 +195,83 @@ export default async function ArticlePage({
         />
       ) : null}
 
-      <header className="border-b border-rule-strong bg-paper">
-        <Container className="py-10 md:py-14">
-          <div className="flex flex-wrap items-center gap-2">
-            <Kicker>
-              {article.organization
-                ? dict.organizationsShort[article.organization]
-                : dict.labels.desk}
-            </Kicker>
-            {article.isDemo ? <NoteChip>{dict.article.demoBadge}</NoteChip> : null}
+      {poster ? (
+        /* Poster opening. The photograph runs the full column width and the
+         * copy sits on its lower edge from lg up; below that the two stack
+         * and nothing is set over a phone-sized crop. */
+        <header className="bg-chrome text-text-inverse">
+          <div className="lg:grid lg:grid-cols-1 lg:grid-rows-1">
+            <div className="relative aspect-[4/3] overflow-hidden bg-chrome-raised sm:aspect-[16/9] lg:aspect-auto lg:min-h-[30rem] lg:[grid-area:1/1]">
+              <PhotoSlot
+                image={article.image}
+                locale={locale}
+                note={dict.labels.photoSlots.story}
+                sizes="100vw"
+                priority
+                tone="chrome"
+                creditMode="overlay"
+              />
+            </div>
+            <div className="relative lg:z-10 lg:self-end lg:[grid-area:1/1]">
+              {/* Painted behind the copy, not at a fixed height on the photo,
+                * so a long Czech headline always lands on ≥88% chrome. */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 hidden lg:block"
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--color-chrome) 88%, transparent) 26%, var(--color-chrome) 78%)",
+                }}
+              />
+              <Container className="relative py-10 lg:pb-12 lg:pt-24">
+                <ArticleKicker article={article} locale={locale} tone="paper" />
+                <h1 className="display mt-4 max-w-[18ch] text-[length:var(--text-d2)] text-text-inverse md:text-[length:var(--text-d1)]">
+                  {local.title}
+                </h1>
+                <p className="mt-5 max-w-[54ch] text-[length:var(--text-base)] leading-[1.5] text-text-inverse-muted md:text-[length:var(--text-lg)]">
+                  {local.dek}
+                </p>
+                <ArticleByline article={article} locale={locale} body={local.body} tone="paper" />
+              </Container>
+            </div>
           </div>
-          <h1 className="display mt-5 max-w-[18ch] text-[length:var(--text-d3)] text-text md:text-[length:var(--text-d2)]">
-            {local.title}
-          </h1>
-          <p className="mt-5 max-w-[60ch] text-[18px] leading-[1.5] text-text-muted md:text-[20px]">
-            {local.dek}
-          </p>
-          <p className="mt-6 font-mono text-[12px] tabular-nums text-text-meta">
-            <time dateTime={article.publishAt}>{formatDate(article.publishAt, locale)}</time>
-            <span aria-hidden="true"> · </span>
-            {dict.article.byline}
-          </p>
-        </Container>
-      </header>
+        </header>
+      ) : (
+        /* Data illustration or no picture at all: a paper opening, and the
+         * artwork below the headline rather than under it. */
+        <header className="border-b border-rule-strong bg-paper">
+          <Container className="py-10 md:py-14">
+            <ArticleKicker article={article} locale={locale} />
+            <h1 className="display mt-5 max-w-[18ch] text-[length:var(--text-d3)] text-text md:text-[length:var(--text-d2)]">
+              {local.title}
+            </h1>
+            <p className="mt-5 max-w-[60ch] text-[length:var(--text-base)] leading-[1.5] text-text-muted md:text-[length:var(--text-lg)]">
+              {local.dek}
+            </p>
+            <ArticleByline article={article} locale={locale} body={local.body} />
+          </Container>
+        </header>
+      )}
 
       <AdSlot name="article-top" locale={locale} />
 
       <Container className="py-8 md:py-12">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
           <div className="min-w-0">
-            <figure>
-              <div className="relative aspect-video overflow-hidden border border-rule-strong bg-well">
-                <PhotoSlot
-                  image={article.image}
-                  locale={locale}
-                  note={dict.labels.photoSlots.story}
-                  sizes="(min-width: 1024px) 900px, 100vw"
-                  priority
-                />
-              </div>
-              {article.image ? (
-                internalArtwork ? (
-                  <figcaption className="border-t border-rule bg-paper px-3 py-2 font-mono text-[11px] text-text-meta">
-                    Redakční vizuál · datová ilustrace
-                  </figcaption>
-                ) : (
-                  <PhotoCredit image={article.image} displayCredit={`Foto: ${article.image.credit}`} />
-                )
-              ) : null}
-            </figure>
+            {poster ? null : (
+              <figure>
+                <div className="relative aspect-video overflow-hidden border border-rule-strong bg-well">
+                  <PhotoSlot
+                    image={article.image}
+                    locale={locale}
+                    note={dict.labels.photoSlots.story}
+                    sizes="(min-width: 1024px) 900px, 100vw"
+                    priority
+                  />
+                </div>
+                {article.image ? <PhotoCredit image={article.image} locale={locale} /> : null}
+              </figure>
+            )}
 
             {article.corrections?.length ? (
               <div className="mt-7">
@@ -177,6 +285,12 @@ export default async function ArticlePage({
               className="prose-file mt-10 max-w-[var(--layout-measure)]"
               afterThirdBlock={<AdSlot name="article-mid" locale={locale} className="max-w-none" />}
             />
+
+            {article.modelDisclosure ? (
+              <div className="mt-10">
+                <ModelDisclosureBlock disclosure={article.modelDisclosure} locale={locale} />
+              </div>
+            ) : null}
 
             <ArticleSources sources={article.sources} locale={locale} />
           </div>

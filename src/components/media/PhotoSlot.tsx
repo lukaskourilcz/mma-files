@@ -5,34 +5,61 @@ import type { Locale, StoryImage } from "@/lib/types";
 type PhotoTone = "paper" | "chrome";
 type CreditMode = "none" | "overlay";
 
-function readerCredit(image: StoryImage): string | null {
+/** Deterministic desk artwork rather than a licensed photograph. */
+function isEditorialArtwork(image: StoryImage): boolean {
   // The publisher name is reserved for the legal line, not internal artwork.
-  return /boardlessai/iu.test(image.credit) ? null : image.credit;
+  return image.origin === "svg" || /boardlessai/iu.test(image.credit);
 }
 
+/**
+ * The one credit path.
+ *
+ * Three surfaces used to say this three different ways: an overlay chip on a
+ * cover, a caption strip under an article photo, and a Czech literal typed
+ * into the article page for editorial artwork. They are one component now,
+ * and every string comes from the dictionary.
+ */
 export function PhotoCredit({
   image,
-  displayCredit,
+  locale,
+  mode = "caption",
 }: {
   image: StoryImage;
-  /** Reader-safe override for internally produced artwork. */
-  displayCredit?: string;
+  locale: Locale;
+  /** `caption` sits under the picture; `overlay` sits on its lower corner. */
+  mode?: "caption" | "overlay";
 }) {
-  const credit = displayCredit ?? readerCredit(image);
-  if (!credit) return null;
-  return image.creditUrl ? (
+  const dict = getDictionary(locale);
+  const artwork = isEditorialArtwork(image);
+  const credit = artwork
+    ? mode === "overlay"
+      ? dict.labels.editorialArtworkShort
+      : dict.labels.editorialArtwork
+    : dict.labels.photoBy(image.credit);
+
+  if (mode === "overlay") {
+    return (
+      <span className="absolute bottom-3 right-3 z-20 max-w-[70%] bg-chrome/80 px-1.5 py-1 font-mono text-[length:var(--text-mono-xs)] leading-relaxed text-text-inverse-muted">
+        {credit}
+      </span>
+    );
+  }
+
+  const className =
+    "block border-t border-rule bg-paper px-3 py-2 font-mono text-[length:var(--text-mono-xs)] leading-relaxed text-text-meta";
+
+  // Editorial artwork has no external source to point at; a photograph does.
+  return !artwork && image.creditUrl ? (
     <a
       href={image.creditUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="block border-t border-rule bg-paper px-3 py-2 font-mono text-[11px] leading-relaxed text-text-meta underline decoration-transparent underline-offset-2 hover:decoration-current"
+      className={`${className} underline decoration-transparent underline-offset-2 hover:decoration-current`}
     >
       {credit}
     </a>
   ) : (
-    <figcaption className="border-t border-rule bg-paper px-3 py-2 font-mono text-[11px] leading-relaxed text-text-meta">
-      {credit}
-    </figcaption>
+    <figcaption className={className}>{credit}</figcaption>
   );
 }
 
@@ -58,9 +85,6 @@ export function PhotoSlot({
   const dict = getDictionary(locale);
 
   if (image) {
-    const credit = creditMode === "overlay"
-      ? readerCredit(image) ?? "Redakční vizuál"
-      : null;
     return (
       <>
         <Image
@@ -73,10 +97,8 @@ export function PhotoSlot({
           style={image.focalPoint ? { objectPosition: image.focalPoint } : undefined}
           className="object-cover"
         />
-        {credit ? (
-          <span className="absolute bottom-3 right-3 z-20 max-w-[70%] bg-chrome/80 px-1.5 py-1 font-mono text-[10px] leading-relaxed text-text-inverse-muted">
-            {credit}
-          </span>
+        {creditMode === "overlay" ? (
+          <PhotoCredit image={image} locale={locale} mode="overlay" />
         ) : null}
       </>
     );
@@ -104,7 +126,7 @@ export function PhotoSlot({
             "polygon(29.3% 0, 70.7% 0, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0 70.7%, 0 29.3%)",
         }}
       />
-      <span className="relative z-10 max-w-[80%] text-center font-mono text-[11px] font-medium uppercase leading-relaxed tracking-[0.14em]">
+      <span className="relative z-10 max-w-[80%] text-center font-mono text-[length:var(--text-mono-xs)] font-medium uppercase leading-relaxed tracking-[var(--tracking-kicker)]">
         {note ?? dict.labels.photoPending}
       </span>
     </span>
