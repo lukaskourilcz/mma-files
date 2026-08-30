@@ -5,6 +5,7 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 import { CorrectionNotice } from "@/components/article/CorrectionNotice";
 import { ArticleSources } from "@/components/article/ArticleSources";
 import { ModelDisclosureBlock } from "@/components/article/ArticleFile";
+import { TypographicCover } from "@/components/hero/TypographicCover";
 import { PhotoCredit, PhotoSlot } from "@/components/media/PhotoSlot";
 import { Container, Kicker, NoteChip } from "@/components/ui/primitives";
 import { absoluteUrl, allowIndexing, siteConfig, siteUrl } from "@/config/site";
@@ -261,13 +262,25 @@ export default async function ArticlePage({
             {poster ? null : (
               <figure>
                 <div className="relative aspect-video overflow-hidden border border-rule-strong bg-well">
-                  <PhotoSlot
-                    image={article.image}
-                    locale={locale}
-                    note={dict.labels.photoSlots.story}
-                    sizes="(min-width: 1024px) 900px, 100vw"
-                    priority
-                  />
+                  {article.image ? (
+                    <PhotoSlot
+                      image={article.image}
+                      locale={locale}
+                      note={dict.labels.photoSlots.story}
+                      sizes="(min-width: 1024px) 900px, 100vw"
+                      priority
+                    />
+                  ) : (
+                    /* No picture at all: the designed cover rather than the
+                     * hatched "photo pending" box. */
+                    <TypographicCover
+                      seed={article.slug}
+                      headline={local.altHeadline ?? local.title}
+                      kicker={dict.formats[article.format]}
+                      {...(article.fileNumber ? { stamp: dict.labels.fileStamp(article.fileNumber) } : {})}
+                      label={local.title}
+                    />
+                  )}
                 </div>
                 {article.image ? <PhotoCredit image={article.image} locale={locale} /> : null}
               </figure>

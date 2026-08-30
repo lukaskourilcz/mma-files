@@ -107,6 +107,12 @@ export interface StoryImage {
 
 export interface ArticleLocale {
   title: string;
+  /**
+   * The short line the desk writes for a square cover. It is written for a
+   * cover, not for a page of prose, so it never stands in for the headline on
+   * an article page.
+   */
+  altHeadline?: string;
   dek: string;
   /** Restricted Markdown — see `src/lib/markdown.tsx` for the supported subset. */
   body: string;
@@ -124,7 +130,17 @@ export const ARTICLE_FORMATS = [
 ] as const;
 export type ArticleFormat = (typeof ARTICLE_FORMATS)[number];
 
+/**
+ * The cover treatment the desk asked for.
+ *
+ * `fighter-file` and `fight-desk` are what the delivery actually sends; the
+ * four older names predate it. They were missing from this union, so every
+ * delivered package was silently coerced to `data-card` — a value no
+ * delivered package has ever asked for.
+ */
 export type HeroTemplate =
+  | "fighter-file"
+  | "fight-desk"
   | "tale-of-the-tape"
   | "type-led-result"
   | "data-card"

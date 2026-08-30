@@ -268,6 +268,15 @@ export const cs = {
     noStories: "Zatím nevyšel žádný text.",
   },
 
+  /* The delivery grades every field it sends. A value the sources disagree
+   * about is still shown — it is sourced — but it is never shown as settled. */
+  fieldStates: {
+    verified: "Ověřeno",
+    provisional: "Předběžné",
+    disputed: "Sporné",
+    unavailable: "Nedostupné",
+  },
+
   didYouKnow: {
     kicker: "Víte, že…",
     verified: "ověřeno",
@@ -347,7 +356,76 @@ export const cs = {
     noRelated: "K této složce se zatím neváže žádný vydaný text.",
     recordUnavailable: "Bilance není v záznamu",
     upcomingBout: "Nasmlouvaný zápas",
+    recordedHistory: "Doložené zápasy",
+    noRecordedHistory: "V ověřených podkladech zatím není žádný zápas.",
+    derivedStats: "Odvozené statistiky",
+    derivedFrom: (bouts: number) =>
+      `Souhrn vypočítaný z ${bouts} ${bouts === 1 ? "doloženého zápasu" : bouts < 5 ? "doložených zápasů" : "doložených zápasů"}`,
+    noDerivedStats: "Výpočty čekají na doloženou historii zápasů.",
+    ratingTitle: "Glicko stav",
+    rating: "Hodnocení",
+    deviation: "Nejistota",
+    ratingUnavailable: "Nedostupné",
+    ratingNote:
+      "Jde o interní stav modelu z doložených výsledků, ne o oficiální žebříček.",
+    gapsTitle: "Chybějící podklady",
   },
+
+  /* The record strip and the derived-stat bars. Every label here names a value
+   * the delivery either has or does not; nothing is filled in with a zero. */
+  fighterResults: {
+    win: "výhra",
+    loss: "prohra",
+    draw: "remíza",
+    "no-contest": "bez výsledku",
+  },
+
+  fighterRecord: {
+    wins: "Výhry",
+    losses: "Prohry",
+    draws: "Remízy",
+    noContests: "Bez výsledku",
+  },
+
+  fighterStats: {
+    bouts: "Zápasy",
+    wins: "Výhry",
+    losses: "Prohry",
+    draws: "Remízy",
+    noContests: "Bez výsledku",
+    finishRate: "Výhry před limitem",
+    koTkoWins: "Výhry KO/TKO",
+    submissionWins: "Výhry na submisi",
+    decisionWins: "Výhry na body",
+    koTkoWinShare: "Podíl výher KO/TKO",
+    submissionWinShare: "Podíl výher na submisi",
+    decisionWinShare: "Podíl výher na body",
+    averageElapsedSeconds: "Průměrná délka zápasu",
+    recentThreeWinRate: "Úspěšnost v posledních 3",
+    recentFiveWinRate: "Úspěšnost v posledních 5",
+    fightsPerYear: "Zápasů za rok",
+    layoffDays: "Dnů od posledního zápasu",
+  },
+
+  fighterGaps: {
+    stance: "Postoj",
+    division: "Aktuální váha",
+    record: "Celková bilance",
+    "record-history-mismatch": "Celková bilance se liší od zpracované historie",
+    "record-history-incomplete": "Zpracovaná historie je neúplná",
+  },
+
+  /* Delivered methods arrive in English. This is the reader-facing wording,
+   * not a translation layer — the source string stays in the evidence. */
+  methodText: (method: string): string =>
+    method
+      .replace(/^Technical Submission/iu, "technická submise")
+      .replace(/^Submission/iu, "submise")
+      .replace(/^Technical Decision/iu, "technické rozhodnutí")
+      .replace(/^Decision/iu, "rozhodnutí")
+      .replaceAll(/unanimous/giu, "jednomyslně")
+      .replaceAll(/split/giu, "děleně")
+      .replaceAll(/majority/giu, "většinově"),
 
   events: {
     title: "Turnaje",
