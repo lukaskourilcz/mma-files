@@ -224,6 +224,7 @@ function deliveredArticle(value: DeliveredArticlePackage): Article | null {
     image: {
       src: value.image.hero_path.replace(/^public/u, ""),
       thumbnailSrc: value.image.thumb_path.replace(/^public/u, ""),
+      origin: value.image.origin,
       alt: { ...(value.image.alt_en ? { en: value.image.alt_en } : {}), cs: value.image.alt_cs },
       credit: value.image.license.attribution_html,
       creditUrl: value.image.license.source_url,

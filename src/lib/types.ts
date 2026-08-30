@@ -86,6 +86,13 @@ export interface StoryImage {
   /** Path or URL. Rendered at 4:5 for portraits and 16:9 for file cards. */
   src: string;
   thumbnailSrc?: string;
+  /**
+   * What the picture is. `"photo"` is a licensed photograph and may carry
+   * display type over it; `"svg"` is deterministic editorial artwork, which
+   * never does — a data illustration with a headline across it reads as a
+   * caption on a chart. Absent means the source did not say.
+   */
+  origin?: "photo" | "svg";
   /** Reader-facing copy, per locale. Czech is always present. */
   alt: Partial<Record<Locale, string>>;
   credit: string;
