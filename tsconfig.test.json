@@ -1,0 +1,7 @@
+{
+  "//": "Next keeps jsx: preserve for its own compiler. The node test runner has no compiler after tsx, so tests that render a component need the automatic runtime.",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  }
+}

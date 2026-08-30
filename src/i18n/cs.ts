@@ -393,15 +393,21 @@ export const cs = {
     earlyModel: "Raný model",
     modelVersion: "Verze modelu",
     captured: (stamp: string) => `zachyceno ${stamp}`,
-    noModel: "Model zatím neběžel",
     rounds: (n: number) => `${n} × 5:00`,
     oddsSource: "Kurz: agregovaný průměr trhu",
-    tableHeadings: {
-      bout: "Zápas",
-      division: "Váha",
-      rounds: "Kola",
-      model: "Model",
+    versus: "vs",
+    /* The delivered uncertainty class, in words. It travels with every
+     * probability — a model output without its own caveat is not one. */
+    uncertainty: {
+      "clear-lean": "jasný náklon",
+      lean: "mírný náklon",
+      "coin-flip": "vyrovnané",
+      divergence: "model se rozchází s trhem",
     },
+    boardNoModel:
+      "Model pro tuhle kartu zatím neběžel. Až doběhne, objeví se pravděpodobnosti i s časem výpočtu a verzí modelu.",
+    boardNoModelShort: "Model pro tuhle kartu zatím neběžel.",
+    openBoard: "Celá karta v Predikcích",
   },
 
   howItWorks: {
