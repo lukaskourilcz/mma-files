@@ -20,6 +20,7 @@ import {
 
 interface DeliveredLocalization {
   title: string;
+  altHeadline?: string;
   dek: string;
   bodyMDX: string;
 }
@@ -167,6 +168,8 @@ export interface FightAiQFighterSurface extends FightAiQSurfaceBase {
 }
 
 const heroTemplates = new Set<HeroTemplate>([
+  "fighter-file",
+  "fight-desk",
   "tale-of-the-tape",
   "type-led-result",
   "data-card",
@@ -213,7 +216,12 @@ function deliveredArticle(value: DeliveredArticlePackage): Article | null {
       ...(value.localizations.en
         ? { en: { title: value.localizations.en.title, dek: value.localizations.en.dek, body: value.localizations.en.bodyMDX } }
         : {}),
-      cs: { title: value.localizations.cs.title, dek: value.localizations.cs.dek, body: value.localizations.cs.bodyMDX },
+      cs: {
+        title: value.localizations.cs.title,
+        ...(value.localizations.cs.altHeadline ? { altHeadline: value.localizations.cs.altHeadline } : {}),
+        dek: value.localizations.cs.dek,
+        body: value.localizations.cs.bodyMDX,
+      },
     },
     ...(org ? { organization: org } : {}),
     fighterRefs: value.fighterRefs.map(fighterRef),
