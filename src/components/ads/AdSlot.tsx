@@ -103,20 +103,20 @@ export function AdSlot({
         </Creative>
       ) : (
         <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-center text-text-meta">
-          <span className="font-mono text-[12px] font-medium uppercase tracking-[0.14em]">
+          <span className="font-mono text-[length:var(--text-mono-sm)] font-medium uppercase tracking-[0.14em]">
             {dict.ads.placeholder}
           </span>
           {mobile ? (
             <>
-              <span className="font-mono text-[11px] tabular-nums md:hidden">
+              <span className="font-mono text-[length:var(--text-mono-xs)] tabular-nums md:hidden">
                 {sizeLabel(mobile)}
               </span>
-              <span className="hidden font-mono text-[11px] tabular-nums md:inline">
+              <span className="hidden font-mono text-[length:var(--text-mono-xs)] tabular-nums md:inline">
                 {sizeLabel(desktop)}
               </span>
             </>
           ) : (
-            <span className="font-mono text-[11px] tabular-nums">
+            <span className="font-mono text-[length:var(--text-mono-xs)] tabular-nums">
               {sizeLabel(desktop)}
             </span>
           )}

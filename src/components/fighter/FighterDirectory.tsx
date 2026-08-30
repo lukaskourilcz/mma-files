@@ -30,7 +30,7 @@ export function FighterDirectory({ fighters, locale }: { fighters: Fighter[]; lo
           value={filter}
           onChange={setFilter}
         />
-        <p aria-live="polite" className="font-mono text-[12px] tabular-nums text-text-meta">
+        <p aria-live="polite" className="font-mono text-[length:var(--text-mono-sm)] tabular-nums text-text-meta">
           {dict.fighters.resultCount(visible.length)}
         </p>
       </div>

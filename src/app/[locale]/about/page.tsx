@@ -32,7 +32,7 @@ function RuleList({ items, tone }: { items: readonly string[]; tone: "accent" | 
   return (
     <ul className="mt-4 space-y-2.5">
       {items.map((item) => (
-        <li key={item} className="relative pl-4 text-[0.9375rem] leading-relaxed text-text-muted">
+        <li key={item} className="relative pl-4 text-[length:var(--text-sm)] leading-relaxed text-text-muted">
           <span
             aria-hidden="true"
             className={`absolute left-0 top-[0.68em] block h-[1px] w-2.5 ${
@@ -77,7 +77,7 @@ export default async function AboutPage({
                 {dict.about.whatBody.map((paragraph) => (
                   <p
                     key={paragraph.slice(0, 40)}
-                    className="text-[1.0625rem] leading-relaxed text-text-muted"
+                    className="text-[length:var(--text-base)] leading-relaxed text-text-muted"
                   >
                     {paragraph}
                   </p>

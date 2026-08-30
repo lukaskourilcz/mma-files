@@ -20,7 +20,7 @@ export function ArticleSources({ sources, locale }: { sources: Source[]; locale:
             key={`${source.url ?? source.ref ?? "source"}-${index}`}
             className="grid grid-cols-[28px_minmax(0,1fr)] gap-3 border-b border-rule pb-4 last:border-b-0"
           >
-            <span className="font-mono text-[12px] tabular-nums text-text-meta">
+            <span className="font-mono text-[length:var(--text-mono-sm)] tabular-nums text-text-meta">
               {String(index + 1).padStart(2, "0")}
             </span>
             {source.url ? (
@@ -28,14 +28,14 @@ export function ArticleSources({ sources, locale }: { sources: Source[]; locale:
                 href={source.url}
                 target="_blank"
                 rel="nofollow noopener"
-                className="break-words text-[15px] text-text underline decoration-accent underline-offset-4 hover:decoration-2"
+                className="break-words text-[length:var(--text-sm)] text-text underline decoration-accent underline-offset-4 hover:decoration-2"
               >
                 {publicLabel(source)}
               </a>
             ) : (
               <span>
-                <span className="block text-[15px] text-text">{source.title ?? source.ref}</span>
-                <span className="mt-1 block font-mono text-[12px] text-text-meta">
+                <span className="block text-[length:var(--text-sm)] text-text">{source.title ?? source.ref}</span>
+                <span className="mt-1 block font-mono text-[length:var(--text-mono-sm)] text-text-meta">
                   {source.kind === "internal" ? dict.labels.internal : dict.labels.external}
                 </span>
               </span>

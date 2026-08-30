@@ -49,7 +49,7 @@ export function BoutRow({ bout, locale }: { bout: Bout; locale: Locale }) {
         {bout.titleFight ? <Chip tone="signal">{dict.labels.titleFight}</Chip> : null}
       </div>
 
-      <p className="mt-1.5 text-[0.9375rem] leading-snug">
+      <p className="mt-1.5 text-[length:var(--text-sm)] leading-snug">
         <FighterName
           name={bout.red.name}
           fighterRef={bout.red.fighterRef}
@@ -106,7 +106,7 @@ function CardBout({ bout, locale }: { bout: Bout; locale: Locale }) {
         {dict.billingShort[bout.billing]}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-[15px] font-bold leading-tight text-text">
+        <p className="text-[length:var(--text-sm)] font-bold leading-tight text-text">
           <FighterName name={bout.red.name} fighterRef={bout.red.fighterRef} locale={locale} strong />{" "}
           <span className="label-mono-sm font-normal text-text-meta">
             {dict.results.versus}
@@ -152,7 +152,7 @@ export function EventCard({
       <div aria-hidden="true" className="h-1" style={{ backgroundColor: accent }} />
 
       <div className="flex flex-wrap items-center gap-2.5 border-b border-rule px-5 py-4">
-        <span className="text-[11px] font-extrabold uppercase leading-none tracking-[0.14em] text-text">
+        <span className="text-[length:var(--text-mono-xs)] font-extrabold uppercase leading-none tracking-[0.14em] text-text">
           {dict.organizationsShort[event.organization]}
         </span>
         <span className="label-mono-sm tracking-[0.14em] text-text-meta">
@@ -166,7 +166,7 @@ export function EventCard({
       </div>
 
       <div className="p-5">
-        <h3 className="display text-[26px] leading-[1.02] text-text md:text-[30px]">
+        <h3 className="display text-[length:var(--text-d5)] leading-[1.02] text-text md:text-[length:var(--text-d5)]">
           <Link
             href={routes.event(locale, event.slug)}
             className="headline-link after:absolute after:inset-0"
@@ -199,7 +199,7 @@ export function EventCard({
         ) : null}
 
         {local.note ? (
-          <p className="mt-3.5 text-[13.5px] leading-relaxed text-text-muted">
+          <p className="mt-3.5 text-[length:var(--text-xs)] leading-relaxed text-text-muted">
             {local.note}
           </p>
         ) : null}
@@ -208,7 +208,7 @@ export function EventCard({
       <div className="relative z-10 mt-auto border-t border-rule px-5 py-3.5">
         <Link
           href={routes.event(locale, event.slug)}
-          className="text-[11px] font-extrabold uppercase tracking-[0.13em] text-text hover:underline"
+          className="text-[length:var(--text-mono-xs)] font-extrabold uppercase tracking-[0.13em] text-text hover:underline"
         >
           {dict.actions.openTheCard} <span aria-hidden="true">→</span>
         </Link>

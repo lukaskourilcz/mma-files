@@ -65,9 +65,6 @@ export const cs = {
     theFile: "Složka k textu",
     relatedStories: "Související texty",
     byline: "Autor",
-    demo: "Ukázkový text",
-    demoShort: "Ukázka",
-    demoData: "Ukázková data",
     sourceChecked: "Zdroje ověřeny",
     correction: "Oprava",
     method: "Způsob",
@@ -103,7 +100,6 @@ export const cs = {
     related: "Související texty",
     moreFromSection: "Další z rubriky",
     correction: "Oprava",
-    demoBadge: "Ukázkový obsah",
     photoCredit: (author: string, licence: string) =>
       `Foto: ${author} · ${licence}`,
   },

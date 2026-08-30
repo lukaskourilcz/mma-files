@@ -98,7 +98,7 @@ function ArticleKicker({
           </span>
         </>
       ) : null}
-      {article.isDemo ? <NoteChip>{dict.article.demoBadge}</NoteChip> : null}
+      {article.isDemo ? <NoteChip>{dict.demo.articleBadge}</NoteChip> : null}
     </div>
   );
 }
@@ -286,6 +286,13 @@ export default async function ArticlePage({
               </figure>
             )}
 
+            {article.isDemo ? (
+              /* The badge says it is a sample; this says what that means. */
+              <p className="mt-7 border border-correction-rule bg-correction p-4 text-[length:var(--text-sm)] leading-relaxed text-text">
+                {dict.demo.articleNotice}
+              </p>
+            ) : null}
+
             {article.corrections?.length ? (
               <div className="mt-7">
                 <CorrectionNotice corrections={article.corrections} locale={locale} />
@@ -312,7 +319,7 @@ export default async function ArticlePage({
             <AdSlot name="article-rail" locale={locale} />
             {rail.length > 0 ? (
               <section className="mt-10 border-t border-rule-strong pt-6">
-                <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-text-meta">
+                <h2 className="font-mono text-[length:var(--text-mono-xs)] font-medium uppercase tracking-[0.16em] text-text-meta">
                   {dict.article.moreFromSection}
                 </h2>
                 <ul className="mt-5 space-y-4">

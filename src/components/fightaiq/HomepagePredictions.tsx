@@ -44,7 +44,7 @@ export function HomepagePredictions(props: HomepagePredictionsLoadedProps) {
       {Loaded ? (
         <Loaded {...props} />
       ) : (
-        <p role="status" className="font-mono text-[12px] text-text-inverse-meta">
+        <p role="status" className="font-mono text-[length:var(--text-mono-sm)] text-text-inverse-meta">
           {props.loadingLabel}
         </p>
       )}

@@ -296,7 +296,10 @@
     transition: text-decoration-color 160ms ease;
   }
 
-  .headline-link:hover {
+  .headline-link:hover,
+  /* A card is one big link: hovering anywhere in it should draw the rule under
+   * the headline, not only the headline's own box. */
+  .group:hover .headline-link {
     text-decoration-color: currentColor;
   }
 

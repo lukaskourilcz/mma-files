@@ -48,7 +48,7 @@ export function BoardSkeleton({ locale, tone = "paper" }: { locale: Locale; tone
 export function EmptyState({ children, className = "" }: { children: string; className?: string }) {
   return (
     <p
-      className={`border border-dashed border-rule-dashed px-8 py-8 text-center font-mono text-[12px] font-medium uppercase tracking-[0.14em] text-text-meta ${className}`}
+      className={`border border-dashed border-rule-dashed px-8 py-8 text-center font-mono text-[length:var(--text-mono-sm)] font-medium uppercase tracking-[0.14em] text-text-meta ${className}`}
     >
       {children}
     </p>

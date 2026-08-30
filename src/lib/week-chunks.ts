@@ -1,10 +1,12 @@
-import type { Organization } from "@/lib/types";
+import { ARTICLE_FORMATS, type ArticleFormat, type Organization } from "@/lib/types";
 
 /** The complete public payload for one lazy article row; never body or sources. */
 export interface WeekArticleCard {
   slug: string;
   title: string;
   dek: string;
+  /** Drives the row kicker, the same way it drives a card's. */
+  format: ArticleFormat;
   org: Organization | null;
   publishAt: string;
   thumbPath: string | null;
@@ -20,6 +22,7 @@ export function isWeekArticleCard(value: unknown): value is WeekArticleCard {
   return typeof card.slug === "string"
     && typeof card.title === "string"
     && typeof card.dek === "string"
+    && ARTICLE_FORMATS.includes(card.format as ArticleFormat)
     && (card.org === "ufc" || card.org === "oktagon" || card.org === null)
     && typeof card.publishAt === "string"
     && (typeof card.thumbPath === "string" || card.thumbPath === null)

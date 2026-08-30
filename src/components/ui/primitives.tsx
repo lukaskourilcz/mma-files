@@ -68,7 +68,7 @@ export function PromotionBadge({
   return (
     <span
       style={{ backgroundColor: accent }}
-      className={`inline-flex items-center px-2 py-[5px] font-mono text-[10px] font-semibold uppercase leading-none tracking-[0.16em] text-white ${className}`}
+      className={`label-mono-sm inline-flex items-center px-2 py-[5px] font-semibold text-white ${className}`}
     >
       {label}
     </span>
@@ -87,7 +87,7 @@ export function Kicker({
 }) {
   return (
     <span
-      className={`inline-flex font-mono text-[11px] font-medium uppercase tracking-[var(--tracking-kicker)] ${
+      className={`inline-flex font-mono text-[length:var(--text-mono-xs)] font-medium uppercase tracking-[var(--tracking-kicker)] ${
         tone === "paper" ? "text-accent-on-dark" : "text-accent"
       } ${className}`}
     >
@@ -171,7 +171,7 @@ export function ActionLink({
   return (
     <Link
       href={href}
-      className={`inline-flex min-h-11 items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] underline decoration-transparent decoration-[3px] underline-offset-4 hover:decoration-accent ${
+      className={`inline-flex min-h-11 items-center gap-2 text-[length:var(--text-xs)] font-bold uppercase tracking-[0.12em] underline decoration-transparent decoration-[3px] underline-offset-4 hover:decoration-accent ${
         tone === "paper" ? "text-text-inverse-muted" : "text-text-muted"
       } ${className}`}
     >
@@ -202,7 +202,7 @@ export function ButtonLink({
 }) {
   const primary = variant === "primary" || variant === "solid";
   const base =
-    "inline-flex min-h-12 items-center justify-center gap-2.5 px-6 py-4 text-[13px] font-extrabold uppercase tracking-[0.1em] transition-colors";
+    "inline-flex min-h-12 items-center justify-center gap-2.5 px-6 py-4 text-[length:var(--text-xs)] font-extrabold uppercase tracking-[0.1em] transition-colors";
   const styles =
     primary
       ? "bg-accent text-paper hover:bg-accent-press"
@@ -226,7 +226,7 @@ export function NoteChip({
 }) {
   return (
     <span
-      className={`inline-flex bg-note px-2 py-1 font-mono text-[10px] font-semibold uppercase leading-none tracking-[0.16em] text-note-ink ${className}`}
+      className={`label-mono-sm inline-flex bg-note px-2 py-1 font-semibold text-note-ink ${className}`}
     >
       {children}
     </span>

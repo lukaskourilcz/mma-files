@@ -58,7 +58,7 @@ export default async function PrivacyPage({
                   {section.body.map((paragraph) => (
                     <p
                       key={paragraph.slice(0, 40)}
-                      className="text-[0.9375rem] leading-relaxed text-text-muted"
+                      className="text-[length:var(--text-sm)] leading-relaxed text-text-muted"
                     >
                       {paragraph}
                     </p>

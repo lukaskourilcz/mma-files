@@ -14,6 +14,7 @@ function publicCard(article: ReturnType<typeof getArticles>[number]): WeekArticl
     slug: article.slug,
     title: copy.title,
     dek: copy.dek,
+    format: article.format,
     org: article.organization ?? null,
     publishAt: article.publishAt,
     thumbPath: article.image?.thumbnailSrc ?? article.image?.src ?? null,

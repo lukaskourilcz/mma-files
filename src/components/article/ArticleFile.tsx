@@ -42,8 +42,8 @@ function SourceItem({ source, locale }: { source: Source; locale: Locale }) {
       </div>
 
       <p
-        className={`mt-2.5 text-[0.9375rem] leading-snug text-text ${
-          isInternal && !source.title ? "font-mono text-[0.8125rem] break-all" : "font-medium"
+        className={`mt-2.5 text-[length:var(--text-sm)] leading-snug text-text ${
+          isInternal && !source.title ? "font-mono text-[length:var(--text-mono-md)] break-all" : "font-medium"
         }`}
       >
         {source.url ? (
@@ -75,7 +75,7 @@ function SourceItem({ source, locale }: { source: Source; locale: Locale }) {
       ) : null}
 
       {source.ref && source.title ? (
-        <p className="mt-1.5 break-all font-mono text-[0.6875rem] text-text-muted">
+        <p className="mt-1.5 break-all font-mono text-[length:var(--text-mono-xs)] text-text-muted">
           {source.ref}
         </p>
       ) : null}
@@ -249,7 +249,7 @@ export function ModelDisclosureBlock({
           <span className="font-mono text-xs">{disclosure.version}</span>
         </DataRow>
         <DataRow label={dict.dataDesk.modelInputs} tone="paper">
-          <span className="font-mono text-[0.6875rem] leading-relaxed text-text-inverse-muted">
+          <span className="font-mono text-[length:var(--text-mono-xs)] leading-relaxed text-text-inverse-muted">
             {disclosure.inputs.length}
           </span>
         </DataRow>
@@ -257,7 +257,7 @@ export function ModelDisclosureBlock({
 
       <ul className="mt-3 space-y-1">
         {disclosure.inputs.map((input) => (
-          <li key={input} className="break-all font-mono text-[0.6875rem] text-text-inverse-muted">
+          <li key={input} className="break-all font-mono text-[length:var(--text-mono-xs)] text-text-inverse-muted">
             {input}
           </li>
         ))}

@@ -113,12 +113,12 @@ export function WeekHistory({
         onLoad={() => void loadPrevious()}
       />
       {failed ? (
-        <p role="alert" className="mt-4 font-mono text-[12px] text-accent">
+        <p role="alert" className="mt-4 font-mono text-[length:var(--text-mono-sm)] text-accent">
           {dict.states.loadPreviousFailed}
         </p>
       ) : null}
       {exhausted ? (
-        <p aria-live="polite" className="mt-6 text-center font-mono text-[12px] text-text-meta">
+        <p aria-live="polite" className="mt-6 text-center font-mono text-[length:var(--text-mono-sm)] text-text-meta">
           {dict.home.endOfFeed}
         </p>
       ) : null}
