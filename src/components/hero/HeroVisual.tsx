@@ -132,7 +132,7 @@ export function HeroVisual({
             priority
           />
         </div>
-        <PhotoCredit image={article.image} />
+        <PhotoCredit locale={locale} image={article.image} />
       </figure>
     );
   }
