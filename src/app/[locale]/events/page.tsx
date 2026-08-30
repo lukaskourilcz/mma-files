@@ -56,7 +56,7 @@ export default async function EventsPage({
 
       <Container className="py-10 md:py-14">
         {upcoming.length + completed.length === 0 ? (
-          <p className="sheet px-5 py-10 text-center text-sm text-ink-muted">
+          <p className="sheet px-5 py-10 text-center text-sm text-text-muted">
             {dict.events.empty}
           </p>
         ) : null}

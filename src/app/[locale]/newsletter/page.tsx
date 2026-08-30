@@ -64,11 +64,11 @@ export default async function NewsletterPage({
                 {dict.newsletter.whatList.map((item) => (
                   <li
                     key={item}
-                    className="relative pl-4 text-[0.9375rem] leading-relaxed text-ink-muted"
+                    className="relative pl-4 text-[0.9375rem] leading-relaxed text-text-muted"
                   >
                     <span
                       aria-hidden="true"
-                      className="absolute left-0 top-[0.68em] block h-[1px] w-2.5 bg-ember"
+                      className="absolute left-0 top-[0.68em] block h-[1px] w-2.5 bg-accent"
                     />
                     {item}
                   </li>
@@ -78,7 +78,7 @@ export default async function NewsletterPage({
 
             <section aria-labelledby="when">
               <Kicker>{dict.newsletter.whenTitle}</Kicker>
-              <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink-muted">
+              <p className="mt-4 text-[0.9375rem] leading-relaxed text-text-muted">
                 {dict.newsletter.whenBody}
               </p>
             </section>

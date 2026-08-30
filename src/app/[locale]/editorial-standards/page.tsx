@@ -56,10 +56,10 @@ export default async function StandardsPage({
               <li key={section.title} className="border-t border-rule-strong pt-6">
                 <div className="grid gap-4 md:grid-cols-12 md:gap-8">
                   <div className="md:col-span-4">
-                    <span className="label-mono-sm text-ember">
+                    <span className="label-mono-sm text-accent">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <h2 className="mt-2 text-lg leading-snug tracking-[-0.025em] text-ink">
+                    <h2 className="mt-2 text-lg leading-snug tracking-[-0.025em] text-text">
                       {section.title}
                     </h2>
                   </div>
@@ -67,7 +67,7 @@ export default async function StandardsPage({
                     {section.body.map((paragraph) => (
                       <p
                         key={paragraph.slice(0, 40)}
-                        className="text-[0.9375rem] leading-relaxed text-ink-muted"
+                        className="text-[0.9375rem] leading-relaxed text-text-muted"
                       >
                         {paragraph}
                       </p>

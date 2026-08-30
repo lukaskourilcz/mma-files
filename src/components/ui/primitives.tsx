@@ -130,7 +130,7 @@ export function SectionHeading({
           <h2
             id={id}
             className={`display text-[26px] leading-none md:text-[30px] ${
-              tone === "paper" ? "text-white" : "text-ink"
+              tone === "paper" ? "text-text-inverse" : "text-text"
             } ${kicker ? "mt-2.5" : ""}`}
           >
             {title}
@@ -138,7 +138,7 @@ export function SectionHeading({
           {note ? (
             <span
               className={`label-mono-sm ${
-                tone === "paper" ? "text-paper-meta" : "text-ink-meta"
+                tone === "paper" ? "text-text-inverse-meta" : "text-text-meta"
               }`}
             >
               {note}
@@ -148,7 +148,7 @@ export function SectionHeading({
         {dek ? (
           <p
             className={`mt-2 max-w-2xl text-[0.9375rem] leading-relaxed ${
-              tone === "paper" ? "text-paper-muted" : "text-ink-muted"
+              tone === "paper" ? "text-text-inverse-muted" : "text-text-muted"
             }`}
           >
             {dek}
@@ -255,14 +255,14 @@ export function DataRow({
     >
       <dt
         className={`label-mono-sm ${
-          tone === "paper" ? "text-paper-meta" : "text-ink-meta"
+          tone === "paper" ? "text-text-inverse-meta" : "text-text-meta"
         }`}
       >
         {label}
       </dt>
       <dd
         className={`text-right text-sm font-medium ${
-          tone === "paper" ? "text-white" : "text-ink"
+          tone === "paper" ? "text-text-inverse" : "text-text"
         }`}
       >
         {children}

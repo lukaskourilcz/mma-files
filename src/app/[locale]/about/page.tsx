@@ -28,15 +28,15 @@ export async function generateMetadata({
   });
 }
 
-function RuleList({ items, tone }: { items: readonly string[]; tone: "ember" | "danger" }) {
+function RuleList({ items, tone }: { items: readonly string[]; tone: "accent" | "muted" }) {
   return (
     <ul className="mt-4 space-y-2.5">
       {items.map((item) => (
-        <li key={item} className="relative pl-4 text-[0.9375rem] leading-relaxed text-ink-muted">
+        <li key={item} className="relative pl-4 text-[0.9375rem] leading-relaxed text-text-muted">
           <span
             aria-hidden="true"
             className={`absolute left-0 top-[0.68em] block h-[1px] w-2.5 ${
-              tone === "ember" ? "bg-ember" : "bg-danger"
+              tone === "accent" ? "bg-accent" : "bg-rule-dashed"
             }`}
           />
           {item}
@@ -77,7 +77,7 @@ export default async function AboutPage({
                 {dict.about.whatBody.map((paragraph) => (
                   <p
                     key={paragraph.slice(0, 40)}
-                    className="text-[1.0625rem] leading-relaxed text-graphite"
+                    className="text-[1.0625rem] leading-relaxed text-text-muted"
                   >
                     {paragraph}
                   </p>
@@ -87,36 +87,36 @@ export default async function AboutPage({
 
             <section aria-labelledby="covers" className="mt-12">
               <Kicker>{dict.about.coversTitle}</Kicker>
-              <RuleList items={dict.about.coversList} tone="ember" />
+              <RuleList items={dict.about.coversList} tone="accent" />
             </section>
 
             <section aria-labelledby="not" className="mt-12">
               <Kicker>{dict.about.notTitle}</Kicker>
-              <RuleList items={dict.about.notList} tone="danger" />
+              <RuleList items={dict.about.notList} tone="muted" />
             </section>
           </div>
 
           <aside className="space-y-6 lg:col-span-5">
             <section
               aria-labelledby="status"
-              className="rounded-[10px] border border-ember/30 bg-ember-soft p-5 md:p-6"
+              className="border border-accent/30 bg-accent-wash p-5 md:p-6"
             >
-              <h2 id="status" className="label-mono text-ember">
+              <h2 id="status" className="label-mono text-accent">
                 {dict.about.statusTitle}
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-ink">
+              <p className="mt-3 text-sm leading-relaxed text-text">
                 {dict.about.statusBody}
               </p>
             </section>
 
-            <section aria-labelledby="practice" className="sheet-dark p-5 text-white md:p-6">
-              <h2 id="practice" className="label-mono text-ember">
+            <section aria-labelledby="practice" className="sheet-dark p-5 text-text-inverse md:p-6">
+              <h2 id="practice" className="label-mono text-accent-on-dark">
                 {dict.about.engineTitle}
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-paper">
+              <p className="mt-3 text-sm leading-relaxed text-text-inverse">
                 {dict.about.engineBody}
               </p>
-              <p className="mt-4 border-t border-rule-dark pt-4 text-xs leading-relaxed text-muted">
+              <p className="mt-4 border-t border-rule-dark pt-4 text-xs leading-relaxed text-text-inverse-muted">
                 {dict.about.engineNote}
               </p>
               <div className="mt-5">

@@ -53,12 +53,12 @@ export default async function PrivacyPage({
           <div className="space-y-10">
             {dict.privacy.sections.map((section) => (
               <section key={section.title} className="border-t border-rule-strong pt-6">
-                <h2 className="label-mono text-ink">{section.title}</h2>
+                <h2 className="label-mono text-text">{section.title}</h2>
                 <div className="mt-4 space-y-3.5">
                   {section.body.map((paragraph) => (
                     <p
                       key={paragraph.slice(0, 40)}
-                      className="text-[0.9375rem] leading-relaxed text-ink-muted"
+                      className="text-[0.9375rem] leading-relaxed text-text-muted"
                     >
                       {paragraph}
                     </p>

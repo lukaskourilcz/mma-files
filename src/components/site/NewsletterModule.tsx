@@ -67,7 +67,7 @@ export function NewsletterModule({
   const note = (
     <p
       id={`${inputId}-note`}
-      className="mt-3 max-w-lg text-xs leading-relaxed text-ink-meta"
+      className="mt-3 max-w-lg text-xs leading-relaxed text-text-meta"
     >
       {copy.notWired}
     </p>
@@ -76,10 +76,10 @@ export function NewsletterModule({
   if (variant === "panel") {
     return (
       <div className="sheet p-6 md:p-8">
-        <h2 className="display text-[24px] leading-none text-ink md:text-[28px]">
+        <h2 className="display text-[24px] leading-none text-text md:text-[28px]">
           {copy.title}
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-ink-muted">{copy.dek}</p>
+        <p className="mt-3 text-sm leading-relaxed text-text-muted">{copy.dek}</p>
         <div className="mt-6">{form}</div>
         {note}
       </div>
@@ -96,7 +96,7 @@ export function NewsletterModule({
           >
             {copy.title}
           </h2>
-          <p className="mt-4 max-w-[44ch] text-base leading-relaxed text-ink-muted">
+          <p className="mt-4 max-w-[44ch] text-base leading-relaxed text-text-muted">
             {copy.dek}
           </p>
         </div>
