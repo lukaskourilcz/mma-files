@@ -1,7 +1,7 @@
 import { AdSlot } from "@/components/ads/AdSlot";
 import { ArticleRow } from "@/components/article/ArticleRow";
 import { EmptyState } from "@/components/ui/Feedback";
-import { Container } from "@/components/ui/primitives";
+import { PageHeader } from "@/components/ui/PageHeader";
 import type { Article, Locale } from "@/lib/types";
 
 export function ArticleFeed({
@@ -54,15 +54,5 @@ export function FeedPageHeader({
   dek?: string;
   accent?: string;
 }) {
-  return (
-    <header className="bg-paper">
-      <Container className="pt-10 md:pt-14">
-        <h1 className="display text-[length:var(--text-d2)] text-text">{title}</h1>
-        {dek ? (
-          <p className="mt-4 max-w-[68ch] text-[17px] leading-relaxed text-text-muted">{dek}</p>
-        ) : null}
-        <span className="mt-7 block h-[3px] w-full" style={{ backgroundColor: accent }} />
-      </Container>
-    </header>
-  );
+  return <PageHeader title={title} dek={dek} accent={accent} />;
 }

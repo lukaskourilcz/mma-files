@@ -19,7 +19,7 @@ export function FighterName({
   strong?: boolean;
 }) {
   const fighter = fighterRef ? getFighterById(fighterRef) : undefined;
-  const className = strong ? "font-semibold text-ink" : "text-ink";
+  const className = strong ? "font-semibold text-text" : "text-text";
 
   if (!fighter) return <span className={className}>{name}</span>;
   return (
@@ -45,7 +45,7 @@ export function BoutRow({ bout, locale }: { bout: Bout; locale: Locale }) {
   return (
     <div className="border-t border-rule py-3.5 first:border-t-0 first:pt-0">
       <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-        <span className="label-mono-sm text-ink-meta">{dict.billing[bout.billing]}</span>
+        <span className="label-mono-sm text-text-meta">{dict.billing[bout.billing]}</span>
         {bout.titleFight ? <Chip tone="signal">{dict.labels.titleFight}</Chip> : null}
       </div>
 
@@ -56,7 +56,7 @@ export function BoutRow({ bout, locale }: { bout: Bout; locale: Locale }) {
           locale={locale}
           strong={Boolean(redWon)}
         />{" "}
-        <span className="label-mono-sm align-middle text-ink-meta">vs</span>{" "}
+        <span className="label-mono-sm align-middle text-text-meta">vs</span>{" "}
         <FighterName
           name={bout.blue.name}
           fighterRef={bout.blue.fighterRef}
@@ -66,11 +66,11 @@ export function BoutRow({ bout, locale }: { bout: Bout; locale: Locale }) {
       </p>
 
       <div className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-        <span className="label-mono-sm text-ink-muted">
+        <span className="label-mono-sm text-text-muted">
           {dict.divisions[bout.division]}
         </span>
         <span aria-hidden="true" className="h-3 w-px bg-rule-strong" />
-        <span className="label-mono-sm text-ink-meta">
+        <span className="label-mono-sm text-text-meta">
           {bout.scheduledRounds} × 5:00
         </span>
 
@@ -81,10 +81,10 @@ export function BoutRow({ bout, locale }: { bout: Bout; locale: Locale }) {
               {dict.methods[result.method]}
             </Chip>
             {finishLabel ? (
-              <span className="label-mono-sm text-ink-muted">{finishLabel}</span>
+              <span className="label-mono-sm text-text-muted">{finishLabel}</span>
             ) : null}
             {result.round ? (
-              <span className="label-mono-sm text-ink-meta">
+              <span className="label-mono-sm text-text-meta">
                 R{result.round}
                 {result.time ? ` · ${result.time}` : ""}
               </span>
@@ -102,18 +102,18 @@ function CardBout({ bout, locale }: { bout: Bout; locale: Locale }) {
 
   return (
     <li className="flex items-center gap-3 border-b border-rule py-3">
-      <span className="label-mono-sm w-[52px] shrink-0 font-semibold tracking-[0.1em] text-ink-meta">
+      <span className="label-mono-sm w-[52px] shrink-0 font-semibold tracking-[0.1em] text-text-meta">
         {dict.billingShort[bout.billing]}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-[15px] font-bold leading-tight text-ink">
+        <p className="text-[15px] font-bold leading-tight text-text">
           <FighterName name={bout.red.name} fighterRef={bout.red.fighterRef} locale={locale} strong />{" "}
-          <span className="label-mono-sm font-normal text-ink-meta">
+          <span className="label-mono-sm font-normal text-text-meta">
             {dict.results.versus}
           </span>{" "}
           <FighterName name={bout.blue.name} fighterRef={bout.blue.fighterRef} locale={locale} strong />
         </p>
-        <p className="label-mono-sm mt-[3px] tracking-[0.13em] text-ink-meta">
+        <p className="label-mono-sm mt-[3px] tracking-[0.13em] text-text-meta">
           {dict.divisions[bout.division]} · {bout.scheduledRounds} × 5:00
         </p>
       </div>
@@ -152,10 +152,10 @@ export function EventCard({
       <div aria-hidden="true" className="h-1" style={{ backgroundColor: accent }} />
 
       <div className="flex flex-wrap items-center gap-2.5 border-b border-rule px-5 py-4">
-        <span className="text-[11px] font-extrabold uppercase leading-none tracking-[0.14em] text-ink">
+        <span className="text-[11px] font-extrabold uppercase leading-none tracking-[0.14em] text-text">
           {dict.organizationsShort[event.organization]}
         </span>
-        <span className="label-mono-sm tracking-[0.14em] text-ink-meta">
+        <span className="label-mono-sm tracking-[0.14em] text-text-meta">
           {dict.eventStatus[event.status]}
         </span>
         <span className="label-mono-sm ml-auto bg-note px-2 py-1 font-semibold tracking-[0.12em] text-note-ink">
@@ -166,7 +166,7 @@ export function EventCard({
       </div>
 
       <div className="p-5">
-        <h3 className="display text-[26px] leading-[1.02] text-ink md:text-[30px]">
+        <h3 className="display text-[26px] leading-[1.02] text-text md:text-[30px]">
           <Link
             href={routes.event(locale, event.slug)}
             className="headline-link after:absolute after:inset-0"
@@ -175,7 +175,7 @@ export function EventCard({
           </Link>
         </h3>
 
-        <p className="label-mono-sm mt-2.5 tracking-[0.13em] text-ink-muted">
+        <p className="label-mono-sm mt-2.5 tracking-[0.13em] text-text-muted">
           {formatDateTime(event.startsAt, locale, event.timeZone)} ·{" "}
           {[event.venue, event.city, event.country ? countryName(event.country, dict) : ""].filter(Boolean).join(", ")}
         </p>
@@ -193,13 +193,13 @@ export function EventCard({
         )}
 
         {showBouts && event.bouts.length > showBouts ? (
-          <p className="label-mono-sm mt-3 text-ink-meta">
+          <p className="label-mono-sm mt-3 text-text-meta">
             {dict.events.moreOnCard} {event.bouts.length - showBouts}
           </p>
         ) : null}
 
         {local.note ? (
-          <p className="mt-3.5 text-[13.5px] leading-relaxed text-ink-muted">
+          <p className="mt-3.5 text-[13.5px] leading-relaxed text-text-muted">
             {local.note}
           </p>
         ) : null}
@@ -208,7 +208,7 @@ export function EventCard({
       <div className="relative z-10 mt-auto border-t border-rule px-5 py-3.5">
         <Link
           href={routes.event(locale, event.slug)}
-          className="text-[11px] font-extrabold uppercase tracking-[0.13em] text-ink hover:underline"
+          className="text-[11px] font-extrabold uppercase tracking-[0.13em] text-text hover:underline"
         >
           {dict.actions.openTheCard} <span aria-hidden="true">→</span>
         </Link>

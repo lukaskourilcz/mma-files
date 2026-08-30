@@ -62,7 +62,7 @@ export default async function EventPage({
 
   return (
     <>
-      <header className="border-b border-rule-dark bg-ink text-white">
+      <header className="border-b border-rule-dark bg-chrome text-text-inverse">
         <Container className="py-10 md:py-14">
           <Breadcrumbs
             tone="paper"
@@ -76,18 +76,18 @@ export default async function EventPage({
           <div className="mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-2">
             <Chip tone="dark">{dict.organizations[event.organization]}</Chip>
             <Chip tone="dark">{dict.eventStatus[event.status]}</Chip>
-            <span className="label-mono-sm text-muted">
+            <span className="label-mono-sm text-text-inverse-meta">
               {isPast
                 ? dict.fightWeek.countdownPast
                 : formatCountdown(event.startsAt, locale)}
             </span>
           </div>
 
-          <h1 className="mt-5 max-w-3xl text-[2rem] leading-[1.06] tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem]">
+          <h1 className="display mt-5 max-w-4xl text-[length:var(--text-d2)] text-text-inverse">
             {event.name}
           </h1>
 
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-paper-muted md:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-inverse-muted md:text-lg">
             {local.summary}
           </p>
 
@@ -114,10 +114,10 @@ export default async function EventPage({
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-7 xl:col-span-8">
             <section aria-labelledby="card" className="sheet p-5 md:p-7">
-              <h2 id="card" className="label-mono flex items-center gap-2 text-ink">
-                <span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />
+              <h2 id="card" className="label-mono flex items-center gap-2 text-text">
+                <span aria-hidden="true" className="block h-[2px] w-4 bg-accent" />
                 {dict.events.card}
-                <span className="text-muted">({event.bouts.length})</span>
+                <span className="text-text-muted">({event.bouts.length})</span>
               </h2>
 
               <div className="mt-5">
@@ -126,12 +126,12 @@ export default async function EventPage({
                     <BoutRow key={bout.id} bout={bout} locale={locale} />
                   ))
                 ) : (
-                  <p className="text-sm text-ink-muted">{dict.events.noBouts}</p>
+                  <p className="text-sm text-text-muted">{dict.events.noBouts}</p>
                 )}
               </div>
 
               {local.note ? (
-                <p className="mt-6 border-t border-rule pt-4 text-sm leading-relaxed text-ink-muted">
+                <p className="mt-6 border-t border-rule pt-4 text-sm leading-relaxed text-text-muted">
                   {local.note}
                 </p>
               ) : null}
@@ -148,18 +148,18 @@ export default async function EventPage({
                     <li key={article.id} className="border-t border-rule pt-3 first:border-t-0 first:pt-0">
                       <a
                         href={routes.article(locale, article.slug)}
-                        className="text-sm font-medium leading-snug text-ink underline decoration-ember decoration-[1.5px] underline-offset-[3px]"
+                        className="text-sm font-medium leading-snug text-text underline decoration-accent decoration-[1.5px] underline-offset-[3px]"
                       >
                         {articleTitle(article, locale)}
                       </a>
-                      <p className="label-mono-sm mt-1.5 text-muted">
+                      <p className="label-mono-sm mt-1.5 text-text-muted">
                         {dict.formats[article.format]}
                       </p>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-3 text-sm text-ink-muted">{dict.events.noCoverage}</p>
+                <p className="mt-3 text-sm text-text-muted">{dict.events.noCoverage}</p>
               )}
             </div>
           </aside>

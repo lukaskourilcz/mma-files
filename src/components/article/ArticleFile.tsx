@@ -35,14 +35,14 @@ function SourceItem({ source, locale }: { source: Source; locale: Locale }) {
           </Chip>
         ) : null}
         {source.retrievedAt ? (
-          <span className="label-mono-sm text-muted">
+          <span className="label-mono-sm text-text-muted">
             {dict.labels.retrieved} {formatStamp(source.retrievedAt)}
           </span>
         ) : null}
       </div>
 
       <p
-        className={`mt-2.5 text-[0.9375rem] leading-snug text-ink ${
+        className={`mt-2.5 text-[0.9375rem] leading-snug text-text ${
           isInternal && !source.title ? "font-mono text-[0.8125rem] break-all" : "font-medium"
         }`}
       >
@@ -51,7 +51,7 @@ function SourceItem({ source, locale }: { source: Source; locale: Locale }) {
             href={source.url}
             rel="noopener noreferrer"
             target="_blank"
-            className="underline decoration-ember decoration-[1.5px] underline-offset-[3px] hover:bg-ember-soft"
+            className="underline decoration-accent decoration-[1.5px] underline-offset-[3px] hover:bg-accent-wash"
           >
             {heading}
           </a>
@@ -61,28 +61,28 @@ function SourceItem({ source, locale }: { source: Source; locale: Locale }) {
       </p>
 
       {source.publisher || (!source.url && source.kind === "external") ? (
-        <p className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-ink-muted">
+        <p className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-text-muted">
           {source.publisher ? <span>{source.publisher}</span> : null}
           {!source.url && source.kind === "external" ? (
             <>
               {source.publisher ? (
                 <span aria-hidden="true" className="h-3 w-px bg-rule-strong" />
               ) : null}
-              <span className="text-muted">{dict.labels.noLink}</span>
+              <span className="text-text-muted">{dict.labels.noLink}</span>
             </>
           ) : null}
         </p>
       ) : null}
 
       {source.ref && source.title ? (
-        <p className="mt-1.5 break-all font-mono text-[0.6875rem] text-muted">
+        <p className="mt-1.5 break-all font-mono text-[0.6875rem] text-text-muted">
           {source.ref}
         </p>
       ) : null}
 
       {source.supports && source.supports.length > 0 ? (
-        <p className="mt-2.5 text-xs leading-relaxed text-ink-muted">
-          <span className="label-mono-sm text-muted">{dict.labels.supports}</span>{" "}
+        <p className="mt-2.5 text-xs leading-relaxed text-text-muted">
+          <span className="label-mono-sm text-text-muted">{dict.labels.supports}</span>{" "}
           {source.supports.join(" · ")}
         </p>
       ) : null}
@@ -104,10 +104,10 @@ export function SourceList({
 
   return (
     <section aria-labelledby="sources" className="sheet p-5 md:p-6">
-      <h2 id="sources" className="label-mono flex items-center gap-2 text-ink">
-        <span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />
+      <h2 id="sources" className="label-mono flex items-center gap-2 text-text">
+        <span aria-hidden="true" className="block h-[2px] w-4 bg-accent" />
         {title ?? dict.labels.sources}
-        <span className="text-muted">({sources.length})</span>
+        <span className="text-text-muted">({sources.length})</span>
       </h2>
       <ol className="mt-5">
         {sources.map((source, i) => (
@@ -129,8 +129,8 @@ export function TheFile({ article, locale }: { article: Article; locale: Locale 
 
   return (
     <section aria-labelledby="the-file" className="sheet p-5 md:p-6">
-      <h2 id="the-file" className="label-mono flex items-center gap-2 text-ink">
-        <span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />
+      <h2 id="the-file" className="label-mono flex items-center gap-2 text-text">
+        <span aria-hidden="true" className="block h-[2px] w-4 bg-accent" />
         {dict.labels.theFile}
       </h2>
 
@@ -140,7 +140,7 @@ export function TheFile({ article, locale }: { article: Article; locale: Locale 
           <DataRow label={dict.labels.promotion}>
             <Link
               href={routes.organization(locale, article.organization)}
-              className="underline decoration-ember decoration-[1.5px] underline-offset-[3px]"
+              className="underline decoration-accent decoration-[1.5px] underline-offset-[3px]"
             >
               {dict.organizations[article.organization]}
             </Link>
@@ -150,7 +150,7 @@ export function TheFile({ article, locale }: { article: Article; locale: Locale 
           <DataRow label={dict.labels.event}>
             <Link
               href={routes.event(locale, event.slug)}
-              className="underline decoration-ember decoration-[1.5px] underline-offset-[3px]"
+              className="underline decoration-accent decoration-[1.5px] underline-offset-[3px]"
             >
               {event.name}
             </Link>
@@ -163,7 +163,7 @@ export function TheFile({ article, locale }: { article: Article; locale: Locale 
                 <span key={fighter.id}>
                   <Link
                     href={routes.fighter(locale, fighter.organization, fighter.slug)}
-                    className="underline decoration-ember decoration-[1.5px] underline-offset-[3px]"
+                    className="underline decoration-accent decoration-[1.5px] underline-offset-[3px]"
                   >
                     {fighter.name}
                   </Link>
@@ -210,11 +210,11 @@ export function CorrectionHistory({
                   ? dict.labels.correction
                   : dict.labels.update}
               </Chip>
-              <time dateTime={correction.at} className="label-mono-sm text-ink-muted">
+              <time dateTime={correction.at} className="label-mono-sm text-text-muted">
                 {formatDate(correction.at, locale)}
               </time>
             </div>
-            <p className="mt-2.5 text-sm leading-relaxed text-ink">
+            <p className="mt-2.5 text-sm leading-relaxed text-text">
               {correction.note[locale]}
             </p>
           </li>
@@ -238,9 +238,9 @@ export function ModelDisclosureBlock({
   const dict = getDictionary(locale);
 
   return (
-    <section aria-labelledby="model-disclosure" className="sheet-dark p-5 text-white md:p-6">
-      <h2 id="model-disclosure" className="label-mono flex items-center gap-2 text-ember">
-        <span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />
+    <section aria-labelledby="model-disclosure" className="sheet-dark p-5 text-text-inverse md:p-6">
+      <h2 id="model-disclosure" className="label-mono flex items-center gap-2 text-accent-on-dark">
+        <span aria-hidden="true" className="block h-[2px] w-4 bg-accent-on-dark" />
         {dict.dataDesk.modelTitle}
       </h2>
 
@@ -249,7 +249,7 @@ export function ModelDisclosureBlock({
           <span className="font-mono text-xs">{disclosure.version}</span>
         </DataRow>
         <DataRow label={dict.dataDesk.modelInputs} tone="paper">
-          <span className="font-mono text-[0.6875rem] leading-relaxed text-paper-muted">
+          <span className="font-mono text-[0.6875rem] leading-relaxed text-text-inverse-muted">
             {disclosure.inputs.length}
           </span>
         </DataRow>
@@ -257,22 +257,22 @@ export function ModelDisclosureBlock({
 
       <ul className="mt-3 space-y-1">
         {disclosure.inputs.map((input) => (
-          <li key={input} className="break-all font-mono text-[0.6875rem] text-muted">
+          <li key={input} className="break-all font-mono text-[0.6875rem] text-text-inverse-muted">
             {input}
           </li>
         ))}
       </ul>
 
       <div className="mt-5 border-t border-rule-dark pt-4">
-        <h3 className="label-mono-sm text-paper-muted">
+        <h3 className="label-mono-sm text-text-inverse-muted">
           {dict.dataDesk.modelUncertainty}
         </h3>
-        <p className="mt-2 text-sm leading-relaxed text-paper">
+        <p className="mt-2 text-sm leading-relaxed text-text-inverse">
           {disclosure.uncertainty[locale]}
         </p>
       </div>
 
-      <p className="mt-4 border-t border-rule-dark pt-4 text-xs leading-relaxed text-muted">
+      <p className="mt-4 border-t border-rule-dark pt-4 text-xs leading-relaxed text-text-inverse-muted">
         {dict.dataDesk.responsiblePlay}
       </p>
     </section>
@@ -287,17 +287,17 @@ export function MethodologyNote({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
 
   return (
-    <aside className="rounded-[10px] border border-rule bg-white p-5">
+    <aside className="border border-rule bg-card p-5">
       <Kicker>{dict.labels.methodology}</Kicker>
-      <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+      <p className="mt-3 text-sm leading-relaxed text-text-muted">
         {dict.labels.methodologyBody}
       </p>
       <Link
         href={routes.howItWorks(locale)}
-        className="label-mono mt-3 inline-flex items-center gap-2 text-ink hover:text-ember"
+        className="label-mono mt-3 inline-flex items-center gap-2 text-text hover:text-accent"
       >
         {dict.actions.howChecked}
-        <span aria-hidden="true" className="text-ember">
+        <span aria-hidden="true" className="text-accent">
           →
         </span>
       </Link>

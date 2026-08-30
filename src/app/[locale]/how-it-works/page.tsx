@@ -55,17 +55,17 @@ export default async function HowItWorksPage({
       <section aria-labelledby="pipeline" className="py-12 md:py-16">
         <Container>
           <SectionHeading title={dict.howItWorks.pipelineTitle} />
-          <ol className="mt-8 grid gap-px overflow-hidden rounded-[10px] border border-rule-strong bg-rule-strong">
+          <ol className="mt-8 grid gap-px overflow-hidden border border-rule-strong bg-rule-strong">
             {dict.howItWorks.steps.map((step, i) => (
               <li key={step.title} className="bg-white p-5 md:p-6">
                 <div className="grid gap-3 md:grid-cols-12 md:items-baseline md:gap-6">
-                  <span className="label-mono text-ember md:col-span-1">
+                  <span className="label-mono text-accent md:col-span-1">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="text-base font-semibold leading-snug tracking-[-0.02em] text-ink md:col-span-4">
+                  <h3 className="text-base font-semibold leading-snug tracking-[-0.02em] text-text md:col-span-4">
                     {step.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-ink-muted md:col-span-7">
+                  <p className="text-sm leading-relaxed text-text-muted md:col-span-7">
                     {step.body}
                   </p>
                 </div>
@@ -77,7 +77,7 @@ export default async function HowItWorksPage({
 
       <section
         aria-labelledby="cadence"
-        className="grid-rules border-y border-rule-dark bg-ink py-12 text-white md:py-16"
+        className="border-y border-rule-dark bg-chrome py-12 text-text-inverse md:py-16"
       >
         <Container>
           <SectionHeading
@@ -88,8 +88,8 @@ export default async function HowItWorksPage({
           <dl className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {dict.howItWorks.cadence.map((slot) => (
               <div key={slot.time} className="border-t border-rule-dark pt-4">
-                <dt className="font-mono text-2xl font-medium text-ember">{slot.time}</dt>
-                <dd className="mt-3 text-sm leading-relaxed text-paper-muted">
+                <dt className="font-mono text-2xl font-medium text-accent-on-dark">{slot.time}</dt>
+                <dd className="mt-3 text-sm leading-relaxed text-text-inverse-muted">
                   {slot.body}
                 </dd>
               </div>
@@ -99,13 +99,13 @@ export default async function HowItWorksPage({
           <div className="mt-12 grid gap-8 border-t border-rule-dark pt-10 md:grid-cols-2">
             <div>
               <Kicker tone="paper">{dict.howItWorks.killTitle}</Kicker>
-              <p className="mt-3 max-w-lg text-sm leading-relaxed text-paper-muted">
+              <p className="mt-3 max-w-lg text-sm leading-relaxed text-text-inverse-muted">
                 {dict.howItWorks.killBody}
               </p>
             </div>
             <div>
               <Kicker tone="paper">{dict.howItWorks.humanTitle}</Kicker>
-              <p className="mt-3 max-w-lg text-sm leading-relaxed text-paper-muted">
+              <p className="mt-3 max-w-lg text-sm leading-relaxed text-text-inverse-muted">
                 {dict.howItWorks.humanBody}
               </p>
             </div>
@@ -113,7 +113,7 @@ export default async function HowItWorksPage({
 
           <div className="mt-10 border-t border-rule-dark pt-10">
             <Kicker tone="paper">{dict.howItWorks.socialTitle}</Kicker>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-paper-muted">
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-inverse-muted">
               {dict.howItWorks.socialBody(
                 stats.socialTreatments,
                 stats.storiesWithSocialTreatments,
@@ -132,8 +132,8 @@ export default async function HowItWorksPage({
           <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {dict.howItWorks.roles.map((role) => (
               <li key={role.name} className="sheet p-5">
-                <h3 className="label-mono text-ember">{role.name}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                <h3 className="label-mono text-accent">{role.name}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-text-muted">
                   {role.body}
                 </p>
               </li>

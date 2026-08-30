@@ -58,12 +58,12 @@ export default async function CorrectionsPage({
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <section aria-labelledby="log" className="lg:col-span-7">
             <Kicker>{dict.corrections.logTitle}</Kicker>
-            <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+            <p className="mt-3 text-sm leading-relaxed text-text-muted">
               {dict.corrections.logDek}
             </p>
 
             {log.length === 0 ? (
-              <p className="sheet mt-6 px-5 py-10 text-center text-sm text-ink-muted">
+              <p className="sheet mt-6 px-5 py-10 text-center text-sm text-text-muted">
                 {dict.corrections.logEmpty}
               </p>
             ) : (
@@ -78,13 +78,13 @@ export default async function CorrectionsPage({
                       </Chip>
                       <time
                         dateTime={correction.at}
-                        className="label-mono-sm text-ink-muted"
+                        className="label-mono-sm text-text-muted"
                       >
                         {formatDate(correction.at, locale)}
                       </time>
                     </div>
 
-                    <h2 className="mt-3 text-base leading-snug tracking-[-0.02em] text-ink">
+                    <h2 className="mt-3 text-base leading-snug tracking-[-0.02em] text-text">
                       <Link
                         href={routes.article(locale, article.slug)}
                         className="headline-link"
@@ -93,7 +93,7 @@ export default async function CorrectionsPage({
                       </Link>
                     </h2>
 
-                    <p className="mt-2.5 text-sm leading-relaxed text-ink-muted">
+                    <p className="mt-2.5 text-sm leading-relaxed text-text-muted">
                       {correction.note[locale]}
                     </p>
                   </li>
@@ -104,14 +104,14 @@ export default async function CorrectionsPage({
 
           <aside className="space-y-6 lg:col-span-5">
             <section aria-labelledby="policy" className="sheet p-5 md:p-6">
-              <h2 id="policy" className="label-mono text-ink">
+              <h2 id="policy" className="label-mono text-text">
                 {dict.corrections.policyTitle}
               </h2>
               <div className="mt-4 space-y-3.5">
                 {dict.corrections.policyBody.map((paragraph) => (
                   <p
                     key={paragraph.slice(0, 40)}
-                    className="text-sm leading-relaxed text-ink-muted"
+                    className="text-sm leading-relaxed text-text-muted"
                   >
                     {paragraph}
                   </p>
@@ -121,15 +121,15 @@ export default async function CorrectionsPage({
 
             <section
               aria-labelledby="report"
-              className="rounded-[10px] border border-ember/30 bg-ember-soft p-5 md:p-6"
+              className="border border-accent/30 bg-accent-wash p-5 md:p-6"
             >
-              <h2 id="report" className="label-mono text-ember">
+              <h2 id="report" className="label-mono text-accent">
                 {dict.corrections.reportTitle}
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-ink">
+              <p className="mt-3 text-sm leading-relaxed text-text">
                 {dict.corrections.reportBody}
               </p>
-              <p className="mt-4 font-mono text-sm text-ink">
+              <p className="mt-4 font-mono text-sm text-text">
                 {siteConfig.contact.corrections}
               </p>
             </section>

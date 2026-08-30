@@ -72,7 +72,7 @@ export default async function FightWeekPage({
             </ul>
           </section>
         ) : (
-          <p className="sheet px-5 py-8 text-sm leading-relaxed text-ink-muted">
+          <p className="sheet px-5 py-8 text-sm leading-relaxed text-text-muted">
             {dict.fightWeek.noUpcoming}
           </p>
         )}

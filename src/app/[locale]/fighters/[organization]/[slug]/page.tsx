@@ -115,7 +115,7 @@ export default async function FighterPage({
 
   return (
     <>
-      <header className="border-b border-rule-dark bg-ink text-white">
+      <header className="border-b border-rule-dark bg-chrome text-text-inverse">
         <Container className="py-10 md:py-14">
           <Breadcrumbs
             tone="paper"
@@ -133,17 +133,17 @@ export default async function FighterPage({
           <div className="mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-2">
             <Chip tone="dark">{dict.organizations[fighter.organization]}</Chip>
             <Chip tone="dark">{dict.divisions[fighter.division]}</Chip>
-            {fighter.country ? <span className="label-mono-sm text-muted">{countryName(fighter.country, dict)}</span> : null}
+            {fighter.country ? <span className="label-mono-sm text-text-inverse-meta">{countryName(fighter.country, dict)}</span> : null}
           </div>
 
-          <h1 className="mt-5 text-[2rem] leading-[1.06] tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem]">
+          <h1 className="display mt-5 text-[length:var(--text-d1)] text-text-inverse">
             {fighter.name}
           </h1>
           {fighter.nickname ? (
-            <p className="label-mono mt-3 text-ember">“{fighter.nickname}”</p>
+            <p className="label-mono mt-3 text-accent-on-dark">“{fighter.nickname}”</p>
           ) : null}
 
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-paper-muted md:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-inverse-muted md:text-lg">
             {local.summary}
           </p>
         </Container>
@@ -161,32 +161,32 @@ export default async function FighterPage({
             <TaleOfTheTape fighter={fighter} locale={locale} />
 
             <section aria-labelledby="style" className="sheet p-5 md:p-6">
-              <h2 id="style" className="label-mono flex items-center gap-2 text-ink">
-                <span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />
+              <h2 id="style" className="label-mono flex items-center gap-2 text-text">
+                <span aria-hidden="true" className="block h-[2px] w-4 bg-accent" />
                 {dict.fighters.style}
               </h2>
-              <p className="mt-4 text-[1.0625rem] leading-relaxed text-graphite">
+              <p className="mt-4 text-[1.0625rem] leading-relaxed text-text-muted">
                 {local.styleNote}
               </p>
             </section>
 
             <section aria-labelledby="recorded-history" className="sheet p-5 md:p-6">
-              <h2 id="recorded-history" className="label-mono flex items-center gap-2 text-ink"><span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />{locale === "cs" ? "Doložené zápasy" : "Recorded fight history"}</h2>
+              <h2 id="recorded-history" className="label-mono flex items-center gap-2 text-text"><span aria-hidden="true" className="block h-[2px] w-4 bg-accent" />{locale === "cs" ? "Doložené zápasy" : "Recorded fight history"}</h2>
               {file?.history.length ? <ol className="mt-4 divide-y divide-rule">{[...file.history].reverse().slice(0, 10).map((bout) => {
                 const opponent = getFighterById(`fighter:${bout.opponentRef.replace(":", "/")}`);
-                return <li className="grid gap-2 py-3 first:pt-0 sm:grid-cols-[6rem_1fr_auto] sm:items-center" key={bout.boutRef}><time className="label-mono-sm text-ink-meta" dateTime={bout.happenedAt}>{new Intl.DateTimeFormat(locale === "cs" ? "cs-CZ" : "en-GB", { dateStyle: "medium" }).format(new Date(bout.happenedAt))}</time><span className="text-sm text-ink">{opponent ? <Link className="font-medium underline decoration-ember underline-offset-[3px]" href={routes.fighter(locale, opponent.organization, opponent.slug)}>{opponent.name}</Link> : bout.opponentRef}</span><span className="label-mono-sm text-ink-meta">{resultLabels[locale][bout.result]}{bout.method ? ` · ${methodLabel(bout.method)}` : ""}{bout.round ? ` · R${bout.round}` : ""}</span></li>;
-              })}</ol> : <p className="mt-4 text-sm text-ink-muted">{locale === "cs" ? "V ověřených podkladech zatím není žádný zápas." : "No verified bout history is available yet."}</p>}
+                return <li className="grid gap-2 py-3 first:pt-0 sm:grid-cols-[6rem_1fr_auto] sm:items-center" key={bout.boutRef}><time className="label-mono-sm text-text-meta" dateTime={bout.happenedAt}>{new Intl.DateTimeFormat(locale === "cs" ? "cs-CZ" : "en-GB", { dateStyle: "medium" }).format(new Date(bout.happenedAt))}</time><span className="text-sm text-text">{opponent ? <Link className="font-medium underline decoration-accent underline-offset-[3px]" href={routes.fighter(locale, opponent.organization, opponent.slug)}>{opponent.name}</Link> : bout.opponentRef}</span><span className="label-mono-sm text-text-meta">{resultLabels[locale][bout.result]}{bout.method ? ` · ${methodLabel(bout.method)}` : ""}{bout.round ? ` · R${bout.round}` : ""}</span></li>;
+              })}</ol> : <p className="mt-4 text-sm text-text-muted">{locale === "cs" ? "V ověřených podkladech zatím není žádný zápas." : "No verified bout history is available yet."}</p>}
             </section>
 
             <section aria-labelledby="derived-stats" className="sheet p-5 md:p-6">
-              <h2 id="derived-stats" className="label-mono flex items-center gap-2 text-ink"><span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />{locale === "cs" ? "Odvozené statistiky" : "Derived stats"}</h2>
-              {file?.statsProfiles.length ? file.statsProfiles.map((profile) => <div className="mt-4" key={profile.id}><p className="text-sm text-ink-muted">{locale === "cs" ? "Souhrn vypočítaný z doložených zápasů" : "Career totals calculated from sourced fights"} · {profile.bouts} {locale === "cs" ? "zápasů" : "fights"}</p><dl className="mt-3 grid grid-cols-2 gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-3">{Object.entries(profile.values).map(([key, value]) => <div className="bg-card p-3" key={key}><dt className="label-mono-sm text-ink-meta">{statLabels[key]?.[locale] ?? key.replaceAll(/([A-Z])/g, " $1").toLowerCase()}</dt><dd className="mt-1 font-mono text-lg text-ink">{statValue(key, value)}</dd></div>)}</dl></div>) : <p className="mt-4 text-sm text-ink-muted">{locale === "cs" ? "Výpočty čekají na doloženou historii zápasů." : "The calculations need sourced fight history."}</p>}
+              <h2 id="derived-stats" className="label-mono flex items-center gap-2 text-text"><span aria-hidden="true" className="block h-[2px] w-4 bg-accent" />{locale === "cs" ? "Odvozené statistiky" : "Derived stats"}</h2>
+              {file?.statsProfiles.length ? file.statsProfiles.map((profile) => <div className="mt-4" key={profile.id}><p className="text-sm text-text-muted">{locale === "cs" ? "Souhrn vypočítaný z doložených zápasů" : "Career totals calculated from sourced fights"} · {profile.bouts} {locale === "cs" ? "zápasů" : "fights"}</p><dl className="mt-3 grid grid-cols-2 gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-3">{Object.entries(profile.values).map(([key, value]) => <div className="bg-card p-3" key={key}><dt className="label-mono-sm text-text-meta">{statLabels[key]?.[locale] ?? key.replaceAll(/([A-Z])/g, " $1").toLowerCase()}</dt><dd className="mt-1 font-mono text-lg text-text">{statValue(key, value)}</dd></div>)}</dl></div>) : <p className="mt-4 text-sm text-text-muted">{locale === "cs" ? "Výpočty čekají na doloženou historii zápasů." : "The calculations need sourced fight history."}</p>}
             </section>
 
             {booked.length > 0 ? (
               <section aria-labelledby="booked" className="sheet p-5 md:p-6">
-                <h2 id="booked" className="label-mono flex items-center gap-2 text-ink">
-                  <span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />
+                <h2 id="booked" className="label-mono flex items-center gap-2 text-text">
+                  <span aria-hidden="true" className="block h-[2px] w-4 bg-accent" />
                   {dict.fighters.upcomingBout}
                 </h2>
                 <div className="mt-4">
@@ -194,7 +194,7 @@ export default async function FighterPage({
                     <div key={event.id} className="border-t border-rule pt-4 first:border-t-0 first:pt-0">
                       <Link
                         href={routes.event(locale, event.slug)}
-                        className="text-base font-medium text-ink underline decoration-ember decoration-[1.5px] underline-offset-[3px]"
+                        className="text-base font-medium text-text underline decoration-accent decoration-[1.5px] underline-offset-[3px]"
                       >
                         {event.name}
                       </Link>
@@ -217,8 +217,8 @@ export default async function FighterPage({
           </div>
 
           <aside className="space-y-6 lg:col-span-5 xl:col-span-4">
-            <div className="sheet p-5"><Kicker>{locale === "cs" ? "Glicko stav" : "Glicko state"}</Kicker>{file ? <dl className="mt-4 grid grid-cols-2 gap-3"><div><dt className="label-mono-sm text-ink-meta">{locale === "cs" ? "Hodnocení" : "Rating"}</dt><dd className="mt-1 font-mono text-2xl text-ink">{Math.round(file.rating.rating)}</dd></div><div><dt className="label-mono-sm text-ink-meta">{locale === "cs" ? "Nejistota" : "Deviation"}</dt><dd className="mt-1 font-mono text-2xl text-ink">±{Math.round(file.rating.deviation)}</dd></div></dl> : <p className="mt-3 text-sm text-ink-muted">{locale === "cs" ? "Nedostupné" : "Unavailable"}</p>}<p className="mt-4 text-xs leading-relaxed text-ink-muted">{locale === "cs" ? "Jde o interní stav modelu z doložených výsledků, ne o oficiální žebříček." : "This is an internal model state built from sourced results, not an official ranking."}</p></div>
-            {file?.gaps.length ? <div className="sheet p-5"><Kicker>{locale === "cs" ? "Chybějící podklady" : "Evidence gaps"}</Kicker><ul className="mt-3 space-y-2 text-sm text-ink-muted">{file.gaps.map((gap) => <li key={gap}>• {gapLabels[gap]?.[locale] ?? gap.replaceAll("-", " ")}</li>)}</ul></div> : null}
+            <div className="sheet p-5"><Kicker>{locale === "cs" ? "Glicko stav" : "Glicko state"}</Kicker>{file ? <dl className="mt-4 grid grid-cols-2 gap-3"><div><dt className="label-mono-sm text-text-meta">{locale === "cs" ? "Hodnocení" : "Rating"}</dt><dd className="mt-1 font-mono text-2xl text-text">{Math.round(file.rating.rating)}</dd></div><div><dt className="label-mono-sm text-text-meta">{locale === "cs" ? "Nejistota" : "Deviation"}</dt><dd className="mt-1 font-mono text-2xl text-text">±{Math.round(file.rating.deviation)}</dd></div></dl> : <p className="mt-3 text-sm text-text-muted">{locale === "cs" ? "Nedostupné" : "Unavailable"}</p>}<p className="mt-4 text-xs leading-relaxed text-text-muted">{locale === "cs" ? "Jde o interní stav modelu z doložených výsledků, ne o oficiální žebříček." : "This is an internal model state built from sourced results, not an official ranking."}</p></div>
+            {file?.gaps.length ? <div className="sheet p-5"><Kicker>{locale === "cs" ? "Chybějící podklady" : "Evidence gaps"}</Kicker><ul className="mt-3 space-y-2 text-sm text-text-muted">{file.gaps.map((gap) => <li key={gap}>• {gapLabels[gap]?.[locale] ?? gap.replaceAll("-", " ")}</li>)}</ul></div> : null}
             <SourceList sources={fighter.sources} locale={locale} />
             <div className="sheet p-5">
               <Kicker>{dict.fighters.relatedStories}</Kicker>
@@ -231,18 +231,18 @@ export default async function FighterPage({
                     >
                       <Link
                         href={routes.article(locale, article.slug)}
-                        className="text-sm font-medium leading-snug text-ink underline decoration-ember decoration-[1.5px] underline-offset-[3px]"
+                        className="text-sm font-medium leading-snug text-text underline decoration-accent decoration-[1.5px] underline-offset-[3px]"
                       >
                         {articleTitle(article, locale)}
                       </Link>
-                      <p className="label-mono-sm mt-1.5 text-muted">
+                      <p className="label-mono-sm mt-1.5 text-text-muted">
                         {dict.formats[article.format]}
                       </p>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-3 text-sm text-ink-muted">{dict.fighters.noRelated}</p>
+                <p className="mt-3 text-sm text-text-muted">{dict.fighters.noRelated}</p>
               )}
             </div>
           </aside>

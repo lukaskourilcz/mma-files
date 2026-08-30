@@ -64,7 +64,7 @@ export default async function DataDeskPage({
 
       <section
         aria-labelledby="coverage"
-        className="border-b border-rule-dark bg-ink py-12 text-white md:py-16"
+        className="border-b border-rule-dark bg-chrome py-12 text-text-inverse md:py-16"
       >
         <Container>
           <SectionHeading
@@ -75,10 +75,10 @@ export default async function DataDeskPage({
           <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
             {figures.map((figure) => (
               <div key={figure.label} className="border-t border-rule-dark pt-4">
-                <dd className="text-[2.5rem] font-bold leading-none tracking-[-0.045em] text-white md:text-[3rem]">
+                <dd className="display text-[length:var(--text-d3)] leading-none text-text-inverse">
                   {figure.value}
                 </dd>
-                <dt className="label-mono-sm mt-3 text-paper-muted">{figure.label}</dt>
+                <dt className="label-mono-sm mt-3 text-text-inverse-muted">{figure.label}</dt>
               </div>
             ))}
           </dl>
@@ -93,12 +93,12 @@ export default async function DataDeskPage({
             <h2 id="boundaries" className="label-mono text-text">
               {dict.dataDesk.boundaryTitle}
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-ink">
+            <p className="mt-4 text-sm leading-relaxed text-text">
               {dict.dataDesk.boundaryLead}
             </p>
             <ul className="mt-4 space-y-2.5">
               {dict.dataDesk.boundaries.map((item) => (
-                <li key={item} className="relative pl-4 text-sm leading-relaxed text-ink-muted">
+                <li key={item} className="relative pl-4 text-sm leading-relaxed text-text-muted">
                   <span
                     aria-hidden="true"
                     className="absolute left-0 top-[0.62em] block h-[1px] w-2.5 bg-accent"
@@ -107,12 +107,12 @@ export default async function DataDeskPage({
                 </li>
               ))}
             </ul>
-            <p className="mt-5 border-t border-correction-rule pt-4 text-xs leading-relaxed text-ink-muted">
+            <p className="mt-5 border-t border-correction-rule pt-4 text-xs leading-relaxed text-text-muted">
               {dict.dataDesk.boundaryFooter}
             </p>
           </div>
 
-          <p className="mt-6 text-sm leading-relaxed text-ink-muted">
+          <p className="mt-6 text-sm leading-relaxed text-text-muted">
             {dict.dataDesk.responsiblePlay}
           </p>
 

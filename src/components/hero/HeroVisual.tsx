@@ -37,7 +37,7 @@ function lookup(map: Record<string, string>, key: string | undefined): string | 
 
 function Gap() {
   return (
-    <span aria-hidden="true" className="inline-block h-[1px] w-4 bg-rule-dark-strong align-middle" />
+    <span aria-hidden="true" className="inline-block h-[1px] w-4 bg-rule-dark align-middle" />
   );
 }
 
@@ -54,9 +54,9 @@ function Frame({
     <div
       role="img"
       aria-label={label}
-      className={`grid-rules relative overflow-hidden rounded-[10px] border border-rule-dark bg-ink ${className}`}
+      className={`relative overflow-hidden border border-rule-dark bg-chrome ${className}`}
     >
-      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px] bg-ember" />
+      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px] bg-accent" />
       <div aria-hidden="true" className="flex h-full flex-col p-6 sm:p-8 md:p-10">
         {children}
       </div>
@@ -83,7 +83,7 @@ function TapeColumn({
       <p className="text-xl font-bold leading-tight tracking-[-0.03em] text-white sm:text-2xl md:text-[1.75rem]">
         {name}
       </p>
-      <p className="label-mono mt-1.5 text-ember">{record ?? <Gap />}</p>
+      <p className="label-mono mt-1.5 text-accent">{record ?? <Gap />}</p>
       <dl className="mt-5 w-full space-y-1.5 sm:mt-7">
         {rows.map((row) => (
           <div
@@ -92,7 +92,7 @@ function TapeColumn({
               align === "right" ? "justify-end" : "justify-start"
             }`}
           >
-            <dt className="label-mono-sm text-muted">{row.label}</dt>
+            <dt className="label-mono-sm text-text-muted">{row.label}</dt>
             <dd className="font-mono text-sm text-paper">{row.value ?? <Gap />}</dd>
           </div>
         ))}
@@ -163,8 +163,8 @@ export function HeroVisual({
       return (
         <Frame label={label} className={className}>
           <div className="flex items-center justify-between gap-4">
-            <span className="label-mono text-ember">{fileTag}</span>
-            <span className="label-mono-sm text-muted">{dict.fighters.tape}</span>
+            <span className="label-mono text-accent">{fileTag}</span>
+            <span className="label-mono-sm text-text-muted">{dict.fighters.tape}</span>
           </div>
 
           <div className="mt-8 flex flex-1 items-start gap-4 sm:gap-8">
@@ -175,10 +175,10 @@ export function HeroVisual({
               align="left"
             />
             <div className="flex shrink-0 flex-col items-center self-stretch pt-2">
-              <span className="label-mono-sm text-muted">vs</span>
+              <span className="label-mono-sm text-text-muted">vs</span>
               <span
                 aria-hidden="true"
-                className="mt-3 w-px flex-1 bg-rule-dark-strong"
+                className="mt-3 w-px flex-1 bg-rule-dark"
               />
             </div>
             <TapeColumn
@@ -190,7 +190,7 @@ export function HeroVisual({
           </div>
 
           {division ? (
-            <p className="label-mono mt-8 border-t border-rule-dark pt-4 text-paper-muted">
+            <p className="label-mono mt-8 border-t border-rule-dark pt-4 text-text-inverse-muted">
               {division}
             </p>
           ) : null}
@@ -209,8 +209,8 @@ export function HeroVisual({
       return (
         <Frame label={label} className={className}>
           <div className="flex items-center justify-between gap-4">
-            <span className="label-mono text-ember">{fileTag}</span>
-            <span className="label-mono-sm text-muted">{str(b, "eventName")}</span>
+            <span className="label-mono text-accent">{fileTag}</span>
+            <span className="label-mono-sm text-text-muted">{str(b, "eventName")}</span>
           </div>
 
           <div className="mt-7 flex flex-1 flex-col justify-center">
@@ -219,27 +219,27 @@ export function HeroVisual({
             </p>
             <p className="mt-5 max-w-xl text-lg font-medium leading-snug text-paper sm:text-xl">
               <span className="text-white">{str(b, "winner")}</span>{" "}
-              <span className="label-mono align-middle text-ember">def.</span>{" "}
-              <span className="text-paper-muted">{str(b, "loser")}</span>
+              <span className="label-mono align-middle text-accent">def.</span>{" "}
+              <span className="text-text-inverse-muted">{str(b, "loser")}</span>
             </p>
           </div>
 
           <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 border-t border-rule-dark pt-4">
             {methodFull ? (
               <div>
-                <dt className="label-mono-sm text-muted">{dict.labels.method}</dt>
+                <dt className="label-mono-sm text-text-muted">{dict.labels.method}</dt>
                 <dd className="mt-1 font-mono text-sm text-white">{methodFull}</dd>
               </div>
             ) : null}
             {round ? (
               <div>
-                <dt className="label-mono-sm text-muted">R</dt>
+                <dt className="label-mono-sm text-text-muted">R</dt>
                 <dd className="mt-1 font-mono text-sm text-white">{round}</dd>
               </div>
             ) : null}
             {time ? (
               <div>
-                <dt className="label-mono-sm text-muted">T</dt>
+                <dt className="label-mono-sm text-text-muted">T</dt>
                 <dd className="mt-1 font-mono text-sm text-white">{time}</dd>
               </div>
             ) : null}
@@ -262,8 +262,8 @@ export function HeroVisual({
       return (
         <Frame label={label} className={className}>
           <div className="flex items-center justify-between gap-4">
-            <span className="label-mono text-ember">{fileTag}</span>
-            <span className="label-mono-sm text-muted">{str(b, "eventName")}</span>
+            <span className="label-mono text-accent">{fileTag}</span>
+            <span className="label-mono-sm text-text-muted">{str(b, "eventName")}</span>
           </div>
 
           <dl className="mt-8 flex flex-1 flex-col justify-center gap-6 sm:flex-row sm:items-end sm:gap-10">
@@ -272,7 +272,7 @@ export function HeroVisual({
                 <dd className="text-[clamp(2.25rem,7vw,3.75rem)] font-bold leading-none tracking-[-0.05em] text-white">
                   {metric.value}
                 </dd>
-                <dt className="label-mono-sm mt-3 text-paper-muted">{metric.label}</dt>
+                <dt className="label-mono-sm mt-3 text-text-inverse-muted">{metric.label}</dt>
               </div>
             ))}
           </dl>
@@ -290,12 +290,12 @@ export function HeroVisual({
       return (
         <Frame label={label} className={className}>
           <div className="flex items-center justify-between gap-4">
-            <span className="label-mono text-ember">{fileTag}</span>
-            <span className="label-mono-sm text-muted">{str(b, "eventName")}</span>
+            <span className="label-mono text-accent">{fileTag}</span>
+            <span className="label-mono-sm text-text-muted">{str(b, "eventName")}</span>
           </div>
 
           <div className="mt-7 flex flex-1 flex-col justify-center">
-            <span aria-hidden="true" className="mb-4 block h-[2px] w-10 bg-ember" />
+            <span aria-hidden="true" className="mb-4 block h-[2px] w-10 bg-accent" />
             <p className="max-w-2xl text-xl font-medium leading-[1.32] tracking-[-0.02em] text-white sm:text-2xl md:text-[1.75rem]">
               {article.heroLine?.[locale] ?? articleDek(article, locale)}
             </p>
@@ -304,11 +304,11 @@ export function HeroVisual({
           <div className="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-rule-dark pt-4">
             {left && right ? (
               <p className="label-mono text-paper">
-                {left} <span className="text-ember">vs</span> {right}
+                {left} <span className="text-accent">vs</span> {right}
               </p>
             ) : null}
             {rounds ? (
-              <p className="label-mono-sm text-muted">{rounds} × 5:00</p>
+              <p className="label-mono-sm text-text-muted">{rounds} × 5:00</p>
             ) : null}
           </div>
         </Frame>

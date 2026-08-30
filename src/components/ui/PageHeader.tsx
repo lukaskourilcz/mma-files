@@ -8,6 +8,7 @@ export interface Crumb {
 }
 
 export function Breadcrumbs({ items, tone = "ink" }: { items: Crumb[]; tone?: "ink" | "paper" }) {
+  const onDark = tone === "paper";
   return (
     <nav aria-label="Breadcrumb">
       <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -16,7 +17,7 @@ export function Breadcrumbs({ items, tone = "ink" }: { items: Crumb[]; tone?: "i
             {i > 0 ? (
               <span
                 aria-hidden="true"
-                className={tone === "paper" ? "text-muted" : "text-rule-strong"}
+                className={onDark ? "text-text-inverse-meta" : "text-rule-strong"}
               >
                 /
               </span>
@@ -24,8 +25,10 @@ export function Breadcrumbs({ items, tone = "ink" }: { items: Crumb[]; tone?: "i
             {item.href ? (
               <Link
                 href={item.href}
-                className={`label-mono-sm hover:text-ember ${
-                  tone === "paper" ? "text-paper-muted" : "text-ink-muted"
+                className={`label-mono-sm ${
+                  onDark
+                    ? "text-text-inverse-muted hover:text-accent-on-dark"
+                    : "text-text-muted hover:text-accent"
                 }`}
               >
                 {item.label}
@@ -33,7 +36,7 @@ export function Breadcrumbs({ items, tone = "ink" }: { items: Crumb[]; tone?: "i
             ) : (
               <span
                 aria-current="page"
-                className={`label-mono-sm ${tone === "paper" ? "text-white" : "text-ink"}`}
+                className={`label-mono-sm ${onDark ? "text-text-inverse" : "text-text"}`}
               >
                 {item.label}
               </span>
@@ -45,39 +48,50 @@ export function Breadcrumbs({ items, tone = "ink" }: { items: Crumb[]; tone?: "i
   );
 }
 
-/** Standard page opening: breadcrumb, kicker, H1, dek. */
+/**
+ * The site's only page opening: breadcrumb, kicker, Anton H1, dek, accent rule.
+ *
+ * Every interior route uses this. The `accent` prop exists so the promotion
+ * pages can colour the rule with their own badge fill; everything else takes
+ * the house red.
+ */
 export function PageHeader({
   crumbs,
   kicker,
   title,
   dek,
+  accent = "var(--color-accent)",
   children,
 }: {
   crumbs?: Crumb[];
   kicker?: string;
   title: string;
   dek?: string;
+  accent?: string;
   children?: ReactNode;
 }) {
   return (
-    <div className="border-b border-rule-strong bg-white">
-      <Container className="py-10 md:py-14">
+    <header className="bg-paper">
+      <Container className="pt-10 md:pt-14">
         {crumbs ? (
           <div className="mb-6">
             <Breadcrumbs items={crumbs} />
           </div>
         ) : null}
-        {kicker ? <Kicker>{kicker}</Kicker> : null}
-        <h1 className="mt-3 max-w-3xl text-[2rem] leading-[1.08] tracking-[-0.04em] text-ink md:text-[2.75rem]">
-          {title}
-        </h1>
+        {kicker ? (
+          <div className="mb-2.5">
+            <Kicker>{kicker}</Kicker>
+          </div>
+        ) : null}
+        <h1 className="display text-[length:var(--text-d2)] text-text">{title}</h1>
         {dek ? (
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-muted md:text-lg">
+          <p className="mt-4 max-w-[68ch] text-[length:var(--text-base)] leading-relaxed text-text-muted">
             {dek}
           </p>
         ) : null}
+        <span className="mt-7 block h-[3px] w-full" style={{ backgroundColor: accent }} />
         {children}
       </Container>
-    </div>
+    </header>
   );
 }

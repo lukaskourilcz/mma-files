@@ -97,8 +97,8 @@ export function TaleOfTheTape({
 
   return (
     <section aria-labelledby="tape" className="sheet p-5 md:p-6">
-      <h2 id="tape" className="label-mono flex items-center gap-2 text-ink">
-        <span aria-hidden="true" className="block h-[2px] w-4 bg-ember" />
+      <h2 id="tape" className="label-mono flex items-center gap-2 text-text">
+        <span aria-hidden="true" className="block h-[2px] w-4 bg-accent" />
         {dict.fighters.tape}
       </h2>
 

@@ -43,9 +43,9 @@ export function FightAiQFeed({ snapshot, locale }: {
     return (
       <section className="border-b border-rule bg-card py-10 md:py-12" aria-labelledby="fightaiq-feed">
         <div className="mx-auto w-full max-w-[90rem] px-5 md:px-10">
-          <p className="label-mono-sm text-ink-meta">{text.eyebrow}</p>
-          <h2 className="display mt-2 text-3xl text-ink" id="fightaiq-feed">{text.title}</h2>
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-muted">{text.empty}</p>
+          <p className="label-mono-sm text-text-meta">{text.eyebrow}</p>
+          <h2 className="display mt-2 text-3xl text-text" id="fightaiq-feed">{text.title}</h2>
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-text-muted">{text.empty}</p>
         </div>
       </section>
     );
@@ -56,41 +56,41 @@ export function FightAiQFeed({ snapshot, locale }: {
       <div className="mx-auto w-full max-w-[90rem] px-5 md:px-10">
         <div className="flex flex-wrap items-end justify-between gap-5">
           <div>
-            <p className="label-mono-sm text-ink-meta">{text.eyebrow}</p>
-            <h2 className="display mt-2 text-3xl text-ink md:text-4xl" id="fightaiq-feed">{text.title}</h2>
+            <p className="label-mono-sm text-text-meta">{text.eyebrow}</p>
+            <h2 className="display mt-2 text-3xl text-text md:text-4xl" id="fightaiq-feed">{text.title}</h2>
           </div>
-          <p className="label-mono-sm text-ink-meta">{text.updated}: {timestamp(snapshot.generatedAt)}</p>
+          <p className="label-mono-sm text-text-meta">{text.updated}: {timestamp(snapshot.generatedAt)}</p>
         </div>
 
-        <p className="mt-6 max-w-4xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-ink-muted">{text.warning}</p>
+        <p className="mt-6 max-w-4xl border-l-2 border-accent pl-4 text-sm leading-relaxed text-text-muted">{text.warning}</p>
 
         <section className="mt-10" aria-labelledby="fightaiq-models">
-          <h3 className="label-mono text-ink" id="fightaiq-models">{text.models} · {currentStats.length}</h3>
+          <h3 className="label-mono text-text" id="fightaiq-models">{text.models} · {currentStats.length}</h3>
           <div className="mt-4 grid gap-4 lg:grid-cols-2">
             {currentStats.map((entry) => {
               const red = getFighterById(`fighter:${entry.fighterRefs[0].replace(":", "/")}`);
               const blue = getFighterById(`fighter:${entry.fighterRefs[1].replace(":", "/")}`);
               const name = (fighter: typeof red, fallback: string) => fighter
-                ? <Link className="underline decoration-ember underline-offset-[3px]" href={routes.fighter(locale, fighter.organization, fighter.slug)}>{fighter.name}</Link>
+                ? <Link className="underline decoration-accent underline-offset-[3px]" href={routes.fighter(locale, fighter.organization, fighter.slug)}>{fighter.name}</Link>
                 : fallback;
               return (
                 <article className="border border-rule bg-paper p-4" key={entry.id}>
                   <div className="flex flex-wrap justify-between gap-3">
-                    <h4 className="font-semibold text-ink">{name(red, entry.fighterRefs[0])} <span className="font-normal text-ink-meta">vs</span> {name(blue, entry.fighterRefs[1])}</h4>
-                    <span className="label-mono-sm text-ink-meta">
+                    <h4 className="font-semibold text-text">{name(red, entry.fighterRefs[0])} <span className="font-normal text-text-meta">vs</span> {name(blue, entry.fighterRefs[1])}</h4>
+                    <span className="label-mono-sm text-text-meta">
                       {entry.modelVersion} · zachyceno {timestamp(entry.generatedAt)}
                     </span>
                   </div>
                   <dl className="mt-4 grid grid-cols-3 gap-3 text-sm">
-                    <div><dt className="text-ink-meta">Červený roh</dt><dd className="mt-1 font-mono tabular-nums text-ink">{percent(entry.redWin)}</dd></div>
-                    <div><dt className="text-ink-meta">Modrý roh</dt><dd className="mt-1 font-mono tabular-nums text-ink">{percent(entry.blueWin)}</dd></div>
-                    <div><dt className="text-ink-meta">{text.model}</dt><dd className="mt-1 font-mono text-ink">{entry.uncertainty.replaceAll("-", " ")}</dd></div>
+                    <div><dt className="text-text-meta">Červený roh</dt><dd className="mt-1 font-mono tabular-nums text-text">{percent(entry.redWin)}</dd></div>
+                    <div><dt className="text-text-meta">Modrý roh</dt><dd className="mt-1 font-mono tabular-nums text-text">{percent(entry.blueWin)}</dd></div>
+                    <div><dt className="text-text-meta">{text.model}</dt><dd className="mt-1 font-mono text-text">{entry.uncertainty.replaceAll("-", " ")}</dd></div>
                   </dl>
-                  <p className="mt-3 text-xs text-ink-muted"><span className="font-semibold text-ink">{text.early}</span> · {text.notAdvice}</p>
+                  <p className="mt-3 text-xs text-text-muted"><span className="font-semibold text-text">{text.early}</span> · {text.notAdvice}</p>
                 </article>
               );
             })}
-            {currentStats.length === 0 ? <p className="text-sm text-ink-muted">{text.empty}</p> : null}
+            {currentStats.length === 0 ? <p className="text-sm text-text-muted">{text.empty}</p> : null}
           </div>
         </section>
       </div>
