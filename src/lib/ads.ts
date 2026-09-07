@@ -54,7 +54,7 @@ function validCreative(slot: RuntimeAdSlot, name: AdSlotName): AdCreative | null
   const image = slot.image as Record<string, unknown>;
   if (
     typeof image.src !== "string" ||
-    !image.src.startsWith("/ads/") ||
+    !/^\/ads\/[a-zA-Z0-9_-]+\.(svg|webp|png|jpe?g)$/.test(image.src) ||
     !Number.isInteger(image.width) ||
     !Number.isInteger(image.height) ||
     typeof slot.alt !== "string" ||
@@ -64,6 +64,12 @@ function validCreative(slot: RuntimeAdSlot, name: AdSlotName): AdCreative | null
     return null;
   }
 
+  if (typeof slot.href === "string") {
+    try {
+      const url = new URL(slot.href);
+      if (url.protocol !== "https:" || url.username || url.password) return null;
+    } catch { return null; }
+  }
   const definition = getAdSlotDefinition(name);
   const allowed = [
     definition.desktop,
