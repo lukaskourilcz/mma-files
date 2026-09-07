@@ -1,5 +1,13 @@
 # Production review · 7 September 2026
 
+Follow-up #24: public acceptance found repeated historical results under distinct
+source IDs and past cards labelled upcoming. Equivalent completed history is now
+collapsed in the consumer view, combining citations without changing delivery
+bytes. Conflicting results and rematches remain distinct. Upcoming cards use the
+current clock; public routes revalidate hourly, including the shared ticker.
+This is on-demand ISR, so the first request after expiry may receive the previous
+cached page while it refreshes. See [Next.js route revalidation](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#revalidation-frequency).
+
 Status: repository fixes are tested; a production launch is not yet verified.
 Tracked by #22 and PR #23. The shared producer review lives in
 [quorum](https://github.com/lukaskourilcz/quorum/blob/claude/production-audit-2026-09-07/docs/production-review-2026-09-07.md).

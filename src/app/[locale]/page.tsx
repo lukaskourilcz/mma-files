@@ -39,7 +39,7 @@ export default async function HomePage({
   const articles = getArticles();
   const lead = getLeadArticle();
   const latest = articles.filter((article) => article.slug !== lead?.slug);
-  const upcoming = getUpcomingEvents().slice(0, 6);
+  const upcoming = getUpcomingEvents(new Date()).slice(0, 6);
   const fighterFiles = getFighters().length;
 
   return (

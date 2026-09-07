@@ -39,7 +39,7 @@ export default async function EventsPage({
   const locale: Locale = raw;
   const dict = getDictionary(locale);
 
-  const upcoming = getUpcomingEvents();
+  const upcoming = getUpcomingEvents(new Date());
   const completed = getCompletedEvents();
 
   return (

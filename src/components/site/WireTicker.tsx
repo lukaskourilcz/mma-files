@@ -56,7 +56,7 @@ function buildWire(locale: Locale): WireItem[] {
     }
   }
 
-  for (const event of getUpcomingEvents()) {
+  for (const event of getUpcomingEvents(new Date())) {
     for (const bout of event.bouts) {
       const title = bout.titleFight ? ` (${dict.labels.titleFight})` : "";
       bookings.push({

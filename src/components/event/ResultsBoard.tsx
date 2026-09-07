@@ -5,7 +5,7 @@ import { getDictionary } from "@/i18n";
 import { formatDate } from "@/lib/format";
 import { routes } from "@/lib/paths";
 import { PROMOTION_ACCENT } from "@/lib/promotion";
-import { getCompletedEvents, getEvents } from "@/lib/repository";
+import { getCompletedEvents, getUpcomingEvents } from "@/lib/repository";
 import {
   ORGANIZATIONS,
   type Bout,
@@ -141,7 +141,7 @@ function PromotionColumn({
 /** Fixed UFC/OKTAGON order; missing archives never reorder the page. */
 export function ResultsBoard({ locale }: { locale: Locale }) {
   const completed = getCompletedEvents();
-  const announced = getEvents().filter((event) => event.status !== "completed");
+  const announced = getUpcomingEvents(new Date());
 
   return (
     <div className="mt-6 grid gap-10 lg:grid-cols-2">
