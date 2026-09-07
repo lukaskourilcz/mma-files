@@ -9,6 +9,9 @@ import "@/app/globals.css";
 import { routes } from "@/lib/paths";
 import { LOCALES, isLocale, type Locale } from "@/lib/types";
 
+// The masthead and event boards use today's date, even between content deliveries.
+export const revalidate = 3600;
+
 // Anton ships one weight. Latin Extended is loaded because fighter and event
 // names carry Czech and Slovak diacritics and the display face has to render
 // them rather than falling back mid-headline.

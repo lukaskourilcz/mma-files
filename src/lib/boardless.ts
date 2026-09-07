@@ -547,8 +547,30 @@ function deliveredResult(bout: FightAiQBout): BoutResult | undefined {
   };
 }
 
+/** History imports can assign different IDs to the same sourced result. */
+export function deduplicateCompletedBouts(values: readonly FightAiQBout[]): FightAiQBout[] {
+  const distinct = new Map<string, FightAiQBout>();
+  for (const bout of values) {
+    const result = bout.result;
+    const winner = result?.winner === "red" ? bout.fighters.red
+      : result?.winner === "blue" ? bout.fighters.blue : result?.winner;
+    // Collapse only equivalent completed history; conflicting results remain visible.
+    const key = bout.status === "completed" && result && bout.id.includes(":bout:history-")
+      ? JSON.stringify([bout.event.ref, bout.event.startsAtUtc,
+        [bout.fighters.red, bout.fighters.blue].sort(), winner,
+        result.method?.trim().toLowerCase(), result.round, result.elapsedSeconds])
+      : bout.id;
+    const previous = distinct.get(key);
+    distinct.set(key, previous ? {
+      ...previous,
+      sourceRefs: [...new Set([...previous.sourceRefs, ...bout.sourceRefs])],
+    } : bout);
+  }
+  return [...distinct.values()];
+}
+
 function deliveredBoutEvents(values: readonly FightAiQBout[], fighters: readonly FightAiQFighterRecord[], statsEntries: readonly FightAiQStatsEntry[], names: Readonly<Record<string, string>> = {}): FightEvent[] {
-  const active = values.filter((bout) => bout.status !== "cancelled" && bout.status !== "postponed");
+  const active = deduplicateCompletedBouts(values).filter((bout) => bout.status !== "cancelled" && bout.status !== "postponed");
   const predictions = new Map(statsEntries.filter((entry) => entry.status === "active").map((entry) => [entry.boutRef, entry]));
   const groups = new Map<string, FightAiQBout[]>();
   for (const bout of active) groups.set(bout.event.ref, [...(groups.get(bout.event.ref) ?? []), bout]);
