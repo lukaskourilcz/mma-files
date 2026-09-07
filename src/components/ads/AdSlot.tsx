@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
-import { getDictionary } from "@/i18n";
+import { HousePromotion } from "./HousePromotion";
 import {
   getAdCreative,
   getAdSlotDefinition,
@@ -43,11 +43,9 @@ function Creative({
 
 export function AdSlot({
   name,
-  locale,
   mastheadVariant = "standard",
   className = "",
 }: AdSlotProps) {
-  const dict = getDictionary(locale);
   const definition = getAdSlotDefinition(name);
   const desktop =
     name === "masthead-billboard" && mastheadVariant === "compact"
@@ -74,16 +72,12 @@ export function AdSlot({
   return (
     <div
       role="complementary"
-      aria-label="Reklama"
+      aria-label={creative ? "Reklama" : "Partnerský magazín DNESKAi"}
       data-ad-slot={name}
       style={style}
       className={`relative mx-auto my-8 max-w-full ${responsiveSize} ${
         rail ? "lg:sticky lg:top-[calc(var(--layout-chrome-h)+24px)]" : ""
-      } ${
-        creative
-          ? "overflow-hidden"
-          : "border border-dashed border-rule-dashed bg-well"
-      } ${className}`}
+      } overflow-hidden ${className}`}
     >
       {creative ? (
         <Creative href={creative.href}>
@@ -93,29 +87,11 @@ export function AdSlot({
             fill
             loading="lazy"
             sizes={rail ? "300px" : `(min-width: 768px) ${desktop.width}px, ${mobile?.width ?? 0}px`}
-            className="object-cover"
+            className="object-contain"
           />
         </Creative>
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-center text-text-meta">
-          <span className="font-mono text-[length:var(--text-mono-sm)] font-medium uppercase tracking-[0.14em]">
-            {dict.ads.placeholder}
-          </span>
-          {mobile ? (
-            <>
-              <span className="font-mono text-[length:var(--text-mono-xs)] tabular-nums md:hidden">
-                {dict.ads.slotLabel(mobile.width, mobile.height)}
-              </span>
-              <span className="hidden font-mono text-[length:var(--text-mono-xs)] tabular-nums md:inline">
-                {dict.ads.slotLabel(desktop.width, desktop.height)}
-              </span>
-            </>
-          ) : (
-            <span className="font-mono text-[length:var(--text-mono-xs)] tabular-nums">
-              {dict.ads.slotLabel(desktop.width, desktop.height)}
-            </span>
-          )}
-        </div>
+        <HousePromotion />
       )}
     </div>
   );

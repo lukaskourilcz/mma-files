@@ -39,7 +39,7 @@ export const siteConfig = {
   },
 
   contact: {
-    corrections: "corrections@example.invalid",
+    corrections: process.env.NEXT_PUBLIC_CORRECTIONS_EMAIL?.trim() || null,
   },
 } as const;
 

@@ -127,10 +127,14 @@ export default async function CorrectionsPage({
                 {dict.corrections.reportTitle}
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-text">
-                {dict.corrections.reportBody}
+                {siteConfig.contact.corrections ? dict.corrections.reportBody : "Našli jste chybu? Nahlaste ji redakci přes veřejný formulář na GitHubu."}
               </p>
               <p className="mt-4 font-mono text-sm text-text">
-                {siteConfig.contact.corrections}
+                {siteConfig.contact.corrections ? (
+                  <a href={`mailto:${siteConfig.contact.corrections}`}>{siteConfig.contact.corrections}</a>
+                ) : (
+                  <a href="https://github.com/lukaskourilcz/mma-files/issues/new">Nahlásit chybu</a>
+                )}
               </p>
             </section>
           </aside>
