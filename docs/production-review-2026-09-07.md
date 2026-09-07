@@ -15,7 +15,7 @@ Tracked by #22 and PR #23. The shared producer review lives in
 
 - [x] TypeScript and lint.
 - [x] All 68 existing tests, including package ingestion and theme token checks.
-- [x] Production build with NEXT_PUBLIC_DEMO_MODE=false (before contact-only change); final build also required in PR CI.
+- [x] Production build with NEXT_PUBLIC_DEMO_MODE=false, including final contact configuration. GitHub CI run 34115679222 passed on 05198d8c5371c18600d3d573116a3291ba1d03ad.
 - [ ] Confirm the Vercel production branch/main and domain, then deploy the final commit.
 - [ ] Confirm demo mode is false in the deployed environment. Do not enable indexing before real content and rights review.
 - [ ] Set a monitored corrections email if email intake is preferred.
