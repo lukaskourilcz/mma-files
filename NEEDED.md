@@ -1,7 +1,7 @@
 # NEEDED — owner actions for MMA Files
 
-The relaunch code and delivery boundary are complete. This file lists only
-account, rights, and editorial decisions that cannot be made in the repository.
+Production audit: 2026-09-07. Repository checks passed; production environment
+and browser acceptance still need verification. See docs/production-review-2026-09-07.md.
 
 ## Production launch
 
@@ -14,8 +14,8 @@ account, rights, and editorial decisions that cannot be made in the repository.
 - [ ] Keep `NEXT_PUBLIC_ALLOW_INDEXING=false` through the public review. Set it
   to `true` only after the name, legal copy, records, and licensed media are
   approved.
-- [ ] Replace `corrections@example.invalid` in `src/config/site.ts` with a
-  monitored corrections address.
+- [ ] Set `NEXT_PUBLIC_CORRECTIONS_EMAIL` to a monitored corrections address.
+  Until configured, the corrections page links to the real repository issue form.
 - [ ] Confirm the GitHub App installation used for delivery includes
   `lukaskourilcz/mma-files` with repository Contents read/write only. Keep its
   credentials upstream; no secret belongs in this repository or in Vercel.
@@ -33,7 +33,8 @@ account, rights, and editorial decisions that cannot be made in the repository.
 ## FightAIQ and source approvals
 
 - [ ] Resolve the upstream INBOX approvals for the proposed Apify sources and
-  budget. Until then, Apify remains a $0 no-op.
+  budget. These FightAIQ approvals are separate from goViral: quorum Actions already
+  had APIFY_TOKEN in the audited run; actor eligibility and account credit still matter.
 - [ ] Review the first eligible prediction before publication. A valid line
   must include both probabilities, model version, and capture timestamp; a
   card without one continues to show `Model zatím neběžel`.
